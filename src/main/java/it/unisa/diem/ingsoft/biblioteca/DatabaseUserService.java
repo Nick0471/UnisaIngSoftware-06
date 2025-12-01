@@ -1,0 +1,79 @@
+package it.unisa.diem.ingsoft.biblioteca;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.jdbi.v3.core.Jdbi;
+
+public class DatabaseUserService implements UserService {
+    private final Database database;
+
+    public DatabaseUserService(Database database) {
+        this.database = database;
+    }
+
+	@Override
+	public void register(User user) {
+        this.database.getJdbi()
+            .useHandle(handle -> handle.createUpdate("INSERT INTO users(id, email, name, surname)"
+                        + "VALUES (:id, :email, :name, :surname)")
+                    .bind("id", user.getId())
+                    .bind("email", user.getEmail())
+                    .bind("name", user.getName())
+                    .bind("surname", user.getSurname())
+                    .execute());
+	}
+
+	@Override
+	public void registerAll(List<User> users) {
+        this.database.getJdbi()
+            .useHandle(handle -> {
+                var batch = handle.prepareBatch("INSERT INTO users(id, email, name, surname)"
+                        + "VALUES (:id, :email, :name, :surname)");
+
+                for (User user : users) {
+                    batch.bind("id", user.getId())
+                        .bind("email", user.getEmail())
+                        .bind("name", user.getName())
+                        .bind("surname", user.getSurname())
+                        .add();
+                }
+
+                batch.execute();
+            });
+	}
+
+	@Override
+	public List<User> getAll() {
+        return this.database.getJdbi()
+            .withHandle(handle -> handle.createQuery("SELECT * FROM users")
+                    .mapTo(User.class)
+                    .list());
+	}
+
+	@Override
+	public List<User> get(int maxUsers) {
+        Jdbi jdbi = this.database.getJdbi();
+
+        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM users LIMIT (?)")
+                .bind(0, maxUsers)
+                .mapTo(User.class)
+                .list());
+	}
+
+	@Override
+	public Optional<User> getByEmail(String email) {
+        return this.getAll() // List<User>
+            .stream() // Stream<User> (Wrapper Collection) = "lista" con metodi aggiuntivi
+            .filter(user -> user.getEmail().equals(email))
+            .findFirst();
+	}
+
+	@Override
+	public Optional<User> getById(String id) {
+        return this.getAll()
+            .stream()
+            .filter(user -> user.getId().equals(id))
+            .findFirst();
+	}
+}
