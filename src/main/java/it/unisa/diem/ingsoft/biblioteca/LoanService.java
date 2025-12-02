@@ -11,4 +11,5 @@ public interface LoanService {
     List<Loan> getByBookISBN(String bookISBN);
 	void register(String userId, String bookISBN, LocalDate start, LocalDate deadline);
     void complete(String userId, String bookISBN, LocalDate end);
+    boolean has(String userId, String bookISBN);
 };
