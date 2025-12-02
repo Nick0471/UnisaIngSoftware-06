@@ -3,8 +3,6 @@ package it.unisa.diem.ingsoft.biblioteca;
 import java.util.List;
 import java.util.Optional;
 
-import org.jdbi.v3.core.Jdbi;
-
 public class DatabaseUserService implements UserService {
     private final Database database;
 
@@ -49,16 +47,6 @@ public class DatabaseUserService implements UserService {
             .withHandle(handle -> handle.createQuery("SELECT * FROM users")
                     .mapTo(User.class)
                     .list());
-	}
-
-	@Override
-	public List<User> get(int maxUsers) {
-        Jdbi jdbi = this.database.getJdbi();
-
-        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM users LIMIT (?)")
-                .bind(0, maxUsers)
-                .mapTo(User.class)
-                .list());
 	}
 
 	@Override

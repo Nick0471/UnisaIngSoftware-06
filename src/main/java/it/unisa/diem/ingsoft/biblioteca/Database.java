@@ -25,5 +25,16 @@ public class Database {
                     + "surname TEXT NOT NULL"
                     + ");");
         });
+
+        this.jdbi.useHandle(handle -> {
+            handle.execute("CREATE TABLE IF NOT EXISTS loans ("
+                    + "id INTEGER PRIMARY KEY,"
+                    + "bookISBN TEXT NOT NULL,"
+                    + "userId TEXT NOT NULL,"
+                    + "loanStart DATE NOT NULL,"
+                    + "loanDeadline DATE NOT NULL,"
+                    + "loanEnd DATE"
+                    + ");");
+        });
     }
 }

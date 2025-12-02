@@ -42,4 +42,20 @@ public class Loan {
     public void setLoanEnd(LocalDate loanEnd) {
         this.loanEnd = loanEnd;
     }
+
+    public void setBookISBN(String bookISBN) {
+        this.bookISBN = bookISBN;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setLoanStart(LocalDate loanStart) {
+        this.loanStart = loanStart;
+    }
+
+    public void setLoanDeadline(LocalDate loanDeadline) {
+        this.loanDeadline = loanDeadline;
+    }
 }
