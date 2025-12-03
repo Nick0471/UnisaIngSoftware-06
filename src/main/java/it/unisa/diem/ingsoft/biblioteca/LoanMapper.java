@@ -23,7 +23,7 @@ public class LoanMapper implements RowMapper<Loan> {
         LocalDate loanEnd = rs.getObject("loan_end", LocalDate.class);
         LocalDate loanDeadline = rs.getObject("loan_deadline", LocalDate.class);
 
-        loan.setBookISBN(bookIsbn);
+        loan.setBookIsbn(bookIsbn);
         loan.setUserId(userId);
         loan.setLoanStart(loanStart);
         loan.setLoanEnd(loanEnd);

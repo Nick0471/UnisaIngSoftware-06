@@ -18,7 +18,7 @@ public interface BookService {
      * @param isbn Il codice isbn (Stringa) del libro da cercare.
      * @return Un Optional<Book> che contiene il libro se trovato, altrimenti Optional.empty().
      */
-    Optional<Book> getByisbn(String isbn);
+    Optional<Book> getByIsbn(String isbn);
 
     /**
      * @brief Recupera tutti i libri scritti da un determinato autore.
@@ -58,7 +58,7 @@ public interface BookService {
      * in modo permanente il record corrispondente all'isbn.
      * @param isbn Il codice isbn (Stringa) del libro da rimuovere.
      */
-    boolean removeByisbn(String isbn);
+    boolean removeByIsbn(String isbn);
 
     /**
      * @brief Aggiunge un libro al catalogo

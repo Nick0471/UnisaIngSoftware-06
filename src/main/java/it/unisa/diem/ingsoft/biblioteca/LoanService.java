@@ -27,7 +27,7 @@ public interface LoanService {
      * @param userId La matricola dell'utente che ha chiesto i prestiti
      * @return La lista dei prestiti chiesti dall'utente
      */
-    List<Loan> getByUserID(String userId);
+    List<Loan> getByUserId(String userId);
 
     /**
      * @brief Cerca i prestiti chiesti per un libro
