@@ -9,5 +9,5 @@ public interface UserService {
 	void register(User user);
     void registerAll(List<User> users);
     boolean removeById(String id);
-    void updateById(String id);
+    void updateById(String id, User user);
 }

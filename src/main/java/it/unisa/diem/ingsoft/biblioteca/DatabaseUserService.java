@@ -68,6 +68,19 @@ public class DatabaseUserService implements UserService {
 	}
 
 	@Override
-	public void updateById(String id) {
+	public void updateById(String id, User user) {
+        String email = user.getEmail();
+        String name = user.getName();
+        String surname = user.getSurname();
+
+        this.database.getJdbi()
+            .withHandle(handle -> handle.createUpdate("UPDATE users(email, name, surname)"
+                        + "SET email = :email, name = :name, surname = :surname"
+                        + "WHERE id = :id")
+                    .bind("id", id)
+                    .bind("email", email)
+                    .bind("name", name)
+                    .bind("surname", surname)
+                    .execute());
 	}
 }
