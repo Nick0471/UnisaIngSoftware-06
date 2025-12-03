@@ -10,5 +10,5 @@ public interface BookService {
     List<Book> getByGenre(String genre);
     List<Book> getByReleaseYear(int releaseYear);
     List<Book> getByTitle(String title);
-    void removeByISBN(String ISBN);
+    boolean removeByISBN(String ISBN);
 }

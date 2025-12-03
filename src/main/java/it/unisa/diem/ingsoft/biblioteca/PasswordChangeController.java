@@ -1,48 +1,46 @@
+
 package it.unisa.diem.ingsoft.biblioteca;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
+import javafx.scene.Node;
+import java.io.IOException;
+import javafx.event.ActionEvent;
 
-public class HomepageController{
-    @FXML
-    private Button btnProfile;
 
+public class PasswordChangeController {
+    
     @FXML
-    private Button btnBook;
-
+    private Button btnUpdate;
+    
+   
+    @FXML 
+    private PasswordField currentPassword;
+    
+    
+    @FXML 
+    private PasswordField newPassword;
+    
+    @FXML 
+    private PasswordField newPasswordConfirm;
+    
+               
     @FXML
-    private Button btnUser;
-
-    @FXML
-    private Button btnLoan;
-
-    @FXML
-    void handleGoToViewProfile(ActionEvent event) {
-        changeScene(event, "ScenePassword.fxml");
+    void handleGoToViewHomepage(ActionEvent event) {
+        changeScene(event, "homepage.fxml");
     }
-
-    @FXML
-    void handleGoToViewBooks(ActionEvent event) {
-        changeScene(event, "catalogo_libri.fxml");
-    }
-
-    @FXML
-    void handleGoToViewUsers(ActionEvent event) {
-        changeScene(event, "lista_utenti.fxml");
-    }
-
-    @FXML
-    void handleGoToViewLoans(ActionEvent event) {
-        changeScene(event, "prestiti.fxml");
-    }
-
+    
+    
     private void changeScene(ActionEvent event, String scene) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
@@ -61,4 +59,9 @@ public class HomepageController{
             System.err.println("ERRORE: Il file '" + scene + "' non è stato trovato nel percorso specificato.");
         }
     }
+       
+  
+    
+    
+    
 }
