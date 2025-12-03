@@ -23,25 +23,6 @@ public class DatabaseUserService implements UserService {
 	}
 
 	@Override
-	public void registerAll(List<User> users) {
-        this.database.getJdbi()
-            .useHandle(handle -> {
-                var batch = handle.prepareBatch("INSERT INTO users(id, email, name, surname)"
-                        + "VALUES (:id, :email, :name, :surname)");
-
-                for (User user : users) {
-                    batch.bind("id", user.getId())
-                        .bind("email", user.getEmail())
-                        .bind("name", user.getName())
-                        .bind("surname", user.getSurname())
-                        .add();
-                }
-
-                batch.execute();
-            });
-	}
-
-	@Override
 	public List<User> getAll() {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM users")
