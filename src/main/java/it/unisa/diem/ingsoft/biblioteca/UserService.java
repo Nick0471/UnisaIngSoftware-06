@@ -9,4 +9,6 @@ public interface UserService {
     Optional<User> getById(String id);
 	void register(User user);
     void registerAll(List<User> users);
+    boolean removeByEmail(String email);
+    boolean removeById(String id);
 }

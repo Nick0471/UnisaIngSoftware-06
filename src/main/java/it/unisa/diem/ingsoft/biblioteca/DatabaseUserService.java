@@ -64,4 +64,20 @@ public class DatabaseUserService implements UserService {
             .filter(user -> user.getId().equals(id))
             .findFirst();
 	}
+
+	@Override
+	public boolean removeByEmail(String email) {
+        return this.database.getJdbi()
+            .withHandle(handle -> handle.createUpdate("DELETE FROM users WHERE email = :email")
+                    .bind("email", email)
+                    .execute()) > 0;
+	}
+
+	@Override
+	public boolean removeById(String id) {
+        return this.database.getJdbi()
+            .withHandle(handle -> handle.createUpdate("DELETE FROM users WHERE id = :id")
+                    .bind("id", id)
+                    .execute()) > 0;
+	}
 }
