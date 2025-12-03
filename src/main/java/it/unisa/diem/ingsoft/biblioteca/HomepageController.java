@@ -25,7 +25,7 @@ public class HomepageController{
 
     @FXML
     void handleGoToViewProfile(ActionEvent event) {
-        changeScene(event, "profilo_utente.fxml");
+        changeScene(event, "ScenePassword.fxml");
     }
 
     @FXML
