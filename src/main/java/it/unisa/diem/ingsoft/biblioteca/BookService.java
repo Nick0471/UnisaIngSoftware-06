@@ -59,4 +59,6 @@ public interface BookService {
      * @param ISBN Il codice ISBN (Stringa) del libro da rimuovere.
      */
     boolean removeByISBN(String ISBN);
+    void add(Book book);
+    void addAll(List<Book> books);
 }
