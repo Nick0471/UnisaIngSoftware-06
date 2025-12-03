@@ -13,11 +13,11 @@ public class LoanMapper implements RowMapper<Loan> {
 	public Loan map(ResultSet rs, StatementContext ctx) throws SQLException {
         Loan loan = new Loan();
 
-        String bookISBN = rs.getString("bookISBN");
-        String userId = rs.getString("userId");
-        LocalDate loanStart = rs.getObject("loanStart", LocalDate.class);
-        LocalDate loanEnd = rs.getObject("loanStart", LocalDate.class);
-        LocalDate loanDeadline = rs.getObject("loanStart", LocalDate.class);
+        String bookISBN = rs.getString("book_isbn");
+        String userId = rs.getString("user_id");
+        LocalDate loanStart = rs.getObject("loan_start", LocalDate.class);
+        LocalDate loanEnd = rs.getObject("loan_end", LocalDate.class);
+        LocalDate loanDeadline = rs.getObject("loan_deadline", LocalDate.class);
 
         loan.setBookISBN(bookISBN);
         loan.setUserId(userId);
