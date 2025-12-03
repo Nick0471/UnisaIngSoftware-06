@@ -25,22 +25,22 @@ public class HomepageController{
 
     @FXML
     void handleGoToViewProfile(ActionEvent event) {
-        changeScene(event, "ScenePassword.fxml");
+        changeScene(event, "PasswordScene.fxml");
     }
 
     @FXML
     void handleGoToViewBooks(ActionEvent event) {
-        changeScene(event, "catalogo_libri.fxml");
+        changeScene(event, "BookScene.fxml");
     }
 
     @FXML
     void handleGoToViewUsers(ActionEvent event) {
-        changeScene(event, "lista_utenti.fxml");
+        changeScene(event, "UserScene.fxml");
     }
 
     @FXML
     void handleGoToViewLoans(ActionEvent event) {
-        changeScene(event, "prestiti.fxml");
+        changeScene(event, "LoanScene.fxml");
     }
 
     private void changeScene(ActionEvent event, String scene) {
