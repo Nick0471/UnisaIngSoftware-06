@@ -8,6 +8,7 @@ public class Database {
     public Database(String connectionUrl) {
         this.jdbi = Jdbi.create(connectionUrl, "", "");
         this.jdbi.registerRowMapper(new UserMapper());
+        this.jdbi.registerRowMapper(new LoanMapper());
 
         this.setupTables();
     }
