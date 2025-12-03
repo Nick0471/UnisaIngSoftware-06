@@ -51,18 +51,22 @@ public class DatabaseUserService implements UserService {
 
 	@Override
 	public Optional<User> getByEmail(String email) {
-        return this.getAll() // List<User>
-            .stream() // Stream<User> (Wrapper Collection) = "lista" con metodi aggiuntivi
-            .filter(user -> user.getEmail().equals(email))
-            .findFirst();
+        return this.database.getJdbi()
+            .withHandle(handle -> handle.createQuery("SELECT * FROM users"
+                        + "WHERE email = :email")
+                    .bind("email", email)
+                    .mapTo(User.class)
+                    .findFirst());
 	}
 
 	@Override
 	public Optional<User> getById(String id) {
-        return this.getAll()
-            .stream()
-            .filter(user -> user.getId().equals(id))
-            .findFirst();
+        return this.database.getJdbi()
+            .withHandle(handle -> handle.createQuery("SELECT * FROM users"
+                        + "WHERE id = :id")
+                    .bind("id", id)
+                    .mapTo(User.class)
+                    .findFirst());
 	}
 
 	@Override
