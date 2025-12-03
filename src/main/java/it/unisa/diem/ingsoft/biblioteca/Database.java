@@ -30,11 +30,24 @@ public class Database {
         this.jdbi.useHandle(handle -> {
             handle.execute("CREATE TABLE IF NOT EXISTS loans ("
                     + "id INTEGER PRIMARY KEY,"
-                    + "bookISBN TEXT NOT NULL,"
-                    + "userId TEXT NOT NULL,"
-                    + "loanStart DATE NOT NULL,"
-                    + "loanDeadline DATE NOT NULL,"
-                    + "loanEnd DATE"
+                    + "book_isbn TEXT NOT NULL,"
+                    + "user_id TEXT NOT NULL,"
+                    + "loan_start DATE NOT NULL,"
+                    + "loan_deadline DATE NOT NULL,"
+                    + "loan_end DATE"
+                    + ");");
+        });
+
+        this.jdbi.useHandle(handle -> {
+            handle.execute("CREATE TABLE IF NOT EXISTS books ("
+                    + "isbn TEXT NOT NULL PRIMARY KEY,"
+                    + "title TEXT NOT NULL,"
+                    + "author TEXT NOT NULL,"
+                    + "release_year INTEGER NOT NULL,"
+                    + "total_copies INTEGER NOT NULL,"
+                    + "remaining_copies INTEGER NOT NULL,"
+                    + "genre TEXT NOT NULL,"
+                    + "description TEXT NOT NULL"
                     + ");");
         });
     }
