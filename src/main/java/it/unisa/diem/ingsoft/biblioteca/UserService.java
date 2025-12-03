@@ -35,8 +35,10 @@ public interface UserService {
 
     /**
      * @brief Aggiorna le informazioni di un utente già registrato
-     * @param id La matricola dell'utente registrato
-     * @param user Le nuove informazioni da salvare (la matricola non può essere cambiata)
+     * @param user L'oggetto User contenente la matricola dell'utente da modificare e
+     *  le nuove informazioni da salvare
+     * @invariant La matricola dell'utente è un invariante. Se è necessario modificarla
+     *  bisogna eliminare e reinserire l'utente
      */
-    void updateById(String id, User user);
+    void updateById(User user);
 }
