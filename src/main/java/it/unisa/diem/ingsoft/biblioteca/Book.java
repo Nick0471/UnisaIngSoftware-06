@@ -1,7 +1,7 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
 public class Book {
-    private String ISBN;
+    private String isbn;
     private String title;
     private String author;
     private int releaseYear;
@@ -14,7 +14,7 @@ public class Book {
 
     public Book(String ISBN, String title, String author, int releaseYear, int totalCopies,
             int remainingCopies, String genre, String description) {
-        this.ISBN = ISBN;
+        this.isbn = ISBN;
         this.title = title;
         this.author = author;
         this.releaseYear = releaseYear;
@@ -24,12 +24,12 @@ public class Book {
         this.description = description;
     }
 
-    public String getISBN() {
-        return this.ISBN;
+    public String getIsbn() {
+        return this.isbn;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+    public void setIsbn(String ISBN) {
+        this.isbn = ISBN;
     }
 
     public String getTitle() {

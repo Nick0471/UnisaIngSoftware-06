@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class Loan {
-    private String bookISBN;
+    private String bookIsbn;
     private String userId;
     private LocalDate loanStart;
     private LocalDate loanDeadline;
@@ -12,15 +12,15 @@ public class Loan {
 
     public Loan() {}
 
-    public Loan(String bookISBN, String userId, LocalDate loanStart, LocalDate loanDeadline) {
-        this.bookISBN = bookISBN;
+    public Loan(String bookIsbn, String userId, LocalDate loanStart, LocalDate loanDeadline) {
+        this.bookIsbn = bookIsbn;
         this.userId = userId;
         this.loanStart = loanStart;
         this.loanDeadline = loanDeadline;
     }
 
-    public String getBookISBN() {
-        return this.bookISBN;
+    public String getBookIsbn() {
+        return this.bookIsbn;
     }
 
     public String getUserId() {
@@ -43,8 +43,8 @@ public class Loan {
         this.loanEnd = loanEnd;
     }
 
-    public void setBookISBN(String bookISBN) {
-        this.bookISBN = bookISBN;
+    public void setBookIsbn(String bookIsbn) {
+        this.bookIsbn = bookIsbn;
     }
 
     public void setUserId(String userId) {

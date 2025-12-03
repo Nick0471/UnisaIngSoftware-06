@@ -17,10 +17,10 @@ public interface LoanService {
     /**
      * @brief Cerca un prestito chiesto da un utente per un libro
      * @param userId La matricola dell'utente che ha chiesto il prestito
-     * @param bookISBN L'ISBN del libro prestato
+     * @param bookIsbn L'ISBN del libro prestato
      * @return Un opzionale contenente il prestito se esistente, empty altrimenti
      */
-    Optional<Loan> getByUserIDAndBookISBN(String userId, String bookISBN);
+    Optional<Loan> getByUserIDAndBookIsbn(String userId, String bookIsbn);
 
     /**
      * @brief Cerca i prestiti chiesti da un utente
@@ -31,33 +31,33 @@ public interface LoanService {
 
     /**
      * @brief Cerca i prestiti chiesti per un libro
-     * @param bookISBN L'ISBN del libro per cui sono stati chiesti i prestiti
+     * @param bookIsbn L'ISBN del libro per cui sono stati chiesti i prestiti
      * @return La lista dei prestiti per il libro
      */
-    List<Loan> getByBookISBN(String bookISBN);
+    List<Loan> getByBookIsbn(String bookIsbn);
 
     /**
      * @brief Registra un prestito chiesto da un utente per un libro
      *  specificando la data di inizio del prestito e di restituzione
      * @param userId La matricola dell'utente che ha chiesto il prestito
-     * @param bookISBN L'ISBN del libro dato in prestito
+     * @param bookIsbn L'ISBN del libro dato in prestito
      * @param start La data di inizio del prestito
      * @param deadline La data di restituzione
      */
-	void register(String userId, String bookISBN, LocalDate start, LocalDate deadline);
+	void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline);
 
     /**
      * @brief Registra la restituzione di un libro da parte di un utente
      * @param userId La matricola dell'utente che ha restituito il libro
-     * @param bookISBN L'ISBN del libro restituito
+     * @param bookIsbn L'ISBN del libro restituito
      */
-    void complete(String userId, String bookISBN, LocalDate end);
+    void complete(String userId, String bookIsbn, LocalDate end);
 
     /**
      * @brief Verifica se un utente ha preso in prestito un libro
      * @param userId La matricola dell'utente che ha chiesto il prestito
-     * @param bookISBN L'ISBN del libro preso in prestito
+     * @param bookIsbn L'ISBN del libro preso in prestito
      * @return true se l'utente ha preso in prestito il libro, false altrimenti
      */
-    boolean has(String userId, String bookISBN);
+    boolean has(String userId, String bookIsbn);
 };

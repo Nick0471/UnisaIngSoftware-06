@@ -12,18 +12,18 @@ public class DatabaseLoanService implements LoanService {
     }
 
 	@Override
-	public Optional<Loan> getByUserIDAndBookISBN(String userId, String bookISBN) {
+	public Optional<Loan> getByUserIDAndBookIsbn(String userId, String bookIsbn) {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM loans"
                         + " WHERE user_id = :user_id AND book_isbn = :book_isbn")
                     .bind("user_id", userId)
-                    .bind("book_isbn", bookISBN)
+                    .bind("book_isbn", bookIsbn)
                     .mapTo(Loan.class)
                     .findFirst());
     }
 
     @Override
-    public List<Loan> getByUserID(String userId) {
+    public List<Loan> getByUserId(String userId) {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM loans"
                         + " WHERE (user_id = :user_id)")
@@ -33,22 +33,22 @@ public class DatabaseLoanService implements LoanService {
     }
 
     @Override
-    public List<Loan> getByBookISBN(String bookISBN) {
+    public List<Loan> getByBookIsbn(String bookIsbn) {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM loans"
                         + " WHERE book_isbn = :book_isbn")
-                    .bind("book_isbn", bookISBN)
+                    .bind("book_isbn", bookIsbn)
                     .mapTo(Loan.class)
                     .list());
     }
 
     @Override
-    public void register(String userId, String bookISBN, LocalDate start, LocalDate deadline) {
+    public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) {
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("INSERT INTO loans(book_isbn, user_id,"
                         + "loan_start, loan_deadline)"
                         + "VALUES (:book_isbn, :user_id, :loan_start, :loan_deadline)")
-                    .bind("book_isbn", bookISBN)
+                    .bind("book_isbn", bookIsbn)
                     .bind("user_id", userId)
                     .bind("loan_start", start)
                     .bind("loan_deadline", deadline)
@@ -56,12 +56,12 @@ public class DatabaseLoanService implements LoanService {
     }
 
 	@Override
-	public void complete(String userId, String bookISBN, LocalDate end) {
+	public void complete(String userId, String bookIsbn, LocalDate end) {
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("UPDATE loans(loan_end) SET loan_end = :loan_end"
                         + "WHERE user_id = :user_id AND book_isbn = :book_isbn")
                     .bind("user_id", userId)
-                    .bind("book_isbn", bookISBN)
+                    .bind("book_isbn", bookIsbn)
                     .bind("loan_end", end)
                     .execute());
 	}
@@ -75,8 +75,8 @@ public class DatabaseLoanService implements LoanService {
 	}
 
 	@Override
-	public boolean has(String userId, String bookISBN) {
-        return this.getByUserIDAndBookISBN(userId, bookISBN)
+	public boolean has(String userId, String bookIsbn) {
+        return this.getByUserIDAndBookIsbn(userId, bookIsbn)
             .isPresent();
 	}
 }

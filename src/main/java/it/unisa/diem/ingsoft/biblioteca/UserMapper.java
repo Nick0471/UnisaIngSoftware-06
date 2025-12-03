@@ -6,6 +6,11 @@ import java.sql.SQLException;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
+/**
+ * @brief Mapper che permette di realizzare la corrispondenza tra i dati salvati
+ *  nelle colonne del database ed un oggetto di classe User.
+ *  Necessario per utilizzare il metodo `mapTo(User.class)` nelle Query
+ */
 public class UserMapper implements RowMapper<User> {
 	@Override
 	public User map(ResultSet rs, StatementContext ctx) throws SQLException {
