@@ -75,8 +75,8 @@ public class DatabaseLoanService implements LoanService {
 	}
 
 	@Override
-	public boolean has(String user_id, String bookISBN) {
-        return this.getByUserIDAndBookISBN(user_id, bookISBN)
+	public boolean has(String userId, String bookISBN) {
+        return this.getByUserIDAndBookISBN(userId, bookISBN)
             .isPresent();
 	}
 }
