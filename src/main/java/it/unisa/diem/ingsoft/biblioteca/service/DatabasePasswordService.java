@@ -1,10 +1,10 @@
-package it.unisa.diem.ingsoft.biblioteca;
+package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.util.Optional;
 
-import it.unisa.diem.ingsoft.biblioteca.service.LogService;
-import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import org.mindrot.jbcrypt.BCrypt;
+
+import it.unisa.diem.ingsoft.biblioteca.Database;
 
 public class DatabasePasswordService implements PasswordService {
     private final LogService logService;
@@ -20,7 +20,7 @@ public class DatabasePasswordService implements PasswordService {
         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         this.database.getJdbi()
-            .useHandle(handle -> handle.createUpdate("UPDATE auth(password_hash)"
+            .useHandle(handle -> handle.createUpdate("UPDATE auth"
                         + "SET password_hash = :password_hash")
                     .bind("password_hash", hash)
                     .execute());

@@ -1,11 +1,12 @@
-package it.unisa.diem.ingsoft.biblioteca;
-
-import it.unisa.diem.ingsoft.biblioteca.model.Loan;
-import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
+import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 
 public class DatabaseLoanService implements LoanService {
     private final Database database;
@@ -46,7 +47,10 @@ public class DatabaseLoanService implements LoanService {
     }
 
     @Override
-    public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) {
+    public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) throws LoanAlreadyRegisteredException {
+        if (this.has(userId, bookIsbn))
+            throw new LoanAlreadyRegisteredException();
+
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("INSERT INTO loans(book_isbn, user_id,"
                         + "loan_start, loan_deadline)"
@@ -61,7 +65,7 @@ public class DatabaseLoanService implements LoanService {
 	@Override
 	public void complete(String userId, String bookIsbn, LocalDate end) {
         this.database.getJdbi()
-            .useHandle(handle -> handle.createUpdate("UPDATE loans(loan_end) SET loan_end = :loan_end"
+            .useHandle(handle -> handle.createUpdate("UPDATE loans SET loan_end = :loan_end"
                         + "WHERE user_id = :user_id AND book_isbn = :book_isbn")
                     .bind("user_id", userId)
                     .bind("book_isbn", bookIsbn)
@@ -69,7 +73,6 @@ public class DatabaseLoanService implements LoanService {
                     .execute());
 	}
 
-	@Override
 	@Override
 	public List<Loan> getAll() {
         return this.database.getJdbi()

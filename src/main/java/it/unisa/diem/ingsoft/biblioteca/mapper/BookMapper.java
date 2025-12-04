@@ -1,15 +1,16 @@
-package it.unisa.diem.ingsoft.biblioteca;
+package it.unisa.diem.ingsoft.biblioteca.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
+
 public class BookMapper implements RowMapper<Book> {
     /**
-     * @brief Esegue la mappatura di una singola riga del ResultSet su un oggetto Book.
+     * @brief Esegue la mappatura di una singola riga del ResultSet su un oggetto Book
      */
     @Override
     public Book map(ResultSet rs, StatementContext ctx) throws SQLException {

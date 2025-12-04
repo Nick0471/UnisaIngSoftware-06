@@ -1,9 +1,10 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.DatabaseBookService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,12 +12,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class BookSceneController extends GuiController implements Initializable{
+public class BookSceneController extends GuiController implements Initializable {
+
     @FXML private ComboBox<String> searchType;
     @FXML private TextField searchField;
 
@@ -62,7 +65,6 @@ public class BookSceneController extends GuiController implements Initializable{
         });
 
         this.updateTable();
-
     }
 
     private void updateTable() {
@@ -112,8 +114,7 @@ public class BookSceneController extends GuiController implements Initializable{
     }
 
     @FXML
-    private void handleDeleteBook(){
-
+    private void handleDeleteBook() {
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
 
         if (selectedBook == null) {
@@ -131,7 +132,7 @@ public class BookSceneController extends GuiController implements Initializable{
     }
 
     @FXML
-    private void handleModifyBook(){
+    private void handleModifyBook() {
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
 
         if (selectedBook == null) {
@@ -141,7 +142,6 @@ public class BookSceneController extends GuiController implements Initializable{
 
         this.bookService.updateByIsbn(selectedBook);
         this.updateTable();
-
     }
 
     @FXML
