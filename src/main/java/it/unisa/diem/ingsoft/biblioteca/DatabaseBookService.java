@@ -84,4 +84,42 @@ public class DatabaseBookService implements BookService {
                         .bind("isbn", isbn)
                         .execute()) > 0;
     }
+
+    @Override
+    public void add(Book book){
+        this.database.getJdbi()
+                .withHandle(handle -> handle.createUpdate(
+                                "INSERT INTO books (ISBN, title, author, genre, releaseYear) " +
+                                        "VALUES (:isbn, :title, :author, :genre, :releaseYear)"
+                        )
+                        .bind("isbn", book.getIsbn())
+                        .bind("title", book.getTitle())
+                        .bind("author", book.getAuthor())
+                        .bind("genre", book.getGenre())
+                        .bind("releaseYear", book.getReleaseYear())
+                        .execute());
+    }
+
+
+    @Override
+    public void addAll(List<Book> books) {
+        this.database.getJdbi()
+                .useHandle(handle -> {
+                    String sql = "INSERT INTO books (ISBN, title, author, genre, releaseYear) " +
+                            "VALUES (:isbn, :title, :author, :genre, :releaseYear)";
+
+                    var batch = handle.prepareBatch(sql);
+
+                    for (Book book : books) {
+                        batch.bind("isbn", book.getIsbn())
+                                .bind("title", book.getTitle())
+                                .bind("author", book.getAuthor())
+                                .bind("genre", book.getGenre())
+                                .bind("releaseYear", book.getReleaseYear())
+                                .add();
+                    }
+
+                    batch.execute();
+                });
+    }
 }
