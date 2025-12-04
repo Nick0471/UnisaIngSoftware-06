@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.exception.BookAlreadyExistsException;
+import it.unisa.diem.ingsoft.biblioteca.exception.BookNotFoundException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 public class DatabaseBookService implements BookService {
@@ -73,11 +74,17 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public boolean removeByIsbn(String isbn){
-        return this.database.getJdbi()
+    public boolean removeByIsbn(String isbn) throws BookNotFoundException {
+        int rowsAffected = this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE isbn = :isbn")
                         .bind("isbn", isbn)
-                        .execute()) > 0;
+                        .execute());
+
+        if (rowsAffected == 0) {
+            throw new BookNotFoundException(isbn);
+        }
+
+        return rowsAffected > 0;
     }
 
     @Override

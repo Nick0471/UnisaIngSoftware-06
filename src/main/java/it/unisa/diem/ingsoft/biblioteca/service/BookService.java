@@ -1,6 +1,7 @@
 package it.unisa.diem.ingsoft.biblioteca.service;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.BookAlreadyExistsException;
+import it.unisa.diem.ingsoft.biblioteca.exception.BookNotFoundException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 import java.util.List;
@@ -61,7 +62,7 @@ public interface BookService {
      * in modo permanente il record corrispondente all'isbn.
      * @param isbn Il codice isbn (Stringa) del libro da rimuovere.
      */
-    boolean removeByIsbn(String isbn);
+    boolean removeByIsbn(String isbn) throws BookNotFoundException;
 
     /**
      * @brief Aggiunge un libro al catalogo
