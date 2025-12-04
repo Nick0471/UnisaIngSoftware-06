@@ -38,51 +38,43 @@ public class DatabaseBookService implements BookService {
 
     @Override
     public List<Book> getByAuthor(String author){
-        List<Book> listByAuthors = new ArrayList<>();
-        for(Book book : this.getAll()){
-            if(book.getAuthor().equals(author)){
-                listByAuthors.add(book);
-            }
-        }
-
-        return listByAuthors;
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
+                                + " WHERE (author = :author)")
+                        .bind("author", author)
+                        .mapTo(Book.class)
+                        .list());
     }
 
     @Override
     public List<Book> getByGenre(String genre){
-        List<Book> listByGenre = new ArrayList<>();
-        for(Book book : this.getAll()){
-            if(book.getGenre().equals(genre)){
-                listByGenre.add(book);
-            }
-        }
-
-        return listByGenre;
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
+                                + " WHERE (genre = :genre)")
+                        .bind("genre", genre)
+                        .mapTo(Book.class)
+                        .list());
     }
 
 
     @Override
     public List<Book> getByReleaseYear(int releaseYear){
-        List<Book> listByReleaseYear = new ArrayList<>();
-        for(Book book : this.getAll()){
-            if(book.getReleaseYear() == releaseYear){
-                listByReleaseYear.add(book);
-            }
-        }
-
-        return listByReleaseYear;
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
+                                + " WHERE (releaseYear = :releaseYear)")
+                        .bind("releaseYear", releaseYear)
+                        .mapTo(Book.class)
+                        .list());
     }
 
     @Override
     public List<Book> getByTitle(String title){
-        List<Book> listByTitle = new ArrayList<>();
-        for(Book book : this.getAll()){
-            if(book.getTitle().equals(title)){
-                listByTitle.add(book);
-            }
-        }
-
-        return listByTitle;
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
+                                + " WHERE (title = :title)")
+                        .bind("title", title)
+                        .mapTo(Book.class)
+                        .list());
     }
 
     @Override
