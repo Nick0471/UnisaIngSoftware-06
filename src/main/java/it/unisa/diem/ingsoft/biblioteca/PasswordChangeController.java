@@ -20,7 +20,7 @@ import javafx.scene.layout.StackPane;
 
 
 
-public class PasswordChangeController {
+public class PasswordChangeController extends BaseController{
     
     @FXML
     private Button btnUpdate;
@@ -59,43 +59,6 @@ public class PasswordChangeController {
             }
     }
 
-    private void popUpErrore(String message) {
-
-        //Creo un nuovo Stage
-        Stage confirmationStage = new Stage();
-        confirmationStage.setTitle("POP-UP");
-
-        Label mess = new Label(message);
-
-        StackPane stackPane = new StackPane();
-
-        stackPane.getChildren().add(mess);
-
-        //Creo la nuova scesa dove metto la stackPane
-        Scene scene = new Scene(stackPane, 250, 100);
-        confirmationStage.setScene(scene);
-        confirmationStage.show();
-    }
-
-    
-    private void changeScene(ActionEvent event, String scene) {
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            Scene new_scene = new Scene(root);
-            stage.setScene(new_scene);
-            stage.show();
-
-        } catch (IOException e) {
-            System.err.println("ERRORE: Impossibile caricare il file '" + scene + "'");
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            System.err.println("ERRORE: Il file '" + scene + "' non è stato trovato nel percorso specificato.");
-        }
-    }
 
 
 }
