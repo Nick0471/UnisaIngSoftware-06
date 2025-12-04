@@ -61,7 +61,7 @@ public class Database {
             + ");";
 
         String passwordSql = "CREATE TABLE IF NOT EXISTS auth ("
-            + "password_hash TEXT NOT NULL PRIMARY KEY,"
+            + "password_hash TEXT NOT NULL PRIMARY KEY"
             + ");";
 
         this.jdbi.useHandle(handle -> {

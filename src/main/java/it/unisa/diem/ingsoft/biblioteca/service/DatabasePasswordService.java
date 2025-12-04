@@ -20,7 +20,7 @@ public class DatabasePasswordService implements PasswordService {
         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         this.database.getJdbi()
-            .useHandle(handle -> handle.createUpdate("UPDATE auth(password_hash)"
+            .useHandle(handle -> handle.createUpdate("UPDATE auth"
                         + "SET password_hash = :password_hash")
                     .bind("password_hash", hash)
                     .execute());

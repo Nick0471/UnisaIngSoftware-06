@@ -65,7 +65,7 @@ public class DatabaseLoanService implements LoanService {
 	@Override
 	public void complete(String userId, String bookIsbn, LocalDate end) {
         this.database.getJdbi()
-            .useHandle(handle -> handle.createUpdate("UPDATE loans(loan_end) SET loan_end = :loan_end"
+            .useHandle(handle -> handle.createUpdate("UPDATE loans SET loan_end = :loan_end"
                         + "WHERE user_id = :user_id AND book_isbn = :book_isbn")
                     .bind("user_id", userId)
                     .bind("book_isbn", bookIsbn)

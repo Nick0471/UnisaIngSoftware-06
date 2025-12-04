@@ -74,7 +74,7 @@ public class DatabaseUserService implements UserService {
         String surname = user.getSurname();
 
         this.database.getJdbi()
-            .withHandle(handle -> handle.createUpdate("UPDATE users(email, name, surname)"
+            .withHandle(handle -> handle.createUpdate("UPDATE users"
                         + "SET email = :email, name = :name, surname = :surname"
                         + "WHERE id = :id")
                     .bind("id", id)
