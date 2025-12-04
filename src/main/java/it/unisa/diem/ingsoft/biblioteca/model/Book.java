@@ -22,6 +22,10 @@ public class Book {
         this.description = description;
     }
 
+    public Book() {
+
+    }
+
     public String getIsbn() {
         return this.isbn;
     }
