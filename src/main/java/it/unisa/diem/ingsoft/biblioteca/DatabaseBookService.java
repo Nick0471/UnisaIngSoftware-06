@@ -27,10 +27,12 @@ public class DatabaseBookService implements BookService {
 
     @Override
     public Optional<Book> getByIsbn(String isbn){
-        return this.getAll()
-                .stream()
-                .filter(book -> book.getIsbn().equals(isbn))
-                .findFirst();
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
+                                + "WHERE ISBN = :ISBN")
+                        .bind("ISBN", isbn)
+                        .mapTo(Book.class)
+                        .findFirst());
     }
 
 
