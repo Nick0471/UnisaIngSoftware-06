@@ -70,6 +70,7 @@ public class DatabaseLoanService implements LoanService {
 	}
 
 	@Override
+	@Override
 	public List<Loan> getAll() {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM loans")
