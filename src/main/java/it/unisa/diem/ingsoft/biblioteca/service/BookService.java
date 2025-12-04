@@ -83,5 +83,5 @@ public interface BookService {
      * @invariant L'ISBN del libro è un invariante. Se è necessario modificarlo
      *  bisogna eliminare e reinserire il libro
      */
-    void updateByIsbn(Book book);
+    void updateByIsbn(Book book) throws BookNotFoundException;
 }

@@ -129,7 +129,7 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public void updateByIsbn(Book book){
+    public void updateByIsbn(Book book) throws BookNotFoundException{
         String isbn = book.getIsbn();
         String title = book.getTitle();
         String author = book.getAuthor();
@@ -139,7 +139,7 @@ public class DatabaseBookService implements BookService {
         int remainingCopies = book.getRemainingCopies();
         String description = book.getDescription();
 
-        this.database.getJdbi()
+        int rowAffected = this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate("UPDATE books SET "
                                 + "title = :title, "
                                 + "author = :author, "
@@ -158,5 +158,8 @@ public class DatabaseBookService implements BookService {
                         .bind("remainingCopies", remainingCopies)
                         .bind("description", description)
                         .execute());
+
+        if (rowAffected == 0)
+            throw new BookNotFoundException(isbn);
     }
 }
