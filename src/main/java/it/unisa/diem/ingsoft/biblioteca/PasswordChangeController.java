@@ -16,8 +16,9 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import java.io.IOException;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.StackPane;
 
-import it.unisa.diem.ingsoft.biblioteca.PasswordService;
+
 
 public class PasswordChangeController {
     
@@ -38,9 +39,44 @@ public class PasswordChangeController {
                
     @FXML
     void handleGoToViewHomepage(ActionEvent event) {
-        changeScene(event, "homepage.fxml");
+            //Password inserita dall'utente
+            String pass = currentPassword.getText();
+
+            //Riferimento al database per poter usare le funzioni
+            DatabasePasswordService database = new DatabasePasswordService(databaseInstance, logServiceInstance);
+
+
+            if (!database.check(pass)) {
+                popUpErrore("Errore di Autenticazione: La password inserita non è corretta.");
+                return; // Interrompe l'operazione
+            }
+
+
+            //Cambio password solo se rispetta il requisito di minimo 6 caratteri
+            if(newPassword.getText().length() == 6){
+                database.change(newPassword.getText());
+                changeScene(event, "homepage.fxml");
+            }
     }
-    
+
+    private void popUpErrore(String message) {
+
+        //Creo un nuovo Stage
+        Stage confirmationStage = new Stage();
+        confirmationStage.setTitle("POP-UP");
+
+        Label mess = new Label(message);
+
+        StackPane stackPane = new StackPane();
+
+        stackPane.getChildren().add(mess);
+
+        //Creo la nuova scesa dove metto la stackPane
+        Scene scene = new Scene(stackPane, 250, 100);
+        confirmationStage.setScene(scene);
+        confirmationStage.show();
+    }
+
     
     private void changeScene(ActionEvent event, String scene) {
         try{
@@ -61,22 +97,5 @@ public class PasswordChangeController {
         }
     }
 
-    private PasswordService passwordService;
 
-
-    public PasswordChangeController() {
-        // Qui devi inizializzare la classe CONCRETA che implementa il servizio.
-        // Esempio: se hai una classe "PasswordServiceImpl", scriverai:
-        this.passwordService = new DatabasePasswordService();
-    }
-
-    public void comparison(){
-        if(check(currentPassword.getText());
-    }
-
-
-
-    
-    
-    
 }
