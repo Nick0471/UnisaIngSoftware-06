@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.exception.BookAlreadyExistsException;
-import it.unisa.diem.ingsoft.biblioteca.exception.BookNotFoundException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 public class DatabaseBookService implements BookService {
@@ -74,23 +74,23 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public boolean removeByIsbn(String isbn) throws BookNotFoundException {
+    public boolean removeByIsbn(String isbn) throws UnknownBookByIsbnException {
         int rowsAffected = this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE isbn = :isbn")
                         .bind("isbn", isbn)
                         .execute());
 
         if (rowsAffected == 0) {
-            throw new BookNotFoundException(isbn);
+            throw new UnknownBookByIsbnException(isbn);
         }
 
         return rowsAffected > 0;
     }
 
     @Override
-    public void add(Book book) throws BookAlreadyExistsException {
+    public void add(Book book) throws DuplicateBookByIsbnException {
         if (this.getByIsbn(book.getIsbn()).isPresent()) {
-            throw new BookAlreadyExistsException(book.getIsbn());
+            throw new DuplicateBookByIsbnException(book.getIsbn());
         }
 
         this.database.getJdbi()
@@ -129,7 +129,7 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public void updateByIsbn(Book book) throws BookNotFoundException{
+    public void updateByIsbn(Book book) throws UnknownBookByIsbnException{
         String isbn = book.getIsbn();
         String title = book.getTitle();
         String author = book.getAuthor();
@@ -160,6 +160,6 @@ public class DatabaseBookService implements BookService {
                         .execute());
 
         if (rowAffected == 0)
-            throw new BookNotFoundException(isbn);
+            throw new UnknownBookByIsbnException(isbn);
     }
 }
