@@ -11,7 +11,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+
+
+//Classe di servizio per i metodi utilizzati nei controller delle view
+
 public abstract class BaseController {
+
 
     protected void changeScene(ActionEvent event, String scene) {
         try {
