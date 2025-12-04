@@ -91,16 +91,16 @@
                </padding>
             </HBox>
 
-            <TableView fx:id="BookCatalog" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+            <TableView fx:id="bookCatalog" stylesheets="@style.css" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="ColumnTitle" minWidth="150.0" prefWidth="150.0" text="Titolo" />
-                <TableColumn fx:id="ColumnAuthor" minWidth="100.0" prefWidth="100.0" text="Autore" />
-                <TableColumn fx:id="ColumnGenre" minWidth="80.0" prefWidth="80.0" text="Genere" />
-                <TableColumn fx:id="ColumnYear" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: CENTER;" text="Anno" />
-                <TableColumn fx:id="ColumnISBN" minWidth="100.0" prefWidth="100.0" text="ISBN" />
-                <TableColumn fx:id="ColumnTotalCopies" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" style="-fx-alignment: CENTER;" text="Copie Tot" />
-                <TableColumn fx:id="ColumnCopies" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" style="-fx-alignment: CENTER;" text="Disponibili" />
-                <TableColumn fx:id="ColumnDescription" minWidth="150.0" prefWidth="200.0" text="Descrizione" />
+                <TableColumn fx:id="columnTitle" minWidth="150.0" prefWidth="150.0" text="Titolo" />
+                <TableColumn fx:id="columnAuthor" minWidth="100.0" prefWidth="100.0" text="Autore" />
+                <TableColumn fx:id="columnGenre" minWidth="80.0" prefWidth="80.0" text="Genere" />
+                <TableColumn fx:id="columnYear" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: CENTER;" text="Anno" />
+                <TableColumn fx:id="columnISBN" minWidth="100.0" prefWidth="100.0" text="ISBN" />
+                <TableColumn fx:id="columnTotalCopies" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" style="-fx-alignment: CENTER;" text="Copie Tot" />
+                <TableColumn fx:id="columnCopies" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" style="-fx-alignment: CENTER;" text="Disponibili" />
+                <TableColumn fx:id="columnDescription" minWidth="150.0" prefWidth="200.0" text="Descrizione" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -134,7 +134,7 @@
                   
                   <Button fx:id="btnModify" mnemonicParsing="false" onAction="#handleModifyBook" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);" text="Modifica" />
                   
-                  <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleRemoveBook" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);" text="Rimuovi" />
+                  <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleDeleteBook" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);" text="Rimuovi" />
                </children>
             </HBox>
          </children>
