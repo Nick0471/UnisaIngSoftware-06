@@ -62,6 +62,8 @@ public class PasswordChangeController {
     }
 
     private PasswordService passwordService;
+
+
     public PasswordChangeController() {
         // Qui devi inizializzare la classe CONCRETA che implementa il servizio.
         // Esempio: se hai una classe "PasswordServiceImpl", scriverai:
