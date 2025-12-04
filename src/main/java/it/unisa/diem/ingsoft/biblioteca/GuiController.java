@@ -1,7 +1,5 @@
 package it.unisa.diem.ingsoft.biblioteca;
-package it.unisa.diem.ingsoft.biblioteca;
 
-import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,16 +9,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 
-
-//Classe di servizio per i metodi utilizzati nei controller delle view
-
-public abstract class BaseController {
-
+public abstract class GuiController {
 
     protected void changeScene(ActionEvent event, String scene) {
-        try {
-
+        try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
             Parent root = loader.load();
 
@@ -35,10 +29,8 @@ public abstract class BaseController {
             e.printStackTrace();
         } catch (NullPointerException e) {
             System.err.println("ERRORE: Il file '" + scene + "' non è stato trovato nel percorso specificato.");
-            e.printStackTrace();
         }
     }
-
 
     protected void popUpErrore(String message) {
         // Creo un nuovo Stage

@@ -20,7 +20,7 @@ import javafx.scene.layout.StackPane;
 
 
 
-public class PasswordChangeController extends BaseController{
+public class PasswordChangeController extends GuiController{
     
     @FXML
     private Button btnUpdate;

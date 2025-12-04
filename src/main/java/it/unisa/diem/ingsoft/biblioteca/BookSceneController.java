@@ -3,7 +3,7 @@ package it.unisa.diem.ingsoft.biblioteca;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class BookSceneController extends GUIController{
+public class BookSceneController extends GuiController {
     @FXML private ComboBox<String> searchType;
     @FXML private TextField searchField;
 

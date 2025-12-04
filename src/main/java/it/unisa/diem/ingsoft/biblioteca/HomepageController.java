@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 
-public class HomepageController extends GUIController {
+public class HomepageController extends GuiController {
     @FXML private Button btnProfile;
     @FXML private Button btnBook;
     @FXML private Button btnUser;
