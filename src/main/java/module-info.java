@@ -11,4 +11,6 @@ module it.unisa.diem.ingsoft.biblioteca {
 
     opens it.unisa.diem.ingsoft.biblioteca to javafx.fxml;
     exports it.unisa.diem.ingsoft.biblioteca;
+    exports it.unisa.diem.ingsoft.biblioteca.Controller;
+    opens it.unisa.diem.ingsoft.biblioteca.Controller to javafx.fxml;
 }
