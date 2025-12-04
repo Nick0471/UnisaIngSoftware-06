@@ -4,7 +4,6 @@ import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,12 +11,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * @brief Controller per la gestione della view del catalogo dei libri.
+ *
+ * Gestisce la visualizzazione dei libri e implementa un filtro di ricerca,
+ * inoltre rende possibile aggiungere, modificare o rimuovere libri dalla libreria.
+ *
+ */
 public class BookSceneController extends GuiController implements Initializable {
 
     @FXML private ComboBox<String> searchType;
@@ -41,10 +46,24 @@ public class BookSceneController extends GuiController implements Initializable 
     private BookService bookService;
     private ObservableList<Book> books;
 
+    /**
+     * @brief Costruttore del controller.
+     * Inizializza il servizio per la gestione dei libri collegandosi al database.
+     *
+     * @param db Database da utilizzare.
+     */
     public BookSceneController(Database db){
         this.bookService = new DatabaseBookService(db);
     }
 
+    /**
+     * @brief Inizializza il controller.
+     * Configura le colonne della tabella, imposta i tipi di ricerca disponibili
+     * e carica i dati iniziali.
+     *
+     * @param location La location utilizzata per risolvere i percorsi relativi all'oggetto root, o null se non nota.
+     * @param resources Le risorse utilizzate per localizzare l'oggetto root, o null se non localizzato.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -67,12 +86,20 @@ public class BookSceneController extends GuiController implements Initializable 
         this.updateTable();
     }
 
+    /**
+     * @brief Aggiorna la TableView recuperando tutti i libri del catalogo.
+     */
     private void updateTable() {
         List<Book> list = this.bookService.getAll();
         this.books = FXCollections.observableArrayList(list);
         this.bookCatalog.setItems(this.books);
     }
 
+    /**
+     * @brief Filtra i libri nella tabella in base alla query e al tipo di ricerca selezionato.
+     *
+     * @param query La stringa di ricerca inserita dall'utente.
+     */
     @FXML
     private void filterBooks(String query) {
         if (query == null || query.isEmpty()) {
@@ -113,6 +140,12 @@ public class BookSceneController extends GuiController implements Initializable 
         this.bookCatalog.setItems(this.books);
     }
 
+    /**
+     * @brief Rimuove il libro selezionato dal catalogo.
+     *
+     * Verifica che un libro sia selezionato, chiama il metodo di rimozione
+     * e aggiorna il catalogo.
+     */
     @FXML
     private void handleDeleteBook() {
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
@@ -131,6 +164,14 @@ public class BookSceneController extends GuiController implements Initializable 
         }
     }
 
+    /**
+     * @brief Modifica il libro selezionato.
+     *
+     * Verifica che un libro sia selezionato, chiama il metodo di modifica
+     * e aggiorna il catalogo.
+     *
+     * @note Non è possibile modificare il codice ISBN del libro selezionato
+     */
     @FXML
     private void handleModifyBook() {
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
@@ -144,11 +185,19 @@ public class BookSceneController extends GuiController implements Initializable 
         this.updateTable();
     }
 
+    /**
+     * @brief Torna alla scena Homepage.
+     * @param event L'evento generato dal click del pulsante.
+     */
     @FXML
     private void handleBackToHome(ActionEvent event) {
         super.changeScene(event, "view/HomepageScene.fxml");
     }
 
+    /**
+     * @brief Mostra la scena per l'aggiunta di un nuovo libro nel catalogo.
+     * @param event L'evento generato dal click del pulsante.
+     */
     @FXML
     private void handleAddBook(ActionEvent event) {
         super.changeScene(event, "view/AddBookScene.fxml");

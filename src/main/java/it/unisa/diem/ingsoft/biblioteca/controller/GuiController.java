@@ -8,11 +8,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
+/**
+ * @brief Classe astratta base per fornire metodi ai controller dell'interfaccia grafica.
+ *
+ * Fornisce la possibilità di poter cambiare scena e
+ * di visualizzare messaggi pop-up di errore
+ *
+ */
 public abstract class GuiController {
-
+    /**
+     * @brief Cambia la visualizzazione della scena corrente caricando un nuovo file FXML.
+     *
+     * @param event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
+     * @param scene Il percorso della nuova scena da caricare salvata tramite file .fxml.
+     */
     protected void changeScene(ActionEvent event, String scene) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
@@ -32,6 +43,11 @@ public abstract class GuiController {
         }
     }
 
+    /**
+     * @brief Mostra una finestra di pop-up con un messaggio di errore.
+     *
+     * @param message Il messaggio di testo da visualizzare nel pop-up.
+     */
     protected void popUpError(String message) {
         // Creo un nuovo Stage
         Stage confirmationStage = new Stage();
