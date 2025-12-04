@@ -7,9 +7,7 @@ import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
 /**
- * @brief Mapper che permette di realizzare la corrispondenza tra i dati salvati
- *  nelle colonne del database ed un oggetto di classe User.
- *  Necessario per utilizzare il metodo `mapTo(User.class)` nelle Query
+ * @brief Esegue la mappatura di una singola riga del ResultSet su un oggetto User.
  */
 public class UserMapper implements RowMapper<User> {
 	@Override
