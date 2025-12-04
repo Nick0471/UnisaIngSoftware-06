@@ -6,9 +6,16 @@ import it.unisa.diem.ingsoft.biblioteca.mapper.BookMapper;
 import it.unisa.diem.ingsoft.biblioteca.mapper.LoanMapper;
 import it.unisa.diem.ingsoft.biblioteca.mapper.UserMapper;
 
+/**
+ * @brief Classe di incapsulamento del database con JDBI
+ */
 public class Database {
     private final Jdbi jdbi;
 
+    /**
+     * @brief Costruttore che inizializza la connessione verso un database
+     * @param connectionUrl URL del database per la connessione
+     */
     public Database(String connectionUrl) {
         this.jdbi = Jdbi.create(connectionUrl, "", "");
         this.jdbi.registerRowMapper(new UserMapper());
@@ -18,6 +25,9 @@ public class Database {
         this.setupTables();
     }
 
+    /**
+     * @brief Getter per l'istanza di JDBI connessa al database
+     */
     public Jdbi getJdbi() {
         return this.jdbi;
     }
