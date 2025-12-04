@@ -1,5 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca.service;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.BookAlreadyExistsException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 import java.util.List;
@@ -66,7 +67,7 @@ public interface BookService {
      * @brief Aggiunge un libro al catalogo
      * @param book Il libro da aggiungere
      */
-    void add(Book book);
+    void add(Book book) throws BookAlreadyExistsException;
 
     /**
      * @brief Aggiunge una lista di libri al catalogo

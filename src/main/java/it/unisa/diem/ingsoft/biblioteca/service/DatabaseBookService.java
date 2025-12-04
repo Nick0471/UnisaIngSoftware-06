@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.exception.BookAlreadyExistsException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 public class DatabaseBookService implements BookService {
@@ -80,7 +81,11 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public void add(Book book){
+    public void add(Book book) throws BookAlreadyExistsException {
+        if (this.getByIsbn(book.getIsbn()).isPresent()) {
+            throw new BookAlreadyExistsException(book.getIsbn());
+        }
+
         this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate(
                                 "INSERT INTO books (ISBN, title, author, genre, releaseYear) " +
