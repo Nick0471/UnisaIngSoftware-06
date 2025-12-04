@@ -10,6 +10,9 @@ public class DatabasePasswordService implements PasswordService {
     private final LogService logService;
     private final Database database;
 
+    /**
+     * @brief Costruisce un oggetto che implementa il PasswordService usando un database
+     */
     public DatabasePasswordService(Database database, LogService logService) {
         this.database = database;
         this.logService = logService;

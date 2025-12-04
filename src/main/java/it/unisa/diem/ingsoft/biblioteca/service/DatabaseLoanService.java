@@ -11,6 +11,9 @@ import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 public class DatabaseLoanService implements LoanService {
     private final Database database;
 
+    /**
+     * @brief Costruisce un oggetto che implementa il LoanService usando un database
+     */
     public DatabaseLoanService(Database database) {
         this.database = database;
     }

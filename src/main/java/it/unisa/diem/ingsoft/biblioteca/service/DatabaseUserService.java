@@ -12,6 +12,9 @@ import it.unisa.diem.ingsoft.biblioteca.model.User;
 public class DatabaseUserService implements UserService {
     private final Database database;
 
+    /**
+     * @brief Costruisce un oggetto che implementa lo UserService usando un database
+     */
     public DatabaseUserService(Database database) {
         this.database = database;
     }
