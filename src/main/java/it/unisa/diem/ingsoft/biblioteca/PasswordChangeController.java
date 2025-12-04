@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 
+import it.unisa.diem.ingsoft.biblioteca.PasswordService;
 
 public class PasswordChangeController {
     
@@ -58,6 +59,17 @@ public class PasswordChangeController {
         } catch (NullPointerException e) {
             System.err.println("ERRORE: Il file '" + scene + "' non è stato trovato nel percorso specificato.");
         }
+    }
+
+    private PasswordService passwordService;
+    public PasswordChangeController() {
+        // Qui devi inizializzare la classe CONCRETA che implementa il servizio.
+        // Esempio: se hai una classe "PasswordServiceImpl", scriverai:
+        this.passwordService = new DatabasePasswordService();
+    }
+
+    public void comparison(){
+        if(check(currentPassword.getText());
     }
 
 
