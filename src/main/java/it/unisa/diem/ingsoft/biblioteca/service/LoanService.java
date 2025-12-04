@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownLoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 
 /**
@@ -46,14 +48,14 @@ public interface LoanService {
      * @param start La data di inizio del prestito
      * @param deadline La data di restituzione
      */
-	void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline);
+	void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) throws LoanAlreadyRegisteredException;
 
     /**
      * @brief Registra la restituzione di un libro da parte di un utente
      * @param userId La matricola dell'utente che ha restituito il libro
      * @param bookIsbn L'ISBN del libro restituito
      */
-    void complete(String userId, String bookIsbn, LocalDate end);
+    void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException;
 
     /**
      * @brief Verifica se un utente ha preso in prestito un libro

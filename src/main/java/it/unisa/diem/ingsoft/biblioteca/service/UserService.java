@@ -3,7 +3,9 @@ package it.unisa.diem.ingsoft.biblioteca.service;
 import java.util.List;
 import java.util.Optional;
 
-import it.unisa.diem.ingsoft.biblioteca.UserException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
 /**
@@ -21,13 +23,13 @@ public interface UserService {
      * @param id La matricola dell'utente
      * @return Un Optional contenente l'utente registrato, Optional.empty() altrimenti
      */
-    Optional<User> getById(String id) throws UserException;
+    Optional<User> getById(String id);
 
     /**
      * @brief Registra un nuovo utente
      * @param user L'utente da registrare
      */
-	void register(User user) throws UserException;
+	void register(User user) throws DuplicateUserByIdException, DuplicateUserByEmailException;
 
     /**
      * @brief Rimuove un utente in base alla sua matricola
@@ -43,7 +45,7 @@ public interface UserService {
      * @invariant La matricola dell'utente è un invariante. Se è necessario modificarla
      *  bisogna eliminare e reinserire l'utente
      */
-    void updateById(User user) throws UserException;
+    void updateById(User user) throws UnknownUserByIdException;
 
     /**
      * @brief Controlla se un utente con una matricola è già stato registrato

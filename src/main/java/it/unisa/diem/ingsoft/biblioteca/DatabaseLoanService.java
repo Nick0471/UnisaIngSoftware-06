@@ -1,11 +1,12 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
-import it.unisa.diem.ingsoft.biblioteca.model.Loan;
-import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
+import it.unisa.diem.ingsoft.biblioteca.model.Loan;
+import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 
 public class DatabaseLoanService implements LoanService {
     private final Database database;
@@ -46,7 +47,10 @@ public class DatabaseLoanService implements LoanService {
     }
 
     @Override
-    public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) {
+    public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) throws LoanAlreadyRegisteredException {
+        if (this.has(userId, bookIsbn))
+            throw new LoanAlreadyRegisteredException();
+
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("INSERT INTO loans(book_isbn, user_id,"
                         + "loan_start, loan_deadline)"
@@ -69,7 +73,6 @@ public class DatabaseLoanService implements LoanService {
                     .execute());
 	}
 
-	@Override
 	@Override
 	public List<Loan> getAll() {
         return this.database.getJdbi()
