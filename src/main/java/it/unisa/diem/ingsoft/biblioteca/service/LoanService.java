@@ -46,7 +46,9 @@ public interface LoanService {
      * @param userId La matricola dell'utente che ha chiesto il prestito
      * @param bookIsbn L'ISBN del libro dato in prestito
      * @param start La data di inizio del prestito
-     * @param deadline La data di restituzione
+     * @param deadline La data di restituzione massima
+     * @throws LoanAlreadyRegisteredException Il prestito per l'utente ed il libro specificati
+     *  è già esistente
      */
 	void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) throws LoanAlreadyRegisteredException;
 
@@ -54,6 +56,8 @@ public interface LoanService {
      * @brief Registra la restituzione di un libro da parte di un utente
      * @param userId La matricola dell'utente che ha restituito il libro
      * @param bookIsbn L'ISBN del libro restituito
+     * @param end Data di restituzione del libro
+     * @throws UnknownLoanException Il prestito tra utente e libro specificati è inesistente
      */
     void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException;
 

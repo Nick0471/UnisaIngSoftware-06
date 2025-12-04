@@ -28,6 +28,8 @@ public interface UserService {
     /**
      * @brief Registra un nuovo utente
      * @param user L'utente da registrare
+     * @throws DuplicateUserByEmailException Esiste già un utente con la mail specificata
+     * @throws DuplicateUserByIdException Esiste già un utente con la matricola specificata
      */
 	void register(User user) throws DuplicateUserByIdException, DuplicateUserByEmailException;
 
@@ -44,6 +46,7 @@ public interface UserService {
      *  le nuove informazioni da salvare
      * @invariant La matricola dell'utente è un invariante. Se è necessario modificarla
      *  bisogna eliminare e reinserire l'utente
+     *  @throws UnknownUserByIdException Non esiste alcun utente con la matricola specificata
      */
     void updateById(User user) throws UnknownUserByIdException;
 

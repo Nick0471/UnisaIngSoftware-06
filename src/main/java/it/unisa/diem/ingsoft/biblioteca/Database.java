@@ -1,7 +1,12 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import org.jdbi.v3.core.Jdbi;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.DatabaseUnreachableException;
 import it.unisa.diem.ingsoft.biblioteca.mapper.BookMapper;
 import it.unisa.diem.ingsoft.biblioteca.mapper.LoanMapper;
 import it.unisa.diem.ingsoft.biblioteca.mapper.UserMapper;
@@ -13,16 +18,32 @@ public class Database {
     private final Jdbi jdbi;
 
     /**
-     * @brief Costruttore che inizializza la connessione verso un database
-     * @param connectionUrl URL del database per la connessione
+     * @brief Costruttore che inizializza JDBI per un database
+     * @param connection La connessione verso il database
      */
-    public Database(String connectionUrl) {
-        this.jdbi = Jdbi.create(connectionUrl, "", "");
+    public Database(Connection connection) {
+        this.jdbi = Jdbi.create(connection);
         this.jdbi.registerRowMapper(new UserMapper());
         this.jdbi.registerRowMapper(new LoanMapper());
         this.jdbi.registerRowMapper(new BookMapper());
 
         this.setupTables();
+    }
+
+    /**
+     * @brief Crea un oggetto di classe Database che incapsula JDBI per la connessione ad un
+     *  database
+     * @param connectionUrl L'URL che identifica la locazione del database
+     * @return Un oggetto di tipo Database con la connessione specificata
+     * @throws DatabaseUnreachableException La connessione è fallita
+     */
+    public static Database connect(String connectionUrl) throws DatabaseUnreachableException {
+        try {
+            Connection connection = DriverManager.getConnection(connectionUrl);
+            return new Database(connection);
+        } catch(SQLException e) {
+            throw new DatabaseUnreachableException(e);
+        }
     }
 
     /**
