@@ -8,6 +8,9 @@ import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 
+/**
+ * @brief Implementazione del LoanService usando un database
+ */
 public class DatabaseLoanService implements LoanService {
     private final Database database;
 
