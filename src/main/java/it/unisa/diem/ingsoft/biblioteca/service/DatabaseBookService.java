@@ -57,8 +57,8 @@ public class DatabaseBookService implements BookService {
     public List<Book> getByReleaseYear(int releaseYear){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books"
-                                + " WHERE (releaseYear = :releaseYear)")
-                        .bind("releaseYear", releaseYear)
+                                + " WHERE (release_year = :release_year)")
+                        .bind("release_year", releaseYear)
                         .mapTo(Book.class)
                         .list());
     }
@@ -102,7 +102,7 @@ public class DatabaseBookService implements BookService {
                         .bind("title", book.getTitle())
                         .bind("author", book.getAuthor())
                         .bind("genre", book.getGenre())
-                        .bind("releaseYear", book.getReleaseYear())
+                        .bind("release_year", book.getReleaseYear())
                         .execute());
     }
 
@@ -111,7 +111,7 @@ public class DatabaseBookService implements BookService {
         this.database.getJdbi()
                 .useHandle(handle -> {
                     String sql = "INSERT INTO books (ISBN, title, author, genre, releaseYear) " +
-                            "VALUES (:isbn, :title, :author, :genre, :releaseYear)";
+                            "VALUES (:isbn, :title, :author, :genre, :release_year)";
 
                     var batch = handle.prepareBatch(sql);
 
@@ -120,7 +120,7 @@ public class DatabaseBookService implements BookService {
                                 .bind("title", book.getTitle())
                                 .bind("author", book.getAuthor())
                                 .bind("genre", book.getGenre())
-                                .bind("releaseYear", book.getReleaseYear())
+                                .bind("release_year", book.getReleaseYear())
                                 .add();
                     }
 
@@ -144,7 +144,7 @@ public class DatabaseBookService implements BookService {
                                 + "title = :title, "
                                 + "author = :author, "
                                 + "genre = :genre, "
-                                + "releaseYear = :releaseYear, "
+                                + "release_year = :release_year, "
                                 + "totalCopies = :totalCopies, "
                                 + "remainingCopies = :remainingCopies, "
                                 + "description = :description "
@@ -153,7 +153,7 @@ public class DatabaseBookService implements BookService {
                         .bind("title", title)
                         .bind("author", author)
                         .bind("genre", genre)
-                        .bind("releaseYear", releaseYear)
+                        .bind("release_year", releaseYear)
                         .bind("totalCopies", totalCopies)
                         .bind("remainingCopies", remainingCopies)
                         .bind("description", description)

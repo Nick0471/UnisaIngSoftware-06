@@ -21,7 +21,7 @@ public class BookMapper implements RowMapper<Book> {
         String author = rs.getString("author");
         String genre = rs.getString("genre");
         String description = rs.getString("description");
-        int releaseYear = rs.getInt("releaseYear");
+        int releaseYear = rs.getInt("release_year");
         int totalCopies = rs.getInt("totalCopies");
         int remainingCopies = rs.getInt("remainingCopies");
 
