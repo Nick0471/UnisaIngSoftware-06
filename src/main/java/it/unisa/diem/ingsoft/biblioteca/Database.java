@@ -50,5 +50,11 @@ public class Database {
                     + "description TEXT NOT NULL"
                     + ");");
         });
+
+        this.jdbi.useHandle(handle -> {
+            handle.execute("CREATE TABLE IF NOT EXISTS auth ("
+                    + "password_hash TEXT NOT NULL PRIMARY KEY,"
+                    + ");");
+        });
     }
 }

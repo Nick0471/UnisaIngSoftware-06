@@ -6,6 +6,7 @@ module it.unisa.diem.ingsoft.biblioteca {
     requires transitive org.jdbi.v3.core;
     requires transitive org.xerial.sqlitejdbc;
 
+    requires transitive jbcrypt;
 
     opens it.unisa.diem.ingsoft.biblioteca to javafx.fxml;
     exports it.unisa.diem.ingsoft.biblioteca;
