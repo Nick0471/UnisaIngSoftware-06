@@ -1,12 +1,12 @@
-package it.unisa.diem.ingsoft.biblioteca;
+package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
-import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 
 public class DatabaseLoanService implements LoanService {
     private final Database database;

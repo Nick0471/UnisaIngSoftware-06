@@ -1,13 +1,13 @@
-package it.unisa.diem.ingsoft.biblioteca;
+package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.util.List;
 import java.util.Optional;
 
+import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
-import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 
 public class DatabaseUserService implements UserService {
     private final Database database;
