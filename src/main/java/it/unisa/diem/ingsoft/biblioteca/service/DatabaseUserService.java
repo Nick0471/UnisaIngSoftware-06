@@ -9,6 +9,9 @@ import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
+/**
+ * @brief Implementazione dello UserService usando un database
+ */
 public class DatabaseUserService implements UserService {
     private final Database database;
 
