@@ -1,6 +1,7 @@
 package it.unisa.diem.ingsoft.biblioteca.Service;
 
 import it.unisa.diem.ingsoft.biblioteca.Book;
+import it.unisa.diem.ingsoft.biblioteca.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -73,4 +74,13 @@ public interface BookService {
      * @param books La lista di libri da aggiungere
      */
     void addAll(List<Book> books);
+
+    /**
+     * @brief Aggiorna le informazioni di un libro già registrato
+     * @param book L'oggetto Book contenente l' ISBN del libro da modificare e
+     *  le nuove informazioni da salvare
+     * @invariant L'ISBN del libro è un invariante. Se è necessario modificarlo
+     *  bisogna eliminare e reinserire il libro
+     */
+    void updateByIsbn(Book book);
 }
