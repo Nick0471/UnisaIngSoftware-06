@@ -4,14 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
+import it.unisa.diem.ingsoft.biblioteca.model.Loan;
+
 /**
- * @brief Mapper che permette di realizzare la corrispondenza tra i dati salvati
- *  nelle colonne del database ed un oggetto di classe Loan.
- *  Necessario per utilizzare il metodo `mapTo(Loan.class)` nelle Query
+     * @brief Esegue la mappatura di una singola riga del ResultSet su un oggetto Loan
  */
 public class LoanMapper implements RowMapper<Loan> {
 	@Override

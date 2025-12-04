@@ -1,9 +1,10 @@
 package it.unisa.diem.ingsoft.biblioteca.service;
 
-import it.unisa.diem.ingsoft.biblioteca.model.User;
-
 import java.util.List;
 import java.util.Optional;
+
+import it.unisa.diem.ingsoft.biblioteca.UserException;
+import it.unisa.diem.ingsoft.biblioteca.model.User;
 
 /**
  * @brief Interfaccia per la gestione degli utenti
@@ -18,15 +19,15 @@ public interface UserService {
     /**
      * @brief Cerca un utente usando la sua matricola
      * @param id La matricola dell'utente
-     * @return Un Optional contenente l'utente registrato, empty altrimenti
+     * @return Un Optional contenente l'utente registrato, Optional.empty() altrimenti
      */
-    Optional<User> getById(String id);
+    Optional<User> getById(String id) throws UserException;
 
     /**
      * @brief Registra un nuovo utente
      * @param user L'utente da registrare
      */
-	void register(User user);
+	void register(User user) throws UserException;
 
     /**
      * @brief Rimuove un utente in base alla sua matricola
@@ -42,5 +43,19 @@ public interface UserService {
      * @invariant La matricola dell'utente è un invariante. Se è necessario modificarla
      *  bisogna eliminare e reinserire l'utente
      */
-    void updateById(User user);
+    void updateById(User user) throws UserException;
+
+    /**
+     * @brief Controlla se un utente con una matricola è già stato registrato
+     * @param id La matricola dell'utente da controllare
+     * @return true se l'utente esiste, false altrimenti
+     */
+    boolean existsById(String id);
+
+    /**
+     * @brief Controlla se un utente con una email è già stato registrato
+     * @param email L'email dell'utente da controllare
+     * @return true se l'utente esiste, false altrimenti
+     */
+    boolean existsByEmail(String email);
 }

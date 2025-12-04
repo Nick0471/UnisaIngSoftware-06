@@ -3,12 +3,13 @@ package it.unisa.diem.ingsoft.biblioteca;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import it.unisa.diem.ingsoft.biblioteca.model.User;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
+import it.unisa.diem.ingsoft.biblioteca.model.User;
+
 /**
- * @brief Esegue la mappatura di una singola riga del ResultSet su un oggetto User.
+ * @brief Esegue la mappatura di una singola riga del ResultSet su un oggetto User
  */
 public class UserMapper implements RowMapper<User> {
 	@Override
