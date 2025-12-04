@@ -12,13 +12,13 @@ public interface BookService {
     List<Book> getAll();
 
     /**
-     * @brief Recupera un libro tramite il suo codice ISBN.
+     * @brief Recupera un libro tramite il suo codice isbn.
      * Il metodo itera su tutti i libri ottenuti e ne cerca uno
-     * corispondente all'ISBN fornito.
-     * @param ISBN Il codice ISBN (Stringa) del libro da cercare.
+     * corispondente all'isbn fornito.
+     * @param isbn Il codice isbn (Stringa) del libro da cercare.
      * @return Un Optional<Book> che contiene il libro se trovato, altrimenti Optional.empty().
      */
-    Optional<Book> getByISBN(String ISBN);
+    Optional<Book> getByIsbn(String isbn);
 
     /**
      * @brief Recupera tutti i libri scritti da un determinato autore.
@@ -53,10 +53,22 @@ public interface BookService {
     List<Book> getByTitle(String title);
 
     /**
-     * @brief Rimuove un libro dal database basandosi sul suo codice ISBN.
+     * @brief Rimuove un libro dal database basandosi sul suo codice isbn.
      * Esegue un'istruzione SQL DELETE sul database per rimuovere
-     * in modo permanente il record corrispondente all'ISBN.
-     * @param ISBN Il codice ISBN (Stringa) del libro da rimuovere.
+     * in modo permanente il record corrispondente all'isbn.
+     * @param isbn Il codice isbn (Stringa) del libro da rimuovere.
      */
-    boolean removeByISBN(String ISBN);
+    boolean removeByIsbn(String isbn);
+
+    /**
+     * @brief Aggiunge un libro al catalogo
+     * @param book Il libro da aggiungere
+     */
+    void add(Book book);
+
+    /**
+     * @brief Aggiunge una lista di libri al catalogo
+     * @param books La lista di libri da aggiungere
+     */
+    void addAll(List<Book> books);
 }

@@ -16,6 +16,7 @@ public class DatabaseBookService implements BookService {
     }
 
 
+    @Override
     public List<Book> getAll() {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books")
@@ -24,14 +25,16 @@ public class DatabaseBookService implements BookService {
     }
 
 
-    public Optional<Book> getByISBN(String ISBN){
+    @Override
+    public Optional<Book> getByIsbn(String isbn){
         return this.getAll()
                 .stream()
-                .filter(book -> book.getISBN().equals(ISBN))
+                .filter(book -> book.getIsbn().equals(isbn))
                 .findFirst();
     }
 
 
+    @Override
     public List<Book> getByAuthor(String author){
         List<Book> listByAuthors = new ArrayList<>();
         for(Book book : this.getAll()){
@@ -43,6 +46,7 @@ public class DatabaseBookService implements BookService {
         return listByAuthors;
     }
 
+    @Override
     public List<Book> getByGenre(String genre){
         List<Book> listByGenre = new ArrayList<>();
         for(Book book : this.getAll()){
@@ -55,6 +59,7 @@ public class DatabaseBookService implements BookService {
     }
 
 
+    @Override
     public List<Book> getByReleaseYear(int releaseYear){
         List<Book> listByReleaseYear = new ArrayList<>();
         for(Book book : this.getAll()){
@@ -66,6 +71,7 @@ public class DatabaseBookService implements BookService {
         return listByReleaseYear;
     }
 
+    @Override
     public List<Book> getByTitle(String title){
         List<Book> listByTitle = new ArrayList<>();
         for(Book book : this.getAll()){
@@ -77,10 +83,11 @@ public class DatabaseBookService implements BookService {
         return listByTitle;
     }
 
-    public boolean removeByISBN(String ISBN){
+    @Override
+    public boolean removeByIsbn(String isbn){
         return this.database.getJdbi()
-                .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE ISBN = :isbn")
-                        .bind("isbn", ISBN)
+                .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE isbn = :isbn")
+                        .bind("isbn", isbn)
                         .execute()) > 0;
     }
 }

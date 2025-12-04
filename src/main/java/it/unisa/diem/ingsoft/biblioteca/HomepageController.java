@@ -35,12 +35,12 @@ public class HomepageController{
 
     @FXML
     void handleGoToViewUsers(ActionEvent event) {
-        changeScene(event, "lista_utenti.fxml");
+        changeScene(event, "UserScene.fxml");
     }
 
     @FXML
     void handleGoToViewLoans(ActionEvent event) {
-        changeScene(event, "prestiti.fxml");
+        changeScene(event, "LoanScene.fxml");
     }
 
     private void changeScene(ActionEvent event, String scene) {
