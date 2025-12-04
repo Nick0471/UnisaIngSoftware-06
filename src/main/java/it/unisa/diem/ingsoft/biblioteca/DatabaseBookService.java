@@ -123,4 +123,36 @@ public class DatabaseBookService implements BookService {
                     batch.execute();
                 });
     }
+
+    @Override
+    public void updateByIsbn(Book book){
+        String isbn = book.getIsbn();
+        String title = book.getTitle();
+        String author = book.getAuthor();
+        String genre = book.getGenre();
+        int releaseYear = book.getReleaseYear();
+        int totalCopies = book.getTotalCopies();
+        int remainingCopies = book.getRemainingCopies();
+        String description = book.getDescription();
+
+        this.database.getJdbi()
+                .withHandle(handle -> handle.createUpdate("UPDATE books SET "
+                                + "title = :title, "
+                                + "author = :author, "
+                                + "genre = :genre, "
+                                + "releaseYear = :releaseYear, "
+                                + "totalCopies = :totalCopies, "
+                                + "remainingCopies = :remainingCopies, "
+                                + "description = :description "
+                                + "WHERE ISBN = :isbn")
+                        .bind("isbn", isbn)
+                        .bind("title", title)
+                        .bind("author", author)
+                        .bind("genre", genre)
+                        .bind("releaseYear", releaseYear)
+                        .bind("totalCopies", totalCopies)
+                        .bind("remainingCopies", remainingCopies)
+                        .bind("description", description)
+                        .execute());
+    }
 }
