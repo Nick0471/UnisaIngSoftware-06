@@ -1,22 +1,17 @@
-package it.unisa.diem.ingsoft.biblioteca;
-
-import it.unisa.diem.ingsoft.biblioteca.model.Book;
-import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.util.List;
 import java.util.Optional;
 
+import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 public class DatabaseBookService implements BookService {
-
-
     private final Database database;
-
 
     public DatabaseBookService(Database database) {
         this.database = database;
     }
-
 
     @Override
     public List<Book> getAll() {
@@ -25,7 +20,6 @@ public class DatabaseBookService implements BookService {
                         .mapTo(Book.class)
                         .list());
     }
-
 
     @Override
     public Optional<Book> getByIsbn(String isbn){
@@ -36,7 +30,6 @@ public class DatabaseBookService implements BookService {
                         .mapTo(Book.class)
                         .findFirst());
     }
-
 
     @Override
     public List<Book> getByAuthor(String author){
@@ -57,7 +50,6 @@ public class DatabaseBookService implements BookService {
                         .mapTo(Book.class)
                         .list());
     }
-
 
     @Override
     public List<Book> getByReleaseYear(int releaseYear){
@@ -102,7 +94,6 @@ public class DatabaseBookService implements BookService {
                         .execute());
     }
 
-
     @Override
     public void addAll(List<Book> books) {
         this.database.getJdbi()
@@ -145,7 +136,7 @@ public class DatabaseBookService implements BookService {
                                 + "totalCopies = :totalCopies, "
                                 + "remainingCopies = :remainingCopies, "
                                 + "description = :description "
-                                + "WHERE ISBN = :isbn")
+                                + "WHERE isbn = :isbn")
                         .bind("isbn", isbn)
                         .bind("title", title)
                         .bind("author", author)

@@ -1,4 +1,4 @@
-package it.unisa.diem.ingsoft.biblioteca;
+package it.unisa.diem.ingsoft.biblioteca.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
