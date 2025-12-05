@@ -17,7 +17,7 @@ import it.unisa.diem.ingsoft.biblioteca.model.Loan;
  */
 public interface LoanService {
     /**
-     * @brief Ritorna una lista di tutti i prestiti registrati.
+     * @brief Recupera una lista di tutti i prestiti registrati.
      * @return Una lista contenente tutti i prestiti.
      */
     List<Loan> getAll();
@@ -31,14 +31,14 @@ public interface LoanService {
     Optional<Loan> getByUserIDAndBookIsbn(String userId, String bookIsbn);
 
     /**
-     * @brief Cerca i prestiti chiesti da un utente.
+     * @brief Recupera una lista di prestiti per il l'utente con matricola specificata.
      * @param userId La matricola dell'utente che ha chiesto i prestiti.
      * @return La lista dei prestiti chiesti dall'utente.
      */
     List<Loan> getByUserId(String userId);
 
     /**
-     * @brief Cerca i prestiti chiesti per un libro.
+     * @brief Recupera una lista di prestiti per il libro con l'ISBN specificato.
      * @param bookIsbn L'ISBN del libro per cui sono stati chiesti i prestiti.
      * @return La lista dei prestiti per il libro.
      */

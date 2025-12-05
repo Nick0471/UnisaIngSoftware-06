@@ -26,37 +26,40 @@ public interface BookService {
     /**
      * @brief Recupera un libro tramite il suo codice isbn.
      * @param isbn Il codice isbn del libro da cercare.
-     * @return Un Optional<Book> che contiene il libro se trovato, altrimenti Optional.empty().
+     * @return Un Optional<Book> {@link Book} che contiene il libro se trovato, altrimenti Optional.empty().
      */
     Optional<Book> getByIsbn(String isbn);
 
     /**
-     * @brief Recupera tutti i libri scritti da un determinato autore.
+     * @brief Recupera una lista di libri il cui autore contiene la stringa specificata
+     *  in qualsiasi posizione.
      * @param author Il nome dell'autore da cercare.
-     * @return Una lista di libri contenente i libri dell'autore specificato.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo criterio.
      */
-    List<Book> getAllByAuthor(String author);
+    List<Book> getAllByAuthorContaining(String author);
 
     /**
-     * @brief Recupera tutti i libri appartenenti a un determinato genere.
+     * @brief Recupera una lista di libri il cui genere contiene la stringa specificata
+     *  in qualsiasi posizione.
      * @param genre Il genere dei libri da cercare.
-     * @return Una lista di libri contenente i libri del genere specificato.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo criterio.
      */
-    List<Book> getAllByGenre(String genre);
+    List<Book> getAllByGenreContaining(String genre);
 
     /**
-     * @brief Recupera tutti i libri pubblicati in un anno specifico.
+     * @brief Recupera una lista di libri il cui anno di pubblicazione coincide con quello specificato.
      * @param releaseYear L'anno di pubblicazione da cercare.
-     * @return Una lista di libri contenente i libri pubblicati nell'anno specificato.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo criterio.
      */
     List<Book> getAllByReleaseYear(int releaseYear);
 
     /**
-     * @brief Recupera tutti i libri con un determinato titolo.
+     * @brief Recupera una lista di libri il cui titolo contiene la stringa specificata
+     *  in qualsiasi posizione.
      * @param title Il titolo dei libri da cercare.
-     * @return Una lista di libri contenente i libri con il titolo specificato.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo criterio.
      */
-    List<Book> getAllByTitle(String title);
+    List<Book> getAllByTitleContaining(String title);
 
     /**
      * @brief Rimuove un libro dal catalogo basandosi sul suo codice ISBN.

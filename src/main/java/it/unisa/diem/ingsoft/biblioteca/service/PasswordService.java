@@ -9,7 +9,7 @@ package it.unisa.diem.ingsoft.biblioteca.service;
  */
 public interface PasswordService {
     /**
-     * @brief Permette di cambiare la password di accesso.
+     * @brief Cambia la password di accesso al software.
      * @param password La nuova password.
      */
     void change(String password);

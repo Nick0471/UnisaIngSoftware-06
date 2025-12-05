@@ -17,28 +17,35 @@ import it.unisa.diem.ingsoft.biblioteca.model.User;
  */
 public interface UserService {
     /**
-     * @brief Ritorna una lista di tutti gli utenti registrati.
+     * @brief Recupera una lista di tutti gli utenti registrati.
      * @return Una lista contenente tutti gli utenti.
      */
     List<User> getAll();
 
     /**
-     * @brief Ritorna una lista di tutti gli utenti registrati con la matricola specificata.
-     * @return Una lista contenente tutti gli utenti.
+     * @brief Recupera una lista di tutti gli utenti registrati la cui matricola contiene la stringa
+     *  specificata in qualsiasi posizione.
+     * @param id La matricola da cercare.
+     * @return Una lista di {@link User} contenente tutti gli utenti che rispettano questo criterio.
      */
-    List<User> getAllById(String id);
+    List<User> getAllByIdContaining(String id);
 
     /**
-     * @brief Ritorna una lista di tutti gli utenti registrati con la email specificata.
-     * @return Una lista contenente tutti gli utenti.
+     * @brief Recupera una lista di tutti gli utenti registrati la cui email contiene la stringa
+     *  specificata in qualsiasi posizione.
+     * @param email La mail da cercare.
+     * @return Una lista di {@link User} contenente tutti gli utenti che rispettano questo criterio.
      */
-    List<User> getAllByEmail(String email);
+    List<User> getAllByEmailContaining(String email);
 
     /**
-     * @brief Ritorna una lista di tutti gli utenti registrati con il nome specificato.
-     * @return Una lista contenente tutti gli utenti.
+     * @brief Recupera una lista di tutti gli utenti registrati il cui nome e cognome contengono
+     *  la stringa specificata in qualsiasi posizione.
+     * @param name La stringa da cercare nel nome
+     * @param surname La stringa da cercare nel cognome
+     * @return Una lista di {@link User} contenente tutti gli utenti che rispettano questo criterio.
      */
-    List<User> getAllByFullName(String name, String surname);
+    List<User> getAllByFullNameContaining(String name, String surname);
 
     /**
      * @brief Cerca un utente usando la sua matricola.
@@ -68,7 +75,7 @@ public interface UserService {
      *  le nuove informazioni da salvare.
      * @invariant La matricola dell'utente è un invariante. Se è necessario modificarla
      *  bisogna eliminare e reinserire l'utente.
-     *  @throws UnknownUserByIdException Non esiste alcun utente con la matricola specificata.
+     * @throws UnknownUserByIdException Non esiste alcun utente con la matricola specificata.
      */
     void updateById(User user) throws UnknownUserByIdException;
 

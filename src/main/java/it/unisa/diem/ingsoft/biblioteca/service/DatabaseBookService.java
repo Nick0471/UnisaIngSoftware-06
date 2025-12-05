@@ -45,21 +45,21 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public List<Book> getAllByAuthor(String author){
+    public List<Book> getAllByAuthorContaining(String author){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
-                                + "WHERE (author = :author)")
-                        .bind("author", author)
+                                + "WHERE author LIKE :author")
+                        .bind("author", "%" + author + "%")
                         .mapTo(Book.class)
                         .list());
     }
 
     @Override
-    public List<Book> getAllByGenre(String genre){
+    public List<Book> getAllByGenreContaining(String genre){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
-                                + "WHERE (genre = :genre)")
-                        .bind("genre", genre)
+                                + "WHERE genre LIKE :genre")
+                        .bind("genre", "%" + genre + "%")
                         .mapTo(Book.class)
                         .list());
     }
@@ -68,18 +68,18 @@ public class DatabaseBookService implements BookService {
     public List<Book> getAllByReleaseYear(int releaseYear){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
-                                + "WHERE (release_year = :release_year)")
+                                + "WHERE release_year = :release_year")
                         .bind("release_year", releaseYear)
                         .mapTo(Book.class)
                         .list());
     }
 
     @Override
-    public List<Book> getAllByTitle(String title){
+    public List<Book> getAllByTitleContaining(String title){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
-                                + "WHERE (title = :title)")
-                        .bind("title", title)
+                                + "WHERE title LIKE :title")
+                        .bind("title", "%" + title + "%")
                         .mapTo(Book.class)
                         .list());
     }

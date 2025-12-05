@@ -67,10 +67,10 @@ public class UserController extends GuiController implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        columnMatricola.setCellValueFactory(new PropertyValueFactory<>("id")); //sarebbe la matricola
-        columnSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
-        columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        this.columnMatricola.setCellValueFactory(new PropertyValueFactory<>("id")); //sarebbe la matricola
+        this.columnSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        this.columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        this.columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         //Gli attributi di User sono i metodi di ricerca della Combobox
         this.searchType.getItems().addAll("id", "cognome", "nome", "email");
@@ -88,7 +88,7 @@ public class UserController extends GuiController implements Initializable{
      * Recupera tutti gli utenti dal service e aggiorna la TableView.
      */
     public void updateTable(){
-        List<User> listUsers= userService.getAll();
+        List<User> listUsers= this.userService.getAll();
         this.users = FXCollections.observableArrayList(listUsers);
         this.userTable.setItems(this.users);
     }
@@ -111,18 +111,12 @@ public class UserController extends GuiController implements Initializable{
         List<User> result = new ArrayList<>();
 
         switch (type) {
-            case "id":
-                this.userService.getById(query).ifPresent(result::add);
-                break;
-            case "cognome":
-                result = this.userService.getAllByFullName(query); //Se sono uguali i cognomi ordina per nome
-                break;
-            case "email":
-                result=this.userService.getAllByEmail(query);
-                break;
-            default:
-                this.updateTable();
+            case "id" -> this.userService.getById(query).ifPresent(result::add);
+            case "cognome" -> result = this.userService.getAllByFullName(query); //Se sono uguali i cognomi ordina per nome
+            case "email" -> result=this.userService.getAllByEmailContaining(query);
+            default -> this.updateTable();
         }
+        ;
 
         this.users = FXCollections.observableArrayList(result);
         this.userTable.setItems(this.users);
@@ -172,7 +166,7 @@ public class UserController extends GuiController implements Initializable{
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
-    private void handleAddUser(ActionEvent event) {changeScene(event, "view/AddUserScene.fxml");
+    private void handleAddUser(ActionEvent event) {this.changeScene(event, "view/AddUserScene.fxml");
     }
 
 
@@ -182,10 +176,11 @@ public class UserController extends GuiController implements Initializable{
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
-    private void handleBackToHome(ActionEvent event) {changeScene(event, "view/HomepageScene.fxml");
+    private void handleBackToHome(ActionEvent event) {this.changeScene(event, "view/HomepageScene.fxml");
     }
 
 
-    private void handleViewUserProfile(ActionEvent event) {changeScene(event, "view/AccountUSerScene.fxml");}
+    private void handleViewUserProfile(ActionEvent event) {this.changeScene(event, "view/AccountUSerScene.fxml");}
 
+}
 }

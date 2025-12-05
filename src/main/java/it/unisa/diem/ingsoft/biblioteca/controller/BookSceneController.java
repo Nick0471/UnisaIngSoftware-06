@@ -120,13 +120,13 @@ public class BookSceneController extends GuiController implements Initializable 
 
         switch (type) {
             case "Titolo":
-                result = this.bookService.getAllByTitle(query);
+                result = this.bookService.getAllByTitleContaining(query);
                 break;
             case "Autore":
-                result = this.bookService.getAllByAuthor(query);
+                result = this.bookService.getAllByAuthorContaining(query);
                 break;
             case "Genere":
-                result = this.bookService.getAllByGenre(query);
+                result = this.bookService.getAllByGenreContaining(query);
                 break;
             case "ISBN":
                 this.bookService.getAllByIsbn(query).ifPresent(result::add);
@@ -197,7 +197,7 @@ public class BookSceneController extends GuiController implements Initializable 
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddBookScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/AddBookScene.fxml"));
             Parent root = loader.load();
 
             AddBookSceneController controller = loader.getController();
@@ -235,7 +235,7 @@ public class BookSceneController extends GuiController implements Initializable 
     @FXML
     private void handleAddBook(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddBookScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/AddBookScene.fxml"));
             Parent root = loader.load();
 
             AddBookSceneController addController = loader.getController();
@@ -250,6 +250,10 @@ public class BookSceneController extends GuiController implements Initializable 
             this.updateTable();
 
         } catch (IOException e) {
+            super.popUp("Errore nel caricamento della finestra");
+        }
+    }
+}
             super.popUp("Errore nel caricamento della finestra");
         }
     }
