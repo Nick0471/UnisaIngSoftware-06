@@ -38,6 +38,7 @@ public class Database {
      * @throws DatabaseUnreachableException La connessione è fallita
      */
     public static Database connect(String connectionUrl) throws DatabaseUnreachableException {
+        // Non usiamo il try-with-resources: JDBI gestisce la connessione
         try {
             Connection connection = DriverManager.getConnection(connectionUrl);
             return new Database(connection);
@@ -45,6 +46,25 @@ public class Database {
             throw new DatabaseUnreachableException(e);
         }
     }
+
+    /**
+     * @brief Crea un oggetto di classe Database che incapsula JDBI per la connessione ad un
+     *  database IN-MEMORIA.
+     *  Generalmente utilizzato per i test
+     *  @return Un oggetto di tipo Database con la connessione ad un database in memoria
+     */
+    public static Database inMemory() {
+        // Non usiamo il try-with-resources: JDBI gestisce la connessione
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:sqlite::memory:");
+            return new Database(connection);
+
+        // Questa eccezione non sarà lanciata se l'url di connessione è corretto: il database è in memoria
+        } catch(SQLException e) {
+            throw new RuntimeException("Eccezione SQL con Database inMemory", e);
+        }
+    }
+
 
     /**
      * @brief Getter per l'istanza di JDBI connessa al database
