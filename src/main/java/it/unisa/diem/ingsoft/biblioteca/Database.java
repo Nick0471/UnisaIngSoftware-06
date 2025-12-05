@@ -55,7 +55,7 @@ public class Database {
      * @brief Crea un oggetto di classe Database che incapsula JDBI per la connessione ad un
      *  database IN-MEMORIA.
      *  Generalmente utilizzato per i test
-     *  @return Un oggetto di tipo Database con la connessione ad un database in memoria
+     * @return Un oggetto di tipo Database con la connessione ad un database in memoria
      */
     public static Database inMemory() {
         // Non usiamo il try-with-resources: JDBI gestisce la connessione
@@ -85,7 +85,7 @@ public class Database {
             + "surname TEXT NOT NULL"
             + ");";
 
-        String booksSql = "CREATE TABLE IF NOT EXISTS loans ("
+        String loansSql = "CREATE TABLE IF NOT EXISTS loans ("
             + "id INTEGER PRIMARY KEY,"
             + "book_isbn TEXT NOT NULL,"
             + "user_id TEXT NOT NULL,"
@@ -94,7 +94,7 @@ public class Database {
             + "loan_end DATE"
             + ");";
 
-        String loansSql = "CREATE TABLE IF NOT EXISTS books ("
+        String booksSql = "CREATE TABLE IF NOT EXISTS books ("
             + "isbn TEXT NOT NULL PRIMARY KEY,"
             + "title TEXT NOT NULL,"
             + "author TEXT NOT NULL,"
@@ -111,8 +111,8 @@ public class Database {
 
         this.jdbi.useHandle(handle -> {
             handle.execute(usersSql);
-            handle.execute(booksSql);
             handle.execute(loansSql);
+            handle.execute(booksSql);
             handle.execute(passwordSql);
         });
     }

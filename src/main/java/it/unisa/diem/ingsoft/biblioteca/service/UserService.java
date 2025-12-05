@@ -17,72 +17,72 @@ import it.unisa.diem.ingsoft.biblioteca.model.User;
  */
 public interface UserService {
     /**
-     * @brief Ritorna una lista di tutti gli utenti registrati
-     * @return Una lista contenente tutti gli utenti
+     * @brief Ritorna una lista di tutti gli utenti registrati.
+     * @return Una lista contenente tutti gli utenti.
      */
     List<User> getAll();
 
     /**
-     * @brief Ritorna una lista di tutti gli utenti registrati con la matricola specificata
-     * @return Una lista contenente tutti gli utenti
+     * @brief Ritorna una lista di tutti gli utenti registrati con la matricola specificata.
+     * @return Una lista contenente tutti gli utenti.
      */
     List<User> getAllById(String id);
 
     /**
-     * @brief Ritorna una lista di tutti gli utenti registrati con la email specificata
-     * @return Una lista contenente tutti gli utenti
+     * @brief Ritorna una lista di tutti gli utenti registrati con la email specificata.
+     * @return Una lista contenente tutti gli utenti.
      */
     List<User> getAllByEmail(String email);
 
     /**
-     * @brief Ritorna una lista di tutti gli utenti registrati con il nome specificato
-     * @return Una lista contenente tutti gli utenti
+     * @brief Ritorna una lista di tutti gli utenti registrati con il nome specificato.
+     * @return Una lista contenente tutti gli utenti.
      */
     List<User> getAllByFullName(String name, String surname);
 
     /**
-     * @brief Cerca un utente usando la sua matricola
-     * @param id La matricola dell'utente
-     * @return Un Optional contenente l'utente registrato, Optional.empty() altrimenti
+     * @brief Cerca un utente usando la sua matricola.
+     * @param id La matricola dell'utente.
+     * @return Un Optional contenente l'utente registrato, Optional.empty() altrimenti.
      */
     Optional<User> getById(String id);
 
     /**
-     * @brief Registra un nuovo utente
-     * @param user L'utente da registrare
-     * @throws DuplicateUserByEmailException Esiste già un utente con la mail specificata
-     * @throws DuplicateUserByIdException Esiste già un utente con la matricola specificata
+     * @brief Registra un nuovo utente.
+     * @param user L'utente da registrare.
+     * @throws DuplicateUserByEmailException Esiste già un utente con la mail specificata.
+     * @throws DuplicateUserByIdException Esiste già un utente con la matricola specificata.
      */
 	void register(User user) throws DuplicateUserByIdException, DuplicateUserByEmailException;
 
     /**
-     * @brief Rimuove un utente in base alla sua matricola
-     * @param id La matricola dell'utente da rimuovere
-     * @return true se l'utente è stato rimosso, false altrimenti
+     * @brief Rimuove un utente in base alla sua matricola.
+     * @param id La matricola dell'utente da rimuovere.
+     * @return true se l'utente è stato rimosso, false altrimenti.
      */
     boolean removeById(String id);
 
     /**
-     * @brief Aggiorna le informazioni di un utente già registrato
+     * @brief Aggiorna le informazioni di un utente già registrato.
      * @param user L'oggetto User contenente la matricola dell'utente da modificare e
-     *  le nuove informazioni da salvare
+     *  le nuove informazioni da salvare.
      * @invariant La matricola dell'utente è un invariante. Se è necessario modificarla
-     *  bisogna eliminare e reinserire l'utente
-     *  @throws UnknownUserByIdException Non esiste alcun utente con la matricola specificata
+     *  bisogna eliminare e reinserire l'utente.
+     *  @throws UnknownUserByIdException Non esiste alcun utente con la matricola specificata.
      */
     void updateById(User user) throws UnknownUserByIdException;
 
     /**
-     * @brief Controlla se un utente con una matricola è già stato registrato
-     * @param id La matricola dell'utente da controllare
-     * @return true se l'utente esiste, false altrimenti
+     * @brief Controlla se un utente con una matricola è già stato registrato.
+     * @param id La matricola dell'utente da controllare.
+     * @return true se l'utente esiste, false altrimenti.
      */
     boolean existsById(String id);
 
     /**
-     * @brief Controlla se un utente con una email è già stato registrato
-     * @param email L'email dell'utente da controllare
-     * @return true se l'utente esiste, false altrimenti
+     * @brief Controlla se un utente con una email è già stato registrato.
+     * @param email L'email dell'utente da controllare.
+     * @return true se l'utente esiste, false altrimenti.
      */
     boolean existsByEmail(String email);
 }
