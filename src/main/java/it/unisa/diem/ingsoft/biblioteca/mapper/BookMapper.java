@@ -30,8 +30,8 @@ public class BookMapper implements RowMapper<Book> {
         String genre = rs.getString("genre");
         String description = rs.getString("description");
         int releaseYear = rs.getInt("release_year");
-        int totalCopies = rs.getInt("totalCopies");
-        int remainingCopies = rs.getInt("remainingCopies");
+        int totalCopies = rs.getInt("total_Copies");
+        int remainingCopies = rs.getInt("remaining_Copies");
 
         book.setIsbn(isbn);
         book.setTitle(title);
