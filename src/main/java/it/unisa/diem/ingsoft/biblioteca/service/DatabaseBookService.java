@@ -141,6 +141,9 @@ public class DatabaseBookService implements BookService {
 
     @Override
     public void updateByIsbn(Book book) throws UnknownBookByIsbnException{
+        if(!this.existsByIsbn(book.getIsbn()))
+            throw new UnknownBookByIsbnException();
+
         String isbn = book.getIsbn();
         String title = book.getTitle();
         String author = book.getAuthor();
@@ -150,7 +153,7 @@ public class DatabaseBookService implements BookService {
         int remainingCopies = book.getRemainingCopies();
         String description = book.getDescription();
 
-        int rowAffected = this.database.getJdbi()
+        this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate("UPDATE books SET "
                                 + "title = :title, "
                                 + "author = :author, "
@@ -169,9 +172,6 @@ public class DatabaseBookService implements BookService {
                         .bind("remainingCopies", remainingCopies)
                         .bind("description", description)
                         .execute());
-
-        if (rowAffected == 0)
-            throw new UnknownBookByIsbnException(isbn);
     }
 
     public boolean existsByIsbn(String isbn) {
@@ -181,5 +181,13 @@ public class DatabaseBookService implements BookService {
                         .bind("isbn", isbn)
                         .mapTo(Integer.class)
                         .one()) > 0;
+    }
+
+    public List<String> existingIsbns(List<String> isbns){
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT isbn FROM books WHERE isbn IN (<isbns>)")
+                        .bindList("isbns", isbns)
+                        .mapTo(String.class)
+                        .list());
     }
 }
