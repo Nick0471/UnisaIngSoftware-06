@@ -31,6 +31,7 @@ public class AddBookSceneController extends GuiController{
     @FXML private Button btnConfirm;
 
     private BookService bookService;
+    private boolean isEditMode = false;
 
     /**
      * @brief Setter per il bookService.
@@ -39,6 +40,27 @@ public class AddBookSceneController extends GuiController{
      */
     public void setBookService(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    /**
+     * @brief Setter per modificare i dati della tabella.
+     *
+     * @param book Il libro passatogli dall'handleModifyBook di BookSceneController
+     */
+    public void setBookToEdit(Book book) {
+        if (book != null) {
+            this.isEditMode = true;
+            this.titleField.setText(book.getTitle());
+            this.authorField.setText(book.getAuthor());
+            this.genreField.setText(book.getGenre());
+            this.yearField.setText(String.valueOf(book.getReleaseYear()));
+            this.isbnField.setText(book.getIsbn());
+            this.copiesField.setText(String.valueOf(book.getTotalCopies()));
+            this.descriptionArea.setText(book.getDescription());
+
+            this.isbnField.setDisable(true);
+            this.btnConfirm.setText("Aggiorna");
+        }
     }
 
     /**
@@ -79,12 +101,10 @@ public class AddBookSceneController extends GuiController{
         String yearText = this.yearField.getText();
         String isbn = this.isbnField.getText();
         String copiesText = this.copiesField.getText();
-        String description =this.descriptionArea.getText();
+        String description = this.descriptionArea.getText();
 
         if (title.isEmpty() || author.isEmpty() || genre.isEmpty() || isbn.isEmpty() || yearText.isEmpty() || copiesText.isEmpty()) {
-            StringBuffer sb = new StringBuffer("Errore di Validazione,");
-            sb.append("Compila tutti i campi obbligatori (Titolo, Autore, ISBN, Anno, Copie).");
-            super.popUp(sb.toString());
+            super.popUp("Errore di Validazione: Compila tutti i campi obbligatori.");
             return;
         }
 
@@ -93,23 +113,23 @@ public class AddBookSceneController extends GuiController{
             int copies = Integer.parseInt(copiesText);
 
             Book book = new Book(isbn, title, author, year, copies, copies, genre, description);
-            try{
-                this.bookService.add(book);
-            }catch (BookException e){
+
+            try {
+                if (isEditMode) {
+                    this.bookService.updateByIsbn(book);
+                    super.popUp("Libro aggiornato con successo!");
+                } else {
+                    this.bookService.add(book);
+                    super.popUp("Libro aggiunto al catalogo!");
+                }
+                super.closeScene(event);
+            } catch (BookException e) {
                 super.popUp(e.getMessage());
             }
 
-
-            StringBuffer sb = new StringBuffer("Successo");
-            sb.append("Libro aggiunto correttamente al catalogo");
-            super.popUp(sb.toString());
-
-            super.closeScene(event);
-
         } catch (NumberFormatException e) {
-            super.popUp("Anno e numero di copie devono essere dei valori inter");
+            super.popUp("Anno e numero di copie devono essere valori interi.");
         }
-    }
 
     /**
      * Chiude la finestra di aggiunta senza salvare le modifiche.

@@ -59,7 +59,21 @@ public class AddLoanSceneController extends GuiController {
      */
     @FXML
     private void handleSearchUser(ActionEvent event) {
+        String matricola = userMatricolaField.getText();
 
+        if (matricola == null || matricola.trim().isEmpty()) {
+            StringBuffer sb = new StringBuffer("Attenzione");
+            sb.append("Matricola non trovata");
+            super.popUp(sb.toString());
+            return;
+        }
+
+        List<Loan> userLoans = loanService.getByUserId(matricola);
+
+        if (userLoans.isEmpty()) {
+           super.popUp("Nessun prestito attivo trovato per la matricola: " + matricola);
+
+        return
     }
 
     /**
