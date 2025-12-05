@@ -1,7 +1,3 @@
-/**
- * @brief Package dei service
- * @package it.unisa.diem.ingsoft.biblioteca.service
- */
 package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.util.List;
@@ -65,6 +61,8 @@ public class DatabaseUserService implements UserService {
                     .findFirst());
 	}
 
+    // TODO: RIMUOVERE SOLO SE NON CI SONO PRESTITI ATTIIVI.
+    // STESSA COSA PER UN LIBRO
 	@Override
 	public boolean removeById(String id) {
         return this.database.getJdbi()
