@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.*;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 public class DatabaseBookService implements BookService {
