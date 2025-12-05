@@ -18,4 +18,5 @@ module it.unisa.diem.ingsoft.biblioteca {
     opens it.unisa.diem.ingsoft.biblioteca.service to javafx.fxml;
     exports it.unisa.diem.ingsoft.biblioteca.model;
     opens it.unisa.diem.ingsoft.biblioteca.model to javafx.fxml;
+    exports it.unisa.diem.ingsoft.biblioteca.exception;
 }

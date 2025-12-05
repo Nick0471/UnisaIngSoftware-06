@@ -7,7 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import it.unisa.diem.ingsoft.biblioteca.Database;
 
 /**
- * @brief Implementazione del PasswordService usando un database
+ * @brief Implementazione del PasswordService usando un Database per la persistenza
  */
 public class DatabasePasswordService implements PasswordService {
     private final LogService logService;
