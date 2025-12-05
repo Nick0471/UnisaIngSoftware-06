@@ -1,11 +1,11 @@
 package it.unisa.diem.ingsoft.biblioteca.service;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.BookAlreadyExistsException;
-import it.unisa.diem.ingsoft.biblioteca.exception.BookNotFoundException;
-import it.unisa.diem.ingsoft.biblioteca.model.Book;
-
 import java.util.List;
 import java.util.Optional;
+
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 public interface BookService {
     /**
@@ -62,13 +62,13 @@ public interface BookService {
      * in modo permanente il record corrispondente all'isbn.
      * @param isbn Il codice isbn (Stringa) del libro da rimuovere.
      */
-    boolean removeByIsbn(String isbn) throws BookNotFoundException;
+    boolean removeByIsbn(String isbn) throws UnknownBookByIsbnException;
 
     /**
      * @brief Aggiunge un libro al catalogo
      * @param book Il libro da aggiungere
      */
-    void add(Book book) throws BookAlreadyExistsException;
+    void add(Book book) throws DuplicateBookByIsbnException;
 
     /**
      * @brief Aggiunge una lista di libri al catalogo
@@ -83,5 +83,5 @@ public interface BookService {
      * @invariant L'ISBN del libro è un invariante. Se è necessario modificarlo
      *  bisogna eliminare e reinserire il libro
      */
-    void updateByIsbn(Book book) throws BookNotFoundException;
+    void updateByIsbn(Book book) throws UnknownBookByIsbnException;
 }
