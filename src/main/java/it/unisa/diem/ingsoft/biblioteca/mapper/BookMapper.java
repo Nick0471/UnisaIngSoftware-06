@@ -12,6 +12,10 @@ import org.jdbi.v3.core.statement.StatementContext;
 
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
+/**
+ * @brief Mapper che realizza la corrispondenza tra i dati salvati nelle colonne del
+ * database della tabella 'books' e un oggetto del modello {@link Book}.
+ */
 public class BookMapper implements RowMapper<Book> {
     /**
      * @brief Esegue la mappatura di una singola riga del ResultSet su un oggetto Book
