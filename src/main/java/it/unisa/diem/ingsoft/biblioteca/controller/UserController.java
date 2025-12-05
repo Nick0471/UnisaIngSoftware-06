@@ -19,7 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-
+/**
+ * @brief Controller per la gestione della lista utenti.
+ * Questa classe gestisce la vista principale per l'amministrazione degli utenti
+ * della biblioteca. Permette di visualizzare l'elenco in una tabella,
+ * filtrare i risultati (per ID, cognome, email), aggiungere, modificare
+ * o rimuovere utenti interagendo con "UserService".
+ */
 
 public class UserController extends GuiController implements Initializable{
 
@@ -43,13 +49,26 @@ public class UserController extends GuiController implements Initializable{
 
 
     private UserService userService;
+
+    /**
+     * Lista osservabile che permette l'inserimento degli utenti nella TableView.
+     */
     private ObservableList<User> users;
+
 
 
     //controller
     public UserController(UserService userService){ this.userService=userService;}
 
 
+    /**
+     * @brief Inizializza il controller e la vista.
+     * Configura le colonne della tabella collegandole alle proprietà dell'oggetto User.
+     * Popola la ComboBox per i filtri di ricerca e aggiunge un listener al campo
+     * di ricerca per filtrare la tabella in tempo reale. Infine, carica i dati iniziali.
+     * @param location La location utilizzata per risolvere i percorsi relativi all'oggetto radice, o null se sconosciuta.
+     * @param resources Le risorse utilizzate per localizzare l'oggetto radice, o null se non localizzato.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources){
         columnMatricola.setCellValueFactory(new PropertyValueFactory<>("id")); //sarebbe la matricola
@@ -68,6 +87,10 @@ public class UserController extends GuiController implements Initializable{
     }
 
 
+    /**
+     * @brief Aggiorna la tabella con l'elenco completo degli utenti.
+     * Recupera tutti gli utenti dal service e aggiorna la TableView.
+     */
     public void updateTable(){
         List<User> listUsers= userService.getAll();
         this.users = FXCollections.observableArrayList(listUsers);
@@ -75,6 +98,12 @@ public class UserController extends GuiController implements Initializable{
     }
 
 
+    /**
+     * @brief Filtra gli utenti in tabella in base al criterio selezionato.
+     * Legge il valore della ComboBox (tipo di ricerca) e il testo inserito
+     * nel campo di ricerca. Aggiorna la tabella con i risultati filtrati.
+     * @param query La stringa da cercare. Se vuota o nulla, mostra tutti gli utenti.
+     */
     //Leggendo il valore della ComboBox restituisce una tabella filtrata per l'attributo specificato
     @FXML
     private void filterUsers(String query) {
@@ -90,13 +119,10 @@ public class UserController extends GuiController implements Initializable{
                 this.userService.getById(query).ifPresent(result::add);
                 break;
             case "cognome":
-                result = this.userService.getBySurname(query);
-                break;
-            case "nome":
-                result = this.userService.getByName(query);
+                result = this.userService.getAllByFullName(query); //Se sono uguali i cognomi ordina per nome
                 break;
             case "email":
-                result=this.userService.getByEmail(query);
+                result=this.userService.getAllByEmail(query);
                 break;
             default:
                 this.updateTable();
@@ -106,6 +132,13 @@ public class UserController extends GuiController implements Initializable{
         this.userTable.setItems(this.users);
     }
 
+
+    /**
+     * @brief Gestisce la rimozione di un utente.
+     * Recupera l'utente selezionato nella tabella. Se presente, ne richiede
+     * la rimozione tramite il service e aggiorna la vista. In caso di errore
+     * o mancata selezione, mostra un popup di errore.
+     */
     @FXML
     private void handleDeleteUser(){
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
@@ -120,7 +153,10 @@ public class UserController extends GuiController implements Initializable{
             super.popUpError("Errore durante la rimozione del utente.");
     }
 
-
+    /**
+     * @brief Gestisce la modifica di un utente.
+     * Recupera l'utente selezionato e invoca l'aggiornamento tramite il service.
+     */
     @FXML
     private void handleModifyUser() {
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
@@ -134,13 +170,22 @@ public class UserController extends GuiController implements Initializable{
         this.updateTable();
     }
 
-
+    /**
+     * @brief Naviga alla schermata di aggiunta utente.
+     *
+     * @param event L'evento che ha scatenato l'azione.
+     */
     @FXML
     private void handleAddUser(ActionEvent event) {
         super.changeScene(event, "view/AddUserScene.fxml");
     }
 
 
+    /**
+     * @brief Torna alla Dashboard principale (Home).
+     *
+     * @param event L'evento che ha scatenato l'azione.
+     */
     @FXML
     private void handleBackToHome(ActionEvent event) {
         super.changeScene(event, "view/HomepageScene.fxml");

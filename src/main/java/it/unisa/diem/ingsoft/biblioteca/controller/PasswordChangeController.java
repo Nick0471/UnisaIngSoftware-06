@@ -16,13 +16,15 @@ import javafx.scene.control.PasswordField;
  */
 public class PasswordChangeController extends GuiController {
 
+    /**
+     * Service responsabile della verifica della sicurezza e delle password.
+     */
     private final PasswordService passwordService;
 
 
     public PasswordChangeController(PasswordService passwordService){
         this.passwordService=passwordService;
     }
-
 
     /**
      * @brief Bottone per confermare l'aggiornamento della password,.
@@ -71,9 +73,9 @@ public class PasswordChangeController extends GuiController {
         }
 
         // Cambio password solo se rispetta il requisito di lunghezza (in questo caso == 6)
-        if(newPassword.getText().length() >= 6){
+        if(newPassword.getText().length() >= 6 && newPassword.getText().length() >= 6){
             this.passwordService.change(newPassword.getText());
-            changeScene(event, "homepage.fxml");
+            changeScene(event, "homepageScene.fxml");
         } else {
             popUpError("La nuova password deve essere da 6 a 10 caratteri.");
 

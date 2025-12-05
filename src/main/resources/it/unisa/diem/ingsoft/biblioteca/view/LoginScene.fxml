@@ -4,76 +4,105 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane
-            fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LogController"
-            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f4f4f4;"
-            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" 
-            >
-   
-   <top>
-      <HBox alignment="CENTER" prefHeight="60.0" style="-fx-background-color: #2D3447;" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Biblioteca gruppo 6" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-   </top>
+<BorderPane fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LogController"
+            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="500.0" prefWidth="700.0"
+            style="-fx-background-color: #f4f7fa;"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 
-   <center>
-      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="350.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-               <padding>
-                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-               </padding>
-               <children>
-                  
-                  <VBox spacing="5.0">
-                     <children>
-                        <Label text="Nome Utente" textFill="#2d3447">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
+    <top>
+        <HBox alignment="CENTER" prefHeight="80.0" spacing="15.0" style="-fx-background-color: #2D3447; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="🏛️" textFill="WHITE">
+                    <font>
+                        <Font size="30.0" />
+                    </font>
+                </Label>
+                <VBox alignment="CENTER_LEFT">
+                    <children>
+                        <Label text="Biblioteca Universitaria" textFill="WHITE">
+                            <font>
+                                <Font name="Segoe UI Bold" size="26.0" />
+                            </font>
                         </Label>
-                        <TextField fx:id="usernameField" prefHeight="35.0" promptText="Inserisci username" style="-fx-background-radius: 5; -fx-border-color: #ccc; -fx-border-radius: 5;" />
-                     </children>
-                  </VBox>
-                  
-                  <VBox spacing="5.0">
-                     <children>
-                        <Label text="Password" textFill="#2d3447">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
+                        <Label text="Sistema di Gestione Ateneo" textFill="#aab2bd">
+                            <font>
+                                <Font name="Segoe UI" size="14.0" />
+                            </font>
                         </Label>
-                        <PasswordField fx:id="passwordField" prefHeight="35.0" promptText="Inserisci password" style="-fx-background-radius: 5; -fx-border-color: #ccc; -fx-border-radius: 5;" />
-                     </children>
-                  </VBox>
-                  
-                  <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleLogin" prefHeight="45.0" prefWidth="Infinity" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);" text="Accedi">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Button>
-               </children>
-            </VBox>
-         </children>
-      </VBox>
-   </center>
-   
-   <bottom>
-      <HBox prefHeight="40.0" BorderPane.alignment="CENTER" />
-   </bottom>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <children>
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="380.0" spacing="25.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-background-insets: 0;">
+                    <padding>
+                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                    </padding>
+                    <effect>
+                        <DropShadow color="#0000001a" height="30.0" radius="14.5" width="30.0" />
+                    </effect>
+                    <children>
+
+                        <Label alignment="CENTER" maxWidth="Infinity" text="Accesso Riservato" textFill="#2d3447">
+                            <font>
+                                <Font name="Segoe UI Bold" size="20.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label text="Password di Sicurezza" textFill="#7c8184">
+                                    <font>
+                                        <Font name="Segoe UI Bold" size="13.0" />
+                                    </font>
+                                </Label>
+                                <PasswordField fx:id="insertedPassword" prefHeight="45.0" promptText="Inserisci la chiave d'accesso" style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-color: #fafafa;">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </PasswordField>
+                            </children>
+                        </VBox>
+
+                        <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleLogin" prefHeight="50.0" prefWidth="Infinity" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.4), 10, 0, 0, 4);" text="ENTRA NEL SISTEMA">
+                            <font>
+                                <Font name="Segoe UI Bold" size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Button>
+
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="50.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="© 2024 Gruppo 6 - Ingegneria del Software" textFill="#999999">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </bottom>
 </BorderPane>

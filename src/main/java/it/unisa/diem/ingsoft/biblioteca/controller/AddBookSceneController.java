@@ -59,7 +59,7 @@ public class AddBookSceneController extends GuiController{
 
     /**
      * @brief Gestisce la conferma per l'aggiunta di un nuovo libro.
-     *
+
      * Recupera i dati dai campi di testo, verifica che i campi obbligatori non siano vuoti
      * e converte i valori numerici. Crea un nuovo oggetto Book e salva i dati sul database.
      * In caso di errore (campi vuoti o formato errato), mostra un popup di errore.
