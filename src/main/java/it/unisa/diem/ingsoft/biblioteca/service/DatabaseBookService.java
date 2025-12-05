@@ -75,16 +75,16 @@ public class DatabaseBookService implements BookService {
 
     @Override
     public boolean removeByIsbn(String isbn) throws UnknownBookByIsbnException {
-        int rowsAffected = this.database.getJdbi()
-                .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE isbn = :isbn")
-                        .bind("isbn", isbn)
-                        .execute());
+        if(!this.existsByIsbn(isbn))
+            throw new UnknownBookByIsbnException();
 
-        if (rowsAffected == 0) {
-            throw new UnknownBookByIsbnException(isbn);
-        }
+        return this.database.getJdbi()
+                            .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE isbn = :isbn")
+                            .bind("isbn", isbn)
+                            .execute()) > 0;
 
-        return rowsAffected > 0;
+
+
     }
 
     @Override
