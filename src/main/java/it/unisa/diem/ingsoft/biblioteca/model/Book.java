@@ -10,8 +10,6 @@ public class Book {
     private String genre;
     private String description;
 
-    public Book() {}
-
     public Book(String ISBN, String title, String author, int releaseYear, int totalCopies,
             int remainingCopies, String genre, String description) {
         this.isbn = ISBN;

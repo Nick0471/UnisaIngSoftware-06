@@ -22,7 +22,7 @@ public class HomepageController extends GuiController {
      * @param event L'evento generato dal click del pulsante.
      */
     @FXML
-    void handleGoToViewProfile(ActionEvent event) {
+    private void handleGoToViewProfile(ActionEvent event) {
         changeScene(event, "view/PasswordScene.fxml");
     }
 
@@ -31,7 +31,7 @@ public class HomepageController extends GuiController {
      * @param event L'evento generato dal click del pulsante.
      */
     @FXML
-    void handleGoToViewBooks(ActionEvent event) {
+    private void handleGoToViewBooks(ActionEvent event) {
         changeScene(event, "view/BookScene.fxml");
     }
 
@@ -40,7 +40,7 @@ public class HomepageController extends GuiController {
      * @param event L'evento generato dal click del pulsante.
      */
     @FXML
-    void handleGoToViewUsers(ActionEvent event) {
+    private void handleGoToViewUsers(ActionEvent event) {
         changeScene(event, "view/UserScene.fxml");
     }
 
@@ -49,7 +49,7 @@ public class HomepageController extends GuiController {
      * @param event L'evento generato dal click del pulsante.
      */
     @FXML
-    void handleGoToViewLoans(ActionEvent event) {
+    private void handleGoToViewLoans(ActionEvent event) {
         changeScene(event, "view/LoanScene.fxml");
     }
 

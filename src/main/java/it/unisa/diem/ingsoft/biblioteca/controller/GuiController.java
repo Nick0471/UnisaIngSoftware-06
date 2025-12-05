@@ -44,6 +44,17 @@ public abstract class GuiController {
     }
 
     /**
+     * @brief Chiude la scena corrente.
+     *
+     * @param event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
+     */
+    private void closeScene(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
+
+    /**
      * @brief Mostra una finestra di pop-up con un messaggio di errore.
      *
      * @param message Il messaggio di testo da visualizzare nel pop-up.

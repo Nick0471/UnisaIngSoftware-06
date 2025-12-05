@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.exception.BookAlreadyExistsException;
+import it.unisa.diem.ingsoft.biblioteca.exception.BookNotFoundException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 public class DatabaseBookService implements BookService {
@@ -72,15 +74,25 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public boolean removeByIsbn(String isbn){
-        return this.database.getJdbi()
+    public boolean removeByIsbn(String isbn) throws BookNotFoundException {
+        int rowsAffected = this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE isbn = :isbn")
                         .bind("isbn", isbn)
-                        .execute()) > 0;
+                        .execute());
+
+        if (rowsAffected == 0) {
+            throw new BookNotFoundException(isbn);
+        }
+
+        return rowsAffected > 0;
     }
 
     @Override
-    public void add(Book book){
+    public void add(Book book) throws BookAlreadyExistsException {
+        if (this.getByIsbn(book.getIsbn()).isPresent()) {
+            throw new BookAlreadyExistsException(book.getIsbn());
+        }
+
         this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate(
                                 "INSERT INTO books (ISBN, title, author, genre, releaseYear) " +
@@ -117,7 +129,7 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public void updateByIsbn(Book book){
+    public void updateByIsbn(Book book) throws BookNotFoundException{
         String isbn = book.getIsbn();
         String title = book.getTitle();
         String author = book.getAuthor();
@@ -127,7 +139,7 @@ public class DatabaseBookService implements BookService {
         int remainingCopies = book.getRemainingCopies();
         String description = book.getDescription();
 
-        this.database.getJdbi()
+        int rowAffected = this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate("UPDATE books SET "
                                 + "title = :title, "
                                 + "author = :author, "
@@ -146,5 +158,8 @@ public class DatabaseBookService implements BookService {
                         .bind("remainingCopies", remainingCopies)
                         .bind("description", description)
                         .execute());
+
+        if (rowAffected == 0)
+            throw new BookNotFoundException(isbn);
     }
 }
