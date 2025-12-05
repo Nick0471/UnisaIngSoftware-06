@@ -54,7 +54,7 @@ public class DatabaseUserService implements UserService {
 	@Override
 	public Optional<User> getById(String id) {
         return this.database.getJdbi()
-            .withHandle(handle -> handle.createQuery("SELECT * FROM users"
+            .withHandle(handle -> handle.createQuery("SELECT * FROM users "
                         + "WHERE id = :id")
                     .bind("id", id)
                     .mapTo(User.class)

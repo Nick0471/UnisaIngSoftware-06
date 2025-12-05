@@ -38,7 +38,7 @@ public class DatabaseUserServiceTest {
             this.userService.register(duplicateId);
         });
 
-        assertThrows(DuplicateUserByIdException.class, () -> {
+        assertThrows(DuplicateUserByEmailException.class, () -> {
             User duplicateEmail = new User("DEF123", "test@gmail.com", "NICOLA", "PICARELLA");
             this.userService.register(duplicateEmail);
         });
@@ -77,7 +77,7 @@ public class DatabaseUserServiceTest {
         assertFalse(() -> this.userService.existsById("INESISTENTE"));
         assertFalse(() -> this.userService.existsByEmail("INESISTENTE2"));
         assertTrue(() -> this.userService.existsById("ABC789"));
-        assertTrue(() -> this.userService.existsByEmail("test@libero.it"));
+        assertTrue(() -> this.userService.existsByEmail("test@altervista.it"));
     }
 
     @Test
