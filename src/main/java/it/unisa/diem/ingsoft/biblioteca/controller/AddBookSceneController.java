@@ -87,7 +87,7 @@ public class AddBookSceneController extends GuiController{
             int year = Integer.parseInt(yearText);
             int copies = Integer.parseInt(copiesText);
 
-            Book book = new Book(title, author, genre, isbn, year, copies, copies, description);
+            Book book = new Book(isbn, title, author, year, copies, copies, genre, description);
             this.bookService.add(book);
 
             StringBuffer sb = new StringBuffer("Successo");

@@ -48,7 +48,7 @@ public abstract class GuiController {
      *
      * @param event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
      */
-    private void closeScene(ActionEvent event) {
+    protected void closeScene(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
