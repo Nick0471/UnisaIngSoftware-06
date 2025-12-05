@@ -74,7 +74,7 @@ public interface BookService {
      * @brief Aggiunge una lista di libri al catalogo
      * @param books La lista di libri da aggiungere
      */
-    void addAll(List<Book> books);
+    void addAll(List<Book> books) throws DuplicateBookByIsbnException;
 
     /**
      * @brief Aggiorna le informazioni di un libro già registrato
