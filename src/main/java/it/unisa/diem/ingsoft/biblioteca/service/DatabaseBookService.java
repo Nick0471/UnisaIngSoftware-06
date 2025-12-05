@@ -89,8 +89,8 @@ public class DatabaseBookService implements BookService {
 
     @Override
     public void add(Book book) throws DuplicateBookByIsbnException {
-        if (this.getByIsbn(book.getIsbn()).isPresent()) {
-            throw new DuplicateBookByIsbnException(book.getIsbn());
+        if (this.existsByIsbn(book.getIsbn())) {
+            throw new DuplicateBookByIsbnException();
         }
 
         this.database.getJdbi()
