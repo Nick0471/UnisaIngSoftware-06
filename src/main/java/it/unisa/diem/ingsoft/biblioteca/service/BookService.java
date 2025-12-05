@@ -12,6 +12,9 @@ import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
+/**
+ * @brief Interfaccia per la gestione dei libri
+ */
 public interface BookService {
     /**
      * @brief Recupera tutti i libri presenti nel database.
