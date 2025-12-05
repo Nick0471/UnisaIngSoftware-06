@@ -1,3 +1,7 @@
+/**
+ * @brief Package dei mapper
+ * @package it.unisa.diem.ingsoft.biblioteca.mapper
+ */
 package it.unisa.diem.ingsoft.biblioteca.mapper;
 
 import java.sql.ResultSet;

@@ -1,3 +1,7 @@
+/**
+ * @brief Package dei service
+ * @package it.unisa.diem.ingsoft.biblioteca.service
+ */
 package it.unisa.diem.ingsoft.biblioteca.service;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;

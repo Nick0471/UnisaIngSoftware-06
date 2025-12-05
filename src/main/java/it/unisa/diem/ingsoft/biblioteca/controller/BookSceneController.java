@@ -1,3 +1,7 @@
+/**
+ * @brief Package dei controller
+ * @package it.unisa.diem.ingsoft.biblioteca.controller
+ */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
