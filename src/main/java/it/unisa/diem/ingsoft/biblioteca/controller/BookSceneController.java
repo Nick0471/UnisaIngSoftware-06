@@ -211,7 +211,7 @@ public class BookSceneController extends GuiController implements Initializable 
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            this.updateTable(); 
+            this.updateTable();
 
         } catch (IOException e) {
             super.popUp("Errore nel caricamento della finestra di modifica");

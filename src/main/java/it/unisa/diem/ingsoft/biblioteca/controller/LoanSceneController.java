@@ -55,6 +55,7 @@ public class LoanSceneController extends GuiController implements Initializable 
 
     private LoanService loanService;
     private ObservableList<Loan> loans;
+
     /**
      * @brief Costruttore del controller.
      * Inizializza il servizio per la gestione dei libri collegandosi al database.
