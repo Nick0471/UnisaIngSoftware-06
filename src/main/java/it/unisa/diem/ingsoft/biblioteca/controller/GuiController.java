@@ -1,4 +1,4 @@
-package it.unisa.diem.ingsoft.biblioteca.Controller;
+package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +32,7 @@ public abstract class GuiController {
         }
     }
 
-    protected void popUpErrore(String message) {
+    protected void popUpError(String message) {
         // Creo un nuovo Stage
         Stage confirmationStage = new Stage();
         confirmationStage.setTitle("POP-UP");

@@ -1,6 +1,6 @@
-package it.unisa.diem.ingsoft.biblioteca.Controller;
+package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.Book;
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 

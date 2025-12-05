@@ -1,4 +1,4 @@
-package it.unisa.diem.ingsoft.biblioteca.Controller;
+package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

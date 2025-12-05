@@ -1,6 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
-import it.unisa.diem.ingsoft.biblioteca.Service.UserService;
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 
 public class DatabaseUserServiceTest {

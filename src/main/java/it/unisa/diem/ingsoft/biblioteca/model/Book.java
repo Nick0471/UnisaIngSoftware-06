@@ -1,4 +1,4 @@
-package it.unisa.diem.ingsoft.biblioteca;
+package it.unisa.diem.ingsoft.biblioteca.model;
 
 public class Book {
     private String isbn;

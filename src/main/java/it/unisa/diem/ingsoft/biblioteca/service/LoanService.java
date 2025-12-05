@@ -1,6 +1,6 @@
-package it.unisa.diem.ingsoft.biblioteca.Service;
+package it.unisa.diem.ingsoft.biblioteca.service;
 
-import it.unisa.diem.ingsoft.biblioteca.Loan;
+import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 
 import java.time.LocalDate;
 import java.util.List;

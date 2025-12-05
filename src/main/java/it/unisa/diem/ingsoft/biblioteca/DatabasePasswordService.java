@@ -2,8 +2,8 @@ package it.unisa.diem.ingsoft.biblioteca;
 
 import java.util.Optional;
 
-import it.unisa.diem.ingsoft.biblioteca.Service.LogService;
-import it.unisa.diem.ingsoft.biblioteca.Service.PasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.LogService;
+import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class DatabasePasswordService implements PasswordService {

@@ -1,6 +1,7 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
-import it.unisa.diem.ingsoft.biblioteca.Service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 
 import java.util.List;
 import java.util.Optional;

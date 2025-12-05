@@ -1,10 +1,12 @@
-package it.unisa.diem.ingsoft.biblioteca.Controller;
+package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.DatabasePasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+
 
 /**
  * @brief Controller per la gestione della PasswrodScene.
@@ -13,6 +15,14 @@ import javafx.scene.control.PasswordField;
  * (changeScene) e gestione dei messaggi di errore (popUpErrore).
  */
 public class PasswordChangeController extends GuiController {
+
+    private final PasswordService passwordService;
+
+
+    public PasswordChangeController(PasswordService passwordService){
+        this.passwordService=passwordService;
+    }
+
 
     /**
      * @brief Bottone per confermare l'aggiornamento della password,.
@@ -38,6 +48,7 @@ public class PasswordChangeController extends GuiController {
     @FXML
     private PasswordField newPasswordConfirm;
 
+
     /**
      * @brief Gestisce l'evento di aggiornamento della password e il ritorno alla homepage.
      * * Il metodo esegue le seguenti operazioni:
@@ -53,22 +64,20 @@ public class PasswordChangeController extends GuiController {
         // Password inserita dall'utente
         String pass = currentPassword.getText();
 
-        // Riferimento al database
-        DatabasePasswordService database = new DatabasePasswordService(databaseInstance, logServiceInstance);
 
-
-        if (!database.check(pass)) {
-            popUpErrore("Errore di Autenticazione: La password inserita non è corretta.");
+        if (!this.passwordService.check(pass)) {
+            popUpError("Errore di Autenticazione: La password inserita non è corretta.");
             return; //
         }
 
         // Cambio password solo se rispetta il requisito di lunghezza (in questo caso == 6)
         if(newPassword.getText().length() >= 6){
-            database.change(newPassword.getText());
+            this.passwordService.change(newPassword.getText());
             changeScene(event, "homepage.fxml");
         } else {
-            popUpErrore("La nuova password deve essere di 6 caratteri.");
-            return;
+            popUpError("La nuova password deve essere di 6 caratteri.");
+
         }
+
     }
 }

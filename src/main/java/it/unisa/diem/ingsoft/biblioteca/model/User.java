@@ -1,4 +1,4 @@
-package it.unisa.diem.ingsoft.biblioteca;
+package it.unisa.diem.ingsoft.biblioteca.model;
 
 import java.io.Serializable;
 
