@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.BookSceneController">
    
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #2D3447; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" BorderPane.alignment="CENTER">
@@ -91,7 +91,7 @@
                </padding>
             </HBox>
 
-            <TableView fx:id="bookCatalog" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+            <TableView fx:id="bookCatalog" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="columnTitle" minWidth="150.0" prefWidth="150.0" text="Titolo" />
                 <TableColumn fx:id="columnAuthor" minWidth="100.0" prefWidth="100.0" text="Autore" />

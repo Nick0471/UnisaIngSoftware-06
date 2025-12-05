@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
+import java.time.LocalDate;
+
 
 /**
  * @brief Controller per l'inserimento di nuovi libri all'interno del catalogo.
@@ -38,11 +40,12 @@ public class AddLoanSceneController extends GuiController {
     /**
      * @brief Inizializza il controller
      *
-     * @note Fa in modo che i campi per l'inserimento dell'anno e del numero di copie accettino solo numeri interi
+     * @note Imposta la data odierna come inizio prestito e +30 giorni come fine prestito di default.
      */
     @FXML
     public void initialize() {
-
+        loanDatePicker.setValue(LocalDate.now());
+        returnDatePicker.setValue(LocalDate.now().plusDays(30));
     }
 
     /**

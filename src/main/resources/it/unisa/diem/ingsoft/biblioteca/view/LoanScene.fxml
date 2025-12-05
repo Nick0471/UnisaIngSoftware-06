@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f4f4f4;"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LoanController">
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LoanSceneController">
 
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #2D3447; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);"
@@ -91,7 +91,7 @@
                     </padding>
                 </HBox>
 
-                <TableView fx:id="loanTable" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+                <TableView fx:id="loanTable" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="columnUserId" minWidth="150.0" prefWidth="150.0" text="Matricola Utente" />
                         <TableColumn fx:id="columnIsbn" minWidth="150.0" prefWidth="150.0" text="ISBN Libro" />
@@ -130,7 +130,6 @@
 
                         <Button fx:id="btnReturn" mnemonicParsing="false" onAction="#handleReturnLoan" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);" text="Restituisci" />
 
-                        <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleDeleteLoan" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);" text="Rimuovi" />
                     </children>
                 </HBox>
             </children>
