@@ -132,7 +132,7 @@ public class BookSceneController extends GuiController implements Initializable 
                     int year = Integer.parseInt(query);
                     result = this.bookService.getAllByReleaseYear(year);
                 } catch (NumberFormatException e) {
-                    super.popUpError("L'anno deve essere un numero intero.");
+                    super.popUp("L'anno deve essere un numero intero.");
                     return;
                 }
                 break;
@@ -155,7 +155,7 @@ public class BookSceneController extends GuiController implements Initializable 
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
 
         if (selectedBook == null) {
-            super.popUpError("Seleziona un libro da rimuovere.");
+            super.popUp("Seleziona un libro da rimuovere.");
             return;
         }
 
@@ -165,11 +165,11 @@ public class BookSceneController extends GuiController implements Initializable 
             if (success) {
                 this.updateTable();
             } else {
-                super.popUpError("Libro specificato inesistente.");
+                super.popUp("Libro specificato inesistente.");
             }
 
         }catch(BookException e){
-            super.popUpError(e.getMessage());
+            super.popUp(e.getMessage());
         }
 
         this.updateTable();
@@ -188,7 +188,7 @@ public class BookSceneController extends GuiController implements Initializable 
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
 
         if (selectedBook == null) {
-            super.popUpError("Seleziona un libro da modificare.");
+            super.popUp("Seleziona un libro da modificare.");
             return;
         }
 
@@ -196,7 +196,7 @@ public class BookSceneController extends GuiController implements Initializable 
             this.bookService.updateByIsbn(selectedBook);
             this.updateTable();
         }catch(BookException e){
-            super.popUpError(e.getMessage());
+            super.popUp(e.getMessage());
         }
 
         this.updateTable();
@@ -233,7 +233,7 @@ public class BookSceneController extends GuiController implements Initializable 
             this.updateTable();
 
         } catch (IOException e) {
-            super.popUpError("Errore nel caricamento della finestra");
+            super.popUp("Errore nel caricamento della finestra");
         }
     }
 }

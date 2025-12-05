@@ -80,7 +80,7 @@ public class AddBookSceneController extends GuiController{
         if (title.isEmpty() || author.isEmpty() || genre.isEmpty() || isbn.isEmpty() || yearText.isEmpty() || copiesText.isEmpty()) {
             StringBuffer sb = new StringBuffer("Errore di Validazione,");
             sb.append("Compila tutti i campi obbligatori (Titolo, Autore, ISBN, Anno, Copie).");
-            super.popUpError(sb.toString());
+            super.popUp(sb.toString());
             return;
         }
 
@@ -92,18 +92,18 @@ public class AddBookSceneController extends GuiController{
             try{
                 this.bookService.add(book);
             }catch (BookException e){
-                super.popUpError(e.getMessage());
+                super.popUp(e.getMessage());
             }
 
 
             StringBuffer sb = new StringBuffer("Successo");
             sb.append("Libro aggiunto correttamente al catalogo");
-            super.popUpError(sb.toString());
+            super.popUp(sb.toString());
 
             super.closeScene(event);
 
         } catch (NumberFormatException e) {
-            super.popUpError("Anno e numero di copie devono essere dei valori inter");
+            super.popUp("Anno e numero di copie devono essere dei valori inter");
         }
     }
 

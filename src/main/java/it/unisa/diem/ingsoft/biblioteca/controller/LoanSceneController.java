@@ -148,7 +148,7 @@ public class LoanSceneController extends GuiController implements Initializable 
             this.updateTable();
 
         } catch (IOException e) {
-            super.popUpError("Errore nel caricamento della finestra");
+            super.popUp("Errore nel caricamento della finestra");
         }
     }
 
@@ -163,7 +163,7 @@ public class LoanSceneController extends GuiController implements Initializable 
         Loan selectedLoan = this.loanTable.getSelectionModel().getSelectedItem();
 
         if (selectedLoan == null) {
-            super.popUpError("Seleziona un prestito da restituire.");
+            super.popUp("Seleziona un prestito da restituire.");
             return;
         }
 
@@ -171,7 +171,7 @@ public class LoanSceneController extends GuiController implements Initializable 
             this.loanService.complete(selectedLoan.getUserId(), selectedLoan.getBookIsbn(), selectedLoan.getLoanDeadline());
             this.updateTable();
         }catch(LoanException e){
-            super.popUpError(e.getMessage());
+            super.popUp(e.getMessage());
         }
     }
 

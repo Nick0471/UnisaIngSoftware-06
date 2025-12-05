@@ -59,7 +59,7 @@ public abstract class GuiController {
      *
      * @param message Il messaggio di testo da visualizzare nel pop-up.
      */
-    protected void popUpError(String message) {
+    protected void popUp(String message) {
         // Creo un nuovo Stage
         Stage confirmationStage = new Stage();
         confirmationStage.setTitle("POP-UP");
