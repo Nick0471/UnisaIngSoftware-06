@@ -75,22 +75,22 @@ public class DatabaseBookService implements BookService {
 
     @Override
     public boolean removeByIsbn(String isbn) throws UnknownBookByIsbnException {
-        int rowsAffected = this.database.getJdbi()
-                .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE isbn = :isbn")
-                        .bind("isbn", isbn)
-                        .execute());
+        if(!this.existsByIsbn(isbn))
+            throw new UnknownBookByIsbnException();
 
-        if (rowsAffected == 0) {
-            throw new UnknownBookByIsbnException(isbn);
-        }
+        return this.database.getJdbi()
+                            .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE isbn = :isbn")
+                            .bind("isbn", isbn)
+                            .execute()) > 0;
 
-        return rowsAffected > 0;
+
+
     }
 
     @Override
     public void add(Book book) throws DuplicateBookByIsbnException {
-        if (this.getByIsbn(book.getIsbn()).isPresent()) {
-            throw new DuplicateBookByIsbnException(book.getIsbn());
+        if (this.existsByIsbn(book.getIsbn())) {
+            throw new DuplicateBookByIsbnException();
         }
 
         this.database.getJdbi()
@@ -161,5 +161,14 @@ public class DatabaseBookService implements BookService {
 
         if (rowAffected == 0)
             throw new UnknownBookByIsbnException(isbn);
+    }
+
+    public boolean existsByIsbn(String isbn) {
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT COUNT(isbn) FROM books"
+                                + "WHERE isbn = :isbn")
+                        .bind("isbn", isbn)
+                        .mapTo(Integer.class)
+                        .one()) > 0;
     }
 }

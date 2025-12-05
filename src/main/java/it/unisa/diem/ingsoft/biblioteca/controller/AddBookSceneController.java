@@ -1,5 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import javafx.event.ActionEvent;
@@ -87,8 +88,13 @@ public class AddBookSceneController extends GuiController{
             int year = Integer.parseInt(yearText);
             int copies = Integer.parseInt(copiesText);
 
-            Book book = new Book(title, author, genre, isbn, year, copies, copies, description);
-            this.bookService.add(book);
+            Book book = new Book(isbn, title, author, year, copies, copies, genre, description);
+            try{
+                this.bookService.add(book);
+            }catch (BookException e){
+                super.popUpError(e.getMessage());
+            }
+
 
             StringBuffer sb = new StringBuffer("Successo");
             sb.append("Libro aggiunto correttamente al catalogo");

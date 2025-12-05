@@ -74,7 +74,7 @@ public interface BookService {
      * @brief Aggiunge una lista di libri al catalogo
      * @param books La lista di libri da aggiungere
      */
-    void addAll(List<Book> books);
+    void addAll(List<Book> books) throws DuplicateBookByIsbnException;
 
     /**
      * @brief Aggiorna le informazioni di un libro già registrato
@@ -84,4 +84,11 @@ public interface BookService {
      *  bisogna eliminare e reinserire il libro
      */
     void updateByIsbn(Book book) throws UnknownBookByIsbnException;
+
+    /**
+     * @brief Controlla se un utente con un Isbn è già stato registrato
+     * @param isbn l'Isbn dell'utente da controllare
+     * @return true se il libro esiste, false altrimenti
+     */
+    boolean existsByIsbn(String isbn);
 }
