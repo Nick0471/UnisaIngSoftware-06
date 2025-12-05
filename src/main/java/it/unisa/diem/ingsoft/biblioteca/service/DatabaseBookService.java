@@ -26,8 +26,8 @@ public class DatabaseBookService implements BookService {
     public Optional<Book> getByIsbn(String isbn){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books"
-                                + "WHERE ISBN = :ISBN")
-                        .bind("ISBN", isbn)
+                                + "WHERE isbn = :isbn")
+                        .bind("isbn", isbn)
                         .mapTo(Book.class)
                         .findFirst());
     }
@@ -94,7 +94,7 @@ public class DatabaseBookService implements BookService {
 
         this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate(
-                                "INSERT INTO books (ISBN, title, author, genre, releaseYear) " +
+                                "INSERT INTO books (isbn, title, author, genre, releaseYear) " +
                                         "VALUES (:isbn, :title, :author, :genre, :releaseYear)"
                         )
                         .bind("isbn", book.getIsbn())
@@ -119,7 +119,7 @@ public class DatabaseBookService implements BookService {
 
         this.database.getJdbi()
                 .useHandle(handle -> {
-                    String sql = "INSERT INTO books (ISBN, title, author, genre, releaseYear) " +
+                    String sql = "INSERT INTO books (isbn, title, author, genre, releaseYear) " +
                             "VALUES (:isbn, :title, :author, :genre, :release_year)";
 
                     var batch = handle.prepareBatch(sql);
@@ -172,6 +172,7 @@ public class DatabaseBookService implements BookService {
                         .execute());
     }
 
+    @Override
     public boolean existsByIsbn(String isbn) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT COUNT(isbn) FROM books"
@@ -181,11 +182,14 @@ public class DatabaseBookService implements BookService {
                         .one()) > 0;
     }
 
+    @Override
     public List<String> existingIsbns(List<String> isbns){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT isbn FROM books WHERE isbn IN (<isbns>)")
                         .bindList("isbns", isbns)
                         .mapTo(String.class)
                         .list());
+    }
+}
     }
 }
