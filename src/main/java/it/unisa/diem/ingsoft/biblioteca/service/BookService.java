@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
@@ -13,7 +14,7 @@ public interface BookService {
      *  Esegue una query SQL per ottenere l'elenco completo di tutti i libri.
      * @return Una lista di libri contenente tutti i libri del databse.
      */
-    List<Book> getAll();
+    List<Book> getAll() throws DuplicateBookByIsbnException;
 
     /**
      * @brief Recupera un libro tramite il suo codice isbn.
@@ -74,7 +75,7 @@ public interface BookService {
      * @brief Aggiunge una lista di libri al catalogo
      * @param books La lista di libri da aggiungere
      */
-    void addAll(List<Book> books) throws DuplicateBookByIsbnException;
+    void addAll(List<Book> books) throws DuplicateBookByIsbnException, DuplicateBooksByIsbnException;
 
     /**
      * @brief Aggiorna le informazioni di un libro già registrato
@@ -91,4 +92,12 @@ public interface BookService {
      * @return true se il libro esiste, false altrimenti
      */
     boolean existsByIsbn(String isbn);
+
+    /**
+     * @brief Recupera tutti gli ISBN che esistono già nel database tra quelli forniti.
+     * @param isbns Una List<String> contenente gli ISBN da verificare.
+     * @return Una List<String> contenente solo gli ISBN che sono stati trovati
+     * esistenti nel database. La lista sarà vuota se non ci sono duplicati.
+     */
+    List<String> existingIsbns(List<String> isbns);
 }

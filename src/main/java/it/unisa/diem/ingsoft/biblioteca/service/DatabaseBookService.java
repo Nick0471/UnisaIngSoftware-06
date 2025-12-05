@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
@@ -107,7 +108,17 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public void addAll(List<Book> books) {
+    public void addAll(List<Book> books) throws DuplicateBooksByIsbnException {
+        List<String> newIsbns = books.stream()
+                .map(Book::getIsbn)
+                .toList();
+
+        List<String> existingIsbns = this.existingIsbns(newIsbns);
+
+        if (!existingIsbns.isEmpty()) {
+            throw new DuplicateBooksByIsbnException(newIsbns);
+        }
+
         this.database.getJdbi()
                 .useHandle(handle -> {
                     String sql = "INSERT INTO books (ISBN, title, author, genre, releaseYear) " +
