@@ -63,7 +63,7 @@ public class DatabaseUserServiceTest {
 
         assertFalse(() -> this.userService.getAll().isEmpty());
         assertFalse(() -> this.userService.getAllByIsbn().isEmpty());
-        assertFalse(() -> this.userService.getAllByEmail().isEmpty());
+        assertFalse(() -> this.userService.getAllOrderedByEmail().isEmpty());
         assertFalse(() -> this.userService.getAllByName().isEmpty());
     }
 
