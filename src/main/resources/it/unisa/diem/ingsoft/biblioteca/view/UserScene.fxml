@@ -131,6 +131,8 @@
                     <children>
                         <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAddUser" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);" text="+ Aggiungi Utente" />
 
+                        <Button fx:id="btnUserProfile" mnemonicParsing="false" onAction="#handleViewUserProfile" prefHeight="40.0" prefWidth="130.0" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);" text="Account Utente" />
+
                         <Button fx:id="btnModify" mnemonicParsing="false" onAction="#handleModifyUser" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);" text="Modifica" />
 
                         <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleDeleteUser" prefHeight="40.0" prefWidth="110.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);" text="Rimuovi" />
