@@ -66,8 +66,8 @@ public class PasswordChangeController extends GuiController {
 
 
         if (!this.passwordService.check(pass)) {
-            popUpError("Errore di Autenticazione: La password inserita non è corretta.");
-            return; //
+            popUpError("La password inserita non è corretta.");
+            return;
         }
 
         // Cambio password solo se rispetta il requisito di lunghezza (in questo caso == 6)
@@ -75,7 +75,7 @@ public class PasswordChangeController extends GuiController {
             this.passwordService.change(newPassword.getText());
             changeScene(event, "homepage.fxml");
         } else {
-            popUpError("La nuova password deve essere di 6 caratteri.");
+            popUpError("La nuova password deve essere da 6 a 10 caratteri.");
 
         }
 

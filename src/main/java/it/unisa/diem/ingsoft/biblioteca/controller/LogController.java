@@ -23,15 +23,20 @@ public class LogController extends GuiController {
     TextField usernameField;
 
     @FXML
-    PasswordField passwordField;
+    PasswordField insertedPassword;
 
     @FXML
     Button btnLogin;
 
     @FXML
     private void handleLogin(ActionEvent event)){
+        // Password inserita dall'utente da verificare
+        String pass = insertedPassword.getText();
 
-        if(usernameField.getText().equalsIgnoreCase(NOME CHE STA NEL DATABASE))
+        if (!this.passwordService.check(pass)) {
+            popUpError("La password inserita non è corretta.");
+        }
+
 
 
     }
