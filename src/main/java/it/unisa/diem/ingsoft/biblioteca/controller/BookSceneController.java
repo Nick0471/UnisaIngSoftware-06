@@ -1,7 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
+import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import javafx.collections.FXCollections;
@@ -57,11 +56,9 @@ public class BookSceneController extends GuiController implements Initializable 
      * @brief Costruttore del controller.
      * Inizializza il servizio per la gestione dei libri collegandosi al database.
      *
-     * @param db Database da utilizzare.
+     * @param bookService Il servizio da utilizzare.
      */
-    public BookSceneController(Database db){
-        this.bookService = new DatabaseBookService(db);
-    }
+    public BookSceneController(BookService bookService){ this.bookService = bookService;}
 
     /**
      * @brief Inizializza il controller.
@@ -119,21 +116,21 @@ public class BookSceneController extends GuiController implements Initializable 
 
         switch (type) {
             case "Titolo":
-                result = this.bookService.getByTitle(query);
+                result = this.bookService.getAllByTitle(query);
                 break;
             case "Autore":
-                result = this.bookService.getByAuthor(query);
+                result = this.bookService.getAllByAuthor(query);
                 break;
             case "Genere":
-                result = this.bookService.getByGenre(query);
+                result = this.bookService.getAllByGenre(query);
                 break;
             case "ISBN":
-                this.bookService.getByIsbn(query).ifPresent(result::add);
+                this.bookService.getAllByIsbn(query).ifPresent(result::add);
                 break;
             case "Anno":
                 try {
                     int year = Integer.parseInt(query);
-                    result = this.bookService.getByReleaseYear(year);
+                    result = this.bookService.getAllByReleaseYear(year);
                 } catch (NumberFormatException e) {
                     super.popUpError("L'anno deve essere un numero intero.");
                     return;
@@ -162,13 +159,20 @@ public class BookSceneController extends GuiController implements Initializable 
             return;
         }
 
-        boolean success = this.bookService.removeByIsbn(selectedBook.getIsbn());
+        try{
+            boolean success = this.bookService.removeByIsbn(selectedBook.getIsbn());
 
-        if (success) {
-            this.updateTable();
-        } else {
-            super.popUpError("Errore durante la rimozione del libro.");
+            if (success) {
+                this.updateTable();
+            } else {
+                super.popUpError("Libro specificato inesistente.");
+            }
+
+        }catch(BookException e){
+            super.popUpError(e.getMessage());
         }
+
+        this.updateTable();
     }
 
     /**
@@ -188,7 +192,13 @@ public class BookSceneController extends GuiController implements Initializable 
             return;
         }
 
-        this.bookService.updateByIsbn(selectedBook);
+        try{
+            this.bookService.updateByIsbn(selectedBook);
+            this.updateTable();
+        }catch(BookException e){
+            super.popUpError(e.getMessage());
+        }
+
         this.updateTable();
     }
 

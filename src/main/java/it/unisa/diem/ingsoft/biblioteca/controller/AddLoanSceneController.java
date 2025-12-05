@@ -1,6 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,15 +24,15 @@ public class AddLoanSceneController extends GuiController {
     @FXML private Button btnCancel;
     @FXML private Button btnConfirm;
 
-    private BookService bookService;
+    private LoanService loanService;
 
     /**
      * @brief Setter per il bookService.
      *
-     * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     * @param loanService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
      */
-    public void setBookService(BookService bookService) {
-        this.bookService = bookService;
+    public void setLoanService(LoanService loanService) {
+        this.loanService = loanService;
     }
 
     /**
