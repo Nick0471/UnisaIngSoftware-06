@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #f4f4f4;"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" style="-fx-background-color: #f4f4f4;"
             xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.AddLoanController">
 
     <top>
@@ -58,9 +58,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <padding>
-                <Insets bottom="30.0" left="40.0" right="60.0" top="50.0" />
+                <Insets bottom="30.0" left="40.0" right="60.0" top="40.0" />
             </padding>
             <children>
 
@@ -101,7 +102,14 @@
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <DatePicker fx:id="loanDatePicker" prefWidth="350.0" promptText="Seleziona la data" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <DatePicker fx:id="loanDatePicker" prefWidth="350.0" promptText="Seleziona la data iniziale" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Data Fine Prestito:" textFill="#2d3447" GridPane.rowIndex="3">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <DatePicker fx:id="returnDatePicker" prefWidth="350.0" promptText="Seleziona la data di restituzione" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
             </children>
         </GridPane>

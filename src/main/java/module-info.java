@@ -9,6 +9,7 @@ module it.unisa.diem.ingsoft.biblioteca {
     requires transitive jbcrypt;
     requires javafx.graphics;
     requires javafx.base;
+    requires it.unisa.diem.ingsoft.biblioteca;
 
     opens it.unisa.diem.ingsoft.biblioteca to javafx.fxml;
     exports it.unisa.diem.ingsoft.biblioteca;
