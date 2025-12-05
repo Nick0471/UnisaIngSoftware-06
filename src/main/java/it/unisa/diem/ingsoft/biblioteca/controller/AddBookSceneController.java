@@ -59,13 +59,13 @@ public class AddBookSceneController extends GuiController{
     }
 
     /**
-     * @brief Gestisce la conferma per l'aggiunta di un nuovo libro.
+     * Gestisce la conferma per l'aggiunta di un nuovo libro.
 
      * Recupera i dati dai campi di testo, verifica che i campi obbligatori non siano vuoti
      * e converte i valori numerici. Crea un nuovo oggetto Book e salva i dati sul database.
      * In caso di errore (campi vuoti o formato errato), mostra un popup di errore.
      *
-     * @param event L'evento generato dal click sul pulsante "Conferma".
+     * event L'evento generato dal click sul pulsante "Conferma".
      */
     @FXML
     private void handleConfirmAdd(ActionEvent event) {
@@ -108,9 +108,9 @@ public class AddBookSceneController extends GuiController{
     }
 
     /**
-     * @brief Chiude la finestra di aggiunta senza salvare le modifiche.
+     * Chiude la finestra di aggiunta senza salvare le modifiche.
      *
-     * @param event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
+     * event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
      */
     @FXML
     private void handleCancel(ActionEvent event) {

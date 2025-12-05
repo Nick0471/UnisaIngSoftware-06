@@ -79,7 +79,7 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Aggiorna la TableView recuperando tutti i prestiti attivi.
+     * Aggiorna la TableView recuperando tutti i prestiti attivi.
      */
     private void updateTable() {
         List<Loan> list = this.loanService.getAll();
@@ -88,9 +88,9 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Filtra i prestiti nella tabella in base alla query e al tipo di ricerca selezionato.
+     * Filtra i prestiti nella tabella in base alla query e al tipo di ricerca selezionato.
      *
-     * @param query La stringa di ricerca inserita dall'utente.
+     * query La stringa di ricerca inserita dall'utente.
      */
     @FXML
     private void filterBooks(String query) {
@@ -118,8 +118,8 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Torna alla scena Homepage.
-     * @param event L'evento generato dal click del pulsante.
+     * Torna alla scena Homepage.
+     * event L'evento generato dal click del pulsante.
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
@@ -127,8 +127,8 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Mostra la scena per l'aggiunta di un nuovo prestito.
-     * @param event L'evento generato dal click del pulsante.
+     * Mostra la scena per l'aggiunta di un nuovo prestito.
+     * event L'evento generato dal click del pulsante.
      */
     @FXML
     private void handleAddLoan(ActionEvent event) {
@@ -153,7 +153,7 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Salva la restituzione di un prestito.
+     * Salva la restituzione di un prestito.
      *
      * Verifica che un prestito sia selezionato
      * chiama il metodo di rimozione e aggiorna la lista dei prestiti.

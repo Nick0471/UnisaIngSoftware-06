@@ -18,8 +18,8 @@ public class HomepageController extends GuiController {
     @FXML private Button btnLoan;
 
     /**
-     * @brief Mostra la scena per la modifica della password del bibliotecario.
-     * @param event L'evento generato dal click del pulsante.
+     * Mostra la scena per la modifica della password del bibliotecario.
+     * event L'evento generato dal click del pulsante.
      */
     @FXML
     private void handleGoToViewProfile(ActionEvent event) {
@@ -27,8 +27,8 @@ public class HomepageController extends GuiController {
     }
 
     /**
-     * @brief Mostra la scena per la visualizzazione del catalogo dei libri.
-     * @param event L'evento generato dal click del pulsante.
+     * Mostra la scena per la visualizzazione del catalogo dei libri.
+     * event L'evento generato dal click del pulsante.
      */
     @FXML
     private void handleGoToViewBooks(ActionEvent event) {
@@ -36,8 +36,8 @@ public class HomepageController extends GuiController {
     }
 
     /**
-     * @brief Mostra la scena per la visualizzazione della lista utenti.
-     * @param event L'evento generato dal click del pulsante.
+     * Mostra la scena per la visualizzazione della lista utenti.
+     * event L'evento generato dal click del pulsante.
      */
     @FXML
     private void handleGoToViewUsers(ActionEvent event) {
@@ -45,8 +45,8 @@ public class HomepageController extends GuiController {
     }
 
     /**
-     * @brief Mostra la scena per la visualizzazione dei prestiti attivi.
-     * @param event L'evento generato dal click del pulsante.
+     * Mostra la scena per la visualizzazione dei prestiti attivi.
+     * event L'evento generato dal click del pulsante.
      */
     @FXML
     private void handleGoToViewLoans(ActionEvent event) {

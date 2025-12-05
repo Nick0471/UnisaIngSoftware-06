@@ -49,42 +49,42 @@ public class AddLoanSceneController extends GuiController {
     }
 
     /**
-     * @brief Gestisce la ricerca dell'utente tramite matricola.
+     * Gestisce la ricerca dell'utente tramite matricola.
      *
-     * @note Verifica l'esistenza dell'utente e la possibilità di concedergli il prestito.
+     * Verifica l'esistenza dell'utente e la possibilità di concedergli il prestito.
      */
     @FXML
-    void handleSearchUser(ActionEvent event) {
+    private void handleSearchUser(ActionEvent event) {
 
     }
 
     /**
-     * @brief Gestisce la ricerca del libro tramite ISBN.
+     * Gestisce la ricerca del libro tramite ISBN.
      *
-     * @note Verifica l'esistenza del libro e la disponibilità di copie.
+     * Verifica l'esistenza del libro e la disponibilità di copie.
      */
     @FXML
-    void handleSearchBook(ActionEvent event) {
+    private void handleSearchBook(ActionEvent event) {
 
     }
 
     /**
-     * @brief Conferma l'inserimento del prestito.
+     * Conferma l'inserimento del prestito.
      *
-     * @note Raccoglie i dati, effettua le validazioni finali e salva il prestito.
+     * Raccoglie i dati, effettua le validazioni finali e salva il prestito.
      */
     @FXML
-    void handleConfirmLoan(ActionEvent event) {
+    private void handleConfirmLoan(ActionEvent event) {
 
     }
 
     /**
-     * @brief Chiude la finestra di aggiunta senza salvare le modifiche.
+     * Chiude la finestra di aggiunta senza salvare le modifiche.
      *
-     * @param event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
+     * event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
      */
     @FXML
-    void handleCancel(ActionEvent event) {
+    private void handleCancel(ActionEvent event) {
         super.closeScene(event);
     }
 }
