@@ -14,14 +14,14 @@ import javafx.scene.control.PasswordField;
  * e la logica di business per la verifica delle credenziali.
  * Estende la classe base GuiController per le funzionalità comuni.
  */
-public class LogController extends GuiController {
+public class LogInController extends GuiController {
 
     /**
      * Service responsabile della verifica della sicurezza e delle password.
      */
     private PasswordService passwordService;
 
-    public LogController(PasswordService passwordService){
+    public LogInController(PasswordService passwordService){
         this.passwordService=passwordService;
     }
 

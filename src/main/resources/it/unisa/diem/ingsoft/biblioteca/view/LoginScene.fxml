@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LogController"
+<BorderPane fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LogInController"
             maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="500.0" prefWidth="700.0"
             style="-fx-background-color: #f4f7fa;"
