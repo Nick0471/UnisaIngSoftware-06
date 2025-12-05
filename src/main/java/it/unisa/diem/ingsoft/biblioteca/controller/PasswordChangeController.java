@@ -64,20 +64,20 @@ public class PasswordChangeController extends GuiController {
     @FXML
     private void handleGoToViewHomepage(ActionEvent event) {
         // Password inserita dall'utente
-        String pass = currentPassword.getText();
+        String pass = this.currentPassword.getText();
 
 
         if (!this.passwordService.check(pass)) {
-            popUpError("La password inserita non è corretta.");
+            this.popUpError("La password inserita non è corretta.");
             return;
         }
 
         // Cambio password solo se rispetta il requisito di lunghezza (in questo caso == 6)
-        if(newPassword.getText().length() >= 6 && newPassword.getText().length() >= 6){
-            this.passwordService.change(newPassword.getText());
-            changeScene(event, "homepageScene.fxml");
+        if(this.newPassword.getText().length() >= 6 && this.newPassword.getText().length() <= 10){
+            this.passwordService.change(this.newPassword.getText());
+            this.changeScene(event, "homepageScene.fxml");
         } else {
-            popUpError("La nuova password deve essere da 6 a 10 caratteri.");
+            this.popUpError("La nuova password deve essere da 6 a 10 caratteri.");
 
         }
 
