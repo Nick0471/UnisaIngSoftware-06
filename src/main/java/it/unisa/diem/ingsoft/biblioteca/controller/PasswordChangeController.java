@@ -1,6 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.DatabasePasswordService;
+
 import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,7 +60,7 @@ public class PasswordChangeController extends GuiController {
      * * @param event L'evento ActionEvent generato dal click sul bottone 'Aggiorna'.
      */
     @FXML
-    public void handleGoToViewHomepage(ActionEvent event) {
+    private void handleGoToViewHomepage(ActionEvent event) {
         // Password inserita dall'utente
         String pass = currentPassword.getText();
 
