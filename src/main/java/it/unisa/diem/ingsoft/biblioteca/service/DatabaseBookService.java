@@ -35,7 +35,7 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public List<Book> getByAuthor(String author){
+    public List<Book> getAllByAuthor(String author){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books"
                                 + " WHERE (author = :author)")
@@ -45,7 +45,7 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public List<Book> getByGenre(String genre){
+    public List<Book> getAllByGenre(String genre){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books"
                                 + " WHERE (genre = :genre)")
@@ -55,7 +55,7 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public List<Book> getByReleaseYear(int releaseYear){
+    public List<Book> getAllByReleaseYear(int releaseYear){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books"
                                 + " WHERE (release_year = :release_year)")
@@ -65,7 +65,7 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public List<Book> getByTitle(String title){
+    public List<Book> getAllByTitle(String title){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books"
                                 + " WHERE (title = :title)")

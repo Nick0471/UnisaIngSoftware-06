@@ -31,7 +31,7 @@ public interface BookService {
      * @param author Il nome dell'autore (Stringa) da cercare.
      * @return Una lista di libri contenente i libri dell'autore specificato.
      */
-    List<Book> getByAuthor(String author);
+    List<Book> getAllByAuthor(String author);
 
     /**
      * @brief Recupera tutti i libri appartenenti a un determinato genere.
@@ -39,7 +39,7 @@ public interface BookService {
      * @param genre Il genere (Stringa) dei libri da cercare.
      * @return Una lista di libri contenente i libri del genere specificato.
      */
-    List<Book> getByGenre(String genre);
+    List<Book> getAllByGenre(String genre);
 
     /**
      * @brief Recupera tutti i libri pubblicati in un anno specifico.
@@ -47,7 +47,7 @@ public interface BookService {
      * @param releaseYear L'anno di pubblicazione (intero) da cercare.
      * @return Una lista di libri contenente i libri pubblicati nell'anno specificato.
      */
-    List<Book> getByReleaseYear(int releaseYear);
+    List<Book> getAllByReleaseYear(int releaseYear);
 
     /**
      * @brief Recupera tutti i libri con un determinato titolo.
@@ -55,7 +55,7 @@ public interface BookService {
      * @param title Il titolo (Stringa) dei libri da cercare.
      * @return Una lista di libri contenente i libri con il titolo specificato.
      */
-    List<Book> getByTitle(String title);
+    List<Book> getAllByTitle(String title);
 
     /**
      * @brief Rimuove un libro dal database basandosi sul suo codice isbn.
