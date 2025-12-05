@@ -1,13 +1,11 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
-import it.unisa.diem.ingsoft.biblioteca.service.LogService;
 import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 
 
 /**
@@ -19,17 +17,11 @@ import javafx.scene.control.TextField;
 public class LogController extends GuiController {
 
     /**
-     * Service per la gestione dei log di sistema (opzionale/futuro utilizzo).
-     */
-    private LogService logService;
-
-    /**
      * Service responsabile della verifica della sicurezza e delle password.
      */
     private PasswordService passwordService;
 
-    public LogController(LogService logService, PasswordService passwordService){
-        this.logService=logService;
+    public LogController(PasswordService passwordService){
         this.passwordService=passwordService;
     }
 

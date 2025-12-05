@@ -2,6 +2,7 @@ package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.util.Optional;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
@@ -10,15 +11,13 @@ import it.unisa.diem.ingsoft.biblioteca.Database;
  * @brief Implementazione del PasswordService usando un Database per la persistenza
  */
 public class DatabasePasswordService implements PasswordService {
-    private final LogService logService;
     private final Database database;
 
     /**
      * @brief Costruisce un oggetto che implementa il PasswordService usando un database
      */
-    public DatabasePasswordService(Database database, LogService logService) {
+    public DatabasePasswordService(Database database) {
         this.database = database;
-        this.logService = logService;
     }
 
 	@Override
@@ -37,8 +36,7 @@ public class DatabasePasswordService implements PasswordService {
         Optional<String> hashOpt = this.getPasswordHash();
 
         if (hashOpt.isEmpty()) {
-            this.logService.logWarning("Il bibliotecario non ha ancora mai inserito una password di accesso!");
-            return true;
+            throw new UnsetPasswordException();
         }
 
         String hash = hashOpt.get();
