@@ -197,5 +197,3 @@ public class DatabaseBookService implements BookService {
                         .list());
     }
 }
-    }
-}
