@@ -84,4 +84,11 @@ public interface BookService {
      *  bisogna eliminare e reinserire il libro
      */
     void updateByIsbn(Book book) throws UnknownBookByIsbnException;
+
+    /**
+     * @brief Controlla se un utente con un Isbn è già stato registrato
+     * @param isbn l'Isbn dell'utente da controllare
+     * @return true se il libro esiste, false altrimenti
+     */
+    boolean existsByIsbn(String isbn);
 }

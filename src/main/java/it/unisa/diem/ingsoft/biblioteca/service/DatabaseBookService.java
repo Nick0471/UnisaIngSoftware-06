@@ -162,4 +162,13 @@ public class DatabaseBookService implements BookService {
         if (rowAffected == 0)
             throw new UnknownBookByIsbnException(isbn);
     }
+
+    public boolean existsByIsbn(String isbn) {
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT COUNT(isbn) FROM books"
+                                + "WHERE isbn = :isbn")
+                        .bind("isbn", isbn)
+                        .mapTo(Integer.class)
+                        .one()) > 0;
+    }
 }
