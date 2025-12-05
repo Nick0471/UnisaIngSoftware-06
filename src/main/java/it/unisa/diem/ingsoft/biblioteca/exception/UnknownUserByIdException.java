@@ -2,7 +2,7 @@ package it.unisa.diem.ingsoft.biblioteca.exception;
 
 /**
  * @brief Eccezione lanciata quando un'operazione viene richiesta per un utente la cui
- * matricola (ID) non è presente nel database.
+ * matricola non è presente nel database.
  */
 public class UnknownUserByIdException extends UserException {
 

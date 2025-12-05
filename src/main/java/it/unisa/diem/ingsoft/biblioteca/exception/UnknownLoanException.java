@@ -1,10 +1,9 @@
 package it.unisa.diem.ingsoft.biblioteca.exception;
 
 /**
- * @brief Eccezione lanciata quando un'operazione (es. restituzione o aggiornamento del prestito)
+ * @brief Eccezione lanciata quando un'operazione di update
  * viene richiesta per un prestito che non esiste o non è attivo per la combinazione specificata
- * di utente e libro. Indica, quindi, che il record del prestito atteso non è stato
- * trovato nel database.
+ * di utente e libro.
  */
 public class UnknownLoanException extends LoanException {
 
