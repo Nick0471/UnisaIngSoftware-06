@@ -3,8 +3,6 @@ package it.unisa.diem.ingsoft.biblioteca.exception;
 /**
  * @brief Eccezione lanciata quando si tenta di registrare un nuovo utente utilizzando
  * una matricola che è già associata a un account esistente nel database.
- * Questa eccezione indica una violazione del vincolo di univocità sul campo 'id' della
- * tabella utenti.
  */
 public class DuplicateUserByIdException extends UserException {
 
