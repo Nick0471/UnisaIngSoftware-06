@@ -19,6 +19,24 @@ public interface UserService {
     List<User> getAll();
 
     /**
+     * @brief Ritorna una lista di tutti gli utenti registrati con la matricola specificata
+     * @return Una lista contenente tutti gli utenti
+     */
+    List<User> getAllById(String id);
+
+    /**
+     * @brief Ritorna una lista di tutti gli utenti registrati con la email specificata
+     * @return Una lista contenente tutti gli utenti
+     */
+    List<User> getAllByEmail(String email);
+
+    /**
+     * @brief Ritorna una lista di tutti gli utenti registrati con il nome specificato
+     * @return Una lista contenente tutti gli utenti
+     */
+    List<User> getAllByFullName(String name, String surname);
+
+    /**
      * @brief Cerca un utente usando la sua matricola
      * @param id La matricola dell'utente
      * @return Un Optional contenente l'utente registrato, Optional.empty() altrimenti
