@@ -46,6 +46,7 @@ public class UserController extends GuiController implements Initializable{
     @FXML private Button btnAdd;
     @FXML private Button btnModify;
     @FXML private Button btnRemove;
+    @FXML private Button btnUserProfile;
 
 
     private UserService userService;
@@ -171,8 +172,7 @@ public class UserController extends GuiController implements Initializable{
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
-    private void handleAddUser(ActionEvent event) {
-        super.changeScene(event, "view/AddUserScene.fxml");
+    private void handleAddUser(ActionEvent event) {changeScene(event, "view/AddUserScene.fxml");
     }
 
 
@@ -182,9 +182,10 @@ public class UserController extends GuiController implements Initializable{
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
-    private void handleBackToHome(ActionEvent event) {
-        super.changeScene(event, "view/HomepageScene.fxml");
+    private void handleBackToHome(ActionEvent event) {changeScene(event, "view/HomepageScene.fxml");
     }
 
+
+    private void handleViewUserProfile(ActionEvent event) {changeScene(event, "view/AccountUSerScene.fxml");}
 
 }
