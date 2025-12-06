@@ -57,12 +57,20 @@ public class BookSceneController extends GuiController implements Initializable 
     private ObservableList<Book> books;
 
     /**
-     * @brief Costruttore del controller.
-     * Inizializza il servizio per la gestione dei libri collegandosi al database.
+     * @brief Costruttore vuoto del controller.
+     * Viene invocato dal FXMLLoader per caricare la nuova scena
      *
-     * @param bookService Il servizio da utilizzare.
      */
-    public BookSceneController(BookService bookService){ this.bookService = bookService;}
+    public BookSceneController() {}
+
+    /**
+     * @brief Setter per il bookService.
+     *
+     * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     */
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     /**
      * @brief Inizializza il controller.

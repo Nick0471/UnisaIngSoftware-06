@@ -34,6 +34,13 @@ public class AddBookSceneController extends GuiController{
     private boolean isEditMode = false;
 
     /**
+     * @brief Costruttore vuoto del controller.
+     * Viene invocato dal FXMLLoader per caricare la nuova scena
+     *
+     */
+    public AddBookSceneController() {}
+
+    /**
      * @brief Setter per il bookService.
      *
      * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
@@ -130,6 +137,7 @@ public class AddBookSceneController extends GuiController{
         } catch (NumberFormatException e) {
             super.popUp("Anno e numero di copie devono essere valori interi.");
         }
+    }
 
     /**
      * Chiude la finestra di aggiunta senza salvare le modifiche.
