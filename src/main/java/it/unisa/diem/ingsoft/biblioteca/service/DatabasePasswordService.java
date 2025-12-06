@@ -24,6 +24,12 @@ public class DatabasePasswordService implements PasswordService {
         this.database = database;
     }
 
+
+    /**
+     * @brief Cambia la password di accesso al software.
+     *  Esegue un updare SQL per aggiornare l'hash nel database.
+     * @param password La nuova password.
+     */
 	@Override
 	public void change(String password) {
         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
@@ -35,6 +41,13 @@ public class DatabasePasswordService implements PasswordService {
                     .execute());
 	}
 
+    /**
+     * @brief Controlla se la password inserita è corretta.
+     *  Esegue una select SQL per ottenere l'hash da confrontare.
+     * @param password La password da controllare.
+     * @return true se la password è corretta, false altrimenti.
+     * @throws UnsetPasswordException Se non c'è alcuna password salvata nel database.
+     */
 	@Override
 	public boolean check(String password) {
         Optional<String> hashOpt = this.getPasswordHash();
