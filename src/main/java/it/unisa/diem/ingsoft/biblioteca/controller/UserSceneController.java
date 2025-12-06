@@ -4,6 +4,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.collections.FXCollections;
@@ -35,10 +36,11 @@ import java.util.ResourceBundle;
  * o rimuovere utenti interagendo con "UserService".
  */
 
-public class UserController extends GuiController implements Initializable{
+public class UserSceneController extends GuiController implements Initializable{
 
     @FXML private ComboBox<String> searchType;
     @FXML private TextField searchField;
+    @FXML private TextField searchFieldSecondary;
 
 
     @FXML private TableView<User> userTable;
@@ -59,13 +61,15 @@ public class UserController extends GuiController implements Initializable{
 
     private UserService userService;
     private LoanService loanService;
+    private BookService bookService;
 
     private ObservableList<User> users;
 
-    //controller
-    public UserController(UserService userService){
+
+    public UserSceneController(UserService userService){
         this.userService=userService;
     }
+
 
 
     /**
@@ -83,14 +87,40 @@ public class UserController extends GuiController implements Initializable{
         columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        //Gli attributi di User sono i metodi di ricerca della Combobox
-        this.searchType.getItems().addAll("id", "cognome", "nome", "email");
-        this.searchType.setValue("id");
+        // Nota: Gli items della ComboBox sono già definiti nell'FXML (Tutti, Matricola, Cognome, Email).
+        // Non c'è bisogno di aggiungerli qui manualmente.
 
-        this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.filterUsers(newValue, newValue2);
+        // Listener per cambiare la visibilità del secondo campo di ricerca
+        searchType.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if ("Cognome".equals(newVal)) {
+                // Se filtro per Cognome, mostro il campo per il Nome
+                searchFieldSecondary.setVisible(true);
+                searchFieldSecondary.setManaged(true);
+                searchField.setPromptText("Inserisci Cognome...");
+                searchFieldSecondary.setPromptText("Inserisci Nome...");
+            } else {
+                // Altrimenti nascondo il secondo campo
+                searchFieldSecondary.setVisible(false);
+                searchFieldSecondary.setManaged(false);
+                searchFieldSecondary.clear(); // Pulisco il secondo campo per evitare filtri sporchi
+
+                // Cambio il prompt in base alla selezione
+                if("Matricola".equals(newVal)) searchField.setPromptText("Inserisci Matricola...");
+                else if("Email".equals(newVal)) searchField.setPromptText("Inserisci Email...");
+
+                else searchField.setPromptText("Cerca utente...");
+            }
+            // Aggiorno la tabella quando cambio filtro
+            executeFilter();
         });
+
+        // Listener sui campi di testo: ogni volta che si scrive, filtra
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> executeFilter());
+        searchFieldSecondary.textProperty().addListener((observable, oldValue, newValue) -> executeFilter());
+
+        // Caricamento iniziale
         this.updateTable();
+
     }
 
 
@@ -106,36 +136,52 @@ public class UserController extends GuiController implements Initializable{
 
 
     /**
-     * @brief Filtra gli utenti in tabella in base al criterio selezionato.
-     * Legge il valore della ComboBox (tipo di ricerca) e il testo inserito
-     * nel campo di ricerca. Aggiorna la tabella con i risultati filtrati.
-     * @param query La stringa da cercare. Se vuota o nulla, mostra tutti gli utenti.
+     * @brief Metodo helper per leggere i valori dai campi e chiamare il filtro.
      */
-    //Leggendo il valore della ComboBox restituisce una tabella filtrata per l'attributo specificato
-    @FXML
-    private void filterUsers(String query1, String query2) {
+    private void executeFilter() {
+        String type = searchType.getValue();
+        String val1 = searchField.getText();
+        String val2 = searchFieldSecondary.getText();
 
-        if (query == null || query.isEmpty()) {
+        filterUsers(type, val1, val2);
+    }
+
+
+    /**
+     * @brief Filtra gli utenti in tabella in base al criterio selezionato.
+     * @param type Il tipo di ricerca (Matricola, Cognome, Email, Tutti)
+     * @param query1 Il valore del primo campo (Matricola, Cognome, o Email)
+     * @param query2 Il valore del secondo campo (Nome, usato solo se type è Cognome)
+     */
+    private void filterUsers(String type, String query1, String query2) {
+
+        // Se il campo principale è vuoto e non siamo in modalità "Tutti", resetta la tabella
+        if ((query1 == null || query1.trim().isEmpty()) && !"Tutti".equals(type)) {
             this.updateTable();
             return;
         }
 
-
-        String type = this.searchType.getValue();
         List<User> result = new ArrayList<>();
 
+        if (type == null) type = "Tutti";
+
         switch (type) {
-            case "id":
+            case "Matricola":
                 this.userService.getById(query1).ifPresent(result::add);
                 break;
-            case "cognome":
-                result = this.userService.getAllByFullName(query1,query2); //Se sono uguali i cognomi ordina per nome
+
+            case "Cognome":
+                result = this.userService.getAllByFullNameContaining(query2, query1); //query1=cognome e query2=nome
                 break;
-            case "email":
-                result=this.userService.getAllByEmailContaining(query);
+
+            case "Email":
+                result = this.userService.getAllByEmailContaining(query1);
                 break;
+
+            case "Tutti":
             default:
-                this.updateTable();
+                result = this.userService.getAll();
+                break;
         }
 
         this.users = FXCollections.observableArrayList(result);
@@ -169,12 +215,13 @@ public class UserController extends GuiController implements Initializable{
 
 
 
+
     /**
      * @brief Gestisce la modifica di un utente.
-     * Recupera l'utente selezionato e invoca l'aggiornamento tramite il service.
+     *
      */
     @FXML
-    private void handleModifyUser() {
+    private void handleModifyUser(ActionEvent event) {
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser== null) {
@@ -182,8 +229,33 @@ public class UserController extends GuiController implements Initializable{
             return;
         }
 
-        this.userService.updateById(selectedUser);//L'id è l'unica cosa che non possiamo modificare
-        this.updateTable();
+        try {
+            //Carica l'FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml"));
+            Parent root = loader.load();
+
+            //Recupera il controller
+            AddUserSceneController controller = loader.getController();
+
+            //Passa i dati necessari
+            controller.setUserService(this.userService); // Passa il service
+            controller.EditUser(selectedUser);           // Passa l'utente e attiva la modalità Modifica
+
+            //Mostra la scena
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            popUp("Errore nel caricamento della vista Modifica Utente.");
+        }
+
+
+
+
+
     }
 
     /**
@@ -192,8 +264,32 @@ public class UserController extends GuiController implements Initializable{
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
-    private void handleAddUser(ActionEvent event) {changeScene(event, "view/AddUserScene.fxml");
+    private void handleAddUser(ActionEvent event) {
+        try {
+            // Carica l'FXML manualmente
+            // Assicurati che il percorso sia corretto (es. potrebbe servire "/" all'inizio)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml"));
+            Parent root = loader.load();
+
+            // Recupera il controller della nuova scena
+            AddUserSceneController controller = loader.getController();
+
+            // Passa il UserService (FONDAMENTALE)
+            controller.setUserService(this.userService);
+
+            // Mostra la nuova scena
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            popUp("Errore nel caricamento della vista Aggiungi Utente.");
+        }
     }
+
+
 
 
     /**
@@ -202,10 +298,13 @@ public class UserController extends GuiController implements Initializable{
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
-    private void handleBackToHome(ActionEvent event) {changeScene(event, "view/HomepageScene.fxml");
+    private void handleBackToHome(ActionEvent event) {
+        changeScene(event, "view/HomepageScene.fxml");
     }
 
 
+
+    @FXML
     private void handleViewUserProfile(ActionEvent event) {
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
@@ -218,7 +317,7 @@ public class UserController extends GuiController implements Initializable{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AccountUserScene.fxml"));
             Parent root = loader.load();
 
-            AccountUserController controller = loader.getController();
+            AccountUserSceneController controller = loader.getController();
 
             // Passiamo TUTTI i servizi necessari e l'utente selezionato
             controller.setUserService(this.userService);
