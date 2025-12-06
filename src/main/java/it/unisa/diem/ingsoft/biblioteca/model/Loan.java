@@ -41,7 +41,7 @@ public class Loan {
 
     /**
      * @brief Restituisce il codice ISBN del libro associato al prestito.
-     * @return Il codice ISBN (Stringa) del libro.
+     * @return Il codice ISBN del libro.
      */
     public String getBookIsbn() {
         return this.bookIsbn;
@@ -49,7 +49,7 @@ public class Loan {
 
     /**
      * @brief Restituisce la matricola dell'utente che ha effettuato il prestito.
-     * @return La matricola dell'utente (Stringa).
+     * @return La matricola dell'utente.
      */
     public String getUserId() {
         return this.userId;
@@ -57,7 +57,7 @@ public class Loan {
 
     /**
      * @brief Restituisce la data di inizio del prestito.
-     * @return La data di inizio (LocalDate).
+     * @return La data di inizio.
      */
     public LocalDate getLoanStart() {
         return this.loanStart;
@@ -65,7 +65,7 @@ public class Loan {
 
     /**
      * @brief Restituisce la data di fine prestito.
-     * @return La data di scadenza (LocalDate).
+     * @return La data di scadenza.
      */
     public LocalDate getLoanDeadline() {
         return this.loanDeadline;
@@ -84,7 +84,7 @@ public class Loan {
 
     /**
      * @brief Imposta la data di effettiva restituzione del libro.
-     * @param loanEnd La data di restituzione (LocalDate).
+     * @param loanEnd La data di restituzione.
      */
     public void setLoanEnd(LocalDate loanEnd) {
         this.loanEnd = loanEnd;
@@ -92,7 +92,7 @@ public class Loan {
 
     /**
      * @brief Imposta il codice ISBN del libro associato al prestito.
-     * @param bookIsbn Il nuovo codice ISBN (Stringa).
+     * @param bookIsbn Il nuovo codice ISBN.
      */
     public void setBookIsbn(String bookIsbn) {
         this.bookIsbn = bookIsbn;
@@ -100,7 +100,7 @@ public class Loan {
 
     /**
      * @brief Imposta la matricola dell'utente che ha effettuato il prestito.
-     * @param userId La nuova matricola dell' utente (Stringa).
+     * @param userId La nuova matricola dell' utente.
      */
     public void setUserId(String userId) {
         this.userId = userId;
@@ -108,7 +108,7 @@ public class Loan {
 
     /**
      * @brief Imposta la data di inizio del prestito.
-     * @param loanStart La nuova data di inizio (LocalDate).
+     * @param loanStart La nuova data di inizio.
      */
     public void setLoanStart(LocalDate loanStart) {
         this.loanStart = loanStart;
@@ -116,7 +116,7 @@ public class Loan {
 
     /**
      * @brief Imposta la data di fine prestito.
-     * @param loanDeadline La nuova data di scadenza (LocalDate).
+     * @param loanDeadline La nuova data di scadenza.
      */
     public void setLoanDeadline(LocalDate loanDeadline) {
         this.loanDeadline = loanDeadline;

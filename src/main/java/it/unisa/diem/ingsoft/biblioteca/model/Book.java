@@ -21,7 +21,7 @@ public class Book {
     /**
      * @brief Costruttore completo per inizializzare tutti gli attributi del libro.
      *
-     * @param ISBN Codice ISBN del libro.
+     * @param isbn Codice ISBN del libro.
      * @param title Titolo del libro.
      * @param author Autore/i del libro.
      * @param releaseYear Anno di pubblicazione.
@@ -30,9 +30,9 @@ public class Book {
      * @param genre Genere del libro.
      * @param description Descrizione del libro.
      */
-    public Book(String ISBN, String title, String author, int releaseYear, int totalCopies,
+    public Book(String isbn, String title, String author, int releaseYear, int totalCopies,
             int remainingCopies, String genre, String description) {
-        this.isbn = ISBN;
+        this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.releaseYear = releaseYear;
@@ -52,7 +52,7 @@ public class Book {
 
     /**
      * @brief Restituisce il codice ISBN del libro.
-     * @return Il codice ISBN (Stringa).
+     * @return Il codice ISBN.
      */
     public String getIsbn() {
         return this.isbn;
@@ -68,7 +68,7 @@ public class Book {
 
     /**
      * @brief Restituisce il titolo del libro.
-     * @return Il titolo (Stringa).
+     * @return Il titolo.
      */
     public String getTitle() {
         return this.title;
@@ -84,7 +84,7 @@ public class Book {
 
     /**
      * @brief Restituisce l'autore del libro.
-     * @return L'autore (Stringa).
+     * @return L'autore.
      */
     public String getAuthor() {
         return this.author;
@@ -100,7 +100,7 @@ public class Book {
 
     /**
      * @brief Restituisce l'anno di pubblicazione.
-     * @return L'anno di pubblicazione (intero).
+     * @return L'anno di pubblicazione.
      */
     public int getReleaseYear() {
         return this.releaseYear;
@@ -116,7 +116,7 @@ public class Book {
 
     /**
      * @brief Restituisce il numero totale di copie.
-     * @return Il numero totale di copie (intero).
+     * @return Il numero totale di copie.
      */
     public int getTotalCopies() {
         return this.totalCopies;
@@ -132,7 +132,7 @@ public class Book {
 
     /**
      * @brief Restituisce il numero di copie disponibili per il prestito.
-     * @return Il numero di copie disponibili (intero).
+     * @return Il numero di copie disponibili.
      */
     public int getRemainingCopies() {
         return this.remainingCopies;
@@ -148,7 +148,7 @@ public class Book {
 
     /**
      * @brief Restituisce il genere del libro.
-     * @return Il genere (Stringa).
+     * @return Il genere.
      */
     public String getGenre() {
         return this.genre;
@@ -164,7 +164,7 @@ public class Book {
 
     /**
      * @brief Restituisce la descrizione del libro.
-     * @return La descrizione (Stringa).
+     * @return La descrizione.
      */
     public String getDescription() {
         return this.description;
