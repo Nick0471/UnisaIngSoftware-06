@@ -54,14 +54,23 @@ public class LoanSceneController extends GuiController implements Initializable 
     @FXML private Button btnRemove;
 
     private LoanService loanService;
+    private UserService userService;
+    private BookService bookService;
     private ObservableList<Loan> loans;
+
     /**
      * @brief Costruttore del controller.
      * Inizializza il servizio per la gestione dei libri collegandosi al database.
      *
-     * @param loanService Il servizio da utilizzare
+     * @param loanService Il servizio da utilizzare per la gestione dei prestiti
+     * @param userService Il servizio da utilizzare per la gestione dehli utenti
+     * @param bookService Il servizio da utilizzare per la gestione dei libri
      */
-    public LoanSceneController(LoanService loanService){ this.loanService = loanService;}
+    public LoanSceneController(LoanService loanService, UserService userService, BookService bookService) {
+        this.loanService = loanService;
+        this.userService = userService;
+        this.bookService = bookService;
+    }
 
     /**
      * @brief Inizializza il controller.
@@ -149,9 +158,11 @@ public class LoanSceneController extends GuiController implements Initializable 
 
             AddLoanSceneController addController = loader.getController();
             addController.setLoanService(this.loanService);
+            addController.setUserService(this.userService);
+            addController.setBookService(this.bookService);
 
             Stage stage = new Stage();
-            stage.setTitle("Aggiungi Prestio");
+            stage.setTitle("Aggiungi Prestito");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
@@ -159,7 +170,8 @@ public class LoanSceneController extends GuiController implements Initializable 
             this.updateTable();
 
         } catch (IOException e) {
-            super.popUp("Errore nel caricamento della finestra");
+            super.popUp("Errore nel caricamento della finestra: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

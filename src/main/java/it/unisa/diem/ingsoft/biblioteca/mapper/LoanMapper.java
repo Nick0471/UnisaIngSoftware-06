@@ -8,15 +8,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 
 /**
-     * @brief Esegue la mappatura di una singola riga del ResultSet su un oggetto Loan
+ * @brief Mapper che realizza la corrispondenza tra i dati salvati nelle colonne del
+ * database della tabella 'loans' e un oggetto del modello {@link Loan}.
  */
 public class LoanMapper implements RowMapper<Loan> {
+    /**
+     * @brief Esegue la mappatura di una singola riga del ResultSet su un oggetto Loan
+     */
 	@Override
 	public Loan map(ResultSet rs, StatementContext ctx) throws SQLException {
         Loan loan = new Loan();

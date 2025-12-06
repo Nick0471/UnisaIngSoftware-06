@@ -31,14 +31,34 @@ public class AddLoanSceneController extends GuiController {
     @FXML private Button btnConfirm;
 
     private LoanService loanService;
+    private UserService userService;
+    private BookService bookService;
+
+    /**
+     * @brief Setter per il loanService.
+     *
+     * @param loanService Il servizio da utilizzare per la gestione dei prestiti settato dal chiamante
+     */
+    public void setLoanService(LoanService loanService) {
+        this.loanService = loanService;
+    }
+
+    /**
+     * @brief Setter per lo userService.
+     *
+     * @param userService Il servizio da utilizzare per la gestione degli utenti settato dal chiamante
+     */
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * @brief Setter per il bookService.
      *
-     * @param loanService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
      */
-    public void setLoanService(LoanService loanService) {
-        this.loanService = loanService;
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
     }
 
     /**
@@ -59,7 +79,17 @@ public class AddLoanSceneController extends GuiController {
      */
     @FXML
     private void handleSearchUser(ActionEvent event) {
+        String matricola = userMatricolaField.getText();
+        if (matricola.isEmpty()) {
+            super.popUp("Inserisci una matricola.");
+            return;
+        }
 
+        if (userService.existsById(matricola)) {
+            super.popUp("Utente trovato!");
+        } else {
+            super.popUp("Utente non trovato.");
+        }
     }
 
     /**
@@ -69,7 +99,17 @@ public class AddLoanSceneController extends GuiController {
      */
     @FXML
     private void handleSearchBook(ActionEvent event) {
+        String isbn = isbnField.getText();
+        if (isbn.isEmpty()) {
+            super.popUp("Inserisci un ISBN.");
+            return;
+        }
 
+        if (bookService.existsByIsbn(isbn)) {
+            super.popUp("Libro disponibile!");
+        } else {
+            super.popUp("Libro non trovato o ISBN errato.");
+        }
     }
 
     /**
@@ -79,7 +119,37 @@ public class AddLoanSceneController extends GuiController {
      */
     @FXML
     private void handleConfirmLoan(ActionEvent event) {
+        String matricola = userMatricolaField.getText();
+        String isbn = isbnField.getText();
+        LocalDate start = loanDatePicker.getValue();
+        LocalDate end = returnDatePicker.getValue();
 
+        if (matricola.isEmpty() || isbn.isEmpty() || start == null || end == null) {
+            super.popUp("Tutti i campi sono obbligatori.");
+            return;
+        }
+
+        if (end.isBefore(start)) {
+            super.popUp("La data di fine prestito non può essere precedente all'inizio.");
+            return;
+        }
+
+        if (!userService.existsById(matricola)) {
+            super.popUp("Matricola utente non valida.");
+            return;
+        }
+        if (!bookService.existsByIsbn(isbn)) {
+            super.popUp("ISBN libro non valido.");
+            return;
+        }
+
+        try {
+            loanService.register(matricola, isbn, start, end);
+            super.popUp("Prestito registrato con successo!");
+            super.closeScene(event);
+        } catch (LoanException e) {
+            super.popUp(e.getMessage());
+        }
     }
 
     /**

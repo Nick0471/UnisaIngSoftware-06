@@ -196,14 +196,27 @@ public class BookSceneController extends GuiController implements Initializable 
             return;
         }
 
-        try{
-            this.bookService.updateByIsbn(selectedBook);
-            this.updateTable();
-        }catch(BookException e){
-            super.popUp(e.getMessage());
-        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddBookScene.fxml"));
+            Parent root = loader.load();
 
-        this.updateTable();
+            AddBookSceneController controller = loader.getController();
+            controller.setBookService(this.bookService);
+
+            controller.setBookToEdit(selectedBook);
+
+            Stage stage = new Stage();
+            stage.setTitle("Modifica Libro");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            this.updateTable();
+
+        } catch (IOException e) {
+            super.popUp("Errore nel caricamento della finestra di modifica");
+            e.printStackTrace();
+        }
     }
 
     /**
