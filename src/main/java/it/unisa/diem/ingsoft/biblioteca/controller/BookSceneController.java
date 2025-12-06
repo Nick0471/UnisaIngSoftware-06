@@ -70,6 +70,8 @@ public class BookSceneController extends GuiController implements Initializable 
      */
     public void setBookService(BookService bookService) {
         this.bookService = bookService;
+
+        this.updateTable();
     }
 
     /**
@@ -98,8 +100,6 @@ public class BookSceneController extends GuiController implements Initializable 
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             this.filterBooks(newValue);
         });
-
-        this.updateTable();
     }
 
     /**

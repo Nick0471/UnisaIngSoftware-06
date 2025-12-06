@@ -35,29 +35,22 @@ public class AddLoanSceneController extends GuiController {
     private BookService bookService;
 
     /**
-     * @brief Setter per il loanService.
+     * @brief Costruttore vuoto del controller.
+     * Viene invocato dal FXMLLoader per caricare la nuova scena
      *
+     */
+    public AddLoanSceneController() {}
+
+    /**
+     * @brief Setter per i servizi di gestione dei prestiti, degli utenti e dei libri
      * @param loanService Il servizio da utilizzare per la gestione dei prestiti settato dal chiamante
-     */
-    public void setLoanService(LoanService loanService) {
-        this.loanService = loanService;
-    }
-
-    /**
-     * @brief Setter per lo userService.
-     *
      * @param userService Il servizio da utilizzare per la gestione degli utenti settato dal chiamante
-     */
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    /**
-     * @brief Setter per il bookService.
-     *
      * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     *
      */
-    public void setBookService(BookService bookService) {
+    public void setAddLoanServices(LoanService loanService, UserService userService, BookService bookService) {
+        this.loanService = loanService;
+        this.userService = userService;
         this.bookService = bookService;
     }
 
