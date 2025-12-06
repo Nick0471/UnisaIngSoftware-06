@@ -262,7 +262,3 @@ public class BookSceneController extends GuiController implements Initializable 
         }
     }
 }
-            super.popUp("Errore nel caricamento della finestra");
-        }
-    }
-}
