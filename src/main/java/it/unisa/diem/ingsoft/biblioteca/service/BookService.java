@@ -23,7 +23,7 @@ public interface BookService {
     List<Book> getAll() throws DuplicateBookByIsbnException;
 
     /**
-     * @brief Recupera un libro tramite il suo codice isbn.
+     * @brief Recupera un libro tramite il suo codice ISBN.
      * @param isbn Il codice isbn del libro da cercare.
      * @return Un Optional<Book> {@link Book} che contiene il libro se trovato,
      * altrimenti Optional.empty().
@@ -94,7 +94,7 @@ public interface BookService {
     void updateByIsbn(Book book) throws UnknownBookByIsbnException;
 
     /**
-     * @brief Controlla se un libro con determinato Isbn è già stato registrato.
+     * @brief Controlla se un libro con determinato ISBN è già stato registrato.
      * @param isbn l'ISBN del libro da controllare.
      * @return true se il libro esiste, false altrimenti.
      */
