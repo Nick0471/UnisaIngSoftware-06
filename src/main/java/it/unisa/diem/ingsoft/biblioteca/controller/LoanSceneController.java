@@ -1,3 +1,7 @@
+/**
+ * @brief Package dei controller
+ * @package it.unisa.diem.ingsoft.biblioteca.controller
+ */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
@@ -27,6 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * @brief Controller per la gestione della view dei prestit.
+ *
+ * Gestisce la visualizzazione dei prestiti e implementa un filtro di ricerca,
+ * inoltre rende possibile aggiungere o rimuovere prestiti attivi .
+ *
+ */
 public class LoanSceneController extends GuiController implements Initializable {
     @FXML private ComboBox<String> searchType;
     @FXML private TextField searchField;

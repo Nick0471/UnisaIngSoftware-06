@@ -1,3 +1,7 @@
+/**
+ * @brief Database utilizzato per salvare i dati
+ * @package it.unisa.diem.ingsoft.biblioteca
+ */
 package it.unisa.diem.ingsoft.biblioteca;
 
 import java.sql.Connection;

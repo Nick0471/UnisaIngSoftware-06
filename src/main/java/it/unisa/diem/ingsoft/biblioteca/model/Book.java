@@ -1,3 +1,7 @@
+/**
+ * @brief Package dei model
+ * @package it.unisa.diem.ingsoft.biblioteca.model
+ */
 package it.unisa.diem.ingsoft.biblioteca.model;
 
 public class Book {

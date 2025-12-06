@@ -61,6 +61,8 @@ public class DatabaseUserService implements UserService {
                     .findFirst());
 	}
 
+    // TODO: RIMUOVERE SOLO SE NON CI SONO PRESTITI ATTIIVI.
+    // STESSA COSA PER UN LIBRO
 	@Override
 	public boolean removeById(String id) {
         return this.database.getJdbi()
