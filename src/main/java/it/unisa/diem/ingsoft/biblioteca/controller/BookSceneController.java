@@ -198,33 +198,17 @@ public class BookSceneController extends GuiController implements Initializable 
     @FXML
     private void handleModifyBook() {
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
-
         if (selectedBook == null) {
             super.popUp("Seleziona un libro da modificare.");
             return;
         }
 
-        try {
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/AddBookScene.fxml"));
-            Parent root = loader.load();
-
-            AddBookSceneController controller = loader.getController();
+        super.modalScene("/view/AddBookScene.fxml", "Modifica Libro", (AddBookSceneController controller) -> {
             controller.setBookService(this.bookService);
-
             controller.setBookToEdit(selectedBook);
+        });
 
-            Stage stage = new Stage();
-            stage.setTitle("Modifica Libro");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            this.updateTable();
-
-        } catch (IOException e) {
-            super.popUp("Errore nel caricamento della finestra di modifica");
-            e.printStackTrace();
-        }
+        this.updateTable();
     }
 
     /**
@@ -242,23 +226,10 @@ public class BookSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddBook(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/AddBookScene.fxml"));
-            Parent root = loader.load();
+        super.modalScene("/view/AddBookScene.fxml", "Aggiungi Libro", (AddBookSceneController controller) -> {
+            controller.setBookService(this.bookService);
+        });
 
-            AddBookSceneController addController = loader.getController();
-            addController.setBookService(this.bookService);
-
-            Stage stage = new Stage();
-            stage.setTitle("Aggiungi Libro");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            this.updateTable();
-
-        } catch (IOException e) {
-            super.popUp("Errore nel caricamento della finestra");
-        }
+        this.updateTable();
     }
 }

@@ -168,25 +168,13 @@ public class LoanSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddLoan(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddLoanScene.fxml"));
-            Parent root = loader.load();
+        super.modalScene("/view/AddLoanScene.fxml", "Aggiungi Prestito",
+                (AddLoanSceneController controller) -> {
+                    controller.setAddLoanServices(this.loanService, this.userService, this.bookService);
+                }
+        );
 
-            AddLoanSceneController addController = loader.getController();
-            addController.setAddLoanServices(this.loanService, this.userService, this.bookService);
-
-            Stage stage = new Stage();
-            stage.setTitle("Aggiungi Prestito");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            this.updateTable();
-
-        } catch (IOException e) {
-            super.popUp("Errore nel caricamento della finestra: " + e.getMessage());
-            e.printStackTrace();
-        }
+        this.updateTable();
     }
 
     /**

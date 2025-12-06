@@ -6,6 +6,9 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.stage.Modality;
+import javafx.util.Callback;
+import java.util.function.Consumer;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -44,6 +47,36 @@ public abstract class GuiController {
             e.printStackTrace();
         } catch (NullPointerException e) {
             System.err.println("ERRORE: Il file '" + scene + "' non è stato trovato nel percorso specificato.");
+        }
+    }
+
+    /**
+     * @brief Apre una nuova finestra modale e permette di configurare il suo controller.
+     *
+     * @param fxmlPath Il percorso del file FXML da caricare.
+     * @param title Il titolo della nuova finestra.
+     * @param controllerSetup Passa i dati al controller.
+     * @param <T> Il tipo del controller che si sta caricando.
+     */
+    protected <T> void modalScene(String fxmlPath, String title, Consumer<T> controllerSetup) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            T controller = loader.getController();
+            if (controllerSetup != null) {
+                controllerSetup.accept(controller);
+            }
+
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(new Scene(root));
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            popUp("ERRORE: Impossibile caricare la finestra modale '" + fxmlPath);
         }
     }
 

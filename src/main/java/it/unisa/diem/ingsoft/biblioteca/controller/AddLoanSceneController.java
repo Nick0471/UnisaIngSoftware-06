@@ -83,6 +83,7 @@ public class AddLoanSceneController extends GuiController {
 
         if (userService.existsById(matricola)) {
             super.popUp("Utente trovato!");
+            userMatricolaField.setDisable(true);
         } else {
             super.popUp("Utente non trovato.");
         }
@@ -103,6 +104,7 @@ public class AddLoanSceneController extends GuiController {
 
         if (bookService.existsByIsbn(isbn)) {
             super.popUp("Libro disponibile!");
+            isbnField.setDisable(true);
         } else {
             super.popUp("Libro non trovato o ISBN errato.");
         }
