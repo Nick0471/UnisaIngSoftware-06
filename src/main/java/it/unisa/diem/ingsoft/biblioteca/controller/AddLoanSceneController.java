@@ -5,11 +5,14 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 
 import java.time.LocalDate;
 

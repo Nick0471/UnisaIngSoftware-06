@@ -61,8 +61,6 @@ public class LoanSceneController extends GuiController implements Initializable 
     private Button btnAdd;
     @FXML
     private Button btnReturn;
-    @FXML
-    private Button btnRemove;
 
     private LoanService loanService;
     private UserService userService;
