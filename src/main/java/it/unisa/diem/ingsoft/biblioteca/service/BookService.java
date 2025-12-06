@@ -89,8 +89,8 @@ public interface BookService {
     void updateByIsbn(Book book) throws UnknownBookByIsbnException;
 
     /**
-     * @brief Controlla se un utente con un Isbn è già stato registrato.
-     * @param isbn l'ISBN dell'utente da controllare.
+     * @brief Controlla se un libro con determinato Isbn è già stato registrato.
+     * @param isbn l'ISBN del libro da controllare.
      * @return true se il libro esiste, false altrimenti.
      */
     boolean existsByIsbn(String isbn);
