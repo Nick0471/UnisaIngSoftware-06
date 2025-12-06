@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,7 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
 
-public class UserProfileController extends GuiController {
+public class AccountUserController extends GuiController implements Initializable {
 
     @FXML
     private Button btnClose;
@@ -118,6 +118,5 @@ public class UserProfileController extends GuiController {
 
 
 }
-
 
 
