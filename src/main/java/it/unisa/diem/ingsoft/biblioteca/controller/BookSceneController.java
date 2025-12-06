@@ -91,7 +91,7 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Aggiorna la TableView recuperando tutti i libri del catalogo.
+     * Aggiorna la TableView recuperando tutti i libri del catalogo.
      */
     private void updateTable() {
         List<Book> list = this.bookService.getAll();
@@ -100,9 +100,9 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Filtra i libri nella tabella in base alla query e al tipo di ricerca selezionato.
+     * Filtra i libri nella tabella in base alla query e al tipo di ricerca selezionato.
      *
-     * @param query La stringa di ricerca inserita dall'utente.
+     * query La stringa di ricerca inserita dall'utente.
      */
     @FXML
     private void filterBooks(String query) {
@@ -145,7 +145,7 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Rimuove il libro selezionato dal catalogo.
+     * Rimuove il libro selezionato dal catalogo.
      *
      * Verifica che un libro sia selezionato, chiama il metodo di rimozione
      * e aggiorna il catalogo.
@@ -176,12 +176,12 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Modifica il libro selezionato.
+     * Modifica il libro selezionato.
      *
      * Verifica che un libro sia selezionato, chiama il metodo di modifica
      * e aggiorna il catalogo.
      *
-     * @note Non è possibile modificare il codice ISBN del libro selezionato
+     * Non è possibile modificare il codice ISBN del libro selezionato
      */
     @FXML
     private void handleModifyBook() {
@@ -203,8 +203,8 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Torna alla scena Homepage.
-     * @param event L'evento generato dal click del pulsante.
+     * Torna alla scena Homepage.
+     * event L'evento generato dal click del pulsante.
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
@@ -212,8 +212,8 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Mostra la scena per l'aggiunta di un nuovo libro nel catalogo.
-     * @param event L'evento generato dal click del pulsante.
+     * Mostra la scena per l'aggiunta di un nuovo libro nel catalogo.
+     * event L'evento generato dal click del pulsante.
      */
     @FXML
     private void handleAddBook(ActionEvent event) {
