@@ -10,43 +10,26 @@ import javafx.scene.control.PasswordField;
 
 /**
  * @brief Controller per la gestione della PasswrodScene.
- * * Questa classe gestisce l'aggiornamento della password di accesso del bibliotecario.
+ * Questa classe gestisce l'aggiornamento della password di accesso del bibliotecario.
  * Estende {@link GuiController} per ereditare le funzionalità comuni di navigazione,
  * (changeScene) e gestione dei messaggi di errore (popUpErrore).
  */
 public class PasswordChangeController extends GuiController {
 
-    /**
-     * Service responsabile della verifica della sicurezza e delle password.
-     */
+
     private final PasswordService passwordService;
 
+    public PasswordChangeController(PasswordService passwordService){this.passwordService=passwordService;}
 
-    public PasswordChangeController(PasswordService passwordService){
-        this.passwordService=passwordService;
-    }
-
-    /**
-     * @brief Bottone per confermare l'aggiornamento della password,.
-     */
     @FXML
     private Button btnUpdate;
 
-    /**
-     * @brief Campo di input per l'inserimento della password attuale.
-     */
     @FXML
     private PasswordField currentPassword;
 
-    /**
-     * @brief Campo di input per l'inserimento della nuova password.
-     */
     @FXML
     private PasswordField newPassword;
 
-    /**
-     * @brief Campo di input per la conferma della nuova password.
-     */
     @FXML
     private PasswordField newPasswordConfirm;
 
@@ -68,7 +51,7 @@ public class PasswordChangeController extends GuiController {
 
 
         if (!this.passwordService.check(pass)) {
-            this.popUpError("La password inserita non è corretta.");
+            this.popUp("La password inserita non è corretta.");
             return;
         }
 
@@ -77,7 +60,7 @@ public class PasswordChangeController extends GuiController {
             this.passwordService.change(this.newPassword.getText());
             this.changeScene(event, "homepageScene.fxml");
         } else {
-            this.popUpError("La nuova password deve essere da 6 a 10 caratteri.");
+            this.popUp("La nuova password deve essere da 6 a 10 caratteri.");
 
         }
 

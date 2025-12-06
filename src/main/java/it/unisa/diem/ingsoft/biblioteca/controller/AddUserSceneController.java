@@ -30,7 +30,6 @@ public class AddUserSceneController extends GuiController{
 
     /**
      * @brief Inizializza il controller
-     *
      * @note Fa in modo che il campo per l'inserimento della matricola accetti solo numeri interi
      */
     @FXML

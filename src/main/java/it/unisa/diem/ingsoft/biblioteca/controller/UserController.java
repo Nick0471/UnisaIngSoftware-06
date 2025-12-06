@@ -50,12 +50,7 @@ public class UserController extends GuiController implements Initializable{
 
     private UserService userService;
 
-    /**
-     * Lista osservabile che permette l'inserimento degli utenti nella TableView.
-     */
     private ObservableList<User> users;
-
-
 
     //controller
     public UserController(UserService userService){ this.userService=userService;}
@@ -143,14 +138,14 @@ public class UserController extends GuiController implements Initializable{
     private void handleDeleteUser(){
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
         if (selectedUser== null) {
-            super.popUpError("Seleziona un utente da rimuovere.");
+            super.popUp("Seleziona un utente da rimuovere.");
             return;
         }
 
         if(this.userService.removeById(selectedUser.getId()))
             this.updateTable();
         else
-            super.popUpError("Errore durante la rimozione del utente.");
+            super.popUp("Errore durante la rimozione del utente.");
     }
 
     /**
@@ -162,7 +157,7 @@ public class UserController extends GuiController implements Initializable{
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser== null) {
-            super.popUpError("Seleziona un utente da modificare.");
+            super.popUp("Seleziona un utente da modificare.");
             return;
         }
 

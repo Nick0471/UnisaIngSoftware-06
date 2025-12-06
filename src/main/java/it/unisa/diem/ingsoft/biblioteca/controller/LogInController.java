@@ -16,28 +16,18 @@ import javafx.scene.control.PasswordField;
  */
 public class LogInController extends GuiController {
 
-    /**
-     * Service responsabile della verifica della sicurezza e delle password.
-     */
+
     private PasswordService passwordService;
 
     public LogInController(PasswordService passwordService){
         this.passwordService=passwordService;
     }
 
-
-    /**
-     * Campo di input per l'inserimento della password
-     */
     @FXML
-    PasswordField insertedPassword;
+    private PasswordField insertedPassword;
 
-
-    /**
-     * @brief Bottone per confermare l'ccesso.
-     */
     @FXML
-    Button btnLogin;
+    private Button btnLogin;
 
 
     /**
@@ -55,7 +45,7 @@ public class LogInController extends GuiController {
         if (this.passwordService.check(pass))
             changeScene(event,"homepageScene.fxml");
         else
-            popUpError("La password inserita non è corretta.");
+            popUp("La password inserita non è corretta.");
 
     }
 
