@@ -44,10 +44,9 @@ public abstract class GuiController {
             stage.show();
 
         } catch (IOException e) {
-            System.err.println("ERRORE: Impossibile caricare il file '" + scene + "'");
-            e.printStackTrace();
+            this.popUp("ERRORE: Impossibile caricare il file '" + scene + "'");
         } catch (NullPointerException e) {
-            System.err.println("ERRORE: Il file '" + scene + "' non è stato trovato nel percorso specificato.");
+            this.popUp("ERRORE: Il file '" + scene + "' non è stato trovato nel percorso specificato.");
         }
     }
 
@@ -77,7 +76,7 @@ public abstract class GuiController {
             stage.showAndWait();
 
         } catch (IOException e) {
-            popUp("ERRORE: Impossibile caricare la finestra modale '" + fxmlPath);
+            this.popUp("ERRORE: Impossibile caricare la finestra modale '" + fxmlPath);
         }
     }
 
