@@ -26,6 +26,11 @@ public class DatabaseBookService implements BookService {
         this.database = database;
     }
 
+    /**
+     * @brief Recupera tutti i libri presenti nel database.
+     *  Esegue una query SQL per ottenere l'elenco completo di tutti i libri.
+     * @return Una lista di libri contenente tutti i libri del catalogo.
+     */
     @Override
     public List<Book> getAll() {
         return this.database.getJdbi()
@@ -34,6 +39,13 @@ public class DatabaseBookService implements BookService {
                         .list());
     }
 
+    /**
+     * @brief Recupera un libro tramite il suo codice ISBN.
+     *  Esegue una query SQL per ottenere il libro dal database.
+     * @param isbn Il codice isbn del libro da cercare.
+     * @return Un Optional<Book> {@link Book} che contiene il libro se trovato,
+     * altrimenti Optional.empty().
+     */
     @Override
     public Optional<Book> getByIsbn(String isbn){
         return this.database.getJdbi()
@@ -44,6 +56,14 @@ public class DatabaseBookService implements BookService {
                         .findFirst());
     }
 
+    /**
+     * @brief Recupera una lista di libri il cui autore contiene la stringa specificata
+     *  in qualsiasi posizione.
+     *  Esegue una query SQL per ottenere la lista dei libri dal database.
+     * @param author Il nome dell'autore da cercare.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * criterio.
+     */
     @Override
     public List<Book> getAllByAuthorContaining(String author){
         return this.database.getJdbi()
@@ -54,6 +74,14 @@ public class DatabaseBookService implements BookService {
                         .list());
     }
 
+    /**
+     * @brief Recupera una lista di libri il cui genere contiene la stringa specificata
+     *  in qualsiasi posizione.
+     *  Esegue una query SQL per ottenere la lista dei libri dal database.
+     * @param genre Il genere dei libri da cercare.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * criterio.
+     */
     @Override
     public List<Book> getAllByGenreContaining(String genre){
         return this.database.getJdbi()
@@ -64,6 +92,13 @@ public class DatabaseBookService implements BookService {
                         .list());
     }
 
+    /**
+     * @brief Recupera una lista di libri il cui anno di pubblicazione coincide con quello specificato.
+     *  Esegue una query SQL per ottenere la lista dei libri dal database.
+     * @param releaseYear L'anno di pubblicazione da cercare.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * criterio.
+     */
     @Override
     public List<Book> getAllByReleaseYear(int releaseYear){
         return this.database.getJdbi()
@@ -74,6 +109,14 @@ public class DatabaseBookService implements BookService {
                         .list());
     }
 
+    /**
+     * @brief Recupera una lista di libri il cui titolo contiene la stringa specificata
+     *  in qualsiasi posizione.
+     *  Esegue una query SQL per ottenere la lista dei libri dal database.
+     * @param title Il titolo dei libri da cercare.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * criterio.
+     */
     @Override
     public List<Book> getAllByTitleContaining(String title){
         return this.database.getJdbi()
@@ -84,6 +127,12 @@ public class DatabaseBookService implements BookService {
                         .list());
     }
 
+    /**
+     * @brief Rimuove un libro dal catalogo basandosi sul suo codice ISBN.
+     *  Esegue una delete SQL per rimuovere il libro se presente nel database.
+     * @param isbn Il codice ISBN del libro da rimuovere.
+     * @return true se il libro è stato rimosso, false altrimenti.
+     */
     @Override
     public boolean removeByIsbn(String isbn) throws UnknownBookByIsbnException {
         if(!this.existsByIsbn(isbn))
@@ -99,6 +148,11 @@ public class DatabaseBookService implements BookService {
 
     }
 
+    /**
+     * @brief Aggiunge un libro al catalogo.
+     *  Esegue un insert SQL per l'inserimento del libro nel database.
+     * @param book Il libro da aggiungere.
+     */
     @Override
     public void add(Book book) throws DuplicateBookByIsbnException {
         if (this.existsByIsbn(book.getIsbn())) {
@@ -118,6 +172,11 @@ public class DatabaseBookService implements BookService {
                         .execute());
     }
 
+    /**
+     * @brief Aggiunge una lista di libri al catalogo.
+     *  Esegue una insert SQL per l'inserimento dei libri nel database.
+     * @param books La lista di libri da aggiungere.
+     */
     @Override
     public void addAll(List<Book> books) throws DuplicateBooksByIsbnException {
         List<String> newIsbns = books.stream()
@@ -150,6 +209,14 @@ public class DatabaseBookService implements BookService {
                 });
     }
 
+    /**
+     * @brief Aggiorna le informazioni di un libro già registrato.
+     *  Esegue un update SQL per la modifica delle informazioni nel database.
+     * @param book L'oggetto Book contenente l'ISBN del libro da modificare e
+     *  le nuove informazioni da salvare.
+     * @invariant L'ISBN del libro è un invariante. Se è necessario modificarlo
+     *  bisogna eliminare e reinserire il libro.
+     */
     @Override
     public void updateByIsbn(Book book) throws UnknownBookByIsbnException{
         if(!this.existsByIsbn(book.getIsbn()))
@@ -185,6 +252,12 @@ public class DatabaseBookService implements BookService {
                         .execute());
     }
 
+    /**
+     * @brief Controlla se un libro con determinato ISBN è già stato registrato.
+     *  Esegue una select count SQL per contare gli ISBN già presenti nel database.
+     * @param isbn l'ISBN del libro da controllare.
+     * @return true se il libro esiste, false altrimenti.
+     */
     @Override
     public boolean existsByIsbn(String isbn) {
         return this.database.getJdbi()
@@ -195,6 +268,13 @@ public class DatabaseBookService implements BookService {
                         .one()) > 0;
     }
 
+    /**
+     * @brief Recupera tutti gli ISBN che esistono già nel catalogo tra quelli forniti.
+     *  Esegue una select SQL per recuperare la lista degli isbn già presenti.
+     * @param isbns Una List<String> contenente gli ISBN da verificare.
+     * @return Una List<String> contenente solo gli ISBN già esistenti nel catalogo.
+     *  La lista sarà vuota se non ci sono duplicati.
+     */
     @Override
     public List<String> existingIsbns(List<String> isbns){
         return this.database.getJdbi()
@@ -204,6 +284,12 @@ public class DatabaseBookService implements BookService {
                         .list());
     }
 
+    /**
+     * @brief Conta le copie rimanenti di un libro.
+     * Esegue una select SQL per prendere la colonna relativa alle copie rimanenti nel database.
+     * @param isbn L'ISBN del libro da controllare.
+     * @return Il numero di copie rimanenti.
+     */
 	@Override
 	public int countRemainingCopies(String isbn) {
         return this.database.getJdbi()

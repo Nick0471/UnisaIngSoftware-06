@@ -18,7 +18,6 @@ import it.unisa.diem.ingsoft.biblioteca.model.Book;
 public interface BookService {
     /**
      * @brief Recupera tutti i libri presenti nel catalogo.
-     *  Esegue una query SQL per ottenere l'elenco completo di tutti i libri.
      * @return Una lista di libri contenente tutti i libri del catalogo.
      */
     List<Book> getAll() throws DuplicateBookByIsbnException;
