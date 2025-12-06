@@ -136,8 +136,19 @@ public class AddLoanSceneController extends GuiController {
             super.popUp("Matricola utente non valida.");
             return;
         }
+
+        if (loanService.countById(matricola) == 3) {
+            super.popUp("L'utente ha già tre prestiti attivi.\nRestituire almeno un libro per poter richiedere un nuovo prestito");
+            return;
+        }
+
         if (!bookService.existsByIsbn(isbn)) {
             super.popUp("ISBN libro non valido.");
+            return;
+        }
+
+        if (bookService.countRemainingCopies(isbn) == 0) {
+            super.popUp("Attualmente non ci sono copie disponibili per questo libro.");
             return;
         }
 
