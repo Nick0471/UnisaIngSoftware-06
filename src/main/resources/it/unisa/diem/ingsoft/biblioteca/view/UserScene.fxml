@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane
-        fx:controller = "it.unisa.diem.ingsoft.biblioteca.controller.UserSceneController"
+        fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.UserSceneController"
         maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f4f4f4;"
         xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 
@@ -62,7 +62,6 @@
                                     <String fx:value="Tutti" />
                                     <String fx:value="Matricola" />
                                     <String fx:value="Cognome" />
-                                    <String fx:value="Nome" />
                                     <String fx:value="Email" />
                                 </FXCollections>
                             </items>
@@ -81,6 +80,12 @@
                         </Label>
 
                         <TextField fx:id="searchField" promptText="Cerca utente..." style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+
+                        <TextField fx:id="searchFieldSecondary" managed="false" promptText="Nome (Opzionale)..." style="-fx-background-color: transparent; -fx-border-color: transparent transparent transparent #ddd;" visible="false" HBox.hgrow="ALWAYS">
                             <font>
                                 <Font size="14.0" />
                             </font>
