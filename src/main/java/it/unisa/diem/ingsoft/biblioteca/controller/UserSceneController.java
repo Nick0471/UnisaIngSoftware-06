@@ -171,7 +171,7 @@ public class UserSceneController extends GuiController implements Initializable{
                 break;
 
             case "Cognome":
-                result = this.userService.getAllByFullNameContaining(query2, query1); //query1=cognome e query2=nome
+                result = this.userService.getAllByFullNameContaining(query1, query2); //query1=cognome e query2=nome
                 break;
 
             case "Email":
