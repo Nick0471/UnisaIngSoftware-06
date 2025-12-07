@@ -6,10 +6,10 @@ package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.util.Optional;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;
 
 /**
  * @brief Implementazione del PasswordService usando un Database per la persistenza
@@ -29,7 +29,7 @@ public class DatabasePasswordService implements PasswordService {
         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         this.database.getJdbi()
-            .useHandle(handle -> handle.createUpdate("UPDATE auth"
+            .useHandle(handle -> handle.createUpdate("UPDATE auth "
                         + "SET password_hash = :password_hash")
                     .bind("password_hash", hash)
                     .execute());

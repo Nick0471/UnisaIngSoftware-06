@@ -34,7 +34,7 @@ public class DatabaseUserService implements UserService {
             throw new DuplicateUserByIdException();
 
         this.database.getJdbi()
-            .useHandle(handle -> handle.createUpdate("INSERT INTO users(id, email, name, surname)"
+            .useHandle(handle -> handle.createUpdate("INSERT INTO users(id, email, name, surname) "
                         + "VALUES (:id, :email, :name, :surname)")
                     .bind("id", user.getId())
                     .bind("email", user.getEmail())
@@ -54,15 +54,13 @@ public class DatabaseUserService implements UserService {
 	@Override
 	public Optional<User> getById(String id) {
         return this.database.getJdbi()
-            .withHandle(handle -> handle.createQuery("SELECT * FROM users"
+            .withHandle(handle -> handle.createQuery("SELECT * FROM users "
                         + "WHERE id = :id")
                     .bind("id", id)
                     .mapTo(User.class)
                     .findFirst());
 	}
 
-    // TODO: RIMUOVERE SOLO SE NON CI SONO PRESTITI ATTIIVI.
-    // STESSA COSA PER UN LIBRO
 	@Override
 	public boolean removeById(String id) {
         return this.database.getJdbi()
@@ -82,8 +80,8 @@ public class DatabaseUserService implements UserService {
         String surname = user.getSurname();
 
         this.database.getJdbi()
-            .withHandle(handle -> handle.createUpdate("UPDATE users"
-                        + "SET email = :email, name = :name, surname = :surname"
+            .withHandle(handle -> handle.createUpdate("UPDATE users "
+                        + "SET email = :email, name = :name, surname = :surname "
                         + "WHERE id = :id")
                     .bind("id", id)
                     .bind("email", email)
@@ -95,7 +93,7 @@ public class DatabaseUserService implements UserService {
 	@Override
 	public boolean existsById(String id) {
         return this.database.getJdbi()
-            .withHandle(handle -> handle.createQuery("SELECT COUNT(id) FROM users"
+            .withHandle(handle -> handle.createQuery("SELECT COUNT(id) FROM users "
                         + "WHERE id = :id")
                     .bind("id", id)
                     .mapTo(Integer.class)
@@ -105,7 +103,7 @@ public class DatabaseUserService implements UserService {
 	@Override
 	public boolean existsByEmail(String email) {
         return this.database.getJdbi()
-            .withHandle(handle -> handle.createQuery("SELECT COUNT(email) FROM users"
+            .withHandle(handle -> handle.createQuery("SELECT COUNT(email) FROM users "
                         + "WHERE email = :email")
                     .bind("email", email)
                     .mapTo(Integer.class)
@@ -113,29 +111,29 @@ public class DatabaseUserService implements UserService {
 	}
 
 	@Override
-	public List<User> getAllById(String id) {
+	public List<User> getAllByIdContaining(String id) {
         return this.database.getJdbi()
-                .withHandle(handle -> handle.createQuery("SELECT * FROM users"
-                                + "WHERE id = :id")
-                        .bind("id", id)
+                .withHandle(handle -> handle.createQuery("SELECT * FROM users "
+                                + "WHERE id LIKE :id")
+                        .bind("id", "%" + id + "%")
                         .mapTo(User.class)
                         .list());
 	}
 
 	@Override
-	public List<User> getAllByEmail(String email) {
+	public List<User> getAllByEmailContaining(String email) {
         return this.database.getJdbi()
-                .withHandle(handle -> handle.createQuery("SELECT * FROM users"
-                                + "WHERE email = :email")
-                        .bind("email", email)
+                .withHandle(handle -> handle.createQuery("SELECT * FROM users "
+                                + "WHERE email LIKE :email")
+                        .bind("email", "%" + email + "%")
                         .mapTo(User.class)
                         .list());
 	}
 
 	@Override
-	public List<User> getAllByFullName(String name, String surname) {
+	public List<User> getAllByFullNameContaining(String name, String surname) {
         return this.database.getJdbi()
-            .withHandle(handle -> handle.createQuery("SELECT * FROM users"
+            .withHandle(handle -> handle.createQuery("SELECT * FROM users "
                         + "WHERE name LIKE :name AND surname LIKE :surname")
                     .bind("name", "%" + name + "%")       
                     .bind("surname", "%" + surname + "%") 

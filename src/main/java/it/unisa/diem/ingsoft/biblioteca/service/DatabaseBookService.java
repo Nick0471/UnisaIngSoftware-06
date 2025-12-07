@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.exception.*;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 /**
@@ -35,7 +37,7 @@ public class DatabaseBookService implements BookService {
     @Override
     public Optional<Book> getByIsbn(String isbn){
         return this.database.getJdbi()
-                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books "
                                 + "WHERE isbn = :isbn")
                         .bind("isbn", isbn)
                         .mapTo(Book.class)
@@ -43,21 +45,21 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public List<Book> getAllByAuthor(String author){
+    public List<Book> getAllByAuthorContaining(String author){
         return this.database.getJdbi()
-                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
-                                + " WHERE (author = :author)")
-                        .bind("author", author)
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books "
+                                + "WHERE author LIKE :author")
+                        .bind("author", "%" + author + "%")
                         .mapTo(Book.class)
                         .list());
     }
 
     @Override
-    public List<Book> getAllByGenre(String genre){
+    public List<Book> getAllByGenreContaining(String genre){
         return this.database.getJdbi()
-                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
-                                + " WHERE (genre = :genre)")
-                        .bind("genre", genre)
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books "
+                                + "WHERE genre LIKE :genre")
+                        .bind("genre", "%" + genre + "%")
                         .mapTo(Book.class)
                         .list());
     }
@@ -65,19 +67,19 @@ public class DatabaseBookService implements BookService {
     @Override
     public List<Book> getAllByReleaseYear(int releaseYear){
         return this.database.getJdbi()
-                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
-                                + " WHERE (release_year = :release_year)")
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books "
+                                + "WHERE release_year = :release_year")
                         .bind("release_year", releaseYear)
                         .mapTo(Book.class)
                         .list());
     }
 
     @Override
-    public List<Book> getAllByTitle(String title){
+    public List<Book> getAllByTitleContaining(String title){
         return this.database.getJdbi()
-                .withHandle(handle -> handle.createQuery("SELECT * FROM books"
-                                + " WHERE (title = :title)")
-                        .bind("title", title)
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books "
+                                + "WHERE title LIKE :title")
+                        .bind("title", "%" + title + "%")
                         .mapTo(Book.class)
                         .list());
     }
@@ -88,7 +90,8 @@ public class DatabaseBookService implements BookService {
             throw new UnknownBookByIsbnException();
 
         return this.database.getJdbi()
-                            .withHandle(handle -> handle.createUpdate("DELETE FROM books WHERE isbn = :isbn")
+                            .withHandle(handle -> handle.createUpdate("DELETE FROM books "
+                                        + "WHERE isbn = :isbn")
                             .bind("isbn", isbn)
                             .execute()) > 0;
 
@@ -129,8 +132,8 @@ public class DatabaseBookService implements BookService {
 
         this.database.getJdbi()
                 .useHandle(handle -> {
-                    String sql = "INSERT INTO books (isbn, title, author, genre, releaseYear) " +
-                            "VALUES (:isbn, :title, :author, :genre, :release_year)";
+                    String sql = "INSERT INTO books (isbn, title, author, genre, releaseYear) "
+                        + "VALUES (:isbn, :title, :author, :genre, :release_year)";
 
                     var batch = handle.prepareBatch(sql);
 
@@ -185,7 +188,7 @@ public class DatabaseBookService implements BookService {
     @Override
     public boolean existsByIsbn(String isbn) {
         return this.database.getJdbi()
-                .withHandle(handle -> handle.createQuery("SELECT COUNT(isbn) FROM books"
+                .withHandle(handle -> handle.createQuery("SELECT COUNT(isbn) FROM books "
                                 + "WHERE isbn = :isbn")
                         .bind("isbn", isbn)
                         .mapTo(Integer.class)
@@ -200,4 +203,14 @@ public class DatabaseBookService implements BookService {
                         .mapTo(String.class)
                         .list());
     }
+
+	@Override
+	public int countRemainingCopies(String isbn) {
+        return this.database.getJdbi()
+            .withHandle(handle -> handle.createQuery("SELECT remaining_copies FROM books "
+                        + "WHERE isbn = :isbn")
+                    .bind("isbn", isbn)
+                    .mapTo(Integer.class)
+                    .one());
+	}
 }

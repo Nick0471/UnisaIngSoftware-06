@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
@@ -38,7 +39,7 @@ public class DatabaseUserServiceTest {
             this.userService.register(duplicateId);
         });
 
-        assertThrows(DuplicateUserByIdException.class, () -> {
+        assertThrows(DuplicateUserByEmailException.class, () -> {
             User duplicateEmail = new User("DEF123", "test@gmail.com", "NICOLA", "PICARELLA");
             this.userService.register(duplicateEmail);
         });
@@ -61,10 +62,11 @@ public class DatabaseUserServiceTest {
                 .get();
         });
 
-        assertFalse(() -> this.userService.getAll().isEmpty());
-        assertFalse(() -> this.userService.getAllByIsbn().isEmpty());
-        assertFalse(() -> this.userService.getAllOrderedByEmail().isEmpty());
-        assertFalse(() -> this.userService.getAllByName().isEmpty());
+        assertFalse(this.userService.getAll().isEmpty());
+        assertFalse(this.userService.getAllByEmailContaining("test@virgilio").isEmpty());
+        assertFalse(this.userService.getAllByFullNameContaining("SOF", "NCI").isEmpty());
+        assertFalse(this.userService.getAllByFullNameContaining("OF", "MAN").isEmpty());
+        assertFalse(this.userService.getAllByFullNameContaining("", "INI").isEmpty());
     }
 
     @Test
@@ -77,7 +79,7 @@ public class DatabaseUserServiceTest {
         assertFalse(() -> this.userService.existsById("INESISTENTE"));
         assertFalse(() -> this.userService.existsByEmail("INESISTENTE2"));
         assertTrue(() -> this.userService.existsById("ABC789"));
-        assertTrue(() -> this.userService.existsByEmail("test@libero.it"));
+        assertTrue(() -> this.userService.existsByEmail("test@altervista.it"));
     }
 
     @Test

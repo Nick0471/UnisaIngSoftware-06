@@ -5,11 +5,14 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 
 import java.time.LocalDate;
 
@@ -35,29 +38,22 @@ public class AddLoanSceneController extends GuiController {
     private BookService bookService;
 
     /**
-     * @brief Setter per il loanService.
+     * @brief Costruttore vuoto del controller.
+     * Viene invocato dal FXMLLoader per caricare la nuova scena
      *
+     */
+    public AddLoanSceneController() {}
+
+    /**
+     * @brief Setter per i servizi di gestione dei prestiti, degli utenti e dei libri
      * @param loanService Il servizio da utilizzare per la gestione dei prestiti settato dal chiamante
-     */
-    public void setLoanService(LoanService loanService) {
-        this.loanService = loanService;
-    }
-
-    /**
-     * @brief Setter per lo userService.
-     *
      * @param userService Il servizio da utilizzare per la gestione degli utenti settato dal chiamante
-     */
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    /**
-     * @brief Setter per il bookService.
-     *
      * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     *
      */
-    public void setBookService(BookService bookService) {
+    public void setAddLoanServices(LoanService loanService, UserService userService, BookService bookService) {
+        this.loanService = loanService;
+        this.userService = userService;
         this.bookService = bookService;
     }
 
@@ -87,6 +83,7 @@ public class AddLoanSceneController extends GuiController {
 
         if (userService.existsById(matricola)) {
             super.popUp("Utente trovato!");
+            userMatricolaField.setDisable(true);
         } else {
             super.popUp("Utente non trovato.");
         }
@@ -107,6 +104,7 @@ public class AddLoanSceneController extends GuiController {
 
         if (bookService.existsByIsbn(isbn)) {
             super.popUp("Libro disponibile!");
+            isbnField.setDisable(true);
         } else {
             super.popUp("Libro non trovato o ISBN errato.");
         }
@@ -138,8 +136,19 @@ public class AddLoanSceneController extends GuiController {
             super.popUp("Matricola utente non valida.");
             return;
         }
+
+        if (loanService.countById(matricola) == 3) {
+            super.popUp("L'utente ha già tre prestiti attivi.\nRestituire almeno un libro per poter richiedere un nuovo prestito");
+            return;
+        }
+
         if (!bookService.existsByIsbn(isbn)) {
             super.popUp("ISBN libro non valido.");
+            return;
+        }
+
+        if (bookService.countRemainingCopies(isbn) == 0) {
+            super.popUp("Attualmente non ci sono copie disponibili per questo libro.");
             return;
         }
 

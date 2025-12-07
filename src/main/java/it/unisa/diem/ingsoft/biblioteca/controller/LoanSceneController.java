@@ -39,19 +39,28 @@ import java.util.ResourceBundle;
  *
  */
 public class LoanSceneController extends GuiController implements Initializable {
-    @FXML private ComboBox<String> searchType;
-    @FXML private TextField searchField;
+    @FXML
+    private ComboBox<String> searchType;
+    @FXML
+    private TextField searchField;
 
-    @FXML private TableView<Loan> loanTable;
-    @FXML private TableColumn<Loan, String> columnUserId;
-    @FXML private TableColumn<Loan, String> columnIsbn;
-    @FXML private TableColumn<Loan, LocalDate> columnStartDate;
-    @FXML private TableColumn<Loan, LocalDate> columnDeadline;
+    @FXML
+    private TableView<Loan> loanTable;
+    @FXML
+    private TableColumn<Loan, String> columnUserId;
+    @FXML
+    private TableColumn<Loan, String> columnIsbn;
+    @FXML
+    private TableColumn<Loan, LocalDate> columnStartDate;
+    @FXML
+    private TableColumn<Loan, LocalDate> columnDeadline;
 
-    @FXML private Button btnHome;
-    @FXML private Button btnAdd;
-    @FXML private Button btnReturn;
-    @FXML private Button btnRemove;
+    @FXML
+    private Button btnHome;
+    @FXML
+    private Button btnAdd;
+    @FXML
+    private Button btnReturn;
 
     private LoanService loanService;
     private UserService userService;
@@ -59,17 +68,26 @@ public class LoanSceneController extends GuiController implements Initializable 
     private ObservableList<Loan> loans;
 
     /**
-     * @brief Costruttore del controller.
-     * Inizializza il servizio per la gestione dei libri collegandosi al database.
+     * @brief Costruttore vuoto del controller.
+     * Viene invocato dal FXMLLoader per caricare la nuova scena
      *
-     * @param loanService Il servizio da utilizzare per la gestione dei prestiti
-     * @param userService Il servizio da utilizzare per la gestione dehli utenti
-     * @param bookService Il servizio da utilizzare per la gestione dei libri
      */
-    public LoanSceneController(LoanService loanService, UserService userService, BookService bookService) {
+    public LoanSceneController() {
+    }
+
+    /**
+     * @brief Setter per i servizi di gestione dei prestiti, degli utenti e dei libri
+     * @param loanService Il servizio da utilizzare per la gestione dei prestiti settato dal chiamante
+     * @param userService Il servizio da utilizzare per la gestione degli utenti settato dal chiamante
+     * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     *
+     */
+    public void setLoanServices(LoanService loanService, UserService userService, BookService bookService) {
         this.loanService = loanService;
         this.userService = userService;
         this.bookService = bookService;
+
+        this.updateTable();
     }
 
     /**
@@ -89,13 +107,11 @@ public class LoanSceneController extends GuiController implements Initializable 
         this.columnDeadline.setCellValueFactory(new PropertyValueFactory<>("loanDeadline"));
 
         this.searchType.getItems().addAll("Matricola", "ISBN");
-        this.searchType.setValue("Matricola Utente");
+        this.searchType.setValue("Matricola");
 
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.filterBooks(newValue);
+            this.filterLoans(newValue);
         });
-
-        this.updateTable();
     }
 
     /**
@@ -113,7 +129,7 @@ public class LoanSceneController extends GuiController implements Initializable 
      * query La stringa di ricerca inserita dall'utente.
      */
     @FXML
-    private void filterBooks(String query) {
+    private void filterLoans(String query) {
         if (query == null || query.isEmpty()) {
             this.updateTable();
             return;
@@ -152,27 +168,13 @@ public class LoanSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddLoan(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddLoanScene.fxml"));
-            Parent root = loader.load();
+        super.modalScene("/view/AddLoanScene.fxml", "Aggiungi Prestito",
+                (AddLoanSceneController controller) -> {
+                    controller.setAddLoanServices(this.loanService, this.userService, this.bookService);
+                }
+        );
 
-            AddLoanSceneController addController = loader.getController();
-            addController.setLoanService(this.loanService);
-            addController.setUserService(this.userService);
-            addController.setBookService(this.bookService);
-
-            Stage stage = new Stage();
-            stage.setTitle("Aggiungi Prestito");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            this.updateTable();
-
-        } catch (IOException e) {
-            super.popUp("Errore nel caricamento della finestra: " + e.getMessage());
-            e.printStackTrace();
-        }
+        this.updateTable();
     }
 
     /**
@@ -197,6 +199,5 @@ public class LoanSceneController extends GuiController implements Initializable 
             super.popUp(e.getMessage());
         }
     }
-
 
 }

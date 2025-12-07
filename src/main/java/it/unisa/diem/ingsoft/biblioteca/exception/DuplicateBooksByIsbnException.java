@@ -5,7 +5,6 @@ import java.util.List;
 /**
  * @brief Eccezione lanciata quando si tenta di eseguire un'operazione di inserimento
  * che include uno o più libri i cui codici ISBN sono già presenti nel catalogo.
- * Questa eccezione contiene la lista di tutti gli ISBN duplicati.
  */
 public class DuplicateBooksByIsbnException extends BookException {
     private final List<String> isbns;

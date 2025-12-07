@@ -57,12 +57,22 @@ public class BookSceneController extends GuiController implements Initializable 
     private ObservableList<Book> books;
 
     /**
-     * @brief Costruttore del controller.
-     * Inizializza il servizio per la gestione dei libri collegandosi al database.
+     * @brief Costruttore vuoto del controller.
+     * Viene invocato dal FXMLLoader per caricare la nuova scena
      *
-     * @param bookService Il servizio da utilizzare.
      */
-    public BookSceneController(BookService bookService){ this.bookService = bookService;}
+    public BookSceneController() {}
+
+    /**
+     * @brief Setter per il bookService.
+     *
+     * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     */
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+
+        this.updateTable();
+    }
 
     /**
      * @brief Inizializza il controller.
@@ -90,8 +100,6 @@ public class BookSceneController extends GuiController implements Initializable 
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             this.filterBooks(newValue);
         });
-
-        this.updateTable();
     }
 
     /**
@@ -120,13 +128,13 @@ public class BookSceneController extends GuiController implements Initializable 
 
         switch (type) {
             case "Titolo":
-                result = this.bookService.getAllByTitle(query);
+                result = this.bookService.getAllByTitleContaining(query);
                 break;
             case "Autore":
-                result = this.bookService.getAllByAuthor(query);
+                result = this.bookService.getAllByAuthorContaining(query);
                 break;
             case "Genere":
-                result = this.bookService.getAllByGenre(query);
+                result = this.bookService.getAllByGenreContaining(query);
                 break;
             case "ISBN":
                 this.bookService.getAllByIsbn(query).ifPresent(result::add);
@@ -190,33 +198,17 @@ public class BookSceneController extends GuiController implements Initializable 
     @FXML
     private void handleModifyBook() {
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
-
         if (selectedBook == null) {
             super.popUp("Seleziona un libro da modificare.");
             return;
         }
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddBookScene.fxml"));
-            Parent root = loader.load();
-
-            AddBookSceneController controller = loader.getController();
+        super.modalScene("/view/AddBookScene.fxml", "Modifica Libro", (AddBookSceneController controller) -> {
             controller.setBookService(this.bookService);
-
             controller.setBookToEdit(selectedBook);
+        });
 
-            Stage stage = new Stage();
-            stage.setTitle("Modifica Libro");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            this.updateTable();
-
-        } catch (IOException e) {
-            super.popUp("Errore nel caricamento della finestra di modifica");
-            e.printStackTrace();
-        }
+        this.updateTable();
     }
 
     /**
@@ -234,23 +226,10 @@ public class BookSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddBook(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddBookScene.fxml"));
-            Parent root = loader.load();
+        super.modalScene("/view/AddBookScene.fxml", "Aggiungi Libro", (AddBookSceneController controller) -> {
+            controller.setBookService(this.bookService);
+        });
 
-            AddBookSceneController addController = loader.getController();
-            addController.setBookService(this.bookService);
-
-            Stage stage = new Stage();
-            stage.setTitle("Aggiungi Libro");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            this.updateTable();
-
-        } catch (IOException e) {
-            super.popUp("Errore nel caricamento della finestra");
-        }
+        this.updateTable();
     }
 }
