@@ -1,18 +1,26 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
+import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
+import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -50,11 +58,14 @@ public class UserController extends GuiController implements Initializable{
 
 
     private UserService userService;
+    private LoanService loanService;
 
     private ObservableList<User> users;
 
     //controller
-    public UserController(UserService userService){ this.userService=userService;}
+    public UserController(UserService userService){
+        this.userService=userService;
+    }
 
 
     /**
@@ -77,7 +88,7 @@ public class UserController extends GuiController implements Initializable{
         this.searchType.setValue("id");
 
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.filterUsers(newValue);
+            this.filterUsers(newValue, newValue2);
         });
         this.updateTable();
     }
@@ -102,23 +113,26 @@ public class UserController extends GuiController implements Initializable{
      */
     //Leggendo il valore della ComboBox restituisce una tabella filtrata per l'attributo specificato
     @FXML
-    private void filterUsers(String query) {
+    private void filterUsers(String query1, String query2) {
+
         if (query == null || query.isEmpty()) {
             this.updateTable();
             return;
         }
+
+
         String type = this.searchType.getValue();
         List<User> result = new ArrayList<>();
 
         switch (type) {
             case "id":
-                this.userService.getById(query).ifPresent(result::add);
+                this.userService.getById(query1).ifPresent(result::add);
                 break;
             case "cognome":
-                result = this.userService.getAllByFullName(query); //Se sono uguali i cognomi ordina per nome
+                result = this.userService.getAllByFullName(query1,query2); //Se sono uguali i cognomi ordina per nome
                 break;
             case "email":
-                result=this.userService.getAllByEmail(query);
+                result=this.userService.getAllByEmailContaining(query);
                 break;
             default:
                 this.updateTable();
@@ -138,16 +152,22 @@ public class UserController extends GuiController implements Initializable{
     @FXML
     private void handleDeleteUser(){
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
+
         if (selectedUser== null) {
-            super.popUp("Seleziona un utente da rimuovere.");
+            popUp("Seleziona un utente da rimuovere.");
             return;
         }
 
-        if(this.userService.removeById(selectedUser.getId()))
+        List<Loan> loanList = loanService.getByUserId(selectedUser.getId());
+
+        if(loanList.isEmpty()) {
+            this.userService.removeById(selectedUser.getId());
             this.updateTable();
-        else
-            super.popUp("Errore durante la rimozione del utente.");
+        }else
+            popUp("Non puoi rimuovere un utente che ha ancora prestiti attivi");
     }
+
+
 
     /**
      * @brief Gestisce la modifica di un utente.
@@ -186,6 +206,32 @@ public class UserController extends GuiController implements Initializable{
     }
 
 
-    private void handleViewUserProfile(ActionEvent event) {changeScene(event, "view/AccountUSerScene.fxml");}
+    private void handleViewUserProfile(ActionEvent event) {
+        User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
+
+        if (selectedUser == null) {
+            popUp("Seleziona un utente per visualizzarne il profilo.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AccountUserScene.fxml"));
+            Parent root = loader.load();
+
+            AccountUserController controller = loader.getController();
+
+            // Passiamo TUTTI i servizi necessari e l'utente selezionato
+            controller.setUserService(this.userService);
+            controller.setProfileUser(selectedUser, this.loanService, this.bookService);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            popUp("Errore nel caricamento del profilo utente.");
+        }
+    }
 
 }
