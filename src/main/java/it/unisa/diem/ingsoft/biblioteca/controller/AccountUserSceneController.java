@@ -21,6 +21,15 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
 
+
+
+/**
+ * @brief Questo Controller gestisce la scena "Account Utente".
+ *
+ * Questa classe gestisce l'interfaccia grafica che mostra i dettagli del profilo
+ * di un utente selezionato dalla tabella e la lista dei suoi prestiti (attivi e passati).
+ * Estende {@link GuiController} e implementa {@link Initializable}.
+ */
 public class AccountUserSceneController extends GuiController implements Initializable {
 
     @FXML
@@ -51,11 +60,26 @@ public class AccountUserSceneController extends GuiController implements Initial
     private UserService userService;
     private User user;
 
+    /**
+     * @brief Imposta il servizio per la gestione degli utenti.
+     * @param userService Istanza di UserService
+     */
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
 
+    /**
+     * @brief Inizializza il controller e configura le colonne della tabella.
+     *
+     * Questo metodo viene chiamato automaticamente dopo che il file FXML è stato caricato.
+     * Configura le `CellValueFactory` per le colonne della tabella dei prestiti.
+     * In particolare, definisce una logica personalizzata per la colonna del titolo,
+     * che viene recuperato dinamicamente tramite il `BookService` usando l'ISBN del prestito.
+     *
+     * @param location  La location utilizzata per risolvere i percorsi relativi all'oggetto radice, o null se sconosciuta.
+     * @param resources Le risorse utilizzate per localizzare l'oggetto radice, o null se non localizzate.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Configurazione delle colonne basata sulla classe Loan
@@ -83,8 +107,17 @@ public class AccountUserSceneController extends GuiController implements Initial
         });
     }
 
-
-
+    /**
+     * @brief Imposta i dati dell'utente e inizializza i servizi necessari.
+     *
+     * Questo metodo deve essere chiamato dal controller precedente per passare
+     * le informazioni dell'utente di cui visualizzare il profilo.
+     * Aggiorna le label dell'interfaccia con i dati anagrafici e popola la tabella dei prestiti.
+     *
+     * @param user        L'oggetto User contenente i dati dell'utente da visualizzare.
+     * @param loanService Il servizio per gestire le operazioni sui prestiti.
+     * @param bookService Il servizio per gestire le operazioni sui libri (usato per recuperare i titoli).
+     */
     public void setProfileUser(User user, LoanService loanService, BookService bookService) {
         this.user = user;
         this.loanService = loanService;
@@ -103,7 +136,12 @@ public class AccountUserSceneController extends GuiController implements Initial
     }
 
 
-
+    /**
+     * @brief Aggiorna la tabella dei prestiti filtrando per l'utente corrente.
+     *
+     * Recupera la lista dei prestiti associati all'ID dell'utente corrente tramite
+     * il `LoanService` e aggiorna gli elementi della `loansTable`.
+     */
     private void updateTable() {
 
         // Chiamo il metodo dell'interfaccia che recupera SOLO i prestiti di questo utente
@@ -114,8 +152,14 @@ public class AccountUserSceneController extends GuiController implements Initial
     }
 
 
-
-
+    /**
+     * @brief Gestisce l'azione di chiusura della finestra.
+     *
+     * Viene invocato quando l'utente preme il pulsante di chiusura (btnClose).
+     * Chiude la scena corrente richiamando il metodo `closeScene` della classe padre.
+     *
+     * @param event L'evento generato dal click sul bottone.
+     */
     @FXML
     private void handleClose(ActionEvent event) {
         closeScene(event);
