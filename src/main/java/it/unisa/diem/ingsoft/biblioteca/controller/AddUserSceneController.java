@@ -19,6 +19,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 
+/**
+ * @brief Questo Controller gestisce la scena di Aggiunta (e Modifica) utente.
+ *
+ * Questa classe gestisce l'inserimento dei dati anagrafici di un utente.
+ * Supporta due modalità operative:
+ * 1. **Creazione:** Permette di registrare un nuovo utente (tutti i campi sono modificabili).
+ * 2. **Modifica:** Permette di aggiornare un utente esistente (il campo ID/Matricola viene bloccato).
+ *
+ * Estende {@link GuiController} per ereditare funzionalità comuni come la gestione dei popup e la chiusura della scena.
+ */
+
+
 public class AddUserSceneController extends GuiController{
 
     @FXML private TextField idField;
@@ -34,14 +46,29 @@ public class AddUserSceneController extends GuiController{
 
     private boolean isEditMode = false;
 
-
+    /**
+     * @brief Imposta il servizio per la gestione degli utenti.
+     *
+     * @param userService Istanza di UserService per effettuare operazioni di registrazione o aggiornamento.
+     */
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
 
-
-    //Metodo che per mette di MOFICIARE un utente già esistente
+    /**
+     * @brief Prepara la scena per la modifica di un utente esistente.
+     *
+     * Questo metodo deve essere chiamato da "userScene" prima di mostrare la scena, se si intende modificare un utente.
+     * Effettua le seguenti operazioni:
+     * - Imposta il flag `isEditMode` a `true`(che vuol dire che la modifica è abilitata)
+     * - Popola i campi di testo con i dati dell'utente passato in input.
+     * - Disabilita il campo `idField` per impedire la modifica della matricola.
+     * - Modifica il testo del pulsante di conferma in "Aggiorna".
+     *
+     * @param user L'oggetto User contenente i dati attuali da modificare.
+     */
+    //Metodo che permette di MODICIARE un utente già esistente
     public void EditUser(User user) {
         if (user != null) {
             this.isEditMode = true;
@@ -55,8 +82,22 @@ public class AddUserSceneController extends GuiController{
         }
     }
 
-
-
+    /**
+     * @brief Gestisce l'azione di conferma (Aggiunta o Aggiornamento).
+     *
+     * Questo metodo viene invocato al click del pulsante `btnConfirm`.
+     * La logica esecutiva è la seguente:
+     *
+     * 1. Valida che tutti i campi obbligatori siano riempiti.
+     * 2. Crea un oggetto {@link User} temporaneo con i dati inseriti.
+     * 3. In base a `isEditMode`:
+     * - Se **Modifica**: Chiama `userService.updateById(user)`. Gestisce `UnknownUserByIdException`.
+     * - Se **Nuovo**: Chiama `userService.register(user)`. Gestisce eccezioni di duplicazione (`DuplicateUserByEmailException`, `DuplicateUserByIdException`).
+     * 4. Mostra un popup di successo o di errore.
+     * 5. Chiude la scena in caso di successo.
+     *
+     * @param event L'evento generato dal click sul bottone.
+     */
     @FXML
     private void handleConfirmAdd(ActionEvent event){
 
@@ -95,10 +136,12 @@ public class AddUserSceneController extends GuiController{
     }
 
 
-
     /**
-     * @brief Chiude la finestra di aggiunta senza salvare le modifiche.
-     * @param event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
+     * @brief Gestisce l'annullamento dell'operazione.
+     *
+     * Chiude la finestra corrente senza effettuare alcuna modifica o inserimento.
+     *
+     * @param event L'evento generato dal click sul bottone Annulla.
      */
     @FXML
     private void handleCancel(ActionEvent event){
