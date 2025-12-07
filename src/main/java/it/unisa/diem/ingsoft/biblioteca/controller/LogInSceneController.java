@@ -14,16 +14,23 @@ import javafx.scene.control.PasswordField;
 
 
 /**
- * @brief Controller per la gestione dell'autenticazione utente.
- * * Questa classe gestisce l'interazione tra la vista di Login (FXML)
- * e la logica di business per la verifica delle credenziali.
- * Estende la classe base GuiController per le funzionalità comuni.
+ * @brief  Questo Controller gestisce la scena "Accesso".
+ *
+ * Verifica che le credenziali inserite dall'utente, prima di consentire
+ * l'accesso alla dashboard principale, siano corrette.
+ *
+ * Estende {@link GuiController} per ereditare le funzionalità di navigazione e gestione popup.
  */
 public class LogInSceneController extends GuiController {
 
 
     private PasswordService passwordService;
 
+    /**
+     * @brief Costruttore del controller
+     *
+     * @param passwordService Il servizio responsabile della verifica crittografica della password.
+     */
     public LogInSceneController(PasswordService passwordService){
         this.passwordService=passwordService;
     }
@@ -36,11 +43,18 @@ public class LogInSceneController extends GuiController {
 
 
     /**
-     * @brief Gestisce l'evento di login quando viene premuto il pulsante "Accedi".
-     * * Recupera la password inserita dall'utente, la valida tramite
-     * PasswordService e, in caso di successo, effettua il cambio
-     * scena verso la Homepage. In caso contrario, mostra un popup di errore.
-     * * @param event L'evento generato dal click sul pulsante (ActionEvent).
+     * @brief Gestisce il tentativo di accesso al sistema.
+     *
+     * Questo metodo viene invocato quando l'utente preme il pulsante "Accedi".
+     * La logica esecutiva è la seguente:
+     * 1. Recupera la stringa inserita nel campo `insertedPassword`.
+     * 2. Invoca {@link PasswordService#check(String)} per verificare la corrispondenza con la password salvata.
+     * 3. Successo:Effettua il cambio scena verso "homepageScene.fxml".
+     * 4. Fallimento:Mostra un popUp di errore ("Password non corretta").
+     * 5. Eccezione:Se viene sollevata {@link UnsetPasswordException} (es. nessuna password configurata nel sistema o errore di lettura),
+     * viene mostrato un popup con il messaggio dell'eccezione.
+     *
+     * @param event L'evento ActionEvent generato dal click sul pulsante.
      */
     @FXML
     private void handleLogin(ActionEvent event){

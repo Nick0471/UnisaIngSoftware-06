@@ -13,8 +13,8 @@ import javafx.scene.control.PasswordField;
 
 
 /**
- * @brief Controller per la gestione della PasswrodScene.
- * Questa classe gestisce l'aggiornamento della password di accesso del bibliotecario.
+ * @brief Questo Controller gestisce la scena "Modifica Passwrod".
+ *
  * Estende {@link GuiController} per ereditare le funzionalità comuni di navigazione,
  * (changeScene) e gestione dei messaggi di errore (popUpErrore).
  */
@@ -23,8 +23,13 @@ public class PasswordChangeSceneController extends GuiController {
 
     private final PasswordService passwordService;
 
-
+    /**
+     * @brief Costruttore del controller.
+     *
+     * @param passwordService Il servizio responsabile della verifica e dell'aggiornamento della password.
+     */
     public PasswordChangeSceneController(PasswordService passwordService){
+
         this.passwordService=passwordService;
     }
 
@@ -45,11 +50,11 @@ public class PasswordChangeSceneController extends GuiController {
      * @brief Gestisce l'evento di aggiornamento della password e il ritorno alla homepage.
      * * Il metodo esegue le seguenti operazioni:
      * 1. Recupera la password attuale inserita dall'utente.
-     * 2. Istanzia il servizio di gestione password del database.
-     * 3. Verifica la correttezza della password attuale, tramite il metodo "check(String)}".
-     * 4. Se la password attuale è corretta, verifica che la nuova password abbia una lunghezza di almeno 6 caratteri.
-     * 5. Se i requisiti sono soddisfatti, aggiorna la password nel database e cambia scena verso la homepage.
-     * * @param event L'evento ActionEvent generato dal click sul bottone 'Aggiorna'.
+     * 2. Verifica la correttezza della password attuale, tramite il metodo "check(String)}".
+     * 3. Se la password attuale è corretta, verifica che la nuova password abbia una lunghezza di almeno 6 caratteri.
+     * 4. Se i requisiti sono soddisfatti, aggiorna la password  e cambia scena verso la homepage.
+     *
+     * @param event L'evento ActionEvent generato dal click sul bottone 'Aggiorna'.
      */
     @FXML
     private void handleGoToViewHomepage(ActionEvent event) {
