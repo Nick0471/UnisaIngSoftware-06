@@ -304,7 +304,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
 
 
-
+    @FXML
     private void handleViewUserProfile(ActionEvent event) {
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
