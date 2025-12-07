@@ -29,12 +29,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * @brief Controller per la gestione della lista utenti.
- * Questa classe gestisce la vista principale per l'amministrazione degli utenti
- * della biblioteca. Permette di visualizzare l'elenco in una tabella,
- * filtrare i risultati (per ID, cognome, email), aggiungere, modificare
- * o rimuovere utenti interagendo con "UserService".
- */
+* @brief Questo Controller gestisce la scena "Gestione utenti"
+* Questa classe gestisce la visualizzazione tabellare di tutti gli utenti registrati nel sistema.
+* Fornisce funzionalità per:
+* - Filtrare gli utenti per Matricola, Email o Cognome (con supporto per Nome secondario).
+* - Aggiungere un nuovo utente.
+* - Modificare un utente esistente.
+* - Rimuovere un utente
+* - Visualizzare il profilo dettagliato di un utente.
+*/
 
 public class UserSceneController extends GuiController implements Initializable{
 
@@ -66,19 +69,26 @@ public class UserSceneController extends GuiController implements Initializable{
     private ObservableList<User> users;
 
 
+    /**
+     * @brief Imposta il servizio per la gestione degli utenti.
+     * @param userService Istanza di UserService
+     */
     public UserSceneController(UserService userService){
         this.userService=userService;
     }
 
 
-
     /**
-     * @brief Inizializza il controller e la vista.
-     * Configura le colonne della tabella collegandole alle proprietà dell'oggetto User.
-     * Popola la ComboBox per i filtri di ricerca e aggiunge un listener al campo
-     * di ricerca per filtrare la tabella in tempo reale. Infine, carica i dati iniziali.
-     * @param location La location utilizzata per risolvere i percorsi relativi all'oggetto radice, o null se sconosciuta.
-     * @param resources Le risorse utilizzate per localizzare l'oggetto radice, o null se non localizzato.
+     * @brief Inizializza il controller, le colonne della tabella e i listener per la ricerca.
+     *
+     * Configura:
+     * 1. Il binding tra le colonne della TableView e le proprietà della classe {@link User}.
+     * 2. Un listener sul `searchType` (ComboBox) per gestire la visibilità del `searchFieldSecondary:
+     * se il filtro è "Cognome", appare il secondo campo per filtrare anche per Nome.
+     * 3. Listener sui campi di testo per eseguire il filtro in tempo reale (mentre si digita).
+     *
+     * @param location  URL location per i percorsi relativi.
+     * @param resources ResourceBundle per la localizzazione.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -123,10 +133,8 @@ public class UserSceneController extends GuiController implements Initializable{
 
     }
 
-
     /**
-     * @brief Aggiorna la tabella con l'elenco completo degli utenti.
-     * Recupera tutti gli utenti dal service e aggiorna la TableView.
+     * @brief Aggiorna la tabella recuperando tutti gli utenti registrati.
      */
     public void updateTable(){
         List<User> listUsers= userService.getAll();
@@ -134,9 +142,8 @@ public class UserSceneController extends GuiController implements Initializable{
         this.userTable.setItems(this.users);
     }
 
-
     /**
-     * @brief Metodo helper per leggere i valori dai campi e chiamare il filtro.
+     * @brief Metodo helper che recupera i valori dai campi di ricerca e invoca il filtraggio.
      */
     private void executeFilter() {
         String type = searchType.getValue();
@@ -148,10 +155,17 @@ public class UserSceneController extends GuiController implements Initializable{
 
 
     /**
-     * @brief Filtra gli utenti in tabella in base al criterio selezionato.
-     * @param type Il tipo di ricerca (Matricola, Cognome, Email, Tutti)
-     * @param query1 Il valore del primo campo (Matricola, Cognome, o Email)
-     * @param query2 Il valore del secondo campo (Nome, usato solo se type è Cognome)
+     * @brief Filtra la lista degli utenti in base ai criteri specificati.
+     *
+     * Gestisce i diversi casi di ricerca:
+     * - Matricola:Ricerca esatta per ID.
+     * - Cognome:Ricerca "contain" su Cognome (query1) e Nome (query2).
+     * - Email:Ricerca "contain" su Email.
+     * - Tutti:Ricarica la lista completa.
+     *
+     * @param type   Il tipo di filtro selezionato (es. "Matricola", "Cognome").
+     * @param query1 Il valore del campo di ricerca principale.
+     * @param query2 Il valore del campo di ricerca secondario (usato solo per il Nome).
      */
     private void filterUsers(String type, String query1, String query2) {
 
@@ -188,12 +202,12 @@ public class UserSceneController extends GuiController implements Initializable{
         this.userTable.setItems(this.users);
     }
 
-
     /**
-     * @brief Gestisce la rimozione di un utente.
-     * Recupera l'utente selezionato nella tabella. Se presente, ne richiede
-     * la rimozione tramite il service e aggiorna la vista. In caso di errore
-     * o mancata selezione, mostra un popup di errore.
+     * @brief Gestisce l'eliminazione dell'utente selezionato.
+     *
+     * Verifica preventivamente se l'utente ha prestiti attivi tramite `loanService`.
+     * - Se ha prestiti: Mostra un popup di errore e blocca l'eliminazione.
+     * - Se non ha prestiti: Elimina l'utente tramite `userService` e aggiorna la tabella.
      */
     @FXML
     private void handleDeleteUser(){
@@ -213,12 +227,14 @@ public class UserSceneController extends GuiController implements Initializable{
             popUp("Non puoi rimuovere un utente che ha ancora prestiti attivi");
     }
 
-
-
-
     /**
-     * @brief Gestisce la modifica di un utente.
+     * @brief Apre la scena "AddUserScene".
      *
+     * Carica `AddUserScene.fxml` e passa il controllo al {@link AddUserSceneController}.
+     * Chiama il metodo `EditUser()` sul controller di destinazione per pre-compilare i campi
+     * e impostare la modalità di modifica (blocco della matricola).
+     *
+     * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
     private void handleModifyUser(ActionEvent event) {
@@ -231,7 +247,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
         try {
             //Carica l'FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/AddUserScene.fxml"));
             Parent root = loader.load();
 
             //Recupera il controller
@@ -252,14 +268,14 @@ public class UserSceneController extends GuiController implements Initializable{
             popUp("Errore nel caricamento della vista Modifica Utente.");
         }
 
-
-
-
-
     }
 
     /**
-     * @brief Naviga alla schermata di aggiunta utente.
+     * @brief Apre la scena "AddUserScene".
+     *
+     * Carica `AddUserScene.fxml` e passa il `UserService` al controller.
+     * A differenza di `handleModifyUser`, qui non viene chiamato `EditUser`,
+     * quindi i campi saranno vuoti e modificabili.
      *
      * @param event L'evento che ha scatenato l'azione.
      */
@@ -267,8 +283,7 @@ public class UserSceneController extends GuiController implements Initializable{
     private void handleAddUser(ActionEvent event) {
         try {
             // Carica l'FXML manualmente
-            // Assicurati che il percorso sia corretto (es. potrebbe servire "/" all'inizio)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddUserScene.fxml"));
             Parent root = loader.load();
 
             // Recupera il controller della nuova scena
@@ -292,8 +307,9 @@ public class UserSceneController extends GuiController implements Initializable{
 
 
 
+
     /**
-     * @brief Torna alla Dashboard principale (Home).
+     * @brief Torna alla schermata principale (Homepage).
      *
      * @param event L'evento che ha scatenato l'azione.
      */
@@ -303,6 +319,15 @@ public class UserSceneController extends GuiController implements Initializable{
     }
 
 
+    /**
+     * @brief Apre la scena "Account Utente"
+     *
+     * Carica `AccountUserScene.fxml` e inizializza il controller {@link AccountUserSceneController}
+     * passando l'utente selezionato e tutti i servizi necessari (User, Loan, Book) per visualizzare
+     * lo storico prestiti e i dettagli anagrafici.
+     *
+     * @param event L'evento che ha scatenato l'azione.
+     */
 
     @FXML
     private void handleViewUserProfile(ActionEvent event) {
@@ -314,7 +339,7 @@ public class UserSceneController extends GuiController implements Initializable{
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AccountUserScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/AccountUserScene.fxml"));
             Parent root = loader.load();
 
             AccountUserSceneController controller = loader.getController();
