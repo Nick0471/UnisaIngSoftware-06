@@ -18,12 +18,15 @@ import javafx.scene.control.PasswordField;
  * Estende {@link GuiController} per ereditare le funzionalità comuni di navigazione,
  * (changeScene) e gestione dei messaggi di errore (popUpErrore).
  */
-public class PasswordChangeController extends GuiController {
+public class PasswordChangeSceneController extends GuiController {
 
 
     private final PasswordService passwordService;
 
-    public PasswordChangeController(PasswordService passwordService){this.passwordService=passwordService;}
+
+    public PasswordChangeSceneController(PasswordService passwordService){
+        this.passwordService=passwordService;
+    }
 
     @FXML
     private Button btnUpdate;

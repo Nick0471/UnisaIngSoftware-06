@@ -5,6 +5,7 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
+import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;
 import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,12 +19,12 @@ import javafx.scene.control.PasswordField;
  * e la logica di business per la verifica delle credenziali.
  * Estende la classe base GuiController per le funzionalità comuni.
  */
-public class LogInController extends GuiController {
+public class LogInSceneController extends GuiController {
 
 
     private PasswordService passwordService;
 
-    public LogInController(PasswordService passwordService){
+    public LogInSceneController(PasswordService passwordService){
         this.passwordService=passwordService;
     }
 
@@ -46,10 +47,16 @@ public class LogInController extends GuiController {
         // Password inserita dall'utente da verificare
         String pass = insertedPassword.getText();
 
-        if (this.passwordService.check(pass))
-            changeScene(event,"homepageScene.fxml");
-        else
-            popUp("La password inserita non è corretta.");
+        try {
+            if (this.passwordService.check(pass))
+                changeScene(event, "homepageScene.fxml");
+            else
+                popUp("La password inserita non è corretta.");
+
+        }catch (UnsetPasswordException e){
+            popUp(e.getMessage());
+        }
+
 
     }
 

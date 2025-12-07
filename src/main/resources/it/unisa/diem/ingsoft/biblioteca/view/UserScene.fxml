@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane
-        fx:controller = "it.unisa.diem.ingsoft.biblioteca.controller.UserController"
+        fx:controller = "it.unisa.diem.ingsoft.biblioteca.controller.UserSceneController"
         maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f4f4f4;"
         xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 

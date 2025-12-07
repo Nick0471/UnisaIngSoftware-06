@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,7 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
 
-public class AccountUserController extends GuiController implements Initializable {
+public class AccountUserSceneController extends GuiController implements Initializable {
 
     @FXML
     private Button btnClose;
@@ -47,7 +48,12 @@ public class AccountUserController extends GuiController implements Initializabl
 
     private LoanService loanService;
     private BookService bookService;
+    private UserService userService;
     private User user;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
 
     @Override
@@ -78,10 +84,8 @@ public class AccountUserController extends GuiController implements Initializabl
     }
 
 
-    /**
-     *
-     */
-    public void datiUtente(User user, LoanService loanService, BookService bookService) {
+
+    public void setProfileUser(User user, LoanService loanService, BookService bookService) {
         this.user = user;
         this.loanService = loanService;
         this.bookService = bookService;
@@ -99,12 +103,9 @@ public class AccountUserController extends GuiController implements Initializabl
     }
 
 
-    /**
-     *
-     */
+
     private void updateTable() {
 
-        // LOGICA DI FILTRO:
         // Chiamo il metodo dell'interfaccia che recupera SOLO i prestiti di questo utente
         List<Loan> userLoans = loanService.getByUserId(user.getId());
 
@@ -112,8 +113,12 @@ public class AccountUserController extends GuiController implements Initializabl
         loansTable.getItems().setAll(userLoans);
     }
 
+
+
+
+    @FXML
     private void handleClose(ActionEvent event) {
-        changeScene(event, "view/UserScene.fxml");
+        closeScene(event);
     }
 
 

@@ -1,18 +1,27 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
+import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -27,7 +36,7 @@ import java.util.ResourceBundle;
  * o rimuovere utenti interagendo con "UserService".
  */
 
-public class UserController extends GuiController implements Initializable{
+public class UserSceneController extends GuiController implements Initializable{
 
     @FXML private ComboBox<String> searchType;
     @FXML private TextField searchField;
@@ -50,11 +59,13 @@ public class UserController extends GuiController implements Initializable{
 
 
     private UserService userService;
+    private LoanService loanService;
+    private BookService bookService;
 
     private ObservableList<User> users;
 
-    //controller
-    public UserController(UserService userService){ this.userService=userService;}
+
+    public UserSceneController(UserService userService){ this.userService=userService;}
 
 
     /**
@@ -115,7 +126,7 @@ public class UserController extends GuiController implements Initializable{
                 this.userService.getById(query).ifPresent(result::add);
                 break;
             case "cognome":
-                result = this.userService.getAllByFullName(query); //Se sono uguali i cognomi ordina per nome
+                result = this.userService.getAllByFullName(query);
                 break;
             case "email":
                 result=this.userService.getAllByEmail(query);
@@ -129,6 +140,7 @@ public class UserController extends GuiController implements Initializable{
     }
 
 
+
     /**
      * @brief Gestisce la rimozione di un utente.
      * Recupera l'utente selezionato nella tabella. Se presente, ne richiede
@@ -138,42 +150,88 @@ public class UserController extends GuiController implements Initializable{
     @FXML
     private void handleDeleteUser(){
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
+
         if (selectedUser== null) {
-            super.popUp("Seleziona un utente da rimuovere.");
+            popUp("Seleziona un utente da rimuovere.");
             return;
         }
 
-        if(this.userService.removeById(selectedUser.getId()))
+        List<Loan> loanList = this.loanService.getByUserId(selectedUser.getId());
+        if(loanList.isEmpty()) {
+            this.userService.removeById(selectedUser.getId());
             this.updateTable();
+        }
         else
-            super.popUp("Errore durante la rimozione del utente.");
+            popUp("Non puoi rimuovere un utente che ha ancora dei prestiti attivi");
     }
 
-    /**
-     * @brief Gestisce la modifica di un utente.
-     * Recupera l'utente selezionato e invoca l'aggiornamento tramite il service.
-     */
+
+
+
     @FXML
-    private void handleModifyUser() {
+    private void handleModifyUser(ActionEvent event) {
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser== null) {
-            super.popUp("Seleziona un utente da modificare.");
+            popUp("Seleziona un utente da modificare.");
             return;
         }
 
-        this.userService.updateById(selectedUser);//L'id è l'unica cosa che non possiamo modificare
-        this.updateTable();
+        try {
+            // 2. Carica l'FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddUserScene.fxml"));
+            Parent root = loader.load();
+
+            // 3. Recupera il controller
+            AddUserSceneController controller = loader.getController();
+
+            // 4. Passa i dati necessari
+            controller.setUserService(this.userService); // Passa il service
+            controller.EditUser(selectedUser);           // Passa l'utente e attiva la modalità Modifica
+
+            // 5. Mostra la scena
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            popUp("Errore nel caricamento della vista Modifica Utente.");
+        }
+
+
     }
 
-    /**
-     * @brief Naviga alla schermata di aggiunta utente.
-     *
-     * @param event L'evento che ha scatenato l'azione.
-     */
+
+
     @FXML
-    private void handleAddUser(ActionEvent event) {changeScene(event, "view/AddUserScene.fxml");
+    private void handleAddUser(ActionEvent event) {
+
+        try {
+            // 1. Carica l'FXML manualmente
+            // Assicurati che il percorso sia corretto (es. potrebbe servire "/" all'inizio)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml"));
+            Parent root = loader.load();
+
+            // 2. Recupera il controller della nuova scena
+            AddUserSceneController controller = loader.getController();
+
+            // 3. Passa il UserService (FONDAMENTALE)
+            controller.setUserService(this.userService);
+
+            // 4. Mostra la nuova scena
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            popUp("Errore nel caricamento della vista Aggiungi Utente.");
+        }
     }
+
 
 
     /**
@@ -182,10 +240,38 @@ public class UserController extends GuiController implements Initializable{
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
-    private void handleBackToHome(ActionEvent event) {changeScene(event, "view/HomepageScene.fxml");
+    private void handleBackToHome(ActionEvent event) {
+        changeScene(event, "view/HomepageScene.fxml");
     }
 
 
-    private void handleViewUserProfile(ActionEvent event) {changeScene(event, "view/AccountUSerScene.fxml");}
+
+    private void handleViewUserProfile(ActionEvent event) {
+        User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
+
+        if (selectedUser == null) {
+            popUp("Seleziona un utente per visualizzarne il profilo.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AccountUserScene.fxml"));
+            Parent root = loader.load();
+
+            AccountUserSceneController controller = loader.getController();
+
+            // Passiamo TUTTI i servizi necessari e l'utente selezionato
+            controller.setUserService(this.userService);
+            controller.setProfileUser(selectedUser, this.loanService, this.bookService);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            popUp("Errore nel caricamento del profilo utente.");
+        }
+    }
 
 }

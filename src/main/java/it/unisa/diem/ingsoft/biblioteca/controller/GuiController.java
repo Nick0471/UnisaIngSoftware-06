@@ -21,6 +21,7 @@ import java.io.IOException;
  * di visualizzare messaggi pop-up di errore
  *
  */
+
 public abstract class GuiController {
     /**
      * @brief Cambia la visualizzazione della scena corrente caricando un nuovo file FXML.
