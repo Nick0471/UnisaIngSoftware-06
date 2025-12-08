@@ -6,25 +6,20 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -124,7 +119,7 @@ public class LoanSceneController extends GuiController implements Initializable 
                 } else {
 
                     if (loan.getLoanDeadline().isBefore(LocalDate.now())) {
-                        setStyle("-fx-background-color: #ffcccc; -fx-text-fill: #990000;");
+                        setStyle("-fx-background-color: #fc3737; -fx-text-fill: #990000;");
                     } else {
                         setStyle("");
                     }
