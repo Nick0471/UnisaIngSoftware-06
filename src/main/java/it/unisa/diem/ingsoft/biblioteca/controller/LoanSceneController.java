@@ -112,6 +112,25 @@ public class LoanSceneController extends GuiController implements Initializable 
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             this.filterLoans(newValue);
         });
+
+        // Codice per visualizzare in rosso i prestiti "scaduti"
+        this.loanTable.setRowFactory(tv -> new javafx.scene.control.TableRow<Loan>() {
+            @Override
+            protected void updateItem(Loan loan, boolean empty) {
+                super.updateItem(loan, empty);
+
+                if (loan == null || empty) {
+                    setStyle("");
+                } else {
+
+                    if (loan.getLoanDeadline().isBefore(LocalDate.now())) {
+                        setStyle("-fx-background-color: #ffcccc; -fx-text-fill: #990000;");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            }
+        });
     }
 
     /**
