@@ -143,9 +143,6 @@ public class DatabaseBookService implements BookService {
                                         + "WHERE isbn = :isbn")
                             .bind("isbn", isbn)
                             .execute()) > 0;
-
-
-
     }
 
     /**
