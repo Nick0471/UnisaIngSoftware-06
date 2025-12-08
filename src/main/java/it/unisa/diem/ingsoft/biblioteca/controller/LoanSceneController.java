@@ -101,9 +101,6 @@ public class LoanSceneController extends GuiController implements Initializable 
         this.columnStartDate.setCellValueFactory(new PropertyValueFactory<>("loanStart"));
         this.columnDeadline.setCellValueFactory(new PropertyValueFactory<>("loanDeadline"));
 
-        this.searchType.getItems().addAll("Matricola", "ISBN");
-        this.searchType.setValue("Matricola");
-
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             this.filterLoans(newValue);
         });
