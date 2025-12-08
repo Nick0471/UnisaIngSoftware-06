@@ -170,7 +170,7 @@ public class LoanSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
-        super.changeScene(event, "view/HomepageScene.fxml");
+        super.changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/HomepageScene.fxml");
     }
 
     /**
@@ -179,7 +179,7 @@ public class LoanSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddLoan(ActionEvent event) {
-        super.modalScene("/view/AddLoanScene.fxml", "Aggiungi Prestito",
+        super.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddLoanScene.fxml", "Aggiungi Prestito",
                 (AddLoanSceneController controller) -> {
                     controller.setAddLoanServices(this.loanService, this.userService, this.bookService);
                 }
