@@ -21,7 +21,6 @@ import org.testfx.framework.junit5.ApplicationTest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -99,7 +98,12 @@ public class LoanSceneControllerTest extends ApplicationTest {
         clickOn("Scadenza");
         slowExecution(1500);
 
+        System.out.println("Ordino per Scadenza decrescente...");
+        clickOn("Scadenza");
+        slowExecution(1500);
+
         System.out.println("Ordino per ISBN...");
+        clickOn("ISBN Libro");
         clickOn("ISBN Libro");
         slowExecution(1500);
     }
