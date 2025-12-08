@@ -137,7 +137,7 @@ public class BookSceneController extends GuiController implements Initializable 
                 result = this.bookService.getAllByGenreContaining(query);
                 break;
             case "ISBN":
-                this.bookService.getAllByIsbn(query).ifPresent(result::add);
+                this.bookService.getByIsbn(query).ifPresent(result::add);
                 break;
             case "Anno":
                 try {
