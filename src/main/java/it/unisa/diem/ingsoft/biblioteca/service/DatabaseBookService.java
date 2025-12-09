@@ -20,7 +20,7 @@ public class DatabaseBookService implements BookService {
     private final Database database;
 
     /**
-     * @brief Costruisce un oggetto che implementa il LoanService usando un database
+     * @brief Costruisce un oggetto che implementa il BookService usando un database
      */
     public DatabaseBookService(Database database) {
         this.database = database;
