@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.WrongIsbnException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,30 +31,37 @@ public class DatabaseBookServiceTest {
     @Test
     public void add() {
         assertDoesNotThrow(() -> {
-            Book book = new Book("123456789", "L'attacco dei giganti", "Hajime Isayama", 2009, 50,5,"Dark fantasy","Un bel manga");
+            Book book = new Book("1234567890000", "L'attacco dei giganti", "Hajime Isayama", 2009, 50,5,"Dark fantasy","Un bel manga");
             this.bookService.add(book);
         });
 
         assertThrows(DuplicateBookByIsbnException.class, () -> {
+            Book duplicateBook = new Book("1234567890000", "1984", "George Orwell", 1948, 50,3,"Distopico","Un romanzo cupo");
+            this.bookService.add(duplicateBook);
+        });
+
+        assertThrows(WrongIsbnException.class, () -> {
             Book duplicateBook = new Book("123456789", "1984", "George Orwell", 1948, 50,3,"Distopico","Un romanzo cupo");
             this.bookService.add(duplicateBook);
         });
+
+
     }
 
     @Test
     public void addAll() {
         assertDoesNotThrow(() -> {
             List<Book> books = List.of(
-                    new Book("123456789", "One piece", "Oda", 1999, 50,3,"Avventura","Peak"),
-                    new Book("123456780", "Chainsaw man", "Tatsuki Fujimoto", 2022, 50,4,"Fantasy","Topo di campagna o di città?")
+                    new Book("1234567890000", "One piece", "Oda", 1999, 50,3,"Avventura","Peak"),
+                    new Book("1234567800000", "Chainsaw man", "Tatsuki Fujimoto", 2022, 50,4,"Fantasy","Topo di campagna o di città?")
             );
             this.bookService.addAll(books);
         });
 
         assertThrows(DuplicateBooksByIsbnException.class, () -> {
             List<Book> books = List.of(
-                    new Book("123556780", "Jojo", "Hirohiko Araki", 1987, 50,9,"Fantasy","La parte 7 è la migliore"),
-                    new Book("123456780", "Chainsaw man", "Tatsuki Fujimoto", 2022, 50,4,"Fantasy","Topo di campagna o di città?") //Duplicato
+                    new Book("1235567800000", "Jojo", "Hirohiko Araki", 1987, 50,9,"Fantasy","La parte 7 è la migliore"),
+                    new Book("1234567800000", "Chainsaw man", "Tatsuki Fujimoto", 2022, 50,4,"Fantasy","Topo di campagna o di città?") //Duplicato
 
             );
             this.bookService.addAll(books);
@@ -65,17 +73,17 @@ public class DatabaseBookServiceTest {
         assertTrue(this.bookService.getByIsbn("NON-ESISTE").isEmpty());
 
         assertDoesNotThrow(() -> {
-            this.bookService.add(new Book("133456781", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Reo è il goat"));
-            this.bookService.add(new Book("133496782", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Chighiri è il goat"));
-            this.bookService.add(new Book("138456783", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Kurona è il goat"));
-            this.bookService.add(new Book("222222222", "Fragole sulle pendici del Vesuvio", " Sabrin Cascoon", 2004, 21,20,"Biografia","Le fragole alle pendici del Vesuvio sono squisite"));
+            this.bookService.add(new Book("1334567810000", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Reo è il goat"));
+            this.bookService.add(new Book("1334967820000", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Chighiri è il goat"));
+            this.bookService.add(new Book("1384567830000", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Kurona è il goat"));
+            this.bookService.add(new Book("2222222220000", "Fragole sulle pendici del Vesuvio", " Sabrin Cascoon", 2004, 21,20,"Biografia","Le fragole alle pendici del Vesuvio sono squisite"));
         });
 
         assertDoesNotThrow(() -> {
-            this.bookService.getByIsbn("133496780").get();
+            this.bookService.getByIsbn("1334967800000").get();
         });
 
-        Book retrieved = this.bookService.getByIsbn("133496780").get();
+        Book retrieved = this.bookService.getByIsbn("1334967800000").get();
         assertEquals("Muneyuki Kaneshiro", retrieved.getAuthor());
         assertEquals("Blue lock", retrieved.getTitle());
         assertEquals(2018, retrieved.getReleaseYear());
@@ -98,12 +106,12 @@ public class DatabaseBookServiceTest {
     @Test
     public void exists() {
         assertDoesNotThrow(() -> {
-            Book book = new Book("676767676", "Dragon Ball", "Akira Toriyama", 1984, 50,40,"Fantasy","Kamehamea!!!");
+            Book book = new Book("6767676760000", "Dragon Ball", "Akira Toriyama", 1984, 50,40,"Fantasy","Kamehamea!!!");
             this.bookService.add(book);
         });
 
         assertFalse(this.bookService.existsByIsbn("INESISTENTE"));
-        assertTrue(this.bookService.existsByIsbn("676767676"));
+        assertTrue(this.bookService.existsByIsbn("6767676760000"));
     }
 
     @Test
@@ -111,38 +119,38 @@ public class DatabaseBookServiceTest {
         assertFalse(this.bookService.removeByIsbn("INESISTENTE"));
 
         assertDoesNotThrow(() -> {
-            Book book = new Book("676767676", "Dragon Ball", "Akira Toriyama", 1984, 50,40,"Fantasy","Kamehamea!!!");
+            Book book = new Book("6767676760000", "Dragon Ball", "Akira Toriyama", 1984, 50,40,"Fantasy","Kamehamea!!!");
             this.bookService.add(book);
         });
-        assertTrue(this.bookService.removeByIsbn("676767676"));
+        assertTrue(this.bookService.removeByIsbn("6767676760000"));
 
     }
 
     @Test
     public void update() {
         assertThrows(UnknownBookByIsbnException.class, () -> {
-            Book book = new Book("123432167", "Striano, Montoro e Atripalda", "Vincenzo D. Raimo", 2025, 4,4,"Politica","Origine di queste 3 città che hanno dato i natali a 3 scienziati.");
+            Book book = new Book("1234321670000", "Striano, Montoro e Atripalda", "Vincenzo D. Raimo", 2025, 4,4,"Politica","Origine di queste 3 città che hanno dato i natali a 3 scienziati.");
             this.bookService.updateByIsbn(book);
         });
 
         assertDoesNotThrow(() -> {
-            Book book = new Book("123432169", "Striano, Montoro e Atripalda", "Vincenzo D. Raimo", 2025, 4,4,"Politica","Origine di queste 3 città che hanno dato i natali a 3 scienziati.");
+            Book book = new Book("1234321690000", "Striano, Montoro e Atripalda", "Vincenzo D. Raimo", 2025, 4,4,"Politica","Origine di queste 3 città che hanno dato i natali a 3 scienziati.");
             this.bookService.add(book);
         });
 
         assertDoesNotThrow(() -> {
-            Book book = new Book("351903483", "An empty plate 's tale", "Vincenzo Dan. Raimo", 2026, 1,0,"Avventura","R.I.P. Mattia L. Santoro");
+            Book book = new Book("3519034830000", "An empty plate 's tale", "Vincenzo Dan. Raimo", 2026, 1,0,"Avventura","R.I.P. Mattia L. Santoro");
             this.bookService.add(book);
         });
 
         assertDoesNotThrow(() -> {
-            Book updatedBook = new Book("351903483", "An empty plate 's tale", "Vincenzo Dan. Raimo", 2026, 1,0,"Avventura","R.I.P. Mattia L. Santoro");
+            Book updatedBook = new Book("3519034830000", "An empty plate 's tale", "Vincenzo Dan. Raimo", 2026, 1,0,"Avventura","R.I.P. Mattia L. Santoro");
 
             this.bookService.updateByIsbn(updatedBook);
         });
 
         assertDoesNotThrow(() -> {
-            Book book = this.bookService.getByIsbn("351903483").get();
+            Book book = this.bookService.getByIsbn("3519034830000").get();
             assertEquals("An empty plate 's tale", book.getTitle());
             assertEquals("Vincenzo Dan. Raimo", book.getAuthor());
             assertEquals(2026, book.getReleaseYear());
@@ -154,10 +162,10 @@ public class DatabaseBookServiceTest {
     @Test
     public void countRemainingCopies() {
         assertDoesNotThrow(() -> {
-            Book book = new Book("040982025", "Trip to Sofia", "Ancel P.", 2027, 14,3,"Fantascienza","Comprende racconto audio-visivo!");
+            Book book = new Book("0409820250000", "Trip to Sofia", "Ancel P.", 2027, 14,3,"Fantascienza","Comprende racconto audio-visivo!");
             this.bookService.add(book);
         });
 
-        assertEquals(3, this.bookService.countRemainingCopies("040982025"));
+        assertEquals(3, this.bookService.countRemainingCopies("0409820250000"));
     }
 }
