@@ -7,6 +7,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -66,10 +67,12 @@ public class BookSceneController extends GuiController implements Initializable 
     /**
      * @brief Setter per il bookService.
      *
-     * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     * @param serviceRepository Il contenitore dei servizi da cui prelevare quello per la gestione dei libri
      */
-    public void setBookService(BookService bookService) {
-        this.bookService = bookService;
+    @Override
+    public void setServices(ServiceRepository serviceRepository) {
+        this.setServices(serviceRepository);
+        this.bookService = serviceRepository.getBookService();
 
         this.updateTable();
     }
@@ -204,7 +207,6 @@ public class BookSceneController extends GuiController implements Initializable 
         }
 
         super.modalScene("/view/AddBookScene.fxml", "Modifica Libro", (AddBookSceneController controller) -> {
-            controller.setBookService(this.bookService);
             controller.setBookToEdit(selectedBook);
         });
 
@@ -226,9 +228,7 @@ public class BookSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddBook(ActionEvent event) {
-        super.modalScene("/view/AddBookScene.fxml", "Aggiungi Libro", (AddBookSceneController controller) -> {
-            controller.setBookService(this.bookService);
-        });
+        super.modalScene("/view/AddBookScene.fxml", "Aggiungi Libro", null);
 
         this.updateTable();
     }

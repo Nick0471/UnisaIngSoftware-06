@@ -70,8 +70,8 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Override di setServices.
-     * @param serviceRepository inizializza i service locali
+     * @brief Setter per loanService.
+     * @param serviceRepository Il contenitore dei servizi da cui prelevare quello per la gestione dei prestiti
      *
      */
     @Override

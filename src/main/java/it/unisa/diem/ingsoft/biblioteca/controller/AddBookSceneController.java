@@ -7,6 +7,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,10 +44,12 @@ public class AddBookSceneController extends GuiController{
     /**
      * @brief Setter per il bookService.
      *
-     * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     * @param serviceRepository Il contenitore dei servizi da cui prelevare quello per la gestione dei libri
      */
-    public void setBookService(BookService bookService) {
-        this.bookService = bookService;
+    @Override
+    public void setServices(ServiceRepository serviceRepository) {
+        this.setServices(serviceRepository);
+        this.bookService = serviceRepository.getBookService();
     }
 
     /**
