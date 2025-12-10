@@ -103,7 +103,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>it.unisa.diem.ingsoft.biblioteca/it.unisa.diem.ingsoft.biblioteca.HelloApplication</mainClass>
+                            <mainClass>it.unisa.diem.ingsoft.biblioteca/it.unisa.diem.ingsoft.biblioteca.App</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

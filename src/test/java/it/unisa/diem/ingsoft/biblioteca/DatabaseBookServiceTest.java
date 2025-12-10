@@ -65,9 +65,9 @@ public class DatabaseBookServiceTest {
         assertTrue(this.bookService.getByIsbn("NON-ESISTE").isEmpty());
 
         assertDoesNotThrow(() -> {
-            this.bookService.add( new Book("133456780", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Reo è il goat"));
-            this.bookService.add(new Book("133496780", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Chighiri è il goat"));
-            this.bookService.add(new Book("138456780", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Kurona è il goat"));
+            this.bookService.add(new Book("133456781", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Reo è il goat"));
+            this.bookService.add(new Book("133496782", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Chighiri è il goat"));
+            this.bookService.add(new Book("138456783", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Kurona è il goat"));
             this.bookService.add(new Book("222222222", "Fragole sulle pendici del Vesuvio", " Sabrin Cascoon", 2004, 21,20,"Biografia","Le fragole alle pendici del Vesuvio sono squisite"));
         });
 
@@ -76,7 +76,7 @@ public class DatabaseBookServiceTest {
         });
 
         Book retrieved = this.bookService.getByIsbn("133496780").get();
-        assertEquals("Blue lock", retrieved.getAuthor());
+        assertEquals("Muneyuki Kaneshiro", retrieved.getAuthor());
 
         assertDoesNotThrow(() -> {
             assertFalse(this.bookService.getAll().isEmpty());
