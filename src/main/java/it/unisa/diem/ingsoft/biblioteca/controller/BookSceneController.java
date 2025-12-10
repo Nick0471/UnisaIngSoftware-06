@@ -206,7 +206,7 @@ public class BookSceneController extends GuiController implements Initializable 
             return;
         }
 
-        super.modalScene("/view/AddBookScene.fxml", "Modifica Libro", (AddBookSceneController controller) -> {
+        super.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddBookScene.fxml", "Modifica Libro", (AddBookSceneController controller) -> {
             controller.setBookToEdit(selectedBook);
         });
 
@@ -219,7 +219,7 @@ public class BookSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
-        super.changeScene(event, "view/HomepageScene.fxml");
+        super.changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/HomepageScene.fxml");
     }
 
     /**
@@ -228,7 +228,7 @@ public class BookSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddBook(ActionEvent event) {
-        super.modalScene("/view/AddBookScene.fxml", "Aggiungi Libro", null);
+        super.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddBookScene.fxml", "Aggiungi Libro", null);
 
         this.updateTable();
     }
