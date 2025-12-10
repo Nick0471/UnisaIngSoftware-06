@@ -22,7 +22,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Optional<Database> databaseOpt = connectToDatabase();
+        Optional<Database> databaseOpt = this.connectToDatabase();
 
         if (databaseOpt.isEmpty()) {
             System.err.println("La connessione al database è fallita. Il software sara' terminato.");
@@ -51,7 +51,7 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    private static Optional<Database> connectToDatabase() {
+    private Optional<Database> connectToDatabase() {
         int i = 0;
         Optional<Database> databaseOpt = Optional.empty();
 
