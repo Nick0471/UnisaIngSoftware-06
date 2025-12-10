@@ -21,5 +21,4 @@ module it.unisa.diem.ingsoft.biblioteca {
     exports it.unisa.diem.ingsoft.biblioteca.exception;
 
     requires org.slf4j;
-    requires it.unisa.diem.ingsoft.biblioteca;
 }

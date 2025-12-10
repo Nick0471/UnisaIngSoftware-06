@@ -4,19 +4,19 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import java.util.function.Consumer;
+
+import it.unisa.diem.ingsoft.biblioteca.Scenes;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Modality;
-import javafx.util.Callback;
-import java.util.function.Consumer;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 /**
  * @brief Classe astratta base per fornire metodi ai controller dell'interfaccia grafica.
@@ -41,23 +41,14 @@ public abstract class GuiController {
      */
     protected void changeScene(ActionEvent event, String scene) {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
-            Parent root = loader.load();
-
-            Object controller = loader.getController();
-
-            if (controller instanceof GuiController) {
-                ((GuiController) controller).setServices(this.serviceRepository);
-            }
+            FXMLLoader loader = Scenes.setupLoader(scene, this.serviceRepository);
+            Parent root = Scenes.getRoot(loader);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            Scene new_scene = new Scene(root);
-            stage.setScene(new_scene);
+            Scene newScene = new Scene(root);
+            stage.setScene(newScene);
             stage.show();
-
-        } catch (IOException e) {
-            this.popUp("ERRORE: Impossibile caricare il file '" + scene + "'");
         } catch (NullPointerException e) {
             this.popUp("ERRORE: Il file '" + scene + "' non è stato trovato nel percorso specificato.");
         }
@@ -66,36 +57,27 @@ public abstract class GuiController {
     /**
      * @brief Apre una nuova finestra modale e permette di configurare il suo controller.
      *
-     * @param fxmlPath Il percorso del file FXML da caricare.
+     * @param scene Il percorso del file FXML da caricare.
      * @param title Il titolo della nuova finestra.
      * @param controllerSetup Passa i dati al controller.
      * @param <T> Il tipo del controller che si sta caricando.
      */
-    protected <T> void modalScene(String fxmlPath, String title, Consumer<T> controllerSetup) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
+    protected <T> void modalScene(String scene, String title, Consumer<T> controllerSetup) {
+        FXMLLoader loader = Scenes.setupLoader(scene, this.serviceRepository);
+        Parent root = Scenes.getRoot(loader);
+        T controller = (T) loader.getController();
 
-            T controller = loader.getController();
-
-            if (controller instanceof GuiController) {
-                ((GuiController) controller).setServices(this.serviceRepository);
-            }
-
-            if (controllerSetup != null) {
-                controllerSetup.accept(controller);
-            }
-
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            stage.setScene(new Scene(root));
-
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-        } catch (IOException e) {
-            this.popUp("ERRORE: Impossibile caricare la finestra modale '" + fxmlPath);
+        if (controllerSetup != null) {
+            controllerSetup.accept(controller);
         }
+
+        Scene newScene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(newScene);
+
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
 
     /**
@@ -128,5 +110,4 @@ public abstract class GuiController {
         confirmationStage.setScene(scene);
         confirmationStage.show();
     }
-
 }

@@ -1,11 +1,7 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Optional;
 
-import it.unisa.diem.ingsoft.biblioteca.controller.GuiController;
-import it.unisa.diem.ingsoft.biblioteca.exception.DatabaseUnreachableException;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseLoanService;
@@ -24,22 +20,12 @@ import javafx.stage.Stage;
 public class App extends Application {
     private static final String DATABASE_CONNECTION_URL = "jdbc:sqlite:database.db";
 
-    public static void main(String[] args) throws IOException {
-        int connectionTries = 0;
+    @Override
+    public void start(Stage primaryStage) {
         Optional<Database> databaseOpt = connectToDatabase();
 
-        while (databaseOpt.isEmpty() && connectionTries < 3) {
-            try {
-                Thread.sleep(3000);
-            } catch(InterruptedException e) {}
-
-            databaseOpt = connectToDatabase();
-            connectionTries++;
-        }
-
         if (databaseOpt.isEmpty()) {
-            System.err.println("La connessione al database è fallita dopo 3 tentativi.");
-            System.err.println("Il software terminerà.");
+            System.err.println("La connessione al database è fallita. Il software sara' terminato.");
             return;
         }
 
@@ -51,61 +37,35 @@ public class App extends Application {
         ServiceRepository serviceRepository = new ServiceRepository(passwordService, userService,
                 bookService, loanService);
 
+        // password di default
         if (!passwordService.isPresent()) {
             passwordService.change("admin");
         }
 
-        URL loginUrl = App.class.getResource("it/unisa/diem/ingsoft/biblioteca/view/LogInScene.fxml");
-        FXMLLoader loader = new FXMLLoader(loginUrl);
+        FXMLLoader loader = Scenes.setupLoader(Views.LOGIN_PATH, serviceRepository);
+        Parent root = Scenes.getRoot(loader);
+        Scene scene = new Scene(root);
 
-        Parent root = loader.load();
-        Stage stage = new Stage();
-        Scene scene = new Scene(root, 800, 600);
-
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setTitle("Biblioteca Login");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
-
-
-    public void start(Stage primaryStage) {
-
-        try {
-            URL loginUrl = App.class.getResource("/it/unisa/diem/ingsoft/biblioteca/view/LogInScene.fxml");
-
-
-            FXMLLoader loader = new FXMLLoader(loginUrl);
-
-
-            Parent root = loader.load();
-            Object controller = loader.getController();
-
-            if (controller instanceof GuiController) {
-                ((GuiController) controller).setServices(serviceRepository);
-            }
-
-            Scene scene = new Scene(root);
-            primaryStage.setTitle("Biblioteca Login");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-
-        }catch (IOException e) {
-            e.printStackTrace();
-            // Gestisci l'errore, magari mostrando un alert o chiudendo l'app
-        }
-    }
-
-
 
     private static Optional<Database> connectToDatabase() {
-        Optional<Database> database = Optional.empty();
+        int i = 0;
+        Optional<Database> databaseOpt = Optional.empty();
 
-        try {
-			Database db = Database.connect(DATABASE_CONNECTION_URL);
-            database = Optional.of(db);
-		} catch (DatabaseUnreachableException e) {
-			e.printStackTrace();
-		}
+        while (databaseOpt.isEmpty() && i < 3) {
+            try {
+                Thread.sleep(3000);
+            } catch(InterruptedException e) {}
 
-        return database;
+            databaseOpt = Database.connect(DATABASE_CONNECTION_URL); 
+            i++;
+
+            System.out.println("Tentativo di connessione al database. Tentativo numero: " + i);
+        }
+
+        return databaseOpt;
     }
 }

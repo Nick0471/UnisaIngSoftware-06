@@ -1,9 +1,13 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
-
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
@@ -13,15 +17,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-
-import java.net.URL;
-import java.util.ArrayList;
-
-import java.util.List;
-import java.util.ResourceBundle;
 
 /**
 * @brief Questo Controller gestisce la scena "Gestione utenti"
@@ -87,38 +88,38 @@ public class UserSceneController extends GuiController implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        columnMatricola.setCellValueFactory(new PropertyValueFactory<>("id")); //matricola
-        columnSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
-        columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        this.columnMatricola.setCellValueFactory(new PropertyValueFactory<>("id")); //matricola
+        this.columnSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        this.columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        this.columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
 
         // Listener per cambiare la visibilità del secondo campo di ricerca
-        searchType.valueProperty().addListener((obs, oldVal, newVal) -> {
+        this.searchType.valueProperty().addListener((obs, oldVal, newVal) -> {
             if ("Cognome".equals(newVal)) {
                 // Se filtro per Cognome, mostro il campo per il Nome
-                searchFieldSecondary.setVisible(true);
-                searchFieldSecondary.setManaged(true);
-                searchField.setPromptText("Inserisci Cognome...");
-                searchFieldSecondary.setPromptText("Inserisci Nome...");
+                this.searchFieldSecondary.setVisible(true);
+                this.searchFieldSecondary.setManaged(true);
+                this.searchField.setPromptText("Inserisci Cognome...");
+                this.searchFieldSecondary.setPromptText("Inserisci Nome...");
             } else {
                 // Altrimenti nascondo il secondo campo
-                searchFieldSecondary.setVisible(false);
-                searchFieldSecondary.setManaged(false);
-                searchFieldSecondary.clear(); // Pulisco il secondo campo
+                this.searchFieldSecondary.setVisible(false);
+                this.searchFieldSecondary.setManaged(false);
+                this.searchFieldSecondary.clear(); // Pulisco il secondo campo
 
 
-                if("Matricola".equals(newVal)) searchField.setPromptText("Inserisci Matricola...");
-                else if("Email".equals(newVal)) searchField.setPromptText("Inserisci Email...");
-                else searchField.setPromptText("Cerca utente...");
+                if("Matricola".equals(newVal)) this.searchField.setPromptText("Inserisci Matricola...");
+                else if("Email".equals(newVal)) this.searchField.setPromptText("Inserisci Email...");
+                else this.searchField.setPromptText("Cerca utente...");
             }
             // Aggiorno la tabella quando cambio filtro
-            executeFilter();
+            this.executeFilter();
         });
 
         // Listener sui campi di testo: ogni volta che si scrive, filtra
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> executeFilter());
-        searchFieldSecondary.textProperty().addListener((observable, oldValue, newValue) -> executeFilter());
+        this.searchField.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
+        this.searchFieldSecondary.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
 
         // Caricamento iniziale
         this.updateTable();
@@ -129,7 +130,7 @@ public class UserSceneController extends GuiController implements Initializable{
      * @brief Aggiorna la tabella recuperando tutti gli utenti registrati.
      */
     public void updateTable(){
-        List<User> listUsers= userService.getAll();
+        List<User> listUsers= this.userService.getAll();
         this.users = FXCollections.observableArrayList(listUsers);
         this.userTable.setItems(this.users);
     }
@@ -138,11 +139,11 @@ public class UserSceneController extends GuiController implements Initializable{
      * @brief Metodo helper che recupera i valori dai campi di ricerca e invoca il filtraggio.
      */
     private void executeFilter() {
-        String type = searchType.getValue();
-        String val1 = searchField.getText();
-        String val2 = searchFieldSecondary.getText();
+        String type = this.searchType.getValue();
+        String val1 = this.searchField.getText();
+        String val2 = this.searchFieldSecondary.getText();
 
-        filterUsers(type, val1, val2);
+        this.filterUsers(type, val1, val2);
     }
 
 
@@ -172,23 +173,13 @@ public class UserSceneController extends GuiController implements Initializable{
         if (type == null) type = "Tutti";
 
         switch (type) {
-            case "Matricola":
-                this.userService.getById(query1).ifPresent(result::add);
-                break;
-
-            case "Cognome":
-                result = this.userService.getAllByFullNameContaining(query1, query2); //query1=cognome e query2=nome
-                break;
-
-            case "Email":
-                result = this.userService.getAllByEmailContaining(query1);
-                break;
-
-            case "Tutti":
-            default:
-                result = this.userService.getAll();
-                break;
+            case "Matricola" -> this.userService.getById(query1).ifPresent(result::add);
+            case "Cognome" -> result = this.userService.getAllByFullNameContaining(query1, query2); //query1=cognome e query2=nome
+            case "Email" -> result = this.userService.getAllByEmailContaining(query1);
+            case "Tutti" -> result = this.userService.getAll();
+            default -> result = this.userService.getAll();
         }
+        ;
 
         this.users = FXCollections.observableArrayList(result);
         this.userTable.setItems(this.users);
@@ -206,24 +197,24 @@ public class UserSceneController extends GuiController implements Initializable{
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser== null) {
-            popUp("Seleziona un utente da rimuovere.");
+            this.popUp("Seleziona un utente da rimuovere.");
             return;
         }
 
-        List<Loan> loanList = loanService.getByUserId(selectedUser.getId());
+        List<Loan> loanList = this.loanService.getByUserId(selectedUser.getId());
 
         if(loanList.isEmpty()) {
             this.userService.removeById(selectedUser.getId());
             this.updateTable();
         }else
-            popUp("Non puoi rimuovere un utente che ha ancora prestiti attivi");
+            this.popUp("Non puoi rimuovere un utente che ha ancora prestiti attivi");
     }
 
     /**
      * @brief Apre la scena "AddUserScene".
      *
      * Carica `AddUserScene.fxml` e passa il controllo al {@link AddUserSceneController}.
-     * Chiama il metodo `EditUser()` sul controller di destinazione per pre-compilare i campi
+     * Chiama il metodo `editUser()` sul controller di destinazione per pre-compilare i campi
      * e impostare la modalità di modifica (blocco della matricola).
      *
      * @param event L'evento che ha scatenato l'azione.
@@ -238,7 +229,7 @@ public class UserSceneController extends GuiController implements Initializable{
         }
 
         this.modalScene("it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml", "Modifica Utente", (AddUserSceneController controller) -> {
-            controller.EditUser(selectedUser);
+            controller.editUser(selectedUser);
         });
 
         this.updateTable();
@@ -249,7 +240,7 @@ public class UserSceneController extends GuiController implements Initializable{
      * @brief Apre la scena "AddUserScene".
      *
      * Carica `AddUserScene.fxml` e passa il `UserService` al controller.
-     * A differenza di `handleModifyUser`, qui non viene chiamato `EditUser`,
+     * A differenza di `handleModifyUser`, qui non viene chiamato `editUser`,
      * quindi i campi saranno vuoti e modificabili.
      *
      * @param event L'evento che ha scatenato l'azione.
@@ -270,7 +261,7 @@ public class UserSceneController extends GuiController implements Initializable{
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
-        changeScene(event, "view/HomepageScene.fxml");
+        this.changeScene(event, "view/HomepageScene.fxml");
     }
 
 
@@ -289,12 +280,12 @@ public class UserSceneController extends GuiController implements Initializable{
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser == null) {
-            popUp("Seleziona un utente per visualizzarne il profilo.");
+            this.popUp("Seleziona un utente per visualizzarne il profilo.");
             return;
         }
 
         this.modalScene("it/unisa/diem/ingsoft/biblioteca/view/AccountUserScene.fxml", "Profilo Utente", (AccountUserSceneController controller) -> {
-            controller.setProfileUser(selectedUser, loanService, bookService);
+            controller.setUserProfile(selectedUser, this.loanService, this.bookService);
         });
 
         this.updateTable();

@@ -7,10 +7,10 @@ package it.unisa.diem.ingsoft.biblioteca;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import org.jdbi.v3.core.Jdbi;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.DatabaseUnreachableException;
 import it.unisa.diem.ingsoft.biblioteca.mapper.BookMapper;
 import it.unisa.diem.ingsoft.biblioteca.mapper.LoanMapper;
 import it.unisa.diem.ingsoft.biblioteca.mapper.UserMapper;
@@ -38,17 +38,20 @@ public class Database {
      * @brief Crea un oggetto di classe Database che incapsula JDBI per la connessione ad un
      *  database
      * @param connectionUrl L'URL che identifica la locazione del database
-     * @return Un oggetto di tipo Database con la connessione specificata
-     * @throws DatabaseUnreachableException La connessione è fallita
+     * @return Un oggetto di tipo Optional<Database> con un database se la connessione e' andata a
+     *  buon fine, Optional.empty() altrimenti.
      */
-    public static Database connect(String connectionUrl) throws DatabaseUnreachableException {
+    public static Optional<Database> connect(String connectionUrl) {
+        Optional<Database> opt = Optional.empty();
+
         // Non usiamo il try-with-resources: JDBI gestisce la connessione
         try {
             Connection connection = DriverManager.getConnection(connectionUrl);
-            return new Database(connection);
-        } catch(SQLException e) {
-            throw new DatabaseUnreachableException(e);
-        }
+            Database database = new Database(connection);
+            opt = Optional.of(database);
+        } catch(SQLException e) {}
+
+        return opt;
     }
 
     /**

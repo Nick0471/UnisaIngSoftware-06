@@ -4,22 +4,16 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
-
 import it.unisa.diem.ingsoft.biblioteca.model.User;
-
-import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-
 import javafx.scene.control.TextField;
-
 
 /**
  * @brief Questo Controller gestisce la scena di Aggiunta (e Modifica) utente.
@@ -70,7 +64,7 @@ public class AddUserSceneController extends GuiController{
      * @param user L'oggetto User contenente i dati attuali da modificare.
      */
     //Metodo che permette di MODICIARE un utente già esistente
-    public void EditUser(User user) {
+    public void editUser(User user) {
         if (user != null) {
             this.isEditMode = true;
             this.idField.setText(user.getId());
@@ -109,31 +103,31 @@ public class AddUserSceneController extends GuiController{
 
 
         if (id.isEmpty() || surname.isEmpty() || name.isEmpty() || email.isEmpty()) {
-            popUp(" Compila tutti i campi obbligatori.");
+            this.popUp(" Compila tutti i campi obbligatori.");
             return;
         }
 
         User user = new User(id,email,name,surname);
 
-        if (isEditMode) {
+        if (this.isEditMode) {
             try {
-                userService.updateById(user);
-                popUp("Utente aggiornato con successo!");
+                this.userService.updateById(user);
+                this.popUp("Utente aggiornato con successo!");
             }catch(UnknownUserByIdException e){
-                popUp(e.getMessage());
+                this.popUp(e.getMessage());
             }
         } else {
             try {
-                userService.register(user);
-                popUp("Nuovo Utente registrato con successo!");
+                this.userService.register(user);
+                this.popUp("Nuovo Utente registrato con successo!");
             } catch (DuplicateUserByEmailException e) {
-                popUp(e.getMessage());
+                this.popUp(e.getMessage());
             } catch (DuplicateUserByIdException e) {
-                popUp(e.getMessage());
+                this.popUp(e.getMessage());
             }
         }
 
-        closeScene(event);
+        this.closeScene(event);
     }
 
 
@@ -146,7 +140,7 @@ public class AddUserSceneController extends GuiController{
      */
     @FXML
     private void handleCancel(ActionEvent event){
-        closeScene(event);
+        this.closeScene(event);
     }
 
 

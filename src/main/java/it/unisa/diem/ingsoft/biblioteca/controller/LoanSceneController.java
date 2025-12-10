@@ -4,12 +4,16 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
-import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
-import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,11 +25,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * @brief Controller per la gestione della view dei prestit.
@@ -109,13 +108,13 @@ public class LoanSceneController extends GuiController implements Initializable 
                 super.updateItem(loan, empty);
 
                 if (loan == null || empty) {
-                    setStyle("");
+                    this.setStyle("");
                 } else {
 
                     if (loan.getLoanDeadline().isBefore(LocalDate.now())) {
-                        setStyle("-fx-background-color: #fc3737; -fx-text-fill: #990000;");
+                        this.setStyle("-fx-background-color: #fc3737; -fx-text-fill: #990000;");
                     } else {
-                        setStyle("");
+                        this.setStyle("");
                     }
                 }
             }
@@ -147,15 +146,10 @@ public class LoanSceneController extends GuiController implements Initializable 
         List<Loan> result = new ArrayList<>();
 
         switch (type) {
-            case "Matricola":
-                result = this.loanService.getByUserId(query);
-                break;
-            case "ISBN":
-                result = this.loanService.getByBookIsbn(query);
-                break;
-            default:
-                this.updateTable();
-        }
+            case "Matricola" -> result = this.loanService.getByUserId(query);
+            case "ISBN" -> result = this.loanService.getByBookIsbn(query);
+            default -> this.updateTable();
+        };
 
         this.loans = FXCollections.observableArrayList(result);
         this.loanTable.setItems(this.loans);

@@ -1,28 +1,23 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
-import it.unisa.diem.ingsoft.biblioteca.service.BookService;
-import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
-import it.unisa.diem.ingsoft.biblioteca.model.User;
-
-import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import it.unisa.diem.ingsoft.biblioteca.model.Loan;
+import it.unisa.diem.ingsoft.biblioteca.model.User;
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
-import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-
-
-
 
 /**
  * @brief Questo Controller gestisce la scena "Account Utente".
@@ -88,22 +83,22 @@ public class AccountUserSceneController extends GuiController implements Initial
         // La stringa nel PropertyValueFactory DEVE corrispondere al nome del campo nella classe Loan
 
         // "bookIsbn" corrisponde a getBookIsbn()
-        columnIsbn.setCellValueFactory(new PropertyValueFactory<>("bookIsbn"));
+        this.columnIsbn.setCellValueFactory(new PropertyValueFactory<>("bookIsbn"));
 
         // "loanStart" corrisponde a getLoanStart()
-        columnStartDate.setCellValueFactory(new PropertyValueFactory<>("loanStart"));
+        this.columnStartDate.setCellValueFactory(new PropertyValueFactory<>("loanStart"));
 
         // "loanDeadline" corrisponde a getLoanDeadline()
-        columnDeadline.setCellValueFactory(new PropertyValueFactory<>("loanDeadline"));
+        this.columnDeadline.setCellValueFactory(new PropertyValueFactory<>("loanDeadline"));
 
         //Configurazione della colonna TITOLO (dato derivato tramite BookService)
-        columnTitle.setCellValueFactory(cellData -> {
+        this.columnTitle.setCellValueFactory(cellData -> {
 
             Loan loan = cellData.getValue();
             String isbn = loan.getBookIsbn();
 
             // Recupera il titolo usando il servizio libri
-            return bookService.getByIsbn(isbn)
+            return this.bookService.getByIsbn(isbn)
                     .map(book -> new SimpleStringProperty(book.getTitle()))
                     .orElse(new SimpleStringProperty("Titolo non trovato"));
         });
@@ -120,21 +115,21 @@ public class AccountUserSceneController extends GuiController implements Initial
      * @param loanService Il servizio per gestire le operazioni sui prestiti.
      * @param bookService Il servizio per gestire le operazioni sui libri (usato per recuperare i titoli).
      */
-    public void setProfileUser(User user, LoanService loanService, BookService bookService) {
+    public void setUserProfile(User user, LoanService loanService, BookService bookService) {
         this.user = user;
         this.loanService = loanService;
         this.bookService = bookService;
 
         // Imposta le label con i dati dell'utente passato
         if (user != null) {
-            labelMatricola.setText(user.getId());
-            labelNome.setText(user.getName());
-            labelCognome.setText(user.getSurname());
-            labelEmail.setText(user.getEmail());
+            this.labelMatricola.setText(user.getId());
+            this.labelNome.setText(user.getName());
+            this.labelCognome.setText(user.getSurname());
+            this.labelEmail.setText(user.getEmail());
         }
 
         // Una volta che abbiamo l'utente e i servizi, aggiorniamo la tabella
-        updateTable();
+        this.updateTable();
     }
 
 
@@ -147,10 +142,10 @@ public class AccountUserSceneController extends GuiController implements Initial
     private void updateTable() {
 
         // Chiamo il metodo dell'interfaccia che recupera SOLO i prestiti di questo utente
-        List<Loan> userLoans = loanService.getByUserId(user.getId());
+        List<Loan> userLoans = this.loanService.getByUserId(this.user.getId());
 
         // Inserisco i dati filtrati nella tabella
-        loansTable.getItems().setAll(userLoans);
+        this.loansTable.getItems().setAll(userLoans);
     }
 
 
@@ -164,7 +159,7 @@ public class AccountUserSceneController extends GuiController implements Initial
      */
     @FXML
     private void handleClose(ActionEvent event) {
-        closeScene(event);
+        this.closeScene(event);
     }
 
 
