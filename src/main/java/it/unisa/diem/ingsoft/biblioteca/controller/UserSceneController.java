@@ -42,6 +42,7 @@ import java.util.ResourceBundle;
 public class UserSceneController extends GuiController implements Initializable{
 
     @FXML private ComboBox<String> searchType;
+
     @FXML private TextField searchField;
     @FXML private TextField searchFieldSecondary;
 
@@ -92,13 +93,11 @@ public class UserSceneController extends GuiController implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        columnMatricola.setCellValueFactory(new PropertyValueFactory<>("id")); //sarebbe la matricola
+        columnMatricola.setCellValueFactory(new PropertyValueFactory<>("id")); //matricola
         columnSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
         columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        // Nota: Gli items della ComboBox sono già definiti nell'FXML (Tutti, Matricola, Cognome, Email).
-        // Non c'è bisogno di aggiungerli qui manualmente.
 
         // Listener per cambiare la visibilità del secondo campo di ricerca
         searchType.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -112,12 +111,11 @@ public class UserSceneController extends GuiController implements Initializable{
                 // Altrimenti nascondo il secondo campo
                 searchFieldSecondary.setVisible(false);
                 searchFieldSecondary.setManaged(false);
-                searchFieldSecondary.clear(); // Pulisco il secondo campo per evitare filtri sporchi
+                searchFieldSecondary.clear(); // Pulisco il secondo campo
 
-                // Cambio il prompt in base alla selezione
+
                 if("Matricola".equals(newVal)) searchField.setPromptText("Inserisci Matricola...");
                 else if("Email".equals(newVal)) searchField.setPromptText("Inserisci Email...");
-
                 else searchField.setPromptText("Cerca utente...");
             }
             // Aggiorno la tabella quando cambio filtro
