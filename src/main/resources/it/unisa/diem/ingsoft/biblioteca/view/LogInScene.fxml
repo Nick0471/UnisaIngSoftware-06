@@ -12,14 +12,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #f4f7fa;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LogInSceneController">
+<BorderPane
+        fx:controller = "it.unisa.diem.ingsoft.biblioteca.controller.LogInSceneController"
+        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #f4f7fa;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
         <HBox alignment="CENTER" prefHeight="80.0" spacing="15.0" style="-fx-background-color: #2D3447; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" BorderPane.alignment="CENTER">
             <children>
                 <ImageView fitHeight="77.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@/it/unisa/diem/ingsoft/biblioteca/img/logo_progetto.jpg" />
+                        <Image url="@../img/logo_progetto.jpg" />
                     </image>
                 </ImageView>
 

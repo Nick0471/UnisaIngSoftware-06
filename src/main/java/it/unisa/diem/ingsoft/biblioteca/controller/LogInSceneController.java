@@ -63,7 +63,7 @@ public class LogInSceneController extends GuiController {
 
         try {
             if (this.passwordService.check(pass))
-                changeScene(event, "homepageScene.fxml");
+                changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/HomepageScene.fxml");
             else
                 popUp("La password inserita non è corretta.");
 
