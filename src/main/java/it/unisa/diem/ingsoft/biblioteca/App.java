@@ -32,7 +32,8 @@ public class App {
         }
 
         if (databaseOpt.isEmpty()) {
-            System.err.println("Impossibile connettersi al database dopo 3 tentativi.");
+            System.err.println("La connessione al database è fallita dopo 3 tentativi.");
+            System.err.println("Il software terminerà.");
             return;
         }
 
