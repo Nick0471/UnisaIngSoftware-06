@@ -30,12 +30,10 @@ public class DatabaseBookServiceTest {
     @Test
     public void add() {
         assertDoesNotThrow(() -> {
-            // Assumo un costruttore: ISBN, Titolo, Autore, Genere, Anno
             Book book = new Book("123456789", "L'attacco dei giganti", "Hajime Isayama", 2009, 50,5,"Dark fantasy","Un bel manga");
             this.bookService.add(book);
         });
 
-        // Test duplicato ISBN
         assertThrows(DuplicateBookByIsbnException.class, () -> {
             Book duplicateBook = new Book("123456789", "1984", "George Orwell", 1948, 50,3,"Distopico","Un romanzo cupo");
             this.bookService.add(duplicateBook);
@@ -70,6 +68,7 @@ public class DatabaseBookServiceTest {
             this.bookService.add( new Book("133456780", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Reo è il goat"));
             this.bookService.add(new Book("133496780", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Chighiri è il goat"));
             this.bookService.add(new Book("138456780", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Kurona è il goat"));
+            this.bookService.add(new Book("222222222", "Fragole sulle pendici del Vesuvio", " Sabrin Cascoon", 2004, 21,20,"Biografia","Le fragole alle pendici del Vesuvio sono squisite"));
         });
 
         assertDoesNotThrow(() -> {
