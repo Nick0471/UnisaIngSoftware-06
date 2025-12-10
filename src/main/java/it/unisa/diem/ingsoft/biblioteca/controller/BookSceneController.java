@@ -174,18 +174,15 @@ public class BookSceneController extends GuiController implements Initializable 
             return;
         }
 
-        try{
-            boolean success = this.bookService.removeByIsbn(selectedBook.getIsbn());
 
-            if (success) {
-                this.updateTable();
-            } else {
-                super.popUp("Libro specificato inesistente.");
-            }
+        boolean success = this.bookService.removeByIsbn(selectedBook.getIsbn());
 
-        }catch(BookException e){
-            super.popUp(e.getMessage());
+        if (success) {
+            this.updateTable();
+        } else {
+            super.popUp("Libro specificato inesistente.");
         }
+
 
         this.updateTable();
     }
