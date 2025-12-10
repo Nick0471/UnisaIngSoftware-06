@@ -11,6 +11,7 @@ import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.WrongIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 /**
@@ -147,14 +148,17 @@ public class DatabaseBookService implements BookService {
 
     /**
      * @brief Aggiunge un libro al catalogo.
-     *  Esegue un insert SQL per l'inserimento del libro nel database.
+     *  Esegue un insert SQL per l'inserimento del libro nel database, controllando che
+     *  l'isbn inserito sia corretto.
      * @param book Il libro da aggiungere.
      */
     @Override
-    public void add(Book book) throws DuplicateBookByIsbnException {
+    public void add(Book book) throws DuplicateBookByIsbnException, WrongIsbnException {
         if (this.existsByIsbn(book.getIsbn())) {
             throw new DuplicateBookByIsbnException();
         }
+
+        if (book.getIsbn().length() != 13) throw new WrongIsbnException();
 
         this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate(
@@ -171,11 +175,16 @@ public class DatabaseBookService implements BookService {
 
     /**
      * @brief Aggiunge una lista di libri al catalogo.
-     *  Esegue una insert SQL per l'inserimento dei libri nel database.
+     *  Esegue una insert SQL per l'inserimento dei libri nel database, controllando che
+     *  l'isbn sia corretto per ogni libro.
      * @param books La lista di libri da aggiungere.
      */
     @Override
-    public void addAll(List<Book> books) throws DuplicateBooksByIsbnException {
+    public void addAll(List<Book> books) throws DuplicateBooksByIsbnException, WrongIsbnException {
+        for(Book book : books){
+            if (book.getIsbn().length() != 13) throw new WrongIsbnException();
+        }
+
         List<String> newIsbns = books.stream()
                 .map(Book::getIsbn)
                 .toList();

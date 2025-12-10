@@ -62,9 +62,7 @@ public class Book {
      * @brief Imposta il codice ISBN del libro.
      * @param ISBN Il nuovo codice ISBN.
      */
-    public void setIsbn(String ISBN) {
-        this.isbn = ISBN;
-    }
+    public void setIsbn(String ISBN) {this.isbn = ISBN; }
 
     /**
      * @brief Restituisce il titolo del libro.

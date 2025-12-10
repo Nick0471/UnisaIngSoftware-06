@@ -10,6 +10,7 @@ import java.util.Optional;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.WrongIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 /**
@@ -76,13 +77,13 @@ public interface BookService {
      * @brief Aggiunge un libro al catalogo.
      * @param book Il libro da aggiungere.
      */
-    void add(Book book) throws DuplicateBookByIsbnException;
+    void add(Book book) throws DuplicateBookByIsbnException, WrongIsbnException;
 
     /**
      * @brief Aggiunge una lista di libri al catalogo.
      * @param books La lista di libri da aggiungere.
      */
-    void addAll(List<Book> books) throws DuplicateBookByIsbnException, DuplicateBooksByIsbnException;
+    void addAll(List<Book> books) throws DuplicateBookByIsbnException, DuplicateBooksByIsbnException, WrongIsbnException;
 
     /**
      * @brief Aggiorna le informazioni di un libro già registrato.
