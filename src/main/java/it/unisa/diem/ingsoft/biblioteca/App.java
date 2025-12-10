@@ -43,7 +43,7 @@ public class App extends Application {
         }
 
         FXMLLoader loader = Scenes.setupLoader(Views.LOGIN_PATH, serviceRepository);
-        Parent root = Scenes.getRoot(loader);
+        Parent root = loader.getRoot();
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("Biblioteca Login");

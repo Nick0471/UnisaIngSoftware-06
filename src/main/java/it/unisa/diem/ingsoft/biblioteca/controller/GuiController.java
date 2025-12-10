@@ -42,7 +42,7 @@ public abstract class GuiController {
     protected void changeScene(ActionEvent event, String scene) {
         try{
             FXMLLoader loader = Scenes.setupLoader(scene, this.serviceRepository);
-            Parent root = Scenes.getRoot(loader);
+            Parent root = loader.getRoot();
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -64,7 +64,7 @@ public abstract class GuiController {
      */
     protected <T> void modalScene(String scene, String title, Consumer<T> controllerSetup) {
         FXMLLoader loader = Scenes.setupLoader(scene, this.serviceRepository);
-        Parent root = Scenes.getRoot(loader);
+        Parent root = loader.getRoot();
         T controller = (T) loader.getController();
 
         if (controllerSetup != null) {
