@@ -5,6 +5,7 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import javafx.event.ActionEvent;
@@ -46,15 +47,15 @@ public class AddLoanSceneController extends GuiController {
 
     /**
      * @brief Setter per i servizi di gestione dei prestiti, degli utenti e dei libri
-     * @param loanService Il servizio da utilizzare per la gestione dei prestiti settato dal chiamante
-     * @param userService Il servizio da utilizzare per la gestione degli utenti settato dal chiamante
-     * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     * @param serviceRepository Contenitore dei servizi da cui recuperare i Services
      *
      */
-    public void setAddLoanServices(LoanService loanService, UserService userService, BookService bookService) {
-        this.loanService = loanService;
-        this.userService = userService;
-        this.bookService = bookService;
+    @Override
+    public void setServices(ServiceRepository serviceRepository) {
+        super.setServices(serviceRepository);
+        this.loanService = serviceRepository.getLoanService();
+        this.userService = serviceRepository.getUserService();
+        this.bookService = serviceRepository.getBookService();
     }
 
     /**

@@ -8,6 +8,7 @@ import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -57,9 +58,7 @@ public class LoanSceneController extends GuiController implements Initializable 
     @FXML
     private Button btnReturn;
 
-    private LoanService loanService;
-    private UserService userService;
-    private BookService bookService;
+    private LoanService loanService = this.getServices().getLoanService();
     private ObservableList<Loan> loans;
 
     /**
@@ -71,16 +70,14 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * @brief Setter per i servizi di gestione dei prestiti, degli utenti e dei libri
-     * @param loanService Il servizio da utilizzare per la gestione dei prestiti settato dal chiamante
-     * @param userService Il servizio da utilizzare per la gestione degli utenti settato dal chiamante
-     * @param bookService Il servizio da utilizzare per la gestione dei libri settato dal chiamante
+     * @brief Override di setServices.
+     * @param serviceRepository inizializza i service locali
      *
      */
-    public void setLoanServices(LoanService loanService, UserService userService, BookService bookService) {
-        this.loanService = loanService;
-        this.userService = userService;
-        this.bookService = bookService;
+    @Override
+    public void setServices(ServiceRepository serviceRepository) {
+        this.setServices(serviceRepository);
+        this.loanService = serviceRepository.getLoanService();
 
         this.updateTable();
     }
@@ -179,11 +176,7 @@ public class LoanSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddLoan(ActionEvent event) {
-        super.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddLoanScene.fxml", "Aggiungi Prestito",
-                (AddLoanSceneController controller) -> {
-                    controller.setAddLoanServices(this.loanService, this.userService, this.bookService);
-                }
-        );
+        super.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddLoanScene.fxml", "Aggiungi Prestito", null);
 
         this.updateTable();
     }

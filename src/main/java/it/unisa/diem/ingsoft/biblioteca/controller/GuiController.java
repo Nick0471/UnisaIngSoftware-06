@@ -4,6 +4,7 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Modality;
@@ -26,6 +27,16 @@ import java.io.IOException;
  */
 
 public abstract class GuiController {
+    private ServiceRepository serviceRepository;
+
+    public void setServices(ServiceRepository serviceRepository) {
+        this.serviceRepository = serviceRepository;
+    }
+
+    public ServiceRepository getServices() {
+        return this.serviceRepository;
+    }
+
     /**
      * @brief Cambia la visualizzazione della scena corrente caricando un nuovo file FXML.
      *
@@ -36,6 +47,12 @@ public abstract class GuiController {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
             Parent root = loader.load();
+
+            Object controller = loader.getController();
+
+            if (controller instanceof GuiController) {
+                ((GuiController) controller).setServices(this.serviceRepository);
+            }
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -64,6 +81,11 @@ public abstract class GuiController {
             Parent root = loader.load();
 
             T controller = loader.getController();
+
+            if (controller instanceof GuiController) {
+                ((GuiController) controller).setServices(this.serviceRepository);
+            }
+
             if (controllerSetup != null) {
                 controllerSetup.accept(controller);
             }
