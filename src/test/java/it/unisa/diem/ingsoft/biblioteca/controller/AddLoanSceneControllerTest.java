@@ -1,5 +1,7 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
@@ -7,6 +9,7 @@ import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -17,10 +20,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AddLoanSceneControllerTest extends ApplicationTest {
@@ -82,7 +86,7 @@ public class AddLoanSceneControllerTest extends ApplicationTest {
     @Test
     public void test3_SearchBookFound() {
         System.out.println("--- TEST 3: RICERCA LIBRO (TROVATO) ---");
-        String isbn = "ISBN - 0001";
+        String isbn = "9780618391110";
 
         when(bookService.existsByIsbn(isbn)).thenReturn(true);
 
@@ -98,7 +102,7 @@ public class AddLoanSceneControllerTest extends ApplicationTest {
     @Test
     public void test4_SearchBookNotFound() {
         System.out.println("--- TEST 4: RICERCA LIBRO (NON TROVATO) ---");
-        String isbn = "ISBN - 0001";
+        String isbn = "9780618391110";
 
         when(bookService.existsByIsbn(isbn)).thenReturn(false);
 
@@ -113,5 +117,119 @@ public class AddLoanSceneControllerTest extends ApplicationTest {
         type(KeyCode.ENTER);
     }
 
-    
+    @Test
+    public void test5_InitializationDates() {
+        System.out.println("--- TEST 5: VERIFICA DATE DEFAULT ---");
+        DatePicker start = lookup("#loanDatePicker").query();
+        DatePicker end = lookup("#returnDatePicker").query();
+
+        assertEquals(LocalDate.now(), start.getValue());
+        assertEquals(LocalDate.now().plusDays(30), end.getValue());
+        sleep(2000);
+    }
+
+    @Test
+    public void test6_ConfirmLoanDateError() throws LoanAlreadyRegisteredException {
+        System.out.println("--- TEST 6: DATA FINE PRECEDENTE A INIZIO ---");
+
+        DatePicker start = lookup("#loanDatePicker").query();
+        DatePicker end = lookup("#returnDatePicker").query();
+
+        interact(() -> {
+            start.setValue(LocalDate.now());
+            end.setValue(LocalDate.now().minusDays(10));
+        });
+
+        clickOn("#userMatricolaField").write("0612708994");
+        clickOn("#isbnField").write("9780618391110");
+
+        clickOn("#btnConfirm");
+
+        try {
+            verify(loanService, never()).register(anyString(), anyString(), any(), any());
+        } catch (LoanException e) {
+            e.printStackTrace();
+        }
+
+        sleep(2000);
+        type(KeyCode.ENTER);
+    }
+
+    @Test
+    public void test7_ConfirmLoanLimitExceeded() {
+        System.out.println("--- TEST 7: LIMITE 3 PRESTITI RAGGIUNTO ---");
+        String user = "0612708994";
+        String isbn = "9780618391110";
+
+        clickOn("#userMatricolaField").write(user);
+        clickOn("#isbnField").write(isbn);
+
+        when(userService.existsById(user)).thenReturn(true);
+        when(loanService.countById(user)).thenReturn(3);
+
+        clickOn("#btnConfirm");
+
+        try {
+            verify(loanService, never()).register(anyString(), anyString(), any(), any());
+        } catch (LoanException e) {
+            e.printStackTrace();
+        }
+
+        sleep(2000);
+        type(KeyCode.ENTER);
+    }
+
+    @Test
+    public void test8_ConfirmLoanCopiesExhausted() {
+        System.out.println("--- TEST 8: COPIE DEL LIBRO ESAURITE ---");
+        String user = "0612708994";
+        String isbn = "9780618391110";
+
+        clickOn("#userMatricolaField").write(user);
+        clickOn("#isbnField").write(isbn);
+
+        when(userService.existsById(user)).thenReturn(true);
+        when(loanService.countById(user)).thenReturn(0);
+        when(bookService.existsByIsbn(isbn)).thenReturn(true);
+        when(bookService.countRemainingCopies(isbn)).thenReturn(0);
+
+        clickOn("#btnConfirm");
+
+
+        try {
+            verify(loanService, never()).register(anyString(), anyString(), any(), any());
+        } catch (LoanException e) {
+            e.printStackTrace();
+        }
+
+        sleep(2000);
+        type(KeyCode.ENTER);
+    }
+
+    @Test
+    public void test9_ConfirmLoanSuccess() throws Exception {
+        System.out.println("--- TEST 9: REGISTRAZIONE CORRETTA ---");
+        String user = "0612708994";
+        String isbn = "9780618391110";
+
+        clickOn("#userMatricolaField").write(user);
+        clickOn("#isbnField").write(isbn);
+
+        when(userService.existsById(user)).thenReturn(true);
+        when(loanService.countById(user)).thenReturn(0);
+        when(bookService.existsByIsbn(isbn)).thenReturn(true);
+        when(bookService.countRemainingCopies(isbn)).thenReturn(5);
+
+        clickOn("#btnConfirm");
+
+        verify(loanService, times(1)).register(
+                eq(user),
+                eq(isbn),
+                eq(LocalDate.now()),
+                eq(LocalDate.now().plusDays(30))
+        );
+
+        sleep(2000);
+        type(KeyCode.ENTER);
+    }
 }
