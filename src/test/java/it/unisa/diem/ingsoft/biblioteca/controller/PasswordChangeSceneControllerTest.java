@@ -20,11 +20,12 @@ import static org.mockito.Mockito.*;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 @ExtendWith(MockitoExtension.class)
-public class LogInSceneControllerTest extends ApplicationTest {
+public class PasswordChangeSceneControllerTest extends ApplicationTest{
 
     @Mock private PasswordService passwordService;
 
     private LogInSceneController controller;
+
 
     /**
      * Metodo helper per rallentare l'esecuzione e rendere visibile il test
@@ -35,7 +36,7 @@ public class LogInSceneControllerTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/LogInScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/PasswordScene.fxml"));
         loader.setControllerFactory(param -> new LogInSceneController(passwordService));
         Parent root = loader.load();
         controller = loader.getController();
@@ -68,52 +69,5 @@ public class LogInSceneControllerTest extends ApplicationTest {
             // Successo
         }
     }
-
-    @Test
-    public void testLoginFailure_WrongPassword() {
-        System.out.println("--- TEST: Login Fallito (Password Errata) ---");
-
-        when(passwordService.check("passwordErrata")).thenReturn(false);
-
-        clickOn("#insertedPassword").write("passwordErrata");
-        slowExecution(500);
-
-        clickOn("#btnLogin");
-        waitForFxEvents();
-
-        // --- MODIFICA QUI: Rallenta per vedere il POP-UP ---
-        System.out.println("Visualizzazione Pop-up Errore Password...");
-        slowExecution(3000); // 3 secondi di attesa
-        // --------------------------------------------------
-
-        verify(passwordService).check("passwordErrata");
-
-        Window popupWindow = window("POP-UP");
-        FxAssert.verifyThat(popupWindow, WindowMatchers.isShowing());
-        FxAssert.verifyThat("La password inserita non è corretta.", LabeledMatchers.hasText("La password inserita non è corretta."));
-    }
-
-    @Test
-    public void testLoginFailure_UnsetPasswordException() {
-        System.out.println("--- TEST: Login Fallito (Password Non Settata nel DB) ---");
-
-        when(passwordService.check(anyString())).thenThrow(new UnsetPasswordException());
-
-        clickOn("#insertedPassword").write("qualsiasiCosa");
-        slowExecution(500);
-
-        clickOn("#btnLogin");
-        waitForFxEvents();
-
-
-        System.out.println("Visualizzazione Pop-up Eccezione...");
-        slowExecution(3000); // 3 secondi di attesa
-        // --------------------------------------------------
-
-        Window popupWindow = window("POP-UP");
-        FxAssert.verifyThat(popupWindow, WindowMatchers.isShowing());
-        FxAssert.verifyThat("Non è presente alcuna password nel database", LabeledMatchers.hasText("Non è presente alcuna password nel database"));
-    }
-
 
 }
