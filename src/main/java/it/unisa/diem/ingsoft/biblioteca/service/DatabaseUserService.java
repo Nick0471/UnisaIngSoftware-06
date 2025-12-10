@@ -207,4 +207,13 @@ public class DatabaseUserService implements UserService {
                     .mapTo(User.class)
                     .list());
     }
+
+	@Override
+	public boolean isEmailValid(String email) {
+        if (!email.contains("@")) { return false; }
+        
+        int atIndex = email.indexOf("@");
+        String domain = email.substring(atIndex);
+        return "@studenti.unisa.it".equals(domain);
+	}
 }

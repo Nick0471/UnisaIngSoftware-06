@@ -58,16 +58,16 @@ public class LogInSceneController extends GuiController {
     @FXML
     private void handleLogin(ActionEvent event){
         // Password inserita dall'utente da verificare
-        String pass = insertedPassword.getText();
+        String pass = this.insertedPassword.getText();
 
         try {
             if (this.passwordService.check(pass))
-                changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/HomepageScene.fxml");
+                this.changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/HomepageScene.fxml");
             else
-                popUp("La password inserita non è corretta.");
+                this.popUp("La password inserita non è corretta.");
 
         }catch (UnsetPasswordException e){
-            popUp(e.getMessage());
+            this.popUp(e.getMessage());
         }
 
 

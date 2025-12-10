@@ -1,5 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -14,11 +15,14 @@ import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class App {
     private static final String DATABASE_CONNECTION_URL = "jdbc:sqlite:database.db";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         int connectionTries = 0;
         Optional<Database> databaseOpt = connectToDatabase();
 
@@ -51,6 +55,13 @@ public class App {
 
         URL loginUrl = App.class.getResource("it/unisa/diem/ingsoft/biblioteca/view/LogInScene.fxml");
         FXMLLoader loader = new FXMLLoader(loginUrl);
+
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root, 800, 600);
+
+        stage.setScene(scene);
+        stage.show();
     }
 
     private static Optional<Database> connectToDatabase() {

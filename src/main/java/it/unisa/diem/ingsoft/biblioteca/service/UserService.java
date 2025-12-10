@@ -92,4 +92,11 @@ public interface UserService {
      * @return true se l'utente esiste, false altrimenti.
      */
     boolean existsByEmail(String email);
+
+    /**
+     * @brief Controlla che una mail sia valida per la registrazione di un utente.
+     * @param email La mail da controllare.
+     * @return true se la mail è valida, false altrimenti.
+     */
+    boolean isEmailValid(String email);
 }
