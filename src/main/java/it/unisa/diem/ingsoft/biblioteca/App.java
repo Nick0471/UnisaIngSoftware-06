@@ -44,6 +44,10 @@ public class App {
         ServiceRepository serviceRepository = new ServiceRepository(passwordService, userService,
                 bookService, loanService);
 
+        if (!passwordService.isPresent()) {
+            passwordService.change("admin");
+        }
+
         URL loginUrl = App.class.getResource("login.fxml");
         FXMLLoader loader = new FXMLLoader(loginUrl);
     }

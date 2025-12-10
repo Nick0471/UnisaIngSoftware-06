@@ -20,4 +20,10 @@ public interface PasswordService {
      * @return true se la password è corretta, false altrimenti.
      */
     boolean check(String password);
+
+    /**
+     * @brief Controlla se esiste una password per il software
+     * @return true se la password esiste, false altrimenti
+     */
+    boolean isPresent();
 }

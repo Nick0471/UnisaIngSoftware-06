@@ -66,4 +66,15 @@ public class DatabasePasswordService implements PasswordService {
                     .mapTo(String.class)
                     .findFirst());
     }
+
+    /**
+     * @brief Controlla se esiste una password nel database
+     *  Esegue una select SQL per controllare se la password esiste
+     * @return true se la password esiste, false altrimenti
+     */
+	@Override
+	public boolean isPresent() {
+        return this.getPasswordHash()
+            .isPresent();
+	}
 }
