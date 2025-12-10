@@ -45,4 +45,21 @@ public class DatabasePasswordServiceTest {
         assertTrue(this.passwordService.check(testPassword));
         assertFalse(this.passwordService.check("INVALID_PASSWORD!@#"));
     }
+
+    @Test
+    public void isPresent() {
+        assertFalse(this.passwordService.isPresent());
+
+        assertThrows(UnsetPasswordException.class, () -> {
+            this.passwordService.check("NONEXISTENT");
+        });
+
+        assertFalse(this.passwordService.isPresent());
+
+        assertDoesNotThrow(() -> {
+            this.passwordService.change("SETPASSWORD");
+        });
+
+        assertTrue(this.passwordService.isPresent());
+    }
 }
