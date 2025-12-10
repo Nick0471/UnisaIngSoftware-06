@@ -3,6 +3,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,6 +29,7 @@ public class AddLoanSceneControllerTest extends ApplicationTest {
     @Mock private LoanService loanService;
     @Mock private UserService userService;
     @Mock private BookService bookService;
+    @Mock private ServiceRepository serviceRepository;
 
     private AddLoanSceneController controller;
 
@@ -40,7 +42,12 @@ public class AddLoanSceneControllerTest extends ApplicationTest {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unisa/diem/ingsoft/biblioteca/view/AddLoanScene.fxml"));
         Parent root = loader.load();
         controller = loader.getController();
-        controller.setAddLoanServices(loanService, userService, bookService);
+
+        lenient().when(serviceRepository.getLoanService()).thenReturn(loanService);
+        lenient().when(serviceRepository.getUserService()).thenReturn(userService);
+        lenient().when(serviceRepository.getBookService()).thenReturn(bookService);
+        controller.setServices(serviceRepository);stage.setScene(new Scene(root));
+
         stage.setScene(new Scene(root));
         stage.show();
     }
