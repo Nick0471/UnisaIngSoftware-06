@@ -1,8 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
-import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
@@ -19,9 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
-
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -129,7 +125,7 @@ public class AddLoanSceneControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void test6_ConfirmLoanDateError() throws LoanAlreadyRegisteredException {
+    public void test6_ConfirmLoanDateError(){
         System.out.println("--- TEST 6: DATA FINE PRECEDENTE A INIZIO ---");
 
         DatePicker start = lookup("#loanDatePicker").query();
