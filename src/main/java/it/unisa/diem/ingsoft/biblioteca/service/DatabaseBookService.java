@@ -135,9 +135,9 @@ public class DatabaseBookService implements BookService {
      * @return true se il libro è stato rimosso, false altrimenti.
      */
     @Override
-    public boolean removeByIsbn(String isbn) throws UnknownBookByIsbnException {
+    public boolean removeByIsbn(String isbn){
         if(!this.existsByIsbn(isbn))
-            throw new UnknownBookByIsbnException();
+            return false;
 
         return this.database.getJdbi()
                             .withHandle(handle -> handle.createUpdate("DELETE FROM books "

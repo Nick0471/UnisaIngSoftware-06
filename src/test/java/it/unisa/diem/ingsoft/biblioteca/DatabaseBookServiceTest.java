@@ -77,6 +77,12 @@ public class DatabaseBookServiceTest {
 
         Book retrieved = this.bookService.getByIsbn("133496780").get();
         assertEquals("Muneyuki Kaneshiro", retrieved.getAuthor());
+        assertEquals("Blue lock", retrieved.getTitle());
+        assertEquals(2018, retrieved.getReleaseYear());
+        assertEquals(50, retrieved.getTotalCopies());
+        assertEquals(19, retrieved.getRemainingCopies());
+        assertEquals("Sportivo", retrieved.getGenre());
+        assertEquals("Reo è il goat", retrieved.getAuthor());
 
         assertDoesNotThrow(() -> {
             assertFalse(this.bookService.getAll().isEmpty());
@@ -102,21 +108,14 @@ public class DatabaseBookServiceTest {
 
     @Test
     public void remove() {
-        assertThrows(UnknownBookByIsbnException.class, () -> {
-            this.bookService.removeByIsbn("INESISTENTE");
-        });
+        assertFalse(this.bookService.removeByIsbn("INESISTENTE"));
 
         assertDoesNotThrow(() -> {
-            Book book = new Book("191919191", "La storia della Salernitana", "Vincenzo D. Raimo", 2025, 19,19,"Sportivo","Salerno");
+            Book book = new Book("676767676", "Dragon Ball", "Akira Toriyama", 1984, 50,40,"Fantasy","Kamehamea!!!");
             this.bookService.add(book);
         });
+        assertTrue(this.bookService.removeByIsbn("676767676"));
 
-        assertDoesNotThrow(() -> {
-            boolean result = this.bookService.removeByIsbn("191919191");
-            assertTrue(result);
-        });
-
-        assertFalse(this.bookService.existsByIsbn("191919191"));
     }
 
     @Test
@@ -132,18 +131,23 @@ public class DatabaseBookServiceTest {
         });
 
         assertDoesNotThrow(() -> {
+            Book book = new Book("351903483", "An empty plate 's tale", "Vincenzo Dan. Raimo", 2026, 1,0,"Avventura","R.I.P. Mattia L. Santoro");
+            this.bookService.add(book);
+        });
+
+        assertDoesNotThrow(() -> {
             Book updatedBook = new Book("351903483", "An empty plate 's tale", "Vincenzo Dan. Raimo", 2026, 1,0,"Avventura","R.I.P. Mattia L. Santoro");
 
             this.bookService.updateByIsbn(updatedBook);
         });
 
         assertDoesNotThrow(() -> {
-            Book user = this.bookService.getByIsbn("351903483").get();
-            assertEquals("An empty plate 's tale", user.getTitle());
-            assertEquals("Vincenzo Dan. Raimo", user.getAuthor());
-            assertEquals(2026, user.getReleaseYear());
-            assertEquals(5, user.getRemainingCopies());
-            assertEquals("2020-2025", user.getDescription());
+            Book book = this.bookService.getByIsbn("351903483").get();
+            assertEquals("An empty plate 's tale", book.getTitle());
+            assertEquals("Vincenzo Dan. Raimo", book.getAuthor());
+            assertEquals(2026, book.getReleaseYear());
+            assertEquals(5, book.getRemainingCopies());
+            assertEquals("R.I.P. Mattia L. Santoro", book.getDescription());
         });
     }
 
@@ -152,8 +156,6 @@ public class DatabaseBookServiceTest {
         assertDoesNotThrow(() -> {
             Book book = new Book("040982025", "Trip to Sofia", "Ancel P.", 2027, 14,3,"Fantascienza","Comprende racconto audio-visivo!");
             this.bookService.add(book);
-
-            this.bookService.updateByIsbn(book);
         });
 
         assertEquals(3, this.bookService.countRemainingCopies("040982025"));
