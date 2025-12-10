@@ -129,5 +129,4 @@ public abstract class GuiController {
         confirmationStage.show();
     }
 
-    public abstract void setService(ServiceRepository serviceRepository);
 }

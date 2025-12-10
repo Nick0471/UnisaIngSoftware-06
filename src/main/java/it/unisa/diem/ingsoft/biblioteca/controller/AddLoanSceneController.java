@@ -52,7 +52,7 @@ public class AddLoanSceneController extends GuiController {
      */
     @Override
     public void setServices(ServiceRepository serviceRepository) {
-        super.setServices(serviceRepository);
+
         this.loanService = serviceRepository.getLoanService();
         this.userService = serviceRepository.getUserService();
         this.bookService = serviceRepository.getBookService();

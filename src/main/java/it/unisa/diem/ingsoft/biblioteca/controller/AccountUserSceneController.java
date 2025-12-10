@@ -64,7 +64,7 @@ public class AccountUserSceneController extends GuiController implements Initial
 
 
     @Override
-    public void setService(ServiceRepository serviceRepository){
+    public void setServices(ServiceRepository serviceRepository){
         super.setServices(serviceRepository);
         this.loanService= serviceRepository.getLoanService();
         this.bookService= serviceRepository.getBookService();
