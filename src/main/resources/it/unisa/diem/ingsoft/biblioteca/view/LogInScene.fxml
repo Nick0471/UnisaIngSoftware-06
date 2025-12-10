@@ -5,34 +5,32 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.effect.DropShadow?>
-
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LogInSceneController"
-            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="500.0" prefWidth="700.0"
-            style="-fx-background-color: #f4f7fa;"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #f4f7fa;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LogInSceneController">
 
     <top>
         <HBox alignment="CENTER" prefHeight="80.0" spacing="15.0" style="-fx-background-color: #2D3447; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" BorderPane.alignment="CENTER">
             <children>
-                <Label text="🏛️" textFill="WHITE">
-                    <font>
-                        <Font size="30.0" />
-                    </font>
-                </Label>
-                <VBox alignment="CENTER_LEFT">
+                <ImageView fitHeight="77.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/it/unisa/diem/ingsoft/biblioteca/img/logo_progetto.jpg" />
+                    </image>
+                </ImageView>
+
+                <VBox alignment="CENTER">
                     <children>
                         <Label text="Biblioteca Universitaria" textFill="WHITE">
                             <font>
                                 <Font name="Segoe UI Bold" size="26.0" />
                             </font>
                         </Label>
-                        <Label text="Sistema di Gestione Ateneo" textFill="#aab2bd">
+                        <Label text="Gruppo 6" textFill="#aab2bd">
                             <font>
                                 <Font name="Segoe UI" size="14.0" />
                             </font>
@@ -94,15 +92,4 @@
         </VBox>
     </center>
 
-    <bottom>
-        <HBox alignment="CENTER" prefHeight="50.0" BorderPane.alignment="CENTER">
-            <children>
-                <Label text="© 2024 Gruppo 6 - Ingegneria del Software" textFill="#999999">
-                    <font>
-                        <Font size="12.0" />
-                    </font>
-                </Label>
-            </children>
-        </HBox>
-    </bottom>
 </BorderPane>
