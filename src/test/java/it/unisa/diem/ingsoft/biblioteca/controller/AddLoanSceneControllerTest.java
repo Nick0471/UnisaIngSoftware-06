@@ -79,4 +79,39 @@ public class AddLoanSceneControllerTest extends ApplicationTest {
         type(KeyCode.ENTER);
     }
 
+    @Test
+    public void test3_SearchBookFound() {
+        System.out.println("--- TEST 3: RICERCA LIBRO (TROVATO) ---");
+        String isbn = "ISBN - 0001";
+
+        when(bookService.existsByIsbn(isbn)).thenReturn(true);
+
+        clickOn("#isbnField").write(isbn);
+        clickOn("#btnSearchBook");
+
+        verify(bookService).existsByIsbn(isbn);
+
+        FxAssert.verifyThat("#isbnField", (TextField t) -> t.isDisabled());
+        sleep(2000);
+    }
+
+    @Test
+    public void test4_SearchBookNotFound() {
+        System.out.println("--- TEST 4: RICERCA LIBRO (NON TROVATO) ---");
+        String isbn = "ISBN - 0001";
+
+        when(bookService.existsByIsbn(isbn)).thenReturn(false);
+
+        clickOn("#isbnField").write(isbn);
+        clickOn("#btnSearchBook");
+
+        verify(bookService).existsByIsbn(isbn);
+
+        FxAssert.verifyThat("#isbnField", (TextField t) -> !t.isDisabled());
+
+        sleep(2000);
+        type(KeyCode.ENTER);
+    }
+
+    
 }
