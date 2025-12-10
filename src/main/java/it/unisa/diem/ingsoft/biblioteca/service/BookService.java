@@ -20,7 +20,7 @@ public interface BookService {
      * @brief Recupera tutti i libri presenti nel catalogo.
      * @return Una lista di libri contenente tutti i libri del catalogo.
      */
-    List<Book> getAll() throws DuplicateBookByIsbnException;
+    List<Book> getAll();
 
     /**
      * @brief Recupera un libro tramite il suo codice ISBN.
