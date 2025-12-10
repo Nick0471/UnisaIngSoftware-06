@@ -48,7 +48,7 @@ public class AddBookSceneController extends GuiController{
      */
     @Override
     public void setServices(ServiceRepository serviceRepository) {
-        this.setServices(serviceRepository);
+        super.setServices(serviceRepository);
         this.bookService = serviceRepository.getBookService();
     }
 

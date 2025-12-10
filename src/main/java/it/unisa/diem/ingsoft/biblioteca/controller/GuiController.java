@@ -33,10 +33,6 @@ public abstract class GuiController {
         this.serviceRepository = serviceRepository;
     }
 
-    public ServiceRepository getServices() {
-        return this.serviceRepository;
-    }
-
     /**
      * @brief Cambia la visualizzazione della scena corrente caricando un nuovo file FXML.
      *

@@ -58,7 +58,7 @@ public class LoanSceneController extends GuiController implements Initializable 
     @FXML
     private Button btnReturn;
 
-    private LoanService loanService = this.getServices().getLoanService();
+    private LoanService loanService;
     private ObservableList<Loan> loans;
 
     /**
@@ -76,7 +76,7 @@ public class LoanSceneController extends GuiController implements Initializable 
      */
     @Override
     public void setServices(ServiceRepository serviceRepository) {
-        this.setServices(serviceRepository);
+        super.setServices(serviceRepository);
         this.loanService = serviceRepository.getLoanService();
 
         this.updateTable();
