@@ -77,6 +77,7 @@
                                 <Insets bottom="15.0" />
                             </VBox.margin>
                         </Separator>
+
                         <GridPane hgap="20.0" vgap="10.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="100.0" />
@@ -89,23 +90,12 @@
                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Label text="Matricola:" textFill="#7c8184">
+                                <Label text="Cognome:" textFill="#7c8184">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="labelMatricola" text="-" textFill="#2d3447" GridPane.columnIndex="1">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                </Label>
-
-                                <Label text="Email:" textFill="#7c8184" GridPane.columnIndex="2">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
-                                <Label fx:id="labelEmail" text="-" textFill="#2d3447" GridPane.columnIndex="3">
+                                <Label fx:id="labelCognome" text="-" textFill="#2d3447" GridPane.columnIndex="1">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -122,18 +112,31 @@
                                     </font>
                                 </Label>
 
-                                <Label text="Cognome:" textFill="#7c8184" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <Label text="Matricola:" textFill="#7c8184" GridPane.columnIndex="2">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="labelCognome" text="-" textFill="#2d3447" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                <Label fx:id="labelMatricola" text="-" textFill="#2d3447" GridPane.columnIndex="3">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+
+                                <Label text="Email:" textFill="#7c8184" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="labelEmail" text="-" textFill="#2d3447" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Label>
                             </children>
                         </GridPane>
+
+
                     </children>
                 </VBox>
 
