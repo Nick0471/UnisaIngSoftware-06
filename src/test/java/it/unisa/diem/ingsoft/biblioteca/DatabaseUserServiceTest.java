@@ -30,12 +30,12 @@ public class DatabaseUserServiceTest {
     @Test
     public void register() {
         assertThrows(InvalidEmailException.class, () -> {
-            User user = new User("ABC123", "test@gmail.com", "NICOLA", "PICARELLA");
+            User user = new User("ABC123DEF4", "test@gmail.com", "NICOLA", "PICARELLA");
             this.userService.register(user);
         });
 
         assertDoesNotThrow(() -> {
-            User user = new User("ABC123", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            User user = new User("ABC123DEF4", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(user);
         });
 
@@ -45,17 +45,17 @@ public class DatabaseUserServiceTest {
         });
 
         assertDoesNotThrow(() -> {
-            User user = new User("ABC123DEF4", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            User user = new User("ABC123DEF5", "test2@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(user);
         });
 
         assertThrows(DuplicateUserByIdException.class, () -> {
-User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICARELLA");
+User duplicateId = new User("ABC123DEF5", "test3@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(duplicateId);
         });
 
         assertThrows(DuplicateUserByEmailException.class, () -> {
-            User duplicateEmail = new User("DEF123", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            User duplicateEmail = new User("DEF1231239", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(duplicateEmail);
         });
     }
@@ -63,17 +63,17 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
     @Test
     public void get() {
         assertThrows(NoSuchElementException.class, () -> {
-            this.userService.getById("ABC456")
+            this.userService.getById("ABC123PEFO")
                 .get();
         });
 
         assertDoesNotThrow(() -> {
-            User user = new User("ABC456", "test@studenti.unisa.it", "SOFIA", "MANCINI");
+            User user = new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI");
             this.userService.register(user);
         });
 
         assertDoesNotThrow(() -> {
-            this.userService.getById("ABC456")
+            this.userService.getById("ABC123DEF5")
                 .get();
         });
 
@@ -87,13 +87,13 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
     @Test
     public void exists() {
         assertDoesNotThrow(() -> {
-            User user = new User("ABC789", "test@studenti.unisa.it", "VINCENZO DANIEL", "RAIMO");
+            User user = new User("ABC123DEF5", "test@studenti.unisa.it", "VINCENZO DANIEL", "RAIMO");
             this.userService.register(user);
         });
 
         assertFalse(() -> this.userService.existsById("INESISTENTE"));
         assertFalse(() -> this.userService.existsByEmail("INESISTENTE2"));
-        assertTrue(() -> this.userService.existsById("ABC789"));
+        assertTrue(() -> this.userService.existsById("ABC123DEF5"));
         assertTrue(() -> this.userService.existsByEmail("test@studenti.unisa.it"));
     }
 
@@ -102,11 +102,11 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
         assertFalse(() -> this.userService.removeById("INESISTENTE"));
 
         assertDoesNotThrow(() -> {
-            User user = new User("ABC101112", "test@studenti.unisa.it", "NICOLO' MASSIMO", "LISENA");
+            User user = new User("ABC123DEF5", "test@studenti.unisa.it", "NICOLO' MASSIMO", "LISENA");
             this.userService.register(user);
         });
 
-        assertTrue(() -> this.userService.removeById("ABC101112"));
+        assertTrue(() -> this.userService.removeById("ABC123DEF5"));
     }
 
     @Test
@@ -117,17 +117,17 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
         });
 
         assertDoesNotThrow(() -> {
-            User user = new User("ABC131415", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            User user = new User("ABC123DEF5", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(user);
         });
 
         assertDoesNotThrow(() -> {
-            User user = new User("ABC131415", "modified@studenti.unisa.it", "PICARELLA", "PICARELLA");
+            User user = new User("ABC123DEF5", "modified@studenti.unisa.it", "PICARELLA", "PICARELLA");
             this.userService.updateById(user);
         });
 
         assertDoesNotThrow(() -> {
-            User user = this.userService.getById("ABC131415").get();
+            User user = this.userService.getById("ABC123DEF5").get();
             assertEquals(user.getEmail(), "modified@studenti.unisa.it");
             assertEquals(user.getName(), "PICARELLA");
             assertEquals(user.getSurname(), "PICARELLA");
@@ -149,7 +149,7 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
         Duration duration = Duration.ofMillis(100);
 
         assertDoesNotThrow(() -> {
-            User user = new User("ABC131415", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            User user = new User("ABC123DEF5", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(user);
         });
 
@@ -171,11 +171,11 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
         });
 
         assertTimeout(duration, () -> {
-            this.userService.getById("ABC131415");
+            this.userService.getById("ABC123DEF5");
         });
 
         assertTimeout(duration, () -> {
-            User user = new User("ID_PAZZO123", "rara@studenti.unisa.it", "EMPTY", "EMPTY");
+            User user = new User("IDPAZZO123", "rara@studenti.unisa.it", "EMPTY", "EMPTY");
             this.userService.register(user);
         });
 
@@ -184,12 +184,12 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
         });
 
         assertTimeout(duration, () -> {
-            User user = new User("ABC131415", "test2@studenti.unisa.it", "NICOLASS", "PICARELLA");
+            User user = new User("ABC123DEF0", "test2@studenti.unisa.it", "NICOLASS", "PICARELLA");
             this.userService.updateById(user);
         });
 
         assertTimeout(duration, () -> {
-            this.userService.existsById("ABC131415");
+            this.userService.existsById("ABC123DEF0");
         });
 
         assertTimeout(duration, () -> {
