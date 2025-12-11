@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -56,10 +57,18 @@ public class AccountUserSceneController extends GuiController implements Initial
     private TableColumn<Loan, LocalDate> columnDeadline;
 
 
-    private LoanService loanService= this.getService().getLoanService;
-    private BookService bookService= this.getService().getBookService;
+    private LoanService loanService;
+    private BookService bookService;
 
     private User user;
+
+
+    @Override
+    public void setService(ServiceRepository serviceRepository){
+        super.setServices(serviceRepository);
+        this.loanService= serviceRepository.getLoanService();
+        this.bookService= serviceRepository.getBookService();
+    }
 
 
     /**

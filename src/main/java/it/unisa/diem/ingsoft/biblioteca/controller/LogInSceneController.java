@@ -24,8 +24,13 @@ import javafx.scene.control.PasswordField;
  */
 public class LogInSceneController extends GuiController {
 
+    private PasswordService passwordService;
 
-    private PasswordService passwordService = this.getService().getPasswordService();
+    @Override
+    public void setService(ServiceRepository serviceRepository){
+        super.setServices(serviceRepository);
+        this.passwordService= serviceRepository.getPasswordService();
+    }
 
 
 

@@ -44,11 +44,17 @@ public class AddUserSceneController extends GuiController{
     @FXML private Button btnCancel;
     @FXML private Button btnConfirm;
 
-    private UserService userService = this.getService().getUserService();
+    private UserService userService;
 
     private boolean isEditMode = false;
 
 
+    @Override
+    public void setService(ServiceRepository serviceRepository){
+        super.setServices(serviceRepository);
+        this.userService= serviceRepository.getUserService();
+
+    }
 
 
     /**

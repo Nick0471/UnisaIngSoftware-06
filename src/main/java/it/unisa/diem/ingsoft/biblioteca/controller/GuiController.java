@@ -128,4 +128,6 @@ public abstract class GuiController {
         confirmationStage.setScene(scene);
         confirmationStage.show();
     }
+
+    public abstract void setService(ServiceRepository serviceRepository);
 }

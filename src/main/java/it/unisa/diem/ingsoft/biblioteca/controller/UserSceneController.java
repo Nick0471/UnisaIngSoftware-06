@@ -6,22 +6,17 @@ import it.unisa.diem.ingsoft.biblioteca.model.User;
 
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -63,11 +58,19 @@ public class UserSceneController extends GuiController implements Initializable{
     @FXML private Button btnUserProfile;
 
 
-    private UserService userService= this.getService().getUserService;
-    private LoanService loanService= this.getService().getLoanService;
-    private BookService bookService= this.getService().getBookService;
+    private UserService userService;
+    private LoanService loanService;
+    private BookService bookService;
 
     private ObservableList<User> users;
+
+
+
+    @Override
+    public void setService(ServiceRepository serviceRepository){
+        super.setServices(serviceRepository);
+        this.userService= serviceRepository.getUserService();
+    }
 
 
     /**

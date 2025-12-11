@@ -6,6 +6,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
 import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,8 +22,13 @@ import javafx.scene.control.PasswordField;
 public class PasswordChangeSceneController extends GuiController {
 
 
-    private PasswordService passwordService = this.getService().getPasswordService(); ;
+    private PasswordService passwordService;
 
+    @Override
+    public void setService(ServiceRepository serviceRepository){
+        super.setServices(serviceRepository);
+        this.passwordService= serviceRepository.getPasswordService();
+    }
 
 
     @FXML
