@@ -24,6 +24,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_BOOK_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+
 /**
  * @brief Controller per la gestione della view del catalogo dei libri.
  *
@@ -200,7 +203,7 @@ public class BookSceneController extends GuiController implements Initializable 
             return;
         }
 
-        super.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddBookScene.fxml", "Modifica Libro", (AddBookSceneController controller) -> {
+        super.modalScene(EDIT_BOOK_PATH, "Modifica Libro", (AddBookSceneController controller) -> {
             controller.setBookToEdit(selectedBook);
         });
 
@@ -213,7 +216,7 @@ public class BookSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
-        super.changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/HomepageScene.fxml");
+        super.changeScene(event, HOMEPAGE_PATH);
     }
 
     /**
@@ -222,7 +225,7 @@ public class BookSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddBook(ActionEvent event) {
-        super.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddBookScene.fxml", "Aggiungi Libro", null);
+        super.modalScene(EDIT_BOOK_PATH, "Aggiungi Libro", null);
 
         this.updateTable();
     }

@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.*;
+
 /**
  * @brief Controller per la view della homepage.
  *
@@ -15,7 +17,7 @@ import javafx.scene.control.Button;
  * Modifica Password, Gestione Libri, Gestione Utenti e Prestiti.
  *
  */
-public class HomepageController extends GuiController {
+public class HomepageSceneController extends GuiController {
     @FXML private Button btnProfile;
     @FXML private Button btnBook;
     @FXML private Button btnUser;
@@ -27,7 +29,7 @@ public class HomepageController extends GuiController {
      */
     @FXML
     private void handleGoToViewProfile(ActionEvent event) {
-        changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/PasswordScene.fxml");
+        changeScene(event, EDIT_PASSWORD_PATH);
     }
 
     /**
@@ -36,7 +38,7 @@ public class HomepageController extends GuiController {
      */
     @FXML
     private void handleGoToViewBooks(ActionEvent event) {
-        changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/BookScene.fxml");
+        changeScene(event, BOOK_PATH);
     }
 
     /**
@@ -45,7 +47,7 @@ public class HomepageController extends GuiController {
      */
     @FXML
     private void handleGoToViewUsers(ActionEvent event) {
-        changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/UserScene.fxml");
+        changeScene(event, USER_PATH);
     }
 
     /**
@@ -54,7 +56,7 @@ public class HomepageController extends GuiController {
      */
     @FXML
     private void handleGoToViewLoans(ActionEvent event) {
-        changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/LoanScene.fxml");
+        changeScene(event, LOAN_PATH);
     }
 
 }

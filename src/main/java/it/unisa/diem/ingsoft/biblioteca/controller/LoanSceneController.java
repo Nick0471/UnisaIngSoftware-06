@@ -26,6 +26,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.ADD_LOAN_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+
 /**
  * @brief Controller per la gestione della view dei prestit.
  *
@@ -161,7 +164,7 @@ public class LoanSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
-        super.changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/HomepageScene.fxml");
+        super.changeScene(event, HOMEPAGE_PATH);
     }
 
     /**
@@ -170,7 +173,7 @@ public class LoanSceneController extends GuiController implements Initializable 
      */
     @FXML
     private void handleAddLoan(ActionEvent event) {
-        super.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddLoanScene.fxml", "Aggiungi Prestito", null);
+        super.modalScene(ADD_LOAN_PATH, "Aggiungi Prestito", null);
 
         this.updateTable();
     }
