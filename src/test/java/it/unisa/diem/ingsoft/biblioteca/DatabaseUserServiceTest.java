@@ -199,5 +199,9 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
         assertTimeout(duration, () -> {
             this.userService.isEmailValid("test@studenti.unisa.it");
         });
+
+        assertTimeout(duration, () -> {
+            this.userService.isIdValid("1234567890");
+        });
     }
 }
