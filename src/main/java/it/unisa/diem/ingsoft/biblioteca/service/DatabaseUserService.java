@@ -219,7 +219,7 @@ public class DatabaseUserService implements UserService {
 	}
 
     @Override
-    public boolean isIdValid(String id) {
+    public boolean isIdValid(String id) throws InvalidIDException {
         if( id.length() != 10)
             throw new InvalidIDException();
 
