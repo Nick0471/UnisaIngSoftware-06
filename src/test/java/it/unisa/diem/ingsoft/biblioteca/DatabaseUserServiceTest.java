@@ -40,7 +40,7 @@ public class DatabaseUserServiceTest {
         });
 
         assertThrows(InvalidIDException.class, () -> {
-            User user = new User("ABC123", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            User user = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(user);
         });
 
@@ -184,12 +184,12 @@ User duplicateId = new User("ABC123DEF5", "test3@studenti.unisa.it", "NICOLA", "
         });
 
         assertTimeout(duration, () -> {
-            User user = new User("ABC123DEF0", "test2@studenti.unisa.it", "NICOLASS", "PICARELLA");
+            User user = new User("IDPAZZO123", "test2@studenti.unisa.it", "NICOLASS", "PICARELLA");
             this.userService.updateById(user);
         });
 
         assertTimeout(duration, () -> {
-            this.userService.existsById("ABC123DEF0");
+            this.userService.existsById("IDPAZZO123");
         });
 
         assertTimeout(duration, () -> {
