@@ -136,7 +136,7 @@ public class DatabaseBookServiceTest {
         });
 
         assertDoesNotThrow(() -> {
-            Book book = new Book("3519034830000", "An empty plate 's tale", "Vincenzo Dan. Raimo", 2026, 1,0,"Avventura","R.I.P. Mattia L. Santoro");
+            Book book = new Book("3519034830000", "Storia di un piatto vuoto", "Vincenzo D. Raimo", 2026, 1,0,"Avventura","R.I.P. Mattia L. Santoro");
             this.bookService.add(book);
         });
 
