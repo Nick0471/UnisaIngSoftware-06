@@ -200,8 +200,8 @@ public class DatabaseBookService implements BookService {
 
         this.database.getJdbi()
                 .useHandle(handle -> {
-                    String sql = "INSERT INTO books (isbn, title, author, genre, releaseYear) "
-                        + "VALUES (:isbn, :title, :author, :genre, :release_year)";
+                    String sql = "INSERT INTO books (isbn, title, author, genre, release_year, total_copies, remaining_copies, description) " +
+                            "VALUES (:isbn, :title, :author, :genre, :release_year, :total_copies, :remaining_copies, :description)";
 
                     var batch = handle.prepareBatch(sql);
 
@@ -211,6 +211,9 @@ public class DatabaseBookService implements BookService {
                                 .bind("author", book.getAuthor())
                                 .bind("genre", book.getGenre())
                                 .bind("release_year", book.getReleaseYear())
+                                .bind("total_copies", book.getTotalCopies())
+                                .bind("remaining_copies", book.getRemainingCopies())
+                                .bind("description", book.getDescription())
                                 .add();
                     }
 
@@ -246,8 +249,8 @@ public class DatabaseBookService implements BookService {
                                 + "author = :author, "
                                 + "genre = :genre, "
                                 + "release_year = :release_year, "
-                                + "totalCopies = :totalCopies, "
-                                + "remainingCopies = :remainingCopies, "
+                                + "total_copies = :totalCopies, "
+                                + "remaining_copies = :remainingCopies, "
                                 + "description = :description "
                                 + "WHERE isbn = :isbn")
                         .bind("isbn", isbn)
@@ -255,8 +258,8 @@ public class DatabaseBookService implements BookService {
                         .bind("author", author)
                         .bind("genre", genre)
                         .bind("release_year", releaseYear)
-                        .bind("totalCopies", totalCopies)
-                        .bind("remainingCopies", remainingCopies)
+                        .bind("total_copies", totalCopies)
+                        .bind("remaining_copies", remainingCopies)
                         .bind("description", description)
                         .execute());
     }

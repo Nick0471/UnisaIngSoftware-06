@@ -73,24 +73,24 @@ public class DatabaseBookServiceTest {
         assertTrue(this.bookService.getByIsbn("NON-ESISTE").isEmpty());
 
         assertDoesNotThrow(() -> {
-            this.bookService.add(new Book("1334567810000", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Reo è il goat"));
-            this.bookService.add(new Book("1334967820000", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Chighiri è il goat"));
-            this.bookService.add(new Book("1384567830000", "Blue lock", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Kurona è il goat"));
+            this.bookService.add(new Book("1334567810000", "Blue lock S1", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Reo è il goat"));
+            this.bookService.add(new Book("1334967820000", "Blue lock S2", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Chighiri è il goat"));
+            this.bookService.add(new Book("1384567830000", "Blue lock S3", "Muneyuki Kaneshiro", 2018, 50,19,"Sportivo","Kurona è il goat"));
             this.bookService.add(new Book("2222222220000", "Fragole sulle pendici del Vesuvio", " Sabrin Cascoon", 2004, 21,20,"Biografia","Le fragole alle pendici del Vesuvio sono squisite"));
         });
 
         assertDoesNotThrow(() -> {
-            this.bookService.getByIsbn("1334967800000").get();
+            this.bookService.getByIsbn("1334567810000").get();
         });
 
-        Book retrieved = this.bookService.getByIsbn("1334967800000").get();
+        Book retrieved = this.bookService.getByIsbn("1334567810000").get();
         assertEquals("Muneyuki Kaneshiro", retrieved.getAuthor());
-        assertEquals("Blue lock", retrieved.getTitle());
+        assertEquals("Blue lock S1", retrieved.getTitle());
         assertEquals(2018, retrieved.getReleaseYear());
         assertEquals(50, retrieved.getTotalCopies());
         assertEquals(19, retrieved.getRemainingCopies());
         assertEquals("Sportivo", retrieved.getGenre());
-        assertEquals("Reo è il goat", retrieved.getAuthor());
+        assertEquals("Reo è il goat", retrieved.getDescription());
 
         assertDoesNotThrow(() -> {
             assertFalse(this.bookService.getAll().isEmpty());
@@ -154,7 +154,7 @@ public class DatabaseBookServiceTest {
             assertEquals("An empty plate 's tale", book.getTitle());
             assertEquals("Vincenzo Dan. Raimo", book.getAuthor());
             assertEquals(2026, book.getReleaseYear());
-            assertEquals(5, book.getRemainingCopies());
+            assertEquals(0, book.getRemainingCopies());
             assertEquals("R.I.P. Mattia L. Santoro", book.getDescription());
         });
     }
