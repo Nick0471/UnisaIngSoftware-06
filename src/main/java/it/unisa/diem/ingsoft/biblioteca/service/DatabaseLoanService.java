@@ -112,7 +112,11 @@ public class DatabaseLoanService implements LoanService {
      * @throws UnknownLoanException Il prestito tra utente e libro specificati è inesistente.
      */
 	@Override
-	public void complete(String userId, String bookIsbn, LocalDate end) {
+	public void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException {
+        if (!this.has(userId, bookIsbn)) {
+            throw new UnknownLoanException();
+        }
+
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("UPDATE loans SET loan_end = :loan_end "
                         + "WHERE user_id = :user_id AND book_isbn = :book_isbn")
@@ -163,6 +167,11 @@ public class DatabaseLoanService implements LoanService {
                     .one());
 	}
 
+    /**
+     * @brief Recupera una lista di tutti i prestiti registrati attualmente attivi
+     *  Esegue una select SQL per ottenere tutti i prestiti il cui loan_end è nullo
+     * @return Una lista contenente i prestiti attivi
+     */
 	@Override
 	public List<Loan> getAllActive() {
         return this.database.getJdbi()

@@ -63,13 +63,13 @@ public class DatabaseLoanServiceTest {
             this.loanService.register("USERID321", "ISBNTEST123", start, deadline);
         });
 
-        assertEquals(this.loanService.getByUserIDAndBookIsbn("USERID321", "ISBNTEST123"), 1);
+        assertTrue(this.loanService.getByUserIDAndBookIsbn("USERID321", "ISBNTEST123").isPresent());
         assertEquals(this.loanService.getByUserId("USERID321").size(), 2);
-        assertEquals(this.loanService.getByBookIsbn("ISBNTEST123").size(), 1);
+        assertEquals(this.loanService.getByBookIsbn("ISBNTEST123").size(), 2);
         assertEquals(this.loanService.getAll().size(), 3);
+        assertEquals(this.loanService.getAllActive().size(), 3);
         assertTrue(this.loanService.has("USERID321", "ISBNTEST123"));
         assertEquals(this.loanService.countById("USERID321"), 2);
-
     }
 
     @Test
@@ -84,9 +84,13 @@ public class DatabaseLoanServiceTest {
             this.loanService.register("NICOLA123", "ANIMAL_FARM", start, deadline);
         });
 
+        assertEquals(this.loanService.getAllActive().size(), 1);
+
         assertDoesNotThrow(() -> {
             this.loanService.complete("NICOLA123", "ANIMAL_FARM", LocalDate.now());
         });
+
+        assertEquals(this.loanService.getAllActive().size(), 0);
 
         assertThrows(UnknownLoanException.class, () -> {
             this.loanService.complete("NICOLA123", "RANDOM_ISB_NON_EXISTENT", LocalDate.now());

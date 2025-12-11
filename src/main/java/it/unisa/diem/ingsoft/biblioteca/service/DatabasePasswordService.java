@@ -24,7 +24,6 @@ public class DatabasePasswordService implements PasswordService {
         this.database = database;
     }
 
-
     /**
      * @brief Cambia la password di accesso al software.
      *  Esegue un updare SQL per aggiornare l'hash nel database.
@@ -33,6 +32,11 @@ public class DatabasePasswordService implements PasswordService {
 	@Override
 	public void change(String password) {
         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        if (!this.isPresent()) {
+            this.insertPassword(hash);
+            return;
+        }
 
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("UPDATE auth "
@@ -77,4 +81,12 @@ public class DatabasePasswordService implements PasswordService {
         return this.getPasswordHash()
             .isPresent();
 	}
+
+    private void insertPassword(String hash) {
+        this.database.getJdbi()
+            .useHandle(handle -> handle.createUpdate("INSERT INTO auth(password_hash) "
+                        + "VALUES (:password_hash)")
+                    .bind("password_hash", hash)
+                    .execute());
+    }
 }

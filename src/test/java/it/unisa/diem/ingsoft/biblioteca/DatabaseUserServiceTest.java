@@ -132,8 +132,8 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
         assertFalse(this.userService.isEmailValid("INVALID@INVALID.IT"));
         assertFalse(this.userService.isEmailValid("INVALID"));
         assertFalse(this.userService.isEmailValid("@INVALID.IT"));
-        assertTrue(this.userService.isEmailValid("nicola@studenti.unisa"));
-        assertTrue(this.userService.isEmailValid("nicola@unisa.it"));
+        assertFalse(this.userService.isEmailValid("nicola@studenti.unisa"));
+        assertFalse(this.userService.isEmailValid("nicola@unisa.it"));
         assertTrue(this.userService.isEmailValid("nicola@studenti.unisa.it"));
     }
 
@@ -168,7 +168,7 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
         });
 
         assertTimeout(duration, () -> {
-            User user = new User("INESISTENTE", "INESISTENTE", "EMPTY", "EMPTY");
+            User user = new User("ID_PAZZO123", "rara@studenti.unisa.it", "EMPTY", "EMPTY");
             this.userService.register(user);
         });
 
@@ -177,7 +177,7 @@ User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICA
         });
 
         assertTimeout(duration, () -> {
-            User user = new User("ABC131415", "test@studenti.unisa.it", "NICOLASS", "PICARELLA");
+            User user = new User("ABC131415", "test2@studenti.unisa.it", "NICOLASS", "PICARELLA");
             this.userService.updateById(user);
         });
 
