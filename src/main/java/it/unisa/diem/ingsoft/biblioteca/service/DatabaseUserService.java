@@ -6,6 +6,7 @@ import java.util.Optional;
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
@@ -39,6 +40,9 @@ public class DatabaseUserService implements UserService {
         String id = user.getId();
         if (this.existsById(id))
             throw new DuplicateUserByIdException();
+
+        if (!this.isEmailValid(email))
+            throw new InvalidEmailException();
 
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("INSERT INTO users(id, email, name, surname) "

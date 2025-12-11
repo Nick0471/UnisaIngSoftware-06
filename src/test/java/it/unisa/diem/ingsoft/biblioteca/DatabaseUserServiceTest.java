@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
@@ -31,18 +32,23 @@ public class DatabaseUserServiceTest {
 
     @Test
     public void register() {
-        assertDoesNotThrow(() -> {
+        assertThrows(InvalidEmailException.class, () -> {
             User user = new User("ABC123", "test@gmail.com", "NICOLA", "PICARELLA");
             this.userService.register(user);
         });
 
+        assertDoesNotThrow(() -> {
+            User user = new User("ABC123", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            this.userService.register(user);
+        });
+
         assertThrows(DuplicateUserByIdException.class, () -> {
-User duplicateId = new User("ABC123", "test2@gmail.com", "NICOLA", "PICARELLA");
+User duplicateId = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(duplicateId);
         });
 
         assertThrows(DuplicateUserByEmailException.class, () -> {
-            User duplicateEmail = new User("DEF123", "test@gmail.com", "NICOLA", "PICARELLA");
+            User duplicateEmail = new User("DEF123", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(duplicateEmail);
         });
     }
