@@ -48,7 +48,7 @@ public class App {
             passwordService.change("admin");
         }
 
-        URL loginUrl = App.class.getResource("login.fxml");
+        URL loginUrl = App.class.getResource("it/unisa/diem/ingsoft/biblioteca/view/LogInScene.fxml");
         FXMLLoader loader = new FXMLLoader(loginUrl);
     }
 

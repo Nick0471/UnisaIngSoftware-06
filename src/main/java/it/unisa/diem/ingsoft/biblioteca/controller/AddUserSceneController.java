@@ -50,7 +50,7 @@ public class AddUserSceneController extends GuiController{
 
 
     @Override
-    public void setService(ServiceRepository serviceRepository){
+    public void setServices(ServiceRepository serviceRepository){
         super.setServices(serviceRepository);
         this.userService= serviceRepository.getUserService();
 

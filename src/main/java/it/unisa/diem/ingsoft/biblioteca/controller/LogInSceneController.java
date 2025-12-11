@@ -27,7 +27,7 @@ public class LogInSceneController extends GuiController {
     private PasswordService passwordService;
 
     @Override
-    public void setService(ServiceRepository serviceRepository){
+    public void setServices(ServiceRepository serviceRepository){
         super.setServices(serviceRepository);
         this.passwordService= serviceRepository.getPasswordService();
     }
