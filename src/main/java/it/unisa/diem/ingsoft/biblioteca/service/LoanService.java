@@ -23,6 +23,12 @@ public interface LoanService {
     List<Loan> getAll();
 
     /**
+     * @brief Recupera una lista di tutti i prestiti registrati attualmente attivi
+     * @return Una lista contenente i prestiti attivi
+     */
+    List<Loan> getAllActive();
+
+    /**
      * @brief Cerca un prestito chiesto da un utente per un libro.
      * @param userId La matricola dell'utente che ha chiesto il prestito.
      * @param bookIsbn L'ISBN del libro prestato.

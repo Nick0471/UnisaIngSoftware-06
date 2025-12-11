@@ -157,9 +157,18 @@ public class DatabaseLoanService implements LoanService {
 	public int countById(String userId) {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT COUNT(*) FROM loans "
-                        + "WHERE userId = :userId")
-                    .bind("userId", userId)
+                        + "WHERE user_id = :user_id")
+                    .bind("user_id", userId)
                     .mapTo(Integer.class)
                     .one());
+	}
+
+	@Override
+	public List<Loan> getAllActive() {
+        return this.database.getJdbi()
+            .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
+                        + "WHERE loan_end IS NULL")
+                    .mapTo(Loan.class)
+                    .list());
 	}
 }
