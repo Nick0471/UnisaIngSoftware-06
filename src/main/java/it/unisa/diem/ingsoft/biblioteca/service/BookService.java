@@ -71,7 +71,7 @@ public interface BookService {
      * @param isbn Il codice ISBN del libro da rimuovere.
      * @return true se il libro è stato rimosso, false altrimenti.
      */
-    boolean removeByIsbn(String isbn) throws UnknownBookByIsbnException;
+    boolean removeByIsbn(String isbn);
 
     /**
      * @brief Aggiunge un libro al catalogo.
