@@ -83,10 +83,9 @@ public class AddLoanSceneController extends GuiController {
         }
 
         if (userService.existsById(matricola)) {
-            super.popUp("Utente trovato!");
             userMatricolaField.setDisable(true);
         } else {
-            super.popUp("Utente non trovato.");
+            super.popUp("Utente non trovato o ID errato.");
         }
     }
 
@@ -104,7 +103,6 @@ public class AddLoanSceneController extends GuiController {
         }
 
         if (bookService.existsByIsbn(isbn)) {
-            super.popUp("Libro disponibile!");
             isbnField.setDisable(true);
         } else {
             super.popUp("Libro non trovato o ISBN errato.");
@@ -155,7 +153,6 @@ public class AddLoanSceneController extends GuiController {
 
         try {
             loanService.register(matricola, isbn, start, end);
-            super.popUp("Prestito registrato con successo!");
             super.closeScene(event);
         } catch (LoanException e) {
             super.popUp(e.getMessage());
