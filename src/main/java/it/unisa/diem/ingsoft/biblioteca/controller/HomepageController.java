@@ -27,7 +27,7 @@ public class HomepageController extends GuiController {
      */
     @FXML
     private void handleGoToViewProfile(ActionEvent event) {
-        changeScene(event, "view/PasswordScene.fxml");
+        changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/PasswordScene.fxml");
     }
 
     /**
@@ -36,7 +36,7 @@ public class HomepageController extends GuiController {
      */
     @FXML
     private void handleGoToViewBooks(ActionEvent event) {
-        changeScene(event, "view/BookScene.fxml");
+        changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/BookScene.fxml");
     }
 
     /**
@@ -45,7 +45,7 @@ public class HomepageController extends GuiController {
      */
     @FXML
     private void handleGoToViewUsers(ActionEvent event) {
-        changeScene(event, "view/UserScene.fxml");
+        changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/UserScene.fxml");
     }
 
     /**
@@ -54,7 +54,7 @@ public class HomepageController extends GuiController {
      */
     @FXML
     private void handleGoToViewLoans(ActionEvent event) {
-        changeScene(event, "view/LoanScene.fxml");
+        changeScene(event, "/it/unisa/diem/ingsoft/biblioteca/view/LoanScene.fxml");
     }
 
 }
