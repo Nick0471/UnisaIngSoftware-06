@@ -62,7 +62,7 @@ public class LoanSceneControllerTest extends ApplicationTest {
         for(int i = 1; i <= 7; i++) {
             String isbn = "000" + i + "000000000";
             if(!bookService.existsByIsbn(isbn)) {
-                bookService.add(new Book(isbn, "Title " + i, "Author", 2020, 5, 5, "Genre", null));
+                bookService.add(new Book(isbn, "Title " + i, "Author", 2020, 5, 5, "Genre", "Desc"));
             }
         }
 
@@ -78,7 +78,7 @@ public class LoanSceneControllerTest extends ApplicationTest {
             LocalDate deadline;
 
             if(countEspiredLoans < 3) {
-                deadline = LocalDate.now().minusDays(i * 10);
+                deadline = LocalDate.now().minusDays(i*10);
             }else{
                 deadline = LocalDate.now().plusDays(i*10);
             }

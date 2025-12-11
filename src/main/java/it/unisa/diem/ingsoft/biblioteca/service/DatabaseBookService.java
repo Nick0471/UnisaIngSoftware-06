@@ -162,14 +162,17 @@ public class DatabaseBookService implements BookService {
 
         this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate(
-                                "INSERT INTO books (isbn, title, author, genre, releaseYear) " +
-                                        "VALUES (:isbn, :title, :author, :genre, :releaseYear)"
+                                "INSERT INTO books (isbn, title, author, genre, release_year, total_copies, remaining_copies, description) " +
+                                        "VALUES (:isbn, :title, :author, :genre, :release_year, :total_copies, :remaining_copies, :description)"
                         )
                         .bind("isbn", book.getIsbn())
                         .bind("title", book.getTitle())
                         .bind("author", book.getAuthor())
                         .bind("genre", book.getGenre())
                         .bind("release_year", book.getReleaseYear())
+                        .bind("total_copies", book.getTotalCopies())
+                        .bind("remaining_copies", book.getRemainingCopies())
+                        .bind("description", book.getDescription())
                         .execute());
     }
 
