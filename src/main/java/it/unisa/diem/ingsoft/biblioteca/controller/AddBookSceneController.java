@@ -11,6 +11,7 @@ import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -20,6 +21,7 @@ import javafx.scene.control.TextField;
  * Permette di specificare i vari attributi di un libro da aggiungere.
  */
 public class AddBookSceneController extends GuiController{
+    @FXML private Label titleLabel;
     @FXML private TextField titleField;
     @FXML private TextField authorField;
     @FXML private TextField genreField;
@@ -70,6 +72,7 @@ public class AddBookSceneController extends GuiController{
 
             this.isbnField.setDisable(true);
             this.btnConfirm.setText("Aggiorna");
+            this.titleLabel.setText("Modifica Libro");
         }
     }
 

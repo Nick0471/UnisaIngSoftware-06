@@ -57,7 +57,6 @@ public class LoanSceneControllerTest extends ApplicationTest {
             }
         }
 
-
         for(int i = 1; i <= 7; i++) {
             String isbn = "000" + i + "000000000";
             if(!bookService.existsByIsbn(isbn)) {
