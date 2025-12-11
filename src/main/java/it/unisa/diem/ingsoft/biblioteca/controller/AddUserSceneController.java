@@ -11,6 +11,8 @@ import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
+import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,18 +44,11 @@ public class AddUserSceneController extends GuiController{
     @FXML private Button btnCancel;
     @FXML private Button btnConfirm;
 
-    private UserService userService;
+    private UserService userService = this.getService().getUserService();
 
     private boolean isEditMode = false;
 
-    /**
-     * @brief Imposta il servizio per la gestione degli utenti.
-     *
-     * @param userService Istanza di UserService per effettuare operazioni di registrazione o aggiornamento.
-     */
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+
 
 
     /**

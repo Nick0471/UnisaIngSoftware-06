@@ -63,20 +63,11 @@ public class UserSceneController extends GuiController implements Initializable{
     @FXML private Button btnUserProfile;
 
 
-    private UserService userService;
-    private LoanService loanService;
-    private BookService bookService;
+    private UserService userService= this.getService().getUserService;
+    private LoanService loanService= this.getService().getLoanService;
+    private BookService bookService= this.getService().getBookService;
 
     private ObservableList<User> users;
-
-
-    /**
-     * @brief Imposta il servizio per la gestione degli utenti.
-     * @param userService Istanza di UserService
-     */
-    public UserSceneController(UserService userService){
-        this.userService=userService;
-    }
 
 
     /**
@@ -243,28 +234,11 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        try {
-            //Carica l'FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/AddUserScene.fxml"));
-            Parent root = loader.load();
+        this.modalScene("it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml", "Modifica Utente", (AddUserSceneController controller) -> {
+            controller.EditUser(selectedUser);
+        });
 
-            //Recupera il controller
-            AddUserSceneController controller = loader.getController();
-
-            //Passa i dati necessari
-            controller.setUserService(this.userService); // Passa il service
-            controller.EditUser(selectedUser);           // Passa l'utente e attiva la modalità Modifica
-
-            //Mostra la scena
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            popUp("Errore nel caricamento della vista Modifica Utente.");
-        }
+        this.updateTable();
 
     }
 
@@ -279,30 +253,10 @@ public class UserSceneController extends GuiController implements Initializable{
      */
     @FXML
     private void handleAddUser(ActionEvent event) {
-        try {
-            // Carica l'FXML manualmente
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddUserScene.fxml"));
-            Parent root = loader.load();
+        this.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml", "Aggiungi Utente", null);
 
-            // Recupera il controller della nuova scena
-            AddUserSceneController controller = loader.getController();
-
-            // Passa il UserService (FONDAMENTALE)
-            controller.setUserService(this.userService);
-
-            // Mostra la nuova scena
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            popUp("Errore nel caricamento della vista Aggiungi Utente.");
-        }
+        this.updateTable();
     }
-
-
 
 
 
@@ -336,24 +290,13 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/AccountUserScene.fxml"));
-            Parent root = loader.load();
+        this.modalScene("it/unisa/diem/ingsoft/biblioteca/view/AccountUserScene.fxml", "Profilo Utente", (AccountUserSceneController controller) -> {
+            controller.setProfileUser(selectedUser, loanService, bookService);
+        });
 
-            AccountUserSceneController controller = loader.getController();
+        this.updateTable();
 
-            // Passiamo TUTTI i servizi necessari e l'utente selezionato
-            controller.setUserService(this.userService);
-            controller.setProfileUser(selectedUser, this.loanService, this.bookService);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            popUp("Errore nel caricamento del profilo utente.");
-        }
     }
 
 }

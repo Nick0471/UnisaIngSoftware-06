@@ -7,6 +7,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;
 import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,16 +25,9 @@ import javafx.scene.control.PasswordField;
 public class LogInSceneController extends GuiController {
 
 
-    private PasswordService passwordService;
+    private PasswordService passwordService = this.getService().getPasswordService();
 
-    /**
-     * @brief Costruttore del controller
-     *
-     * @param passwordService Il servizio responsabile della verifica crittografica della password.
-     */
-    public LogInSceneController(PasswordService passwordService){
-        this.passwordService=passwordService;
-    }
+
 
     @FXML
     private PasswordField insertedPassword;

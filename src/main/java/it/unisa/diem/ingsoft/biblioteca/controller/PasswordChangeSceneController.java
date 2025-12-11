@@ -21,17 +21,9 @@ import javafx.scene.control.PasswordField;
 public class PasswordChangeSceneController extends GuiController {
 
 
-    private final PasswordService passwordService;
+    private PasswordService passwordService = this.getService().getPasswordService(); ;
 
-    /**
-     * @brief Costruttore del controller.
-     *
-     * @param passwordService Il servizio responsabile della verifica e dell'aggiornamento della password.
-     */
-    public PasswordChangeSceneController(PasswordService passwordService){
 
-        this.passwordService=passwordService;
-    }
 
     @FXML
     private Button btnUpdate;

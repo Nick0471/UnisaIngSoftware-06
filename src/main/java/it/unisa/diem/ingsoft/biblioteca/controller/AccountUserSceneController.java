@@ -55,18 +55,11 @@ public class AccountUserSceneController extends GuiController implements Initial
     @FXML
     private TableColumn<Loan, LocalDate> columnDeadline;
 
-    private LoanService loanService;
-    private BookService bookService;
-    private UserService userService;
-    private User user;
 
-    /**
-     * @brief Imposta il servizio per la gestione degli utenti.
-     * @param userService Istanza di UserService
-     */
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+    private LoanService loanService= this.getService().getLoanService;
+    private BookService bookService= this.getService().getBookService;
+
+    private User user;
 
 
     /**
