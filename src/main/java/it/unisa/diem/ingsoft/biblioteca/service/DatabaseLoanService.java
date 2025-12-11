@@ -147,8 +147,14 @@ public class DatabaseLoanService implements LoanService {
      */
 	@Override
 	public boolean isActive(String userId, String bookIsbn) {
-        return this.getByUserIDAndBookIsbn(userId, bookIsbn)
-            .isPresent();
+        return this.database.getJdbi()
+            .withHandle(handle -> handle.createQuery("SELECT COUNT(*) FROM loans "
+                        + "WHERE user_id = :user_id AND book_isbn = :book_isbn "
+                        + "AND loan_end IS NULL")
+                    .bind("user_id", userId)
+                    .bind("book_isbn", bookIsbn)
+                    .mapTo(Integer.class)
+                    .one()) > 0;
 	}
 
     /**
