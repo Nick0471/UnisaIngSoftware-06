@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
+import it.unisa.diem.ingsoft.biblioteca.controller.GuiController;
 import it.unisa.diem.ingsoft.biblioteca.exception.DatabaseUnreachableException;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
@@ -71,6 +72,11 @@ public class App extends Application {
 
 
             Parent root = loader.load();
+            Object controller = loader.getController();
+
+            if (controller instanceof GuiController) {
+                ((GuiController) controller).setServices(serviceRepository);
+            }
 
             Scene scene = new Scene(root);
             primaryStage.setTitle("Biblioteca Login");
