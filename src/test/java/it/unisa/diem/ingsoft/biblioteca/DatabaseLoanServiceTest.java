@@ -29,47 +29,47 @@ public class DatabaseLoanServiceTest {
 
     @Test
     public void get() {
-        assertTrue(this.loanService.getByUserIDAndBookIsbn("USERID321", "ISBNTEST123")
+        assertTrue(this.loanService.getByUserIDAndBookIsbn("USERID3214", "ISBNTEST12345")
                 .isEmpty());
 
-        assertTrue(this.loanService.getByUserId("USERID321")
+        assertTrue(this.loanService.getByUserId("USERID3214")
                 .isEmpty());
 
-        assertTrue(this.loanService.getByBookIsbn("ISBNTEST123")
+        assertTrue(this.loanService.getByBookIsbn("ISBNTEST12345")
                 .isEmpty());
 
         assertTrue(this.loanService.getAll()
                 .isEmpty());
 
-        assertFalse(this.loanService.isActive("USERID321", "ISBNTEST123"));
+        assertFalse(this.loanService.isActive("USERID3214", "ISBNTEST12345"));
 
-        assertEquals(this.loanService.countById("USERID321"), 0);
+        assertEquals(this.loanService.countById("USERID3214"), 0);
 
         LocalDate start = LocalDate.now();
         LocalDate deadline = start.plusDays(30);
         assertDoesNotThrow(() -> {
-            this.loanService.register("USERID321", "ISBNTEST123", start, deadline);
+            this.loanService.register("USERID3214", "ISBNTEST12345", start, deadline);
         });
 
         assertDoesNotThrow(() -> {
-            this.loanService.register("USERID321", "TEST435", start, deadline);
+            this.loanService.register("USERID3214", "TEST435", start, deadline);
         });
 
         assertDoesNotThrow(() -> {
-            this.loanService.register("USER22", "ISBNTEST123", start, deadline);
+            this.loanService.register("USER222222", "ISBNTEST12345", start, deadline);
         });
         
         assertThrows(LoanAlreadyRegisteredException.class, () -> {
-            this.loanService.register("USERID321", "ISBNTEST123", start, deadline);
+            this.loanService.register("USERID3214", "ISBNTEST12345", start, deadline);
         });
 
-        assertTrue(this.loanService.getByUserIDAndBookIsbn("USERID321", "ISBNTEST123").isPresent());
-        assertEquals(this.loanService.getByUserId("USERID321").size(), 2);
-        assertEquals(this.loanService.getByBookIsbn("ISBNTEST123").size(), 2);
+        assertTrue(this.loanService.getByUserIDAndBookIsbn("USERID3214", "ISBNTEST12345").isPresent());
+        assertEquals(this.loanService.getByUserId("USERID3214").size(), 2);
+        assertEquals(this.loanService.getByBookIsbn("ISBNTEST12345").size(), 2);
         assertEquals(this.loanService.getAll().size(), 3);
         assertEquals(this.loanService.getAllActive().size(), 3);
-        assertTrue(this.loanService.isActive("USERID321", "ISBNTEST123"));
-        assertEquals(this.loanService.countById("USERID321"), 2);
+        assertTrue(this.loanService.isActive("USERID3214", "ISBNTEST12345"));
+        assertEquals(this.loanService.countById("USERID3214"), 2);
     }
 
     @Test
@@ -81,21 +81,21 @@ public class DatabaseLoanServiceTest {
         LocalDate start = LocalDate.now();
         LocalDate deadline = start.plusDays(30);
         assertDoesNotThrow(() -> {
-            this.loanService.register("NICOLA123", "ANIMAL_FARM", start, deadline);
+            this.loanService.register("NICOLA1234", "ANIMAL_FARM", start, deadline);
         });
 
         assertEquals(this.loanService.getAllActive().size(), 1);
 
         assertDoesNotThrow(() -> {
-            this.loanService.complete("NICOLA123", "ANIMAL_FARM", LocalDate.now());
+            this.loanService.complete("NICOLA1234", "ANIMAL_FARM", LocalDate.now());
         });
 
-        assertFalse(this.loanService.isActive("NICOLA123", "ANIMAL_FARM"));
+        assertFalse(this.loanService.isActive("NICOLA1234", "ANIMAL_FARM"));
 
         assertEquals(this.loanService.getAllActive().size(), 0);
 
         assertThrows(UnknownLoanException.class, () -> {
-            this.loanService.complete("NICOLA123", "RANDOM_ISB_NON_EXISTENT", LocalDate.now());
+            this.loanService.complete("NICOLA1234", "RANDOM_ISB_NON_EXISTENT", LocalDate.now());
         });
 
         assertThrows(UnknownLoanException.class, () -> {
@@ -109,7 +109,7 @@ public class DatabaseLoanServiceTest {
         Duration duration = Duration.ofMillis(100);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register("ABC131415", "9788808123456", now, now.plusDays(30));
+            this.loanService.register("ABC1314156", "9788808123456", now, now.plusDays(30));
         });
 
         assertTimeout(duration, () -> {
@@ -117,31 +117,31 @@ public class DatabaseLoanServiceTest {
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.getByUserIDAndBookIsbn("ABC131415", "978-88-08-12345-6");
+            this.loanService.getByUserIDAndBookIsbn("ABC1314156", "978-88-08-12345-6");
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.getByUserId("ABC131415");
+            this.loanService.getByUserId("ABC1314156");
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.getByBookIsbn("978-88-08-12345-6");
+            this.loanService.getByBookIsbn("9788808123456");
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.isActive("ABC131415", "978-88-08-12345-6");
+            this.loanService.isActive("ABC1314156", "978-88-08-12345-6");
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.countById("ABC131415");
+            this.loanService.countById("ABC1314156");
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.register("TEMP_USER", "TEMP_ISBN", now, now.plusDays(15));
+            this.loanService.register("TEMPUSER11", "TEMP_ISBN", now, now.plusDays(15));
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.complete("TEMP_USER", "TEMP_ISBN", now);
+            this.loanService.complete("TEMPUSER11", "TEMP_ISBN", now);
         });
 
         assertTimeout(duration, () -> {
