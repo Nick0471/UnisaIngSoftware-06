@@ -15,9 +15,6 @@ import javafx.scene.control.PasswordField;
 
 /**
  * @brief Questo Controller gestisce la scena "Modifica Passwrod".
- *
- * Estende {@link GuiController} per ereditare le funzionalità comuni di navigazione,
- * (changeScene) e gestione dei messaggi di errore (popUpErrore).
  */
 public class PasswordChangeSceneController extends GuiController {
 
@@ -44,16 +41,7 @@ public class PasswordChangeSceneController extends GuiController {
     private PasswordField newPasswordConfirm;
 
 
-    /**
-     * @brief Gestisce l'evento di aggiornamento della password e il ritorno alla homepage.
-     * * Il metodo esegue le seguenti operazioni:
-     * 1. Recupera la password attuale inserita dall'utente.
-     * 2. Verifica la correttezza della password attuale, tramite il metodo "check(String)}".
-     * 3. Se la password attuale è corretta, verifica che la nuova password abbia una lunghezza di almeno 6 caratteri.
-     * 4. Se i requisiti sono soddisfatti, aggiorna la password  e cambia scena verso la homepage.
-     *
-     * @param event L'evento ActionEvent generato dal click sul bottone 'Aggiorna'.
-     */
+
     @FXML
     private void handleGoToViewHomepage(ActionEvent event) {
         // Password inserita dall'utente

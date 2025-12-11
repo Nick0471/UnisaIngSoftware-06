@@ -25,14 +25,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
-* @brief Questo Controller gestisce la scena "Gestione utenti"
-* Questa classe gestisce la visualizzazione tabellare di tutti gli utenti registrati nel sistema.
-* Fornisce funzionalità per:
-* - Filtrare gli utenti per Matricola, Email o Cognome (con supporto per Nome secondario).
-* - Aggiungere un nuovo utente.
-* - Modificare un utente esistente.
-* - Rimuovere un utente
-* - Visualizzare il profilo dettagliato di un utente.
+* @brief Questo Controller gestisce la scena "Gestione utenti" permettendo
+ * la visualizzazione di tutti gli utenti in una tabella
 */
 
 public class UserSceneController extends GuiController implements Initializable{
@@ -76,13 +70,6 @@ public class UserSceneController extends GuiController implements Initializable{
 
     /**
      * @brief Inizializza il controller, le colonne della tabella e i listener per la ricerca.
-     *
-     * Configura:
-     * 1. Il binding tra le colonne della TableView e le proprietà della classe {@link User}.
-     * 2. Un listener sul `searchType` (ComboBox) per gestire la visibilità del `searchFieldSecondary:
-     * se il filtro è "Cognome", appare il secondo campo per filtrare anche per Nome.
-     * 3. Listener sui campi di testo per eseguire il filtro in tempo reale (mentre si digita).
-     *
      * @param location  URL location per i percorsi relativi.
      * @param resources ResourceBundle per la localizzazione.
      */
@@ -136,7 +123,7 @@ public class UserSceneController extends GuiController implements Initializable{
     }
 
     /**
-     * @brief Metodo helper che recupera i valori dai campi di ricerca e invoca il filtraggio.
+     * @brief Metodo helper che recupera i valori dai campi di ricerca e invoca il filterUser.
      */
     private void executeFilter() {
         String type = this.searchType.getValue();
@@ -149,13 +136,6 @@ public class UserSceneController extends GuiController implements Initializable{
 
     /**
      * @brief Filtra la lista degli utenti in base ai criteri specificati.
-     *
-     * Gestisce i diversi casi di ricerca:
-     * - Matricola:Ricerca esatta per ID.
-     * - Cognome:Ricerca "contain" su Cognome (query1) e Nome (query2).
-     * - Email:Ricerca "contain" su Email.
-     * - Tutti:Ricarica la lista completa.
-     *
      * @param type   Il tipo di filtro selezionato (es. "Matricola", "Cognome").
      * @param query1 Il valore del campo di ricerca principale.
      * @param query2 Il valore del campo di ricerca secondario (usato solo per il Nome).
@@ -188,7 +168,7 @@ public class UserSceneController extends GuiController implements Initializable{
     /**
      * @brief Gestisce l'eliminazione dell'utente selezionato.
      *
-     * Verifica preventivamente se l'utente ha prestiti attivi tramite `loanService`.
+     * Verifica preventivamente se l'utente ha prestiti attivi:
      * - Se ha prestiti: Mostra un popup di errore e blocca l'eliminazione.
      * - Se non ha prestiti: Elimina l'utente tramite `userService` e aggiorna la tabella.
      */
@@ -212,11 +192,6 @@ public class UserSceneController extends GuiController implements Initializable{
 
     /**
      * @brief Apre la scena "AddUserScene".
-     *
-     * Carica `AddUserScene.fxml` e passa il controllo al {@link AddUserSceneController}.
-     * Chiama il metodo `editUser()` sul controller di destinazione per pre-compilare i campi
-     * e impostare la modalità di modifica (blocco della matricola).
-     *
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
