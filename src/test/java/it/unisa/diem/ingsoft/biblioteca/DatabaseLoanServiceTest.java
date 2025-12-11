@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Duration;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -92,6 +94,52 @@ public class DatabaseLoanServiceTest {
 
         assertThrows(UnknownLoanException.class, () -> {
             this.loanService.complete("NON_EXISTENT", "ANIMAL_FARM", LocalDate.now());
+        });
+    }
+
+    @Test
+    public void speed() {
+        LocalDate now = LocalDate.now();
+        Duration duration = Duration.ofMillis(100);
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register("ABC131415", "9788808123456", now, now.plusDays(30));
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.getAll();
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.getByUserIDAndBookIsbn("ABC131415", "978-88-08-12345-6");
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.getByUserId("ABC131415");
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.getByBookIsbn("978-88-08-12345-6");
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.has("ABC131415", "978-88-08-12345-6");
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.countById("ABC131415");
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.register("TEMP_USER", "TEMP_ISBN", now, now.plusDays(15));
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.complete("TEMP_USER", "TEMP_ISBN", now);
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.has("NON_EXISTENT", "NON_EXISTENT");
         });
     }
 }
