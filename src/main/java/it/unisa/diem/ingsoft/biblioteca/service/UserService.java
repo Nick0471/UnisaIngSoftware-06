@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIDException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
@@ -100,5 +101,10 @@ public interface UserService {
      */
     boolean isEmailValid(String email);
 
-    boolean isIdValid(String id);
+    /**
+     * @brief Controlla che una matricola sia valida per la registrazione di un utente.
+     * @param id La matricola da controllare.
+     * @return true se la matricola è valida (10 caratteri), false altrimenti.
+     */
+    boolean isIdValid(String id) throws InvalidIDException;
 }

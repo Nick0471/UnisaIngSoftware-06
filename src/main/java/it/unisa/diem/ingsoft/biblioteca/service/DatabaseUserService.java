@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidEmailException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.*;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
 /**
@@ -223,6 +220,9 @@ public class DatabaseUserService implements UserService {
 
     @Override
     public boolean isIdValid(String id) {
+        if( id.length() != 10)
+            throw new InvalidIDException();
+
         return id.length() == 10;
     }
 }
