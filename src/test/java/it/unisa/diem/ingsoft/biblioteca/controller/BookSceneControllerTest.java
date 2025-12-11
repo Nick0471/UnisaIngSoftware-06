@@ -31,7 +31,7 @@ public class BookSceneControllerTest extends ApplicationTest {
         ServiceRepository serviceRepository = new ServiceRepository(null, null, this.bookService, null);
 
         try {
-            setUp();
+            this.setUp();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -48,59 +48,59 @@ public class BookSceneControllerTest extends ApplicationTest {
 
     public void setUp() throws Exception {
 
-        if(!bookService.existsByIsbn("9780618391110")) {
-            bookService.add(new Book("9780618391110", "The Silmarillion", "J.R.R. Tolkien", 1977, 5, 5, "Fantasy",
+        if(!this.bookService.existsByIsbn("9780618391110")) {
+            this.bookService.add(new Book("9780618391110", "The Silmarillion", "J.R.R. Tolkien", 1977, 5, 5, "Fantasy",
                     "Raccolta di miti e leggende della Terra di Mezzo, dalla creazione del mondo alla Terza Era."));
         }
 
-        if(!bookService.existsByIsbn("9780547928227")) {
-            bookService.add(new Book("9780547928227", "The Hobbit", "J.R.R. Tolkien", 1937, 10, 5, "Fantasy",
+        if(!this.bookService.existsByIsbn("9780547928227")) {
+            this.bookService.add(new Book("9780547928227", "The Hobbit", "J.R.R. Tolkien", 1937, 10, 5, "Fantasy",
                     "Le avventure di Bilbo Baggins."));
         }
 
-        if(!bookService.existsByIsbn("9780547928210")) {
-            bookService.add(new Book("9780547928210", "The Fellowship of the Ring", "J.R.R. Tolkien", 1954, 8, 5, "Fantasy",
+        if(!this.bookService.existsByIsbn("9780547928210")) {
+            this.bookService.add(new Book("9780547928210", "The Fellowship of the Ring", "J.R.R. Tolkien", 1954, 8, 5, "Fantasy",
                     "Il primo volume della trilogia. Frodo Baggins eredita l'Unico Anello e inizia il pericoloso viaggio verso il Monte Fato."));
         }
 
-        if(!bookService.existsByIsbn("9780547928203")) {
-            bookService.add(new Book("9780547928203", "The Two Towers", "J.R.R. Tolkien", 1954, 8, 5, "Fantasy",
+        if(!this.bookService.existsByIsbn("9780547928203")) {
+            this.bookService.add(new Book("9780547928203", "The Two Towers", "J.R.R. Tolkien", 1954, 8, 5, "Fantasy",
                     "Il secondo volume della trilogia. Mentre Frodo e Sam continuano il cammino, Aragorn, Legolas e Gimli inseguono gli Uruk-hai."));
         }
 
-        if(!bookService.existsByIsbn("9780547928197")) {
-            bookService.add(new Book("9780547928197", "The Return of the King", "J.R.R. Tolkien", 1955, 8, 5, "Fantasy",
+        if(!this.bookService.existsByIsbn("9780547928197")) {
+            this.bookService.add(new Book("9780547928197", "The Return of the King", "J.R.R. Tolkien", 1955, 8, 5, "Fantasy",
                     "Il terzo volume della trilogia. Mentre l'esercito di Sauron muove guerra a Gondor, l'Anello si avvicina alla sua distruzione."));
         }
 
-        if(!bookService.existsByIsbn("9780064471046")) {
-            bookService.add(new Book("9780064471046", "The Lion, the Witch and the Wardrobe", "C.S. Lewis", 1950, 7, 5, "Fantasy",
+        if(!this.bookService.existsByIsbn("9780064471046")) {
+            this.bookService.add(new Book("9780064471046", "The Lion, the Witch and the Wardrobe", "C.S. Lewis", 1950, 7, 5, "Fantasy",
                     "Quattro fratelli attraversano un armadio magico e scoprono la terra di Narnia, congelata in un inverno eterno dalla Strega Bianca."));
         }
 
-        if(!bookService.existsByIsbn("9780451524935")) {
-            bookService.add(new Book("9780451524935", "1984", "George Orwell", 1949, 15, 5, "Dystopian",
+        if(!this.bookService.existsByIsbn("9780451524935")) {
+            this.bookService.add(new Book("9780451524935", "1984", "George Orwell", 1949, 15, 5, "Dystopian",
                     "Un romanzo agghiacciante su un regime totalitario che sorveglia ogni mossa dei cittadini. Il Grande Fratello ti sta guardando."));
         }
 
-        if(!bookService.existsByIsbn("9780486282114")) {
-            bookService.add(new Book("9780486282114", "Frankenstein", "Mary Shelley", 1818, 4, 4, "Gothic Horror",
+        if(!this.bookService.existsByIsbn("9780486282114")) {
+            this.bookService.add(new Book("9780486282114", "Frankenstein", "Mary Shelley", 1818, 4, 4, "Gothic Horror",
                     "La storia del dottor Victor Frankenstein e della creatura mostruosa ma senziente che egli assembla e riporta in vita."));
         }
     }
 
     private void resetSearchField(){
-        doubleClickOn("#searchField");
-        push(KeyCode.CONTROL, KeyCode.A);
-        push(KeyCode.DELETE);
-        sleep(1000);
+        this.doubleClickOn("#searchField");
+        this.push(KeyCode.CONTROL, KeyCode.A);
+        this.push(KeyCode.DELETE);
+        this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 8);
     }
 
     @Test
     public void test1_Initialization() {
         System.out.println("--- TEST 1: CARICAMENTO CATALOGO ---");
-        sleep(3000);
+        this.sleep(3000);
 
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 8);
     }
@@ -108,23 +108,23 @@ public class BookSceneControllerTest extends ApplicationTest {
     @Test
     public void test2_Sorting() {
         System.out.println("--- TEST 2: ORDINAMENTO CATALOGO ---");
-        sleep(500);
+        this.sleep(500);
 
         System.out.println("Ordino per autore");
-        clickOn("Autore");
-        sleep(1500);
+        this.clickOn("Autore");
+        this.sleep(1500);
 
         System.out.println("Ordino per anno");
-        clickOn("Anno");
-        sleep(1500);
+        this.clickOn("Anno");
+        this.sleep(1500);
 
         System.out.println("Ordino per titolo");
-        clickOn("Titolo");
-        sleep(1500);
+        this.clickOn("Titolo");
+        this.sleep(1500);
 
         System.out.println("Ordino per ISBN");
-        clickOn("ISBN");
-        sleep(1500);
+        this.clickOn("ISBN");
+        this.sleep(1500);
     }
 
     @Test
@@ -132,76 +132,76 @@ public class BookSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
 
         System.out.println("Cerco titolo: The Silmarillion");
-        clickOn("#searchType").clickOn("Titolo");
-        clickOn("#searchField").write("The Silmarillion");
-        sleep(1000);
+        this.clickOn("#searchType").clickOn("Titolo");
+        this.clickOn("#searchField").write("The Silmarillion");
+        this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 1);
 
-        resetSearchField();
+        this.resetSearchField();
 
         System.out.println("Cerco titolo inesistente: Harry Potter");
-        clickOn("#searchField").write("Harry Potter");
-        sleep(1000);
+        this.clickOn("#searchField").write("Harry Potter");
+        this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().isEmpty());
 
-        resetSearchField();
+        this.resetSearchField();
 
         System.out.println("Cerco autore: J.R.R. Tolkien");
-        clickOn("#searchType").clickOn("Autore");
-        clickOn("#searchField").write("J.R.R. Tolkien");
-        sleep(1000);
+        this.clickOn("#searchType").clickOn("Autore");
+        this.clickOn("#searchField").write("J.R.R. Tolkien");
+        this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 5);
 
-        resetSearchField();
+        this.resetSearchField();
 
         System.out.println("Cerco autore: J.K. Rowling");
-        clickOn("#searchField").write("J.K. Rowling");
-        sleep(1000);
+        this.clickOn("#searchField").write("J.K. Rowling");
+        this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().isEmpty());
 
-        resetSearchField();
+        this.resetSearchField();
 
         System.out.println("Cerco ISBN: 9780451524935");
-        clickOn("#searchType").clickOn("ISBN");
-        clickOn("#searchField").write("9780451524935");
-        sleep(1000);
+        this.clickOn("#searchType").clickOn("ISBN");
+        this.clickOn("#searchField").write("9780451524935");
+        this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 1);
 
-        FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().get(0).getTitle().equals("1984"));
+        FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> "1984".equals(t.getItems().get(0).getTitle()));
 
-        resetSearchField();
+        this.resetSearchField();
 
         System.out.println("Cerco Genere: Fantasy");
-        clickOn("#searchType").clickOn("Genere");
-        clickOn("#searchField").write("Fantasy");
-        sleep(1000);
+        this.clickOn("#searchType").clickOn("Genere");
+        this.clickOn("#searchField").write("Fantasy");
+        this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 6);
 
-        resetSearchField();
+        this.resetSearchField();
 
         System.out.println("Cerco Anno: 1954");
-        clickOn("#searchType").clickOn("Anno");
-        clickOn("#searchField").write("1954");
-        sleep(1000);
+        this.clickOn("#searchType").clickOn("Anno");
+        this.clickOn("#searchField").write("1954");
+        this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 2);
 
-        resetSearchField();
+        this.resetSearchField();
     }
 
     @Test
     public void test4_RemoveBook(){
         System.out.println("--- TEST 4: RIMOZIONE LIBRO ---");
 
-        int initialSize = lookup("#bookCatalog").queryTableView().getItems().size();
+        int initialSize = this.lookup("#bookCatalog").queryTableView().getItems().size();
 
         System.out.println("Seleziono il libro: 1984");
-        clickOn("9780451524935");
-        sleep(1500);
+        this.clickOn("9780451524935");
+        this.sleep(1500);
 
         System.out.println("Clicco su Rimuovi");
-        clickOn("#btnRemove");
+        this.clickOn("#btnRemove");
 
-        sleep(2000);
+        this.sleep(2000);
 
         FxAssert.verifyThat("#bookCatalog", (TableView<Loan> t) -> t.getItems().size() == initialSize - 1);
     }
@@ -210,13 +210,13 @@ public class BookSceneControllerTest extends ApplicationTest {
     public void test5_RemoveBookError(){
         System.out.println("--- TEST 5: RIMOZIONE LIBRO FALLITA ---");
 
-        int initialSize = lookup("#bookCatalog").queryTableView().getItems().size();
+        int initialSize = this.lookup("#bookCatalog").queryTableView().getItems().size();
 
         System.out.println("Non seleziono un libro");
         System.out.println("Clicco su Rimuovi");
-        clickOn("#btnRemove");
+        this.clickOn("#btnRemove");
 
-        sleep(2000);
+        this.sleep(2000);
 
         FxAssert.verifyThat("#bookCatalog", (TableView<Loan> t) -> t.getItems().size() == initialSize);
     }
@@ -225,15 +225,15 @@ public class BookSceneControllerTest extends ApplicationTest {
     public void test6_ModifyBook(){
         System.out.println("--- TEST 6: MODIFICA LIBRO ---");
 
-        int initialSize = lookup("#bookCatalog").queryTableView().getItems().size();
+        int initialSize = this.lookup("#bookCatalog").queryTableView().getItems().size();
 
         System.out.println("Seleziono il libro: 1984");
-        clickOn("9780451524935");
-        sleep(1000);
+        this.clickOn("9780451524935");
+        this.sleep(1000);
 
         System.out.println("Clicco su Modifica");
-        clickOn("#btnModify");
-        sleep(1500);
+        this.clickOn("#btnModify");
+        this.sleep(1500);
 
         //clickOn("#copiesField").write("5");
         //sleep(1000);
@@ -242,8 +242,8 @@ public class BookSceneControllerTest extends ApplicationTest {
         FxAssert.verifyThat("Modifica Libro", NodeMatchers.isVisible());
 
         System.out.println("Chiudo modale...");
-        clickOn("#btnCancel");
-        sleep(1000);
+        this.clickOn("#btnCancel");
+        this.sleep(1000);
     }
 
     @Test
@@ -251,28 +251,29 @@ public class BookSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 6: AGGIUNTA LIBRO ---");
 
         System.out.println("Clicco su Aggiungi");
-        clickOn("#btnAdd");
-        sleep(1000);
+        this.clickOn("#btnAdd");
+        this.sleep(1000);
 
         FxAssert.verifyThat("Aggiungi Nuovo Libro", NodeMatchers.isVisible());
 
         System.out.println("Chiudo modale...");
-        clickOn("#btnCancel");
-        sleep(1000);
+        this.clickOn("#btnCancel");
+        this.sleep(1000);
     }
 
     @Test
     public void test8_NavigationHome() {
         System.out.println("--- TEST 8: NAVIGAZIONE HOME ---");
 
-        sleep(1000);
+        this.sleep(1000);
         System.out.println("Clicco Home...");
-        clickOn("#btnHome");
-        sleep(2000);
+        this.clickOn("#btnHome");
+        this.sleep(2000);
 
         FxAssert.verifyThat("Biblioteca Universitaria", NodeMatchers.isVisible());
         System.out.println("Homepage raggiunta.");
     }
 
 }
+
 

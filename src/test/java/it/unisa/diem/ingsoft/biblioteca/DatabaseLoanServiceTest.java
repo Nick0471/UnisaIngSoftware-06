@@ -41,7 +41,7 @@ public class DatabaseLoanServiceTest {
         assertTrue(this.loanService.getAll()
                 .isEmpty());
 
-        assertFalse(this.loanService.has("USERID321", "ISBNTEST123"));
+        assertFalse(this.loanService.isActive("USERID321", "ISBNTEST123"));
 
         assertEquals(this.loanService.countById("USERID321"), 0);
 
@@ -68,7 +68,7 @@ public class DatabaseLoanServiceTest {
         assertEquals(this.loanService.getByBookIsbn("ISBNTEST123").size(), 2);
         assertEquals(this.loanService.getAll().size(), 3);
         assertEquals(this.loanService.getAllActive().size(), 3);
-        assertTrue(this.loanService.has("USERID321", "ISBNTEST123"));
+        assertTrue(this.loanService.isActive("USERID321", "ISBNTEST123"));
         assertEquals(this.loanService.countById("USERID321"), 2);
     }
 
@@ -89,6 +89,8 @@ public class DatabaseLoanServiceTest {
         assertDoesNotThrow(() -> {
             this.loanService.complete("NICOLA123", "ANIMAL_FARM", LocalDate.now());
         });
+
+        assertFalse(this.loanService.isActive("NICOLA123", "ANIMAL_FARM"));
 
         assertEquals(this.loanService.getAllActive().size(), 0);
 
@@ -127,7 +129,7 @@ public class DatabaseLoanServiceTest {
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.has("ABC131415", "978-88-08-12345-6");
+            this.loanService.isActive("ABC131415", "978-88-08-12345-6");
         });
 
         assertTimeout(duration, () -> {
@@ -143,7 +145,7 @@ public class DatabaseLoanServiceTest {
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.has("NON_EXISTENT", "NON_EXISTENT");
+            this.loanService.isActive("NON_EXISTENT", "NON_EXISTENT");
         });
     }
 }

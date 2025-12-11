@@ -6,8 +6,6 @@ import java.net.URL;
 import it.unisa.diem.ingsoft.biblioteca.controller.GuiController;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 
 /**
  * @brief Classe di utility per creare FXMLLoader e per prendere la root dato un loader

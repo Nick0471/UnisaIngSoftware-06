@@ -72,13 +72,13 @@ public interface LoanService {
     void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException;
 
     /**
-     * @brief Verifica se un utente ha preso in prestito un libro.
+     * @brief Verifica se un utente ha preso in prestito un libro che non
+     *  ha ancora restituito.
      * @param userId La matricola dell'utente che ha chiesto il prestito.
      * @param bookIsbn L'ISBN del libro preso in prestito.
      * @return true se l'utente ha preso in prestito il libro, false altrimenti.
      */
-    boolean has(String userId, String bookIsbn);
-
+    boolean isActive(String userId, String bookIsbn);
 
     /**
      * @brief Conta il numero di prestiti fatti da un utente.

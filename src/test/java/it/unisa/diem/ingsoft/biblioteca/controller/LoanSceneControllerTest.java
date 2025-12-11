@@ -1,23 +1,32 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.LOAN_PATH;
+
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
+import org.testfx.api.FxAssert;
+import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
+
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.Scenes;
-import it.unisa.diem.ingsoft.biblioteca.model.*;
-import it.unisa.diem.ingsoft.biblioteca.service.*;
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
+import it.unisa.diem.ingsoft.biblioteca.model.Loan;
+import it.unisa.diem.ingsoft.biblioteca.model.User;
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseLoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
+import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.Test;
-import org.testfx.api.FxAssert;
-import org.testfx.framework.junit5.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
-
-import java.time.LocalDate;
-
-import static it.unisa.diem.ingsoft.biblioteca.Views.LOAN_PATH;
 
 public class LoanSceneControllerTest extends ApplicationTest {
     private BookService bookService;
@@ -34,7 +43,7 @@ public class LoanSceneControllerTest extends ApplicationTest {
         ServiceRepository serviceRepository = new ServiceRepository(null, this.userService, this.bookService, this.loanService);
 
         try {
-            setUp();
+            this.setUp();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -59,8 +68,8 @@ public class LoanSceneControllerTest extends ApplicationTest {
 
         for(int i = 1; i <= 7; i++) {
             String isbn = "000" + i + "000000000";
-            if(!bookService.existsByIsbn(isbn)) {
-                bookService.add(new Book(isbn, "Title " + i, "Author", 2020, 5, 5, "Genre", "Desc"));
+            if(!this.bookService.existsByIsbn(isbn)) {
+                this.bookService.add(new Book(isbn, "Title " + i, "Author", 2020, 5, 5, "Genre", "Desc"));
             }
         }
 
@@ -78,29 +87,29 @@ public class LoanSceneControllerTest extends ApplicationTest {
                 deadline = LocalDate.now().plusDays(i*10);
             }
 
-            if(!loanService.has(userId, isbn)) {
-                loanService.register(userId, isbn, start, deadline);
+            if(!this.loanService.isActive(userId, isbn)) {
+                this.loanService.register(userId, isbn, start, deadline);
             }
         }
     }
 
     private void resetSearchField(){
-        doubleClickOn("#searchField").push(KeyCode.DELETE);
-        sleep(1000);
+        this.doubleClickOn("#searchField").push(KeyCode.DELETE);
+        this.sleep(1000);
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == 7);
     }
 
     @Test
     public void test1_InitializationAndRedRows() {
         System.out.println("--- TEST 1: CARICAMENTO E COLORI ---");
-        sleep(1000);
+        this.sleep(1000);
 
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == 7);
 
         System.out.println("Controllo visivo righe rosse...");
-        moveTo("0612700001"); sleep(800);
-        moveTo("0612700002"); sleep(800);
-        moveTo("0612700003"); sleep(800);
+        this.moveTo("0612700001"); this.sleep(800);
+        this.moveTo("0612700002"); this.sleep(800);
+        this.moveTo("0612700003"); this.sleep(800);
     }
 
     @Test
@@ -108,20 +117,20 @@ public class LoanSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 2: ORDINAMENTO ---");
 
         System.out.println("Ordino per Scadenza...");
-        clickOn("Scadenza");
-        sleep(1500);
+        this.clickOn("Scadenza");
+        this.sleep(1500);
 
         System.out.println("Ordino per Scadenza decrescente...");
-        clickOn("Scadenza");
-        sleep(1500);
+        this.clickOn("Scadenza");
+        this.sleep(1500);
 
         System.out.println("Ordino per ISBN...");
-        clickOn("ISBN Libro");
-        sleep(1500);
+        this.clickOn("ISBN Libro");
+        this.sleep(1500);
 
         System.out.println("Ordino per ISBN decrescente...");
-        clickOn("ISBN Libro");
-        sleep(1500);
+        this.clickOn("ISBN Libro");
+        this.sleep(1500);
     }
 
     @Test
@@ -129,31 +138,31 @@ public class LoanSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
 
         System.out.println("Cerco matricola: 0612700003");
-        clickOn("#searchType").clickOn("Matricola");
-        clickOn("#searchField").write("0612700003");
-        sleep(2000);
+        this.clickOn("#searchType").clickOn("Matricola");
+        this.clickOn("#searchField").write("0612700003");
+        this.sleep(2000);
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == 1);
 
-        resetSearchField();
+        this.resetSearchField();
 
         System.out.println("Cerco matricola inesistente: 0612708994");
-        clickOn("#searchField").write("0612708994");
-        sleep(2000);
+        this.clickOn("#searchField").write("0612708994");
+        this.sleep(2000);
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
 
-        resetSearchField();
+        this.resetSearchField();
 
         System.out.println("Cerco ISBN: 0003000000000");
-        clickOn("#searchType").clickOn("ISBN");
-        clickOn("#searchField").write("0003000000000");
-        sleep(2000);
+        this.clickOn("#searchType").clickOn("ISBN");
+        this.clickOn("#searchField").write("0003000000000");
+        this.sleep(2000);
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == 1);
 
-        resetSearchField();
+        this.resetSearchField();
 
         System.out.println("Cerco ISBN inesistente: 9780618391110");
-        clickOn("#searchField").write("9780618391110");
-        sleep(2000);
+        this.clickOn("#searchField").write("9780618391110");
+        this.sleep(2000);
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
     }
 
@@ -161,16 +170,16 @@ public class LoanSceneControllerTest extends ApplicationTest {
     public void test4_ReturnLoan(){
         System.out.println("--- TEST 4: RESTITUZIONE PRESTITO ---");
 
-        int initialSize = lookup("#loanTable").queryTableView().getItems().size();
+        int initialSize = this.lookup("#loanTable").queryTableView().getItems().size();
 
         System.out.println("Seleziono il prestito di 0612700006...");
-        clickOn("0612700006");
-        sleep(1500);
+        this.clickOn("0612700006");
+        this.sleep(1500);
 
         System.out.println("Clicco su Restituisci...");
-        clickOn("#btnReturn");
+        this.clickOn("#btnReturn");
 
-        sleep(2000);
+        this.sleep(2000);
 
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == initialSize - 1);
     }
@@ -179,12 +188,12 @@ public class LoanSceneControllerTest extends ApplicationTest {
     public void test5_ReturnLoanError(){
         System.out.println("--- TEST 4: RESTITUZIONE PRESTITO NON SELEZIONATO ---");
 
-        int initialSize = lookup("#loanTable").queryTableView().getItems().size();
+        int initialSize = this.lookup("#loanTable").queryTableView().getItems().size();
 
         System.out.println("Clicco su Restituisci...");
-        clickOn("#btnReturn");
+        this.clickOn("#btnReturn");
 
-        sleep(2000);
+        this.sleep(2000);
 
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == initialSize);
     }
@@ -194,24 +203,32 @@ public class LoanSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 6: APERTURA MODALE ---");
 
         System.out.println("Apro modale...");
-        clickOn("#btnAdd");
-        sleep(1500);
+        this.clickOn("#btnAdd");
+        this.sleep(1500);
 
         FxAssert.verifyThat("Registra Nuovo Prestito", NodeMatchers.isVisible());
 
         System.out.println("Chiudo modale...");
-        clickOn("#btnCancel");
-        sleep(1000);
+        this.clickOn("#btnCancel");
+        this.sleep(1000);
     }
 
     @Test
     public void test7_NavigationHome() {
         System.out.println("--- TEST 7: NAVIGAZIONE HOME ---");
 
-        sleep(1000);
+        this.sleep(1000);
         System.out.println("Clicco Home...");
-        clickOn("#btnHome");
-        sleep(2000);
+        this.clickOn("#btnHome");
+        this.sleep(2000);
+
+        FxAssert.verifyThat("Biblioteca Universitaria", NodeMatchers.isVisible());
+        System.out.println("Homepage raggiunta.");
+
+        this.sleep(1000);
+        System.out.println("Clicco Home...");
+        this.clickOn("#btnHome");
+        this.sleep(2000);
 
         FxAssert.verifyThat("Biblioteca Universitaria", NodeMatchers.isVisible());
         System.out.println("Homepage raggiunta.");

@@ -89,7 +89,7 @@ public class DatabaseLoanService implements LoanService {
      */
     @Override
     public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) throws LoanAlreadyRegisteredException {
-        if (this.has(userId, bookIsbn))
+        if (this.isActive(userId, bookIsbn))
             throw new LoanAlreadyRegisteredException();
 
         this.database.getJdbi()
@@ -113,7 +113,7 @@ public class DatabaseLoanService implements LoanService {
      */
 	@Override
 	public void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException {
-        if (!this.has(userId, bookIsbn)) {
+        if (!this.isActive(userId, bookIsbn)) {
             throw new UnknownLoanException();
         }
 
@@ -146,7 +146,7 @@ public class DatabaseLoanService implements LoanService {
      * @return true se l'utente ha preso in prestito il libro, false altrimenti.
      */
 	@Override
-	public boolean has(String userId, String bookIsbn) {
+	public boolean isActive(String userId, String bookIsbn) {
         return this.getByUserIDAndBookIsbn(userId, bookIsbn)
             .isPresent();
 	}
