@@ -1,5 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -13,9 +14,15 @@ import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class App {
+import static javafx.application.Application.launch;
+
+public class App extends Application {
     private static final String DATABASE_CONNECTION_URL = "jdbc:sqlite:database.db";
 
     public static void main(String[] args) {
@@ -49,9 +56,34 @@ public class App {
             passwordService.change("admin");
         }
 
-        URL loginUrl = App.class.getResource("it/unisa/diem/ingsoft/biblioteca/view/LogInScene.fxml");
-        FXMLLoader loader = new FXMLLoader(loginUrl);
+        launch(args);
+
     }
+
+
+    public void start(Stage primaryStage) {
+
+        try {
+            URL loginUrl = App.class.getResource("/it/unisa/diem/ingsoft/biblioteca/view/LogInScene.fxml");
+
+
+            FXMLLoader loader = new FXMLLoader(loginUrl);
+
+
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+            primaryStage.setTitle("Biblioteca Login");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+        }catch (IOException e) {
+            e.printStackTrace();
+            // Gestisci l'errore, magari mostrando un alert o chiudendo l'app
+        }
+    }
+
+
 
     private static Optional<Database> connectToDatabase() {
         Optional<Database> database = Optional.empty();
