@@ -10,13 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
 import java.util.NoSuchElementException;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidEmailException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
@@ -39,6 +36,16 @@ public class DatabaseUserServiceTest {
 
         assertDoesNotThrow(() -> {
             User user = new User("ABC123", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            this.userService.register(user);
+        });
+
+        assertThrows(InvalidIDException.class, () -> {
+            User user = new User("ABC123", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            this.userService.register(user);
+        });
+
+        assertDoesNotThrow(() -> {
+            User user = new User("ABC123DEF4", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
             this.userService.register(user);
         });
 
