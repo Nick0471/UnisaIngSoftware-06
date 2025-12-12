@@ -6,6 +6,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
@@ -104,6 +105,15 @@ public class AddUserSceneController extends GuiController{
 
         if (id.isEmpty() || surname.isEmpty() || name.isEmpty() || email.isEmpty()) {
             this.popUp(" Compila tutti i campi obbligatori.");
+            return;
+        }
+
+        try {
+            if (!this.userService.isEmailValid(email)) {
+                throw new InvalidEmailException();
+            }
+        } catch (InvalidEmailException e) {
+            this.popUp(e.getMessage());
             return;
         }
 
