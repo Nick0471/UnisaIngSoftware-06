@@ -233,9 +233,7 @@ public class UserSceneController extends GuiController implements Initializable{
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
-    private void handleBackToHome(ActionEvent event) {
-        this.changeScene(event, HOMEPAGE_PATH);
-    }
+    private void handleBackToHome(ActionEvent event) {super.changeScene(event, HOMEPAGE_PATH);}
 
 
     /**

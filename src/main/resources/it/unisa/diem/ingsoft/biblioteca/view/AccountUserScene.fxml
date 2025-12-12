@@ -152,7 +152,7 @@
                             <columns>
                                 <TableColumn fx:id="columnIsbn" maxWidth="150.0" minWidth="120.0" prefWidth="120.0" text="ISBN" />
                                 <TableColumn fx:id="columnTitle" minWidth="200.0" prefWidth="250.0" text="Titolo Libro" />
-                                <TableColumn fx:id="columnStart" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Data Inizio" />
+                                <TableColumn fx:id="columnStartDate" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Data Inizio" />
                                 <TableColumn fx:id="columnDeadline" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Scadenza" />
                             </columns>
                             <columnResizePolicy>
