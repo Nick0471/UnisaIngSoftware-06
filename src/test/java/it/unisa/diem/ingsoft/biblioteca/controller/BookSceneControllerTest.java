@@ -214,6 +214,7 @@ public class BookSceneControllerTest extends ApplicationTest {
 
         System.out.println("Clicco su Rimuovi");
         this.clickOn("#btnRemove");
+        this.clickOn("OK");
 
         this.sleep(2000);
 
@@ -229,8 +230,9 @@ public class BookSceneControllerTest extends ApplicationTest {
         System.out.println("Non seleziono un libro");
         System.out.println("Clicco su Rimuovi");
         this.clickOn("#btnRemove");
+        this.clickOn("OK");
 
-        this.sleep(2000);
+        this.sleep(1000);
 
         FxAssert.verifyThat("#bookCatalog", (TableView<Loan> t) -> t.getItems().size() == initialSize);
     }
@@ -248,11 +250,7 @@ public class BookSceneControllerTest extends ApplicationTest {
         System.out.println("Clicco su Modifica");
         this.clickOn("#btnModify");
         this.sleep(1500);
-
-        //clickOn("#copiesField").write("5");
-        //sleep(1000);
-
-        //clickOn("#btnConfirm");
+        
         FxAssert.verifyThat("Modifica Libro", NodeMatchers.isVisible());
 
         System.out.println("Chiudo modale...");

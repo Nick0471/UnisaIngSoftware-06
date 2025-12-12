@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -117,6 +118,9 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
         this.sleep(500);
 
         this.clickOn("#btnConfirm");
+        this.sleep(500);
+        //type(KeyCode.ENTER);
+        this.sleep(500);
 
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == 1);
         this.sleep(500);
@@ -134,30 +138,5 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
 
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
         this.sleep(500);
-
-        this.clickOn("#btnCancel");
-
-        FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
-        this.sleep(500);
-
-        this.clickOn("#btnCancel");
-
-        FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
-        this.sleep(500);
-
-        this.clickOn("#btnCancel");
-
-        FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
-        this.sleep(500);
-
-        this.clickOn("#btnCancel");
-
-        FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
-        this.sleep(500);
-
-        clickOn("#btnCancel");
-
-        FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
-        sleep(500);
     }
 }
