@@ -198,7 +198,7 @@ public class DatabaseBookService implements BookService {
 
         for(Book book : books){
             String isbn = book.getIsbn();
-            if (this.isIsbnValid(isbn)) {
+            if (!this.isIsbnValid(isbn)) {
                 throw new InvalidIsbnException();
             }
 
