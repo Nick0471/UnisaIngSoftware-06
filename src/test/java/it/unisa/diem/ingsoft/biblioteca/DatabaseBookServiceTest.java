@@ -211,8 +211,8 @@ public class DatabaseBookServiceTest {
 
         assertTimeout(duration, () -> {
             List<Book> books = List.of(
-                    new Book("1234567890000", "One piece", "Oda", 1999, 50,3,"Avventura","Peak"),
-                    new Book("1234567800000", "Chainsaw man", "Tatsuki Fujimoto", 2022, 50,4,"Fantasy","Topo di campagna o di città?")
+                    new Book("1234567890100", "One piece", "Oda", 1999, 50,3,"Avventura","Peak"),
+                    new Book("1234567800200", "Chainsaw man", "Tatsuki Fujimoto", 2022, 50,4,"Fantasy","Topo di campagna o di città?")
             );
             this.bookService.addAll(books);
         });
