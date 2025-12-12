@@ -44,3 +44,5 @@ mvnw.cmd
 
 html/
 latex/
+
+*.db
