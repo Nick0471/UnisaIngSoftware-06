@@ -95,6 +95,12 @@ public class AddBookSceneController extends GuiController{
                 this.copiesField.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
+
+        this.isbnField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 13) {
+                this.isbnField.setText(newValue.substring(0, 13));
+            }
+        });
     }
 
     /**
