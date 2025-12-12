@@ -180,7 +180,7 @@ public class UserSceneController extends GuiController implements Initializable{
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser== null) {
-            this.popUp("Seleziona un utente da rimuovere.");
+            this.popUp("Seleziona un utente da rimuovere");
             return;
         }
 
@@ -188,6 +188,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
         if(loanList.isEmpty()) {
             this.userService.removeById(selectedUser.getId());
+            this.popUp("Utente rimosso correttamente")
             this.updateTable();
         }else
             this.popUp("Non puoi rimuovere un utente che ha ancora prestiti attivi");
