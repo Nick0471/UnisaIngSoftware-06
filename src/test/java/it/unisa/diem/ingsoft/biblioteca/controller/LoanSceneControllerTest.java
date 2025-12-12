@@ -39,7 +39,7 @@ public class LoanSceneControllerTest extends ApplicationTest {
 
         this.bookService = new DatabaseBookService(db);
         this.userService = new DatabaseUserService(db);
-        this.loanService = new DatabaseLoanService(db);
+        this.loanService = new DatabaseLoanService(this.userService, this.bookService, db);
         ServiceRepository serviceRepository = new ServiceRepository(null, this.userService, this.bookService, this.loanService);
 
         try {

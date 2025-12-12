@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.exception.*;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 /**
@@ -150,14 +154,21 @@ public class DatabaseBookService implements BookService {
      * @param book Il libro da aggiungere.
      */
     @Override
-    public void add(Book book) throws DuplicateBookByIsbnException, WrongIsbnException, NegativeBookCopiesException {
-        if (this.existsByIsbn(book.getIsbn())) {
+    public void add(Book book) throws DuplicateBookByIsbnException, InvalidIsbnException,
+           NegativeBookCopiesException {
+        String isbn = book.getIsbn();
+
+        if (this.existsByIsbn(isbn)) {
             throw new DuplicateBookByIsbnException();
         }
 
-        if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) throw new NegativeBookCopiesException();
+        if (!this.isIsbnValid(isbn)) {
+            throw new InvalidIsbnException();
+        }
 
-        if (book.getIsbn().length() != 13) throw new WrongIsbnException();
+        if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) {
+            throw new NegativeBookCopiesException();
+        }
 
         this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate(
@@ -182,10 +193,18 @@ public class DatabaseBookService implements BookService {
      * @param books La lista di libri da aggiungere.
      */
     @Override
-    public void addAll(List<Book> books) throws DuplicateBooksByIsbnException, WrongIsbnException, NegativeBookCopiesException {
+    public void addAll(List<Book> books) throws DuplicateBooksByIsbnException, InvalidIsbnException,
+        NegativeBookCopiesException {
+
         for(Book book : books){
-            if (book.getIsbn().length() != 13) throw new WrongIsbnException();
-            if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) throw new NegativeBookCopiesException();
+            String isbn = book.getIsbn();
+            if (this.isIsbnValid(isbn)) {
+                throw new InvalidIsbnException();
+            }
+
+            if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) {
+                throw new NegativeBookCopiesException();
+            }
         }
 
         List<String> newIsbns = books.stream()
@@ -313,5 +332,15 @@ public class DatabaseBookService implements BookService {
                     .bind("isbn", isbn)
                     .mapTo(Integer.class)
                     .one());
+	}
+
+    /**
+     * @brief Controlla se un ISBN è valido.
+     *  Controlla se l'ISBN è lungo 13 caratteri.
+     * @return true se l'ISBN è valido, false altrimenti.
+     */
+	@Override
+	public boolean isIsbnValid(String isbn) {
+        return isbn.length() != 13;
 	}
 }

@@ -7,7 +7,11 @@ package it.unisa.diem.ingsoft.biblioteca.service;
 import java.util.List;
 import java.util.Optional;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.*;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 /**
@@ -74,13 +78,15 @@ public interface BookService {
      * @brief Aggiunge un libro al catalogo.
      * @param book Il libro da aggiungere.
      */
-    void add(Book book) throws DuplicateBookByIsbnException, WrongIsbnException, NegativeBookCopiesException;
+    void add(Book book) throws DuplicateBookByIsbnException, InvalidIsbnException,
+         NegativeBookCopiesException;
 
     /**
      * @brief Aggiunge una lista di libri al catalogo.
      * @param books La lista di libri da aggiungere.
      */
-    void addAll(List<Book> books) throws DuplicateBookByIsbnException, DuplicateBooksByIsbnException, WrongIsbnException, NegativeBookCopiesException;
+    void addAll(List<Book> books) throws DuplicateBookByIsbnException, DuplicateBooksByIsbnException,
+         InvalidIsbnException, NegativeBookCopiesException;
 
     /**
      * @brief Aggiorna le informazioni di un libro già registrato.
@@ -112,4 +118,10 @@ public interface BookService {
      * @return Il numero di copie rimanenti.
      */
     int countRemainingCopies(String isbn);
+
+    /**
+     * @brief Controlla se un ISBN è valido.
+     * @return true se l'ISBN è valido, false altrimenti.
+     */
+    boolean isIsbnValid(String isbn);
 }

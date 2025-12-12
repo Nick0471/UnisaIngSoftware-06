@@ -9,7 +9,8 @@ import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIDException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidEmailException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
@@ -58,10 +59,13 @@ public interface UserService {
     /**
      * @brief Registra un nuovo utente.
      * @param user L'utente da registrare.
+     * @throws InvalidIdException Se la matricola dell'utente non è valida.
+     * @throws InvalidEmailException Se l'email dell'utente non è valida.
      * @throws DuplicateUserByEmailException Esiste già un utente con la mail specificata.
      * @throws DuplicateUserByIdException Esiste già un utente con la matricola specificata.
      */
-	void register(User user) throws DuplicateUserByIdException, DuplicateUserByEmailException;
+	void register(User user) throws InvalidIdException, InvalidEmailException,
+         DuplicateUserByIdException, DuplicateUserByEmailException;
 
     /**
      * @brief Rimuove un utente in base alla sua matricola.
@@ -78,7 +82,7 @@ public interface UserService {
      *  bisogna eliminare e reinserire l'utente.
      * @throws UnknownUserByIdException Non esiste alcun utente con la matricola specificata.
      */
-    void updateById(User user) throws UnknownUserByIdException;
+    void updateById(User user) throws InvalidIdException, UnknownUserByIdException;
 
     /**
      * @brief Controlla se un utente con una matricola è già stato registrato.
@@ -106,5 +110,5 @@ public interface UserService {
      * @param id La matricola da controllare.
      * @return true se la matricola è valida (10 caratteri), false altrimenti.
      */
-    boolean isIdValid(String id) throws InvalidIDException;
+    boolean isIdValid(String id);
 }

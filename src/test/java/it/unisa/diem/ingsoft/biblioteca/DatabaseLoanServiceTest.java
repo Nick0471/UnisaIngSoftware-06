@@ -13,10 +13,15 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownLoanException;
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseLoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 
 public class DatabaseLoanServiceTest {
     private LoanService loanService;
@@ -24,12 +29,14 @@ public class DatabaseLoanServiceTest {
     @BeforeEach
     public void setup() {
         Database database = Database.inMemory();
-        this.loanService = new DatabaseLoanService(database);
+        UserService userService = new DatabaseUserService(database);
+        BookService bookService = new DatabaseBookService(database);
+        this.loanService = new DatabaseLoanService(userService, bookService, database);
     }
 
     @Test
     public void get() {
-        assertTrue(this.loanService.getByUserIDAndBookIsbn("USERID3214", "ISBNTEST12345")
+        assertTrue(this.loanService.getByUserIdAndBookIsbn("USERID3214", "ISBNTEST12345")
                 .isEmpty());
 
         assertTrue(this.loanService.getByUserId("USERID3214")
@@ -43,7 +50,14 @@ public class DatabaseLoanServiceTest {
 
         assertFalse(this.loanService.isActive("USERID3214", "ISBNTEST12345"));
 
-        assertEquals(this.loanService.countById("USERID3214"), 0);
+        assertDoesNotThrow(() -> {
+            int count = this.loanService.countById("USERID3214");
+            assertEquals(count, 0);
+        });
+
+        assertThrows(InvalidIdException.class, () -> {
+            this.loanService.countById("USERID3214");
+        });
 
         LocalDate start = LocalDate.now();
         LocalDate deadline = start.plusDays(30);
@@ -63,14 +77,18 @@ public class DatabaseLoanServiceTest {
             this.loanService.register("USERID3214", "ISBNTEST12345", start, deadline);
         });
 
-        assertTrue(this.loanService.getByUserIDAndBookIsbn("USERID3214", "ISBNTEST12345").isPresent());
+        assertTrue(this.loanService.getByUserIdAndBookIsbn("USERID3214", "ISBNTEST12345").isPresent());
         assertEquals(this.loanService.getByUserId("USERID3214").size(), 2);
         assertEquals(this.loanService.getByBookIsbn("ISBNTEST12345").size(), 2);
         assertEquals(this.loanService.getAll().size(), 3);
         assertEquals(this.loanService.getActive().size(), 3);
-        assertEquals(this.loanService.getActiveByUserID("USERID3214").size(), 2);
+        assertEquals(this.loanService.getActiveByUserId("USERID3214").size(), 2);
         assertTrue(this.loanService.isActive("USERID3214", "ISBNTEST12345"));
-        assertEquals(this.loanService.countById("USERID3214"), 2);
+
+        assertDoesNotThrow(() -> {
+            int count = this.loanService.countById("USERID3214");
+            assertEquals(count, 2);
+        });
     }
 
     @Test
@@ -94,7 +112,7 @@ public class DatabaseLoanServiceTest {
         assertFalse(this.loanService.isActive("NICOLA1234", "ANIMAL_FARM"));
 
         assertEquals(this.loanService.getActive().size(), 0);
-        assertEquals(this.loanService.getActiveByUserID("NICOLA1234").size(), 0);
+        assertEquals(this.loanService.getActiveByUserId("NICOLA1234").size(), 0);
 
         assertThrows(UnknownLoanException.class, () -> {
             this.loanService.complete("NICOLA1234", "RANDOM_ISB_NON_EXISTENT", LocalDate.now());
@@ -119,11 +137,11 @@ public class DatabaseLoanServiceTest {
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.getActiveByUserID("ABC1314156");
+            this.loanService.getActiveByUserId("ABC1314156");
         });
 
         assertTimeout(duration, () -> {
-            this.loanService.getByUserIDAndBookIsbn("ABC1314156", "978-88-08-12345-6");
+            this.loanService.getByUserIdAndBookIsbn("ABC1314156", "978-88-08-12345-6");
         });
 
         assertTimeout(duration, () -> {

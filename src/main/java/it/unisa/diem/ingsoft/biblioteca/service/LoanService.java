@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownLoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
@@ -34,7 +36,7 @@ public interface LoanService {
      * @param bookIsbn L'ISBN del libro prestato.
      * @return Un opzionale contenente il prestito se esistente, Optional.empty() altrimenti.
      */
-    Optional<Loan> getByUserIDAndBookIsbn(String userId, String bookIsbn);
+    Optional<Loan> getByUserIdAndBookIsbn(String userId, String bookIsbn);
 
     /**
      * @brief Recupera una lista di prestiti per il l'utente con matricola specificata.
@@ -59,8 +61,11 @@ public interface LoanService {
      * @param deadline La data di restituzione massima.
      * @throws LoanAlreadyRegisteredException Il prestito per l'utente ed il libro specificati.
      *  è già esistente
+     *  @throws InvalidIdException Se la matricola non è valida.
+     *  @throws InvalidIsbnException Se l'ISBN non è valido.
      */
-	void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) throws LoanAlreadyRegisteredException;
+	void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline)
+            throws LoanAlreadyRegisteredException, InvalidIdException, InvalidIsbnException;
 
     /**
      * @brief Registra la restituzione di un libro da parte di un utente.
@@ -85,7 +90,7 @@ public interface LoanService {
      * @param userId La matricola dell'utente da controllare.
      * @return Il numero di prestiti attualmente attivi.
      */
-    int countById(String userId);
+    int countById(String userId) throws InvalidIdException;
 
     /**
      * @brief Recupera una lista di tutti i prestiti registrati attualmente attivi per
@@ -94,6 +99,6 @@ public interface LoanService {
      *               attivi.
      * @return Una lista contenente i prestiti attivi per l'utente.
      */
-    List<Loan> getActiveByUserID(String userId);
+    List<Loan> getActiveByUserId(String userId);
 
 };

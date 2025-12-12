@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.exception.*;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidEmailException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 
 /**
@@ -28,8 +32,8 @@ public class DatabaseUserService implements UserService {
      * @throws DuplicateUserByIdException Esiste già un utente con la matricola specificata.
      */
 	@Override
-	public void register(User user) throws DuplicateUserByEmailException,
-           DuplicateUserByIdException {
+	public void register(User user) throws InvalidIdException, InvalidEmailException,
+           DuplicateUserByEmailException, DuplicateUserByIdException {
         String email = user.getEmail();
         if (this.existsByEmail(email))
             throw new DuplicateUserByEmailException();
@@ -42,7 +46,7 @@ public class DatabaseUserService implements UserService {
             throw new InvalidEmailException();
 
         if (!this.isIdValid(id))
-            throw new InvalidIDException();
+            throw new InvalidIdException();
 
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("INSERT INTO users(id, email, name, surname) "
@@ -107,10 +111,16 @@ public class DatabaseUserService implements UserService {
      * @throws UnknownUserByIdException Non esiste alcun utente con la matricola specificata.
      */
 	@Override
-	public void updateById(User user) throws UnknownUserByIdException {
+	public void updateById(User user) throws InvalidIdException, UnknownUserByIdException {
         String id = user.getId();
-        if (!this.existsById(id))
+
+        if (!this.isIdValid(id)) {
+            throw new InvalidIdException();
+        }
+
+        if (!this.existsById(id)) {
             throw new UnknownUserByIdException();
+        }
 
         String email = user.getEmail();
         String name = user.getName();

@@ -33,7 +33,7 @@ public class App extends Application {
         UserService userService = new DatabaseUserService(database);
         PasswordService passwordService = new DatabasePasswordService(database);
         BookService bookService = new DatabaseBookService(database);
-        LoanService loanService = new DatabaseLoanService(database);
+        LoanService loanService = new DatabaseLoanService(userService, bookService, database);
         ServiceRepository serviceRepository = new ServiceRepository(passwordService, userService,
                 bookService, loanService);
 

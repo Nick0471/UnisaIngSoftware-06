@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownLoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
@@ -17,13 +19,18 @@ import it.unisa.diem.ingsoft.biblioteca.model.Loan;
  * @brief Implementazione del LoanService usando un Database per la persistenza
  */
 public class DatabaseLoanService implements LoanService {
+    private final UserService userService;
+    private final BookService bookService;
     private final Database database;
 
     /**
      * @brief Costruisce un oggetto che implementa il LoanService usando un database
      */
-    public DatabaseLoanService(Database database) {
+    public DatabaseLoanService(UserService userService, BookService bookService,
+            Database database) {
         this.database = database;
+        this.bookService = bookService;
+        this.userService = userService;
     }
 
     /**
@@ -34,7 +41,7 @@ public class DatabaseLoanService implements LoanService {
      * @return Un opzionale contenente il prestito se esistente, Optional.empty() altrimenti.
      */
 	@Override
-	public Optional<Loan> getByUserIDAndBookIsbn(String userId, String bookIsbn) {
+	public Optional<Loan> getByUserIdAndBookIsbn(String userId, String bookIsbn) {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
                         + "WHERE user_id = :user_id AND book_isbn = :book_isbn")
@@ -88,7 +95,17 @@ public class DatabaseLoanService implements LoanService {
      *  è già esistente
      */
     @Override
-    public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline) throws LoanAlreadyRegisteredException {
+    public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline)
+        throws LoanAlreadyRegisteredException, InvalidIdException, InvalidIsbnException {
+
+        if (!this.userService.isIdValid(userId)) {
+            throw new InvalidIdException();
+        }
+
+        if (!this.bookService.isIsbnValid(bookIsbn)) {
+            throw new InvalidIsbnException();
+        }
+
         if (this.isActive(userId, bookIsbn))
             throw new LoanAlreadyRegisteredException();
 
@@ -128,7 +145,7 @@ public class DatabaseLoanService implements LoanService {
 
     /**
      * @brief Recupera una lista di tutti i prestiti registrati.
-     *  Esegue una select SQL per ottenere la lista di prestiti del database.
+*  Esegue una select SQL per ottenere la lista di prestiti del database.
      * @return Una lista contenente tutti i prestiti.
      */
 	@Override
@@ -164,7 +181,11 @@ public class DatabaseLoanService implements LoanService {
      * @return Il numero di prestiti attualmente attivi.
      */
 	@Override
-	public int countById(String userId) {
+	public int countById(String userId) throws InvalidIdException {
+        if (!this.userService.isIdValid(userId)) {
+            throw new InvalidIdException();
+        }
+
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT COUNT(*) FROM loans "
                         + "WHERE user_id = :user_id")
@@ -194,7 +215,7 @@ public class DatabaseLoanService implements LoanService {
      * @return Una lista contenente i prestiti attivi dell'utente.
      */
     @Override
-    public List<Loan> getActiveByUserID(String userId) {
+    public List<Loan> getActiveByUserId(String userId) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
                                 + "WHERE user_id = :userId "

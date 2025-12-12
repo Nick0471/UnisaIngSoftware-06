@@ -1,17 +1,26 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.Duration;
 import java.util.List;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class DatabaseBookServiceTest {
     private BookService bookService;
@@ -34,7 +43,7 @@ public class DatabaseBookServiceTest {
             this.bookService.add(duplicateBook);
         });
 
-        assertThrows(WrongIsbnException.class, () -> {
+        assertThrows(InvalidIsbnException.class, () -> {
             Book duplicateBook = new Book("123456789", "1984", "George Orwell", 1948, 50,3,"Distopico","Un romanzo cupo");
             this.bookService.add(duplicateBook);
         });
