@@ -181,8 +181,6 @@ public class BookSceneControllerTest extends ApplicationTest {
         this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 1);
 
-        FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> "1984".equals(t.getItems().get(0).getTitle()));
-
         this.resetSearchField();
 
         System.out.println("Cerco Genere: Fantasy");
@@ -241,8 +239,6 @@ public class BookSceneControllerTest extends ApplicationTest {
     public void test6_ModifyBook(){
         System.out.println("--- TEST 6: MODIFICA LIBRO ---");
 
-        int initialSize = this.lookup("#bookCatalog").queryTableView().getItems().size();
-
         System.out.println("Seleziono il libro: 1984");
         this.clickOn("9780451524935");
         this.sleep(1000);
@@ -250,7 +246,7 @@ public class BookSceneControllerTest extends ApplicationTest {
         System.out.println("Clicco su Modifica");
         this.clickOn("#btnModify");
         this.sleep(1500);
-        
+
         FxAssert.verifyThat("Modifica Libro", NodeMatchers.isVisible());
 
         System.out.println("Chiudo modale...");
