@@ -112,44 +112,70 @@ public class UserSceneControllerTest extends ApplicationTest {
 
     @Test
     public void test3_SearchFunctionality() {
-        System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
 
-        // 1. Ricerca per Matricola
-        System.out.println("Cerco Matricola: 1234567890");
-        this.clickOn("#searchType").clickOn("Matricola");
-        this.clickOn("#searchField").write("1234567890");
-        this.sleep(1000);
-        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
+            System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
 
-        this.resetSearchField();
+            // --- 1. Ricerca per Matricola ---
+            System.out.println("Cerco Matricola: 1234567890");
+            this.clickOn("#searchType").clickOn("Matricola ");
 
-        // 2. Ricerca per Email
-        System.out.println("Cerco Email parziale: rossi");
-        this.clickOn("#searchType").clickOn("Email");
-        this.clickOn("#searchField").write("rossi");
-        this.sleep(1000);
-        // Dovrebbe trovare sia m.rossi1 che ale.rossi
-        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 2);
+            // Pulisco e scrivo
+            this.clickOn("#searchField");
+            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
+            this.write("1234567890");
 
-        this.resetSearchField();
+            this.sleep(500); // Aspetto che la tabella si aggiorni
+            FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
 
-        // 3. Ricerca Complessa (Cognome + Nome)
-        System.out.println("Cerco Cognome: Rossi");
-        this.clickOn("#searchType").clickOn("Cognome");
-        // Nota: Quando si seleziona "Cognome", nel controller appare il campo #searchFieldSecondary
+            this.resetSearchField(); // Resetto per il prossimo test
 
-        this.clickOn("#searchField").write("Rossi"); // Scrivo nel campo Cognome
-        this.sleep(500);
-        // Ora filtro ulteriormente per Nome usando il secondo campo che è apparso
-        this.clickOn("#searchFieldSecondary").write("Mario");
-        this.sleep(1000);
+            // --- 2. Ricerca per Email ---
+            System.out.println("Cerco Email parziale: rossi");
+            this.clickOn("#searchType").clickOn("Email ");
 
-        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
-        FxAssert.verifyThat("#userTable", (TableView<User> t) -> "0512103578".equals(t.getItems().get(0).getId()));
+            // Pulisco e scrivo
+            this.clickOn("#searchField");
+            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
+            this.write("rossi");
 
-        // Pulizia manuale del secondo campo per evitare problemi nei test successivi
-        this.doubleClickOn("#searchFieldSecondary").push(KeyCode.DELETE);
-        this.resetSearchField();
+            this.sleep(500);
+            // Dovrebbe trovare sia m.rossi1 che ale.rossi
+            FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 2);
+
+            this.resetSearchField();
+
+            // --- 3. Ricerca Complessa (Cognome + Nome) ---
+            System.out.println("Cerco Cognome: Rossi e Nome: Mario");
+            this.clickOn("#searchType").clickOn("Cognome ");
+
+            // IMPORTANTE: Aspetta che il secondo campo sia visibile prima di interagire
+            FxAssert.verifyThat("#searchFieldSecondary", NodeMatchers.isVisible());
+
+            // Scrivo nel campo Cognome (Principale)
+            this.clickOn("#searchField");
+            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
+            this.write("Rossi");
+
+            // Scrivo nel campo Nome (Secondario)
+            this.clickOn("#searchFieldSecondary");
+            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
+            this.write("Mario");
+
+            this.sleep(1000); // Do tempo al filtro di agire
+
+            // Verifica: deve esserci solo 1 risultato (Mario Rossi) e non 2 (Alessandro Rossi ha cognome Rossi ma nome diverso)
+            FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
+            FxAssert.verifyThat("#userTable", (TableView<User> t) -> "0512103578".equals(t.getItems().get(0).getId()));
+
+            // --- PULIZIA FINALE ---
+            // Pulisco manualmente il secondo campo per evitare problemi nei test successivi
+            this.clickOn("#searchFieldSecondary");
+            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
+
+            // Rimetto il filtro su Matricola (o altro) per nascondere il secondo campo e resettare
+            this.clickOn("#searchType").clickOn("Matricola ");
+            this.resetSearchField();
+
     }
 
     @Test

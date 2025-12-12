@@ -115,7 +115,7 @@ public class UserSceneController extends GuiController implements Initializable{
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
         this.searchFieldSecondary.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
 
-        this.searchType.setValue("Matricola");
+        this.searchType.setValue("Matricola ");
     }
 
     /**
@@ -157,17 +157,17 @@ public class UserSceneController extends GuiController implements Initializable{
 
 
         switch (type) {
-            case "Matricola":
+            case "Matricola ":
                 result = this.userService.getAll().stream()
                         .filter(user -> user.getId().startsWith(query1))
                         .toList();
                 break;
 
-            case "Cognome":
+            case "Cognome ":
                 result = this.userService.getAllByFullNameContaining(query2, query1);
                 break;
 
-            case "Email":
+            case "Email ":
                 result = this.userService.getAllByEmailContaining(query1);
                 break;
 

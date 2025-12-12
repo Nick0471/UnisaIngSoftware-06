@@ -59,9 +59,9 @@
                         <ComboBox fx:id="searchType" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: transparent; -fx-border-color: transparent #ddd transparent transparent; -fx-font-weight: bold;">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Matricola" />
-                                    <String fx:value="Cognome" />
-                                    <String fx:value="Email" />
+                                    <String fx:value="Matricola " />
+                                    <String fx:value="Cognome " />
+                                    <String fx:value="Email " />
                                 </FXCollections>
                             </items>
 
