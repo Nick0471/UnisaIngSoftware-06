@@ -71,6 +71,24 @@ public class AddLoanSceneController extends GuiController {
     public void initialize() {
         loanDatePicker.setValue(LocalDate.now());
         returnDatePicker.setValue(LocalDate.now().plusDays(30));
+
+        this.isbnField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                this.isbnField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        this.isbnField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 13) {
+                this.isbnField.setText(newValue.substring(0, 13));
+            }
+        });
+
+        this.userMatricolaField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 10) {
+                this.userMatricolaField.setText(newValue.substring(0, 10));
+            }
+        });
     }
 
     /**
