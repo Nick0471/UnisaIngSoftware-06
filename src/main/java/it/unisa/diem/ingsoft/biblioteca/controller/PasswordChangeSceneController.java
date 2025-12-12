@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+
 
 /**
  * @brief Questo Controller gestisce la scena "Modifica Passwrod".
@@ -56,7 +58,7 @@ public class PasswordChangeSceneController extends GuiController {
         // Cambio password solo se rispetta il requisito di lunghezza (in questo caso == 6)
         if(this.newPassword.getText().length() >= 6 && this.newPassword.getText().length() <= 10){
             this.passwordService.change(this.newPassword.getText());
-            this.changeScene(event, "homepageScene.fxml");
+            this.changeScene(event, HOMEPAGE_PATH );
         } else {
             this.popUp("La nuova password deve essere da 6 a 10 caratteri.");
 

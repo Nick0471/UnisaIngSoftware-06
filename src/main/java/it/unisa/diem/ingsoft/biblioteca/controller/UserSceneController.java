@@ -24,6 +24,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.*;
+
 /**
 * @brief Questo Controller gestisce la scena "Gestione utenti" permettendo
  * la visualizzazione di tutti gli utenti in una tabella
@@ -203,7 +205,7 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        this.modalScene("it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml", "Modifica Utente", (AddUserSceneController controller) -> {
+        this.modalScene(EDIT_USER_PATH , "Modifica Utente", (AddUserSceneController controller) -> {
             controller.editUser(selectedUser);
         });
 
@@ -213,16 +215,11 @@ public class UserSceneController extends GuiController implements Initializable{
 
     /**
      * @brief Apre la scena "AddUserScene".
-     *
-     * Carica `AddUserScene.fxml` e passa il `UserService` al controller.
-     * A differenza di `handleModifyUser`, qui non viene chiamato `editUser`,
-     * quindi i campi saranno vuoti e modificabili.
-     *
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
     private void handleAddUser(ActionEvent event) {
-        this.modalScene("/it/unisa/diem/ingsoft/biblioteca/view/AddUserScene.fxml", "Aggiungi Utente", null);
+        this.modalScene(EDIT_USER_PATH , "Aggiungi Utente", null);
 
         this.updateTable();
     }
@@ -236,21 +233,15 @@ public class UserSceneController extends GuiController implements Initializable{
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
-        this.changeScene(event, "view/HomepageScene.fxml");
+        this.changeScene(event, HOMEPAGE_PATH);
     }
 
 
     /**
      * @brief Apre la scena "Account Utente"
-     *
-     * Carica `AccountUserScene.fxml` e inizializza il controller {@link AccountUserSceneController}
-     * passando l'utente selezionato e tutti i servizi necessari (User, Loan, Book) per visualizzare
-     * lo storico prestiti e i dettagli anagrafici.
-     *
-     * @param event L'evento che ha scatenato l'azione.
+     *@param event L'evento che ha scatenato l'azione.
      */
-
-    @FXML
+   @FXML
     private void handleViewUserProfile(ActionEvent event) {
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
@@ -259,7 +250,7 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        this.modalScene("it/unisa/diem/ingsoft/biblioteca/view/AccountUserScene.fxml", "Profilo Utente", (AccountUserSceneController controller) -> {
+        this.modalScene(ACCOUNT_USER_PATH, "Profilo Utente", (AccountUserSceneController controller) -> {
             controller.setUserProfile(selectedUser, this.loanService, this.bookService);
         });
 
