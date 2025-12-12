@@ -18,7 +18,7 @@ import javafx.scene.control.*;
  * Permette di specificare i vari attributi di un libro da aggiungere.
  * Estende {@link GuiController} per ereditare funzionalità comuni
  */
-public class AddBookSceneController extends GuiController{
+public class EditBookSceneController extends GuiController{
     @FXML private Label titleLabel;
     @FXML private TextField titleField;
     @FXML private TextField authorField;
@@ -39,7 +39,7 @@ public class AddBookSceneController extends GuiController{
      * Viene invocato dal FXMLLoader per caricare la nuova scena
      *
      */
-    public AddBookSceneController() {}
+    public EditBookSceneController() {}
 
     /**
      * @brief Setter per il bookService.

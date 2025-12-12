@@ -200,7 +200,7 @@ public class BookSceneController extends GuiController implements Initializable 
             return;
         }
 
-        super.modalScene(EDIT_BOOK_PATH, "Modifica Libro", (AddBookSceneController controller) -> {
+        super.modalScene(EDIT_BOOK_PATH, "Modifica Libro", (EditBookSceneController controller) -> {
             controller.setBookToEdit(selectedBook);
         });
 
