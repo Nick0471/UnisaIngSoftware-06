@@ -188,7 +188,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
         if(loanList.isEmpty()) {
             this.userService.removeById(selectedUser.getId());
-            this.popUp("Utente rimosso correttamente")
+            this.popUp("Utente rimosso correttamente");
             this.updateTable();
         }else
             this.popUp("Non puoi rimuovere un utente che ha ancora prestiti attivi");
