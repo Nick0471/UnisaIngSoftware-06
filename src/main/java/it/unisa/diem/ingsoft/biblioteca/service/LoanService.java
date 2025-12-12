@@ -59,10 +59,14 @@ public interface LoanService {
      * @param bookIsbn L'ISBN del libro dato in prestito.
      * @param start La data di inizio del prestito.
      * @param deadline La data di restituzione massima.
-     * @throws LoanAlreadyRegisteredException Il prestito per l'utente ed il libro specificati.
-     *  è già esistente
-     *  @throws InvalidIdException Se la matricola non è valida.
-     *  @throws InvalidIsbnException Se l'ISBN non è valido.
+     * @pre userId deve rispettare il formato matricola valido.
+     * @pre bookIsbn deve rispettare il formato ISBN valido.
+     * @pre Non deve esistere un prestito attivo per la coppia (userId, bookIsbn).
+     * @post Viene registrato un nuovo prestito.
+     * @throws LoanAlreadyRegisteredException Il prestito per l'utente ed il libro specificati
+     *  è già esistente.
+     * @throws InvalidIdException Se la matricola non è valida.
+     * @throws InvalidIsbnException Se l'ISBN non è valido.
      */
 	void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline)
             throws LoanAlreadyRegisteredException, InvalidIdException, InvalidIsbnException;

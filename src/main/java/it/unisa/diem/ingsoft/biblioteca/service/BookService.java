@@ -77,6 +77,11 @@ public interface BookService {
     /**
      * @brief Aggiunge un libro al catalogo.
      * @param book Il libro da aggiungere.
+     * @pre book != null
+     * @pre book.getIsbn() deve essere un ISBN valido
+     * @pre Non deve esistere già un libro con lo stesso ISBN nel database.
+     * @pre book.getTotalCopies() >= 0 e book.getRemainingCopies() >= 0.
+     * @post Il libro viene registrato nel catalogo.
      */
     void add(Book book) throws DuplicateBookByIsbnException, InvalidIsbnException,
          NegativeBookCopiesException;

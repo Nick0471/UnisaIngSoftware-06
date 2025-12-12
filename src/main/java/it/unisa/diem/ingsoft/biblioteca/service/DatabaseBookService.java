@@ -341,6 +341,6 @@ public class DatabaseBookService implements BookService {
      */
 	@Override
 	public boolean isIsbnValid(String isbn) {
-        return isbn.length() != 13;
+        return isbn.length() == 13;
 	}
 }
