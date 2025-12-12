@@ -10,18 +10,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.LOAN_PATH;
 
 public class AddLoanSceneControllerTest extends ApplicationTest{
     private BookService bookService;
     private UserService userService;
-    private LoanService loanService;
 
     @Override
     public void start(Stage stage){
@@ -29,8 +30,8 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
 
         this.bookService = new DatabaseBookService(db);
         this.userService = new DatabaseUserService(db);
-        this.loanService = new DatabaseLoanService(this.userService, this.bookService, db);
-        ServiceRepository serviceRepository = new ServiceRepository(null, this.userService, this.bookService, this.loanService);
+        LoanService loanService = new DatabaseLoanService(this.userService, this.bookService, db);
+        ServiceRepository serviceRepository = new ServiceRepository(null, this.userService, this.bookService, loanService);
 
         try {
             this.setUp();
@@ -54,7 +55,7 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
         }
 
         if(!this.bookService.existsByIsbn("9780618391110")) {
-            this.bookService.add(new Book("9780618391110", "THE_SILMARILLION", "J.R.R. Tolkien", 1977, 5, 5, "Fantasy", "Raccolta di miti e leggende della Terra di Mezzo che narra la creazione del mondo e le epoche precedenti al Signore degli Anelli."));
+            this.bookService.add(new Book("9780618391110", "The Silmarillion", "J.R.R. Tolkien", 1977, 5, 5, "Fantasy", "Raccolta di miti e leggende della Terra di Mezzo che narra la creazione del mondo e le epoche precedenti al Signore degli Anelli."));
         }
     }
 
@@ -69,18 +70,24 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
         System.out.println("--- TEST 1: UTENTE TROVATO ---");
 
         this.clickOn("#userMatricolaField").write("0612708994");
-        this.clickOn("#btnSearchUser");
+        this.sleep(1000);
+        this.clickOn("0612708994 - Nick Test");
+        this.sleep(500);
 
         FxAssert.verifyThat("#userMatricolaField", (javafx.scene.control.TextField t) -> t.isDisabled());
         this.sleep(500);
     }
 
     @Test
-    public void test2_UserNotFound(){
-        System.out.println("--- TEST 2: UTENTE NON TROVATO ---");
+    public void test2_ResetUserSelection(){
+        System.out.println("--- TEST 2: RESET SELEZIONE UTENTE ---");
 
-        this.clickOn("#userMatricolaField").write("0154279227");
-        this.clickOn("#btnSearchUser");
+        this.clickOn("#userMatricolaField").write("0612708994");
+        this.sleep(1000);
+        this.clickOn("0612708994 - Nick Test");
+
+        this.clickOn("#btnResetUser");
+        this.sleep(500);
 
         FxAssert.verifyThat("#userMatricolaField", (javafx.scene.control.TextField t) -> !t.isDisabled());
         this.sleep(500);
@@ -91,7 +98,9 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
         System.out.println("--- TEST 3: LIBRO TROVATO ---");
 
         this.clickOn("#isbnField").write("9780618391110");
-        this.clickOn("#btnSearchBook");
+        this.sleep(1000);
+        this.clickOn("9780618391110 - The Silmarillion");
+        this.sleep(500);
 
         FxAssert.verifyThat("#isbnField", (javafx.scene.control.TextField t) -> t.isDisabled());
         this.sleep(500);
@@ -99,10 +108,15 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
 
     @Test
     public void test4_BookNotFound(){
-        System.out.println("--- TEST 4: LIBRO NON TROVATO ---");
+        System.out.println("--- TEST 4: RESET SLEZIONE LIBRO ---");
 
-        this.clickOn("#isbnField").write("9780618391120");
-        this.clickOn("#btnSearchBook");
+        this.clickOn("#isbnField").write("9780618391110");
+        this.sleep(1000);
+        this.clickOn("9780618391110 - The Silmarillion");
+        this.sleep(500);
+
+        this.clickOn("#btnResetBook");
+        this.sleep(500);
 
         FxAssert.verifyThat("#isbnField", (javafx.scene.control.TextField t) -> !t.isDisabled());
         this.sleep(500);
@@ -113,12 +127,12 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
         System.out.println("--- TEST 5: AGGIUNTA NUOVO PRESTITO ---");
 
         this.clickOn("#userMatricolaField").write("0612708994");
+        this.clickOn("0612708994 - Nick Test");
         this.clickOn("#isbnField").write("9780618391110");
+        this.clickOn("9780618391110 - The Silmarillion");
         this.sleep(500);
 
         this.clickOn("#btnConfirm");
-        this.sleep(500);
-        //type(KeyCode.ENTER);
         this.sleep(500);
 
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == 1);
@@ -137,5 +151,21 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
 
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
         this.sleep(500);
+    }
+
+    @Test
+    public void test7_ConfirmWithoutSelection() {
+        System.out.println("--- TEST 7: ERRORE SELEZIONE MANCANTE ---");
+
+        this.clickOn("#userMatricolaField").write("0612708994");
+        this.clickOn("#isbnField").write("9780618391110");
+
+        this.push(KeyCode.ESCAPE);
+
+        this.clickOn("#btnConfirm");
+        this.sleep(500);
+        this.clickOn("OK");
+
+        FxAssert.verifyThat("#userMatricolaField", NodeMatchers.isVisible());
     }
 }
