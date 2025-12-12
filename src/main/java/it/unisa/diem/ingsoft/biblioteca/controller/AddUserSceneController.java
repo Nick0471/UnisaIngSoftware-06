@@ -117,6 +117,19 @@ public class AddUserSceneController extends GuiController{
             return;
         }
 
+        try {
+            if (!this.userService.isIdValid(id)) {
+                throw new InvalidIDxception();
+            }
+        } catch (InvalidIDException e) {
+            this.popUp(e.getMessage());
+            return;
+        }
+
+
+
+
+
         User user = new User(id,email,name,surname);
 
         if (this.isEditMode) {

@@ -157,7 +157,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
         switch (type) {
             case "Matricola" -> this.userService.getById(query1).ifPresent(result::add);
-            case "Cognome" -> result = this.userService.getAllByFullNameContaining(query1, query2); //query1=cognome e query2=nome
+            case "Cognome" -> result = this.userService.getAllByFullNameContaining(query2, query1); //query1=cognome e query2=nome
             case "Email" -> result = this.userService.getAllByEmailContaining(query1);
             case "Tutti" -> result = this.userService.getAll();
             default -> result = this.userService.getAll();

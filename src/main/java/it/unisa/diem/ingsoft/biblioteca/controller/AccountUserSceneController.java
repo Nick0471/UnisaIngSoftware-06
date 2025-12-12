@@ -144,16 +144,31 @@ public class AccountUserSceneController extends GuiController implements Initial
         // Chiamo il metodo dell'interfaccia che recupera SOLO i prestiti di questo utente
         List<Loan> userLoans = this.loanService.getByUserId(this.user.getId());
 
-        // Inserisco i dati filtrati nella tabella
-        this.loansTable.getItems().setAll(userLoans);
+        // Codice per visualizzare in rosso i prestiti "scaduti"
+        this.loansTable.setRowFactory(tv -> new javafx.scene.control.TableRow<Loan>() {
+            @Override
+            protected void updateItem(Loan loan, boolean empty) {
+                super.updateItem(loan, empty);
+
+                if (loan == null || empty) {
+                    this.setStyle("");
+                } else {
+
+                    if (loan.getLoanDeadline().isBefore(LocalDate.now())) {
+                        this.setStyle("-fx-background-color: #fc3737; -fx-text-fill: #990000;");
+                    } else {
+                        this.setStyle("");
+                    }
+                }
+            }
+        });
+
+
     }
 
 
     /**
      * @brief Gestisce l'azione di chiusura della finestra.
-     *
-     * Viene invocato quando l'utente preme il pulsante di chiusura (btnClose).
-     * Chiude la scena corrente richiamando il metodo `closeScene` della classe padre.
      *
      * @param event L'evento generato dal click sul bottone.
      */
