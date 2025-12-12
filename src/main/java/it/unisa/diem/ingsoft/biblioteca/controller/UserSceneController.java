@@ -147,6 +147,8 @@ public class UserSceneController extends GuiController implements Initializable{
      */
     private void filterUsers(String type, String query1, String query2) {
 
+        if (this.userService == null) return;
+
         if (query1 == null || query1.isEmpty()) {
             this.updateTable();
             return;

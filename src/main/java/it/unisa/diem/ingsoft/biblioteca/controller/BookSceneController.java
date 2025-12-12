@@ -100,6 +100,8 @@ public class BookSceneController extends GuiController implements Initializable 
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             this.filterBooks(newValue);
         });
+
+        this.searchType.setValue("Titolo ");
     }
 
     /**
@@ -150,6 +152,7 @@ public class BookSceneController extends GuiController implements Initializable 
                 break;
             default:
                 this.updateTable();
+                return;
         }
 
         this.books = FXCollections.observableArrayList(result);

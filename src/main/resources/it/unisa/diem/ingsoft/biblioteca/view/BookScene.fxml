@@ -53,7 +53,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);">
                <children>
-                  <ComboBox fx:id="searchType" prefHeight="35.0" prefWidth="140.0" promptText="Filtra per..." style="-fx-background-color: transparent; -fx-border-color: transparent #ddd transparent transparent; -fx-font-weight: bold;">
+                  <ComboBox fx:id="searchType" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: transparent; -fx-border-color: transparent #ddd transparent transparent; -fx-font-weight: bold;">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Titolo " />
@@ -63,9 +63,6 @@
                             <String fx:value="ISBN " />
                         </FXCollections>
                       </items>
-                      <value>
-                        <String fx:value="Tutti" />
-                      </value>
                   </ComboBox>
 
                   <Label text="🔍" textFill="#999999">
