@@ -51,7 +51,7 @@ public abstract class GuiController {
             stage.setScene(newScene);
             stage.show();
         } catch (NullPointerException e) {
-            this.popUp("ERRORE: Il file '" + scene + "' non è stato trovato nel percorso specificato.");
+            this.popUp(Alert.AlertType.ERROR, "Scena non trovata", "Il file " + scene + " non è stato trovato nel percorso specificato.");
         }
     }
 
