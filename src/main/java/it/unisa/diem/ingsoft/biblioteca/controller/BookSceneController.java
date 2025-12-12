@@ -29,6 +29,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
  * Gestisce la visualizzazione dei libri e implementa un filtro di ricerca,
  * inoltre rende possibile aggiungere, modificare o rimuovere libri dalla libreria.
  *
+ *Estende {@link GuiController} e implementa {@link Initializable}.
  */
 public class BookSceneController extends GuiController implements Initializable {
 

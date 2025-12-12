@@ -16,6 +16,7 @@ import javafx.scene.control.*;
  * @brief Controller per l'inserimento di nuovi libri all'interno del catalogo.
  *
  * Permette di specificare i vari attributi di un libro da aggiungere.
+ * Estende {@link GuiController} per ereditare funzionalità comuni
  */
 public class AddBookSceneController extends GuiController{
     @FXML private Label titleLabel;

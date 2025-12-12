@@ -31,6 +31,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
  * Gestisce la visualizzazione dei prestiti e implementa un filtro di ricerca,
  * inoltre rende possibile aggiungere o rimuovere prestiti attivi .
  *
+ *Estende {@link GuiController} e implementa {@link Initializable}.
  */
 public class LoanSceneController extends GuiController implements Initializable {
     @FXML

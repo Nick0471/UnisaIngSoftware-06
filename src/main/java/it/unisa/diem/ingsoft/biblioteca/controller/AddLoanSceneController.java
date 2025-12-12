@@ -26,6 +26,7 @@ import java.time.LocalDate;
  * @brief Controller per l'inserimento di nuovi libri all'interno del catalogo.
  *
  * Permette di specificare i vari attributi di un prestito da registrare.
+ * Estende {@link GuiController} per ereditare funzionalità comuni
  */
 public class AddLoanSceneController extends GuiController {
 
