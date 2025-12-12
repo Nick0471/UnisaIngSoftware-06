@@ -6,7 +6,6 @@ package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
@@ -20,7 +19,6 @@ import it.unisa.diem.ingsoft.biblioteca.model.Book;
  * @brief Implementazione del BookService usando un Database per la persistenza
  */
 public class DatabaseBookService implements BookService {
-    private final Pattern isbnPattern = Pattern.compile("\\d+");
     private final Database database;
 
     /**
@@ -343,7 +341,7 @@ public class DatabaseBookService implements BookService {
      */
 	@Override
 	public boolean isIsbnValid(String isbn) {
-        return isbn.length() == 13 && this.isbnPattern.matcher(isbn).matches();
+        return isbn.length() == 13;
 	}
 
     /**
