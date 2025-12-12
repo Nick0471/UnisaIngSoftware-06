@@ -4,10 +4,7 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByEmailException;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateUserByIdException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidEmailException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.*;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
@@ -119,7 +116,7 @@ public class AddUserSceneController extends GuiController{
 
         try {
             if (!this.userService.isIdValid(id)) {
-                throw new InvalidIDxception();
+                throw new InvalidIDException();
             }
         } catch (InvalidIDException e) {
             this.popUp(e.getMessage());
