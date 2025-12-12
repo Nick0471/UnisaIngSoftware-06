@@ -132,6 +132,19 @@ public class BookSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
         this.sleep(500);
 
+        System.out.println("Cerco senza criterio di selezione");
+        this.clickOn("#searchField").write("J.R.R. Tolkien");
+        this.sleep(1000);
+        FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().isEmpty());
+
+        this.resetSearchField();
+
+        this.clickOn("#searchField").write("The Hobbit");
+        this.sleep(1000);
+        FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 1);
+
+        this.resetSearchField();
+
         System.out.println("Cerco autore: J.R.R. Tolkien");
         this.clickOn("#searchType").clickOn("Autore ");
         this.clickOn("#searchField").write("J.R.R. Tolkien");
