@@ -179,7 +179,7 @@ public class DatabaseLoanService implements LoanService {
      * @return Una lista contenente i prestiti attivi.
      */
 	@Override
-	public List<Loan> getAllActive() {
+	public List<Loan> getActive() {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
                         + "WHERE loan_end IS NULL")
@@ -194,7 +194,7 @@ public class DatabaseLoanService implements LoanService {
      * @return Una lista contenente i prestiti attivi dell'utente.
      */
     @Override
-    public List<Loan> getAllActiveByUserID(String userId) {
+    public List<Loan> getActiveByUserID(String userId) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
                                 + "WHERE user_id = :userId "

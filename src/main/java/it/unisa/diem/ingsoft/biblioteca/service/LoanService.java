@@ -26,7 +26,7 @@ public interface LoanService {
      * @brief Recupera una lista di tutti i prestiti registrati attualmente attivi
      * @return Una lista contenente i prestiti attivi
      */
-    List<Loan> getAllActive();
+    List<Loan> getActive();
 
     /**
      * @brief Cerca un prestito chiesto da un utente per un libro.
@@ -94,6 +94,6 @@ public interface LoanService {
      *               attivi.
      * @return Una lista contenente i prestiti attivi per l'utente.
      */
-    List<Loan> getAllActiveByUserID(String userId);
+    List<Loan> getActiveByUserID(String userId);
 
 };

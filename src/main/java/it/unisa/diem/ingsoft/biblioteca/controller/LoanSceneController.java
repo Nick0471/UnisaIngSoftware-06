@@ -128,7 +128,7 @@ public class LoanSceneController extends GuiController implements Initializable 
      * Aggiorna la TableView recuperando tutti i prestiti attivi.
      */
     private void updateTable() {
-        List<Loan> list = this.loanService.getAllActive();
+        List<Loan> list = this.loanService.getActive();
         this.loans = FXCollections.observableArrayList(list);
         this.loanTable.setItems(this.loans);
     }
