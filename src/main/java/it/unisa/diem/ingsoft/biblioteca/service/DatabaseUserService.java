@@ -41,6 +41,9 @@ public class DatabaseUserService implements UserService {
         if (!this.isEmailValid(email))
             throw new InvalidEmailException();
 
+        if (!this.isIdValid(id))
+            throw new InvalidIDException();
+
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("INSERT INTO users(id, email, name, surname) "
                         + "VALUES (:id, :email, :name, :surname)")
@@ -219,10 +222,7 @@ public class DatabaseUserService implements UserService {
 	}
 
     @Override
-    public boolean isIdValid(String id) throws InvalidIDException {
-        if( id.length() != 10)
-            throw new InvalidIDException();
-
+    public boolean isIdValid(String id) {
         return id.length() == 10;
     }
 }

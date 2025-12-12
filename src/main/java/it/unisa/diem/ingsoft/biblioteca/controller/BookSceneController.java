@@ -97,9 +97,6 @@ public class BookSceneController extends GuiController implements Initializable 
         this.columnCopies.setCellValueFactory(new PropertyValueFactory<>("remainingCopies"));
         this.columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        this.searchType.getItems().addAll("Titolo", "Autore", "Genere", "Anno", "ISBN");
-        this.searchType.setValue("Titolo");
-
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             this.filterBooks(newValue);
         });
