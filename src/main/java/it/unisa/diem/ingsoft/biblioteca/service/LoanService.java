@@ -39,18 +39,20 @@ public interface LoanService {
     Optional<Loan> getByUserIdAndBookIsbn(String userId, String bookIsbn);
 
     /**
-     * @brief Recupera una lista di prestiti per il l'utente con matricola specificata.
+     * @brief Recupera una lista di prestiti per l'utente la cui matricola contiene la stringa
+     *  specificata in qualsiasi posizione.
      * @param userId La matricola dell'utente che ha chiesto i prestiti.
      * @return La lista dei prestiti chiesti dall'utente.
      */
-    List<Loan> getByUserId(String userId);
+    List<Loan> getByUserIdContaining(String userId);
 
     /**
-     * @brief Recupera una lista di prestiti per il libro con l'ISBN specificato.
+     * @brief Recupera una lista di prestiti per il libro il cui ISBN contiene la stringa 
+     *  specificata in qualsiasi posizione.
      * @param bookIsbn L'ISBN del libro per cui sono stati chiesti i prestiti.
      * @return La lista dei prestiti per il libro.
      */
-    List<Loan> getByBookIsbn(String bookIsbn);
+    List<Loan> getByBookIsbnContaining(String bookIsbn);
 
     /**
      * @brief Registra un prestito chiesto da un utente per un libro.

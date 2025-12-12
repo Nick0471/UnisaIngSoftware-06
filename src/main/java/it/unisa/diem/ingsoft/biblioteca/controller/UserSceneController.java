@@ -188,7 +188,7 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        List<Loan> loanList = this.loanService.getByUserId(selectedUser.getId());
+        List<Loan> loanList = this.loanService.getByUserIdContaining(selectedUser.getId());
 
         if(loanList.isEmpty()) {
             this.userService.removeById(selectedUser.getId());

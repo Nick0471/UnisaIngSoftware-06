@@ -133,7 +133,7 @@ public class DatabaseLoanServiceTest {
         this.loanService.register(userId, "1234567890000", LocalDate.now(), LocalDate.now().plusDays(30));
         this.loanService.register(userId, "1234567890001", LocalDate.now(), LocalDate.now().plusDays(30));
 
-        assertEquals(2, this.loanService.getByUserId(userId).size());
+        assertEquals(2, this.loanService.getByUserIdContaining(userId).size());
     }
 
     @Test
@@ -142,7 +142,7 @@ public class DatabaseLoanServiceTest {
         this.loanService.register("USER111111", isbn, LocalDate.now(), LocalDate.now().plusDays(30));
         this.loanService.register("USER222222", isbn, LocalDate.now(), LocalDate.now().plusDays(30));
 
-        assertEquals(2, this.loanService.getByBookIsbn(isbn).size());
+        assertEquals(2, this.loanService.getByBookIsbnContaining(isbn).size());
     }
 
     @Test
@@ -216,8 +216,8 @@ public class DatabaseLoanServiceTest {
         assertTimeout(duration, () -> this.loanService.getAll());
         assertTimeout(duration, () -> this.loanService.getActiveByUserId("ABC1314156"));
         assertTimeout(duration, () -> this.loanService.getByUserIdAndBookIsbn("ABC1314156", "9788808123456"));
-        assertTimeout(duration, () -> this.loanService.getByUserId("ABC1314156"));
-        assertTimeout(duration, () -> this.loanService.getByBookIsbn("9788808123456"));
+        assertTimeout(duration, () -> this.loanService.getByUserIdContaining("ABC1314156"));
+        assertTimeout(duration, () -> this.loanService.getByBookIsbnContaining("9788808123456"));
         assertTimeout(duration, () -> this.loanService.isActive("ABC1314156", "9788808123456"));
         assertTimeout(duration, () -> this.loanService.countById("ABC1314156"));
 

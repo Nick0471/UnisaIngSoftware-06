@@ -52,13 +52,14 @@ public class DatabaseLoanService implements LoanService {
     }
 
     /**
-     * @brief Recupera una lista di prestiti per il l'utente con matricola specificata.
+     * @brief Recupera una lista di prestiti per l'utente la cui matricola contiene la stringa
+     *  specificata in qualsiasi posizione.
      *  Esegue una select SQL per ottenere la lista di prestiti.
      * @param userId La matricola dell'utente che ha chiesto i prestiti.
      * @return La lista dei prestiti chiesti dall'utente.
      */
     @Override
-    public List<Loan> getByUserId(String userId) {
+    public List<Loan> getByUserIdContaining(String userId) {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
                         + "WHERE (user_id = :user_id)")
@@ -68,17 +69,18 @@ public class DatabaseLoanService implements LoanService {
     }
 
     /**
-     * @brief Recupera una lista di prestiti per il libro con l'ISBN specificato.
+     * @brief Recupera una lista di prestiti per il libro il cui ISBN contiene la stringa 
+     *  specificata in qualsiasi posizione.
      *  Esegue una select SQL per ottenere la lista di prestiti.
      * @param bookIsbn L'ISBN del libro per cui sono stati chiesti i prestiti.
      * @return La lista dei prestiti per il libro.
      */
     @Override
-    public List<Loan> getByBookIsbn(String bookIsbn) {
+    public List<Loan> getByBookIsbnContaining(String bookIsbn) {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
-                        + "WHERE book_isbn = :book_isbn")
-                    .bind("book_isbn", bookIsbn)
+                        + "WHERE book_isbn LIKE :book_isbn")
+                    .bind("book_isbn", "%" + bookIsbn + "%")
                     .mapTo(Loan.class)
                     .list());
     }

@@ -4,6 +4,9 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.ADD_LOAN_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,11 +22,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import static it.unisa.diem.ingsoft.biblioteca.Views.ADD_LOAN_PATH;
-import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 
 /**
  * @brief Controller per la gestione della view dei prestit.
@@ -148,8 +153,8 @@ public class LoanSceneController extends GuiController implements Initializable 
         List<Loan> result = new ArrayList<>();
 
         switch (type) {
-            case "Matricola " -> result = this.loanService.getByUserId(query);
-            case "ISBN " -> result = this.loanService.getByBookIsbn(query);
+            case "Matricola " -> result = this.loanService.getByUserIdContaining(query);
+            case "ISBN " -> result = this.loanService.getByBookIsbnContaining(query);
             default -> this.updateTable();
         };
 
