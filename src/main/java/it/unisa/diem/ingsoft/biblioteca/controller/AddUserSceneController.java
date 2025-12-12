@@ -14,6 +14,7 @@ import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -105,7 +106,7 @@ public class AddUserSceneController extends GuiController{
 
 
         if (id.isEmpty() || surname.isEmpty() || name.isEmpty() || email.isEmpty()) {
-            this.popUp(" Compila tutti i campi obbligatori.");
+            this.popUp(Alert.AlertType.ERROR,"Errore validazione", " Compila tutti i campi obbligatori.");
             return;
         }
 
@@ -114,7 +115,7 @@ public class AddUserSceneController extends GuiController{
                 throw new InvalidEmailException();
             }
         } catch (InvalidEmailException e) {
-            this.popUp(e.getMessage());
+            this.popUp(Alert.AlertType.ERROR, "Email non valida", e.getMessage());
             return;
         }
 
@@ -123,7 +124,7 @@ public class AddUserSceneController extends GuiController{
                 throw new InvalidIdException();
             }
         } catch (InvalidIdException e) {
-            this.popUp(e.getMessage());
+            this.popUp(Alert.AlertType.ERROR, "ID non valido", e.getMessage());
             return;
         }
 
@@ -136,18 +137,18 @@ public class AddUserSceneController extends GuiController{
         if (this.isEditMode) {
             try {
                 this.userService.updateById(user);
-                this.popUp("Utente aggiornato con successo!");
+                this.popUp(Alert.AlertType.INFORMATION, "Successo", "Utente modificato");
             }catch(UnknownUserByIdException |  InvalidIdException  e){
-                this.popUp(e.getMessage());
+                this.popUp(Alert.AlertType.ERROR, "Errore salvataggio", e.getMessage());
             }
         } else {
             try {
                 this.userService.register(user);
-                this.popUp("Nuovo Utente registrato con successo!");
+                this.popUp(Alert.AlertType.INFORMATION, "Successo", "Utente aggiunto");
             } catch (DuplicateUserByEmailException e) {
-                this.popUp(e.getMessage());
+                this.popUp(Alert.AlertType.ERROR ,"Errore salvataggio", e.getMessage());
             } catch (DuplicateUserByIdException | InvalidEmailException | InvalidIdException e) {
-                this.popUp(e.getMessage());
+                this.popUp(Alert.AlertType.ERROR ,"Errore salvataggio", e.getMessage());
             }
         }
 

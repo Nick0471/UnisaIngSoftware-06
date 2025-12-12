@@ -10,6 +10,7 @@ import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 
@@ -56,10 +57,10 @@ public class LogInSceneController extends GuiController {
             if (this.passwordService.check(pass))
                 this.changeScene(event, HOMEPAGE_PATH );
             else
-                this.popUp("La password inserita non è corretta.");
+                this.popUp(Alert.AlertType.ERROR, "Errore password", "La password inserita non è corretta.");
 
         }catch (UnsetPasswordException e){
-            this.popUp(e.getMessage());
+            this.popUp(Alert.AlertType.ERROR, "Errore password", e.getMessage());
         }
 
 

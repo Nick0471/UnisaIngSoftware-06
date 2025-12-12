@@ -10,10 +10,7 @@ import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 /**
  * @brief Controller per l'inserimento di nuovi libri all'interno del catalogo.
@@ -123,7 +120,7 @@ public class AddBookSceneController extends GuiController{
         String description = this.descriptionArea.getText();
 
         if (title.isEmpty() || author.isEmpty() || genre.isEmpty() || isbn.isEmpty() || yearText.isEmpty() || copiesText.isEmpty()) {
-            super.popUp("Errore di Validazione: Compila tutti i campi obbligatori.");
+            super.popUp(Alert.AlertType.ERROR,  "Errore di validazione","Compila tutti i campi obbligatori.");
             return;
         }
 
@@ -136,18 +133,18 @@ public class AddBookSceneController extends GuiController{
             try {
                 if (isEditMode) {
                     this.bookService.updateByIsbn(book);
-                    super.popUp("Libro aggiornato con successo!");
+                    super.popUp(Alert.AlertType.INFORMATION, "Successo", "Libro modificato.");
                 } else {
                     this.bookService.add(book);
-                    super.popUp("Libro aggiunto al catalogo!");
+                    super.popUp(Alert.AlertType.INFORMATION, "Successo", "Libro aggiunto.");
                 }
                 super.closeScene(event);
             } catch (BookException e) {
-                super.popUp(e.getMessage());
+                super.popUp(Alert.AlertType.ERROR ,"Errore salvataggio", e.getMessage());
             }
 
         } catch (NumberFormatException e) {
-            super.popUp("Anno e numero di copie devono essere valori interi.");
+            super.popUp(Alert.AlertType.ERROR, "Errore validazione","Anno e numero di copie devono essere valori interi.");
         }
     }
 

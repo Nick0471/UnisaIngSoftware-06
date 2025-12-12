@@ -13,6 +13,7 @@ import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -81,14 +82,14 @@ public class AddLoanSceneController extends GuiController {
     private void handleSearchUser(ActionEvent event) {
         String matricola = userMatricolaField.getText();
         if (matricola.isEmpty()) {
-            super.popUp("Inserisci una matricola.");
+            super.popUp(Alert.AlertType.WARNING,"Matricola non trovata","Inserisci una matricola.");
             return;
         }
 
         if (userService.existsById(matricola)) {
             userMatricolaField.setDisable(true);
         } else {
-            super.popUp("Utente non trovato o ID errato.");
+            super.popUp(Alert.AlertType.ERROR, "Controllo matricola", "Utente non trovato o ID errato.");
         }
     }
 
@@ -101,14 +102,14 @@ public class AddLoanSceneController extends GuiController {
     private void handleSearchBook(ActionEvent event) {
         String isbn = isbnField.getText();
         if (isbn.isEmpty()) {
-            super.popUp("Inserisci un ISBN.");
+            super.popUp(Alert.AlertType.WARNING, "ISBN non trovato", "Inserisci un ISBN.");
             return;
         }
 
         if (bookService.existsByIsbn(isbn)) {
             isbnField.setDisable(true);
         } else {
-            super.popUp("Libro non trovato o ISBN errato.");
+            super.popUp(Alert.AlertType.ERROR, "Controllo ISBN", "Libro non trovato o ISBN errato.");
         }
     }
 
@@ -125,42 +126,43 @@ public class AddLoanSceneController extends GuiController {
         LocalDate end = returnDatePicker.getValue();
 
         if (matricola.isEmpty() || isbn.isEmpty() || start == null || end == null) {
-            super.popUp("Tutti i campi sono obbligatori.");
+            super.popUp(Alert.AlertType.ERROR, "Errore validazione", "Tutti i campi sono obbligatori.");
             return;
         }
 
         if (end.isBefore(start)) {
-            super.popUp("La data di fine prestito non può essere precedente all'inizio.");
+            super.popUp(Alert.AlertType.ERROR, "Errore validazione","La data di fine prestito non può essere precedente all'inizio.");
             return;
         }
 
         if (!userService.existsById(matricola)) {
-            super.popUp("Matricola utente non valida.");
+            super.popUp(Alert.AlertType.ERROR, "Controllo matricola","Matricola utente non valida.");
             return;
         }
 
         try {
             if (loanService.countById(matricola) == 3) {
-                super.popUp("L'utente ha già tre prestiti attivi.\nRestituire almeno un libro per poter richiedere un nuovo prestito");
+                super.popUp(Alert.AlertType.ERROR, "L'utente ha già tre prestiti attivi", "Restituire almeno un libro per poter richiedere un nuovo prestito");
                 return;
             }
-        }catch(InvalidIdException e){super.popUp(e.getMessage());}
+        }catch(InvalidIdException e){super.popUp(Alert.AlertType.ERROR, "ID non valido", e.getMessage());}
 
         if (!bookService.existsByIsbn(isbn)) {
-            super.popUp("ISBN libro non valido.");
+            super.popUp(Alert.AlertType.ERROR, "Controllo ISBN","ISBN libro non valido.");
             return;
         }
 
         if (bookService.countRemainingCopies(isbn) == 0) {
-            super.popUp("Attualmente non ci sono copie disponibili per questo libro.");
+            super.popUp(Alert.AlertType.ERROR, "Copie non disponibili", "Attualmente non ci sono copie disponibili per questo libro.");
             return;
         }
 
         try {
             loanService.register(matricola, isbn, start, end);
             super.closeScene(event);
+            super.popUp(Alert.AlertType.INFORMATION, "Successo", "Prestito registrato.");
         } catch (LoanException | InvalidIdException | InvalidIsbnException e) {
-            super.popUp(e.getMessage());
+            super.popUp(Alert.AlertType.ERROR, "Errore durante la registrazione", e.getMessage());
         }
     }
 

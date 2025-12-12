@@ -17,11 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_BOOK_PATH;
@@ -146,7 +142,7 @@ public class BookSceneController extends GuiController implements Initializable 
                     int year = Integer.parseInt(query);
                     result = this.bookService.getAllByReleaseYear(year);
                 } catch (NumberFormatException e) {
-                    super.popUp("L'anno deve essere un numero intero.");
+                    super.popUp(Alert.AlertType.WARNING , "Errore validazione","L'anno deve essere un numero intero.");
                     return;
                 }
                 break;
@@ -170,7 +166,7 @@ public class BookSceneController extends GuiController implements Initializable 
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
 
         if (selectedBook == null) {
-            super.popUp("Seleziona un libro da rimuovere.");
+            super.popUp(Alert.AlertType.WARNING,"Errore selezione","Seleziona un libro da rimuovere.");
             return;
         }
 
@@ -179,10 +175,10 @@ public class BookSceneController extends GuiController implements Initializable 
 
         if (success) {
             this.updateTable();
+            super.popUp(Alert.AlertType.INFORMATION, "Successo", "Libro rimosso correttamente.");
         } else {
-            super.popUp("Libro specificato inesistente.");
+            super.popUp(Alert.AlertType.ERROR, "Errore validazione", "Libro specificato inesistente.");
         }
-
 
         this.updateTable();
     }
@@ -199,7 +195,7 @@ public class BookSceneController extends GuiController implements Initializable 
     private void handleModifyBook() {
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
         if (selectedBook == null) {
-            super.popUp("Seleziona un libro da modificare.");
+            super.popUp(Alert.AlertType.WARNING, "Errore selezione", "Seleziona un libro da modificare.");
             return;
         }
 

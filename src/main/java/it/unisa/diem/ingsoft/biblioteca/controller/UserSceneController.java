@@ -17,11 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.*;
@@ -194,7 +190,7 @@ public class UserSceneController extends GuiController implements Initializable{
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser== null) {
-            this.popUp("Seleziona un utente da rimuovere");
+            this.popUp(Alert.AlertType.WARNING, "Errore selezione","Seleziona un utente da rimuovere");
             return;
         }
 
@@ -202,10 +198,10 @@ public class UserSceneController extends GuiController implements Initializable{
 
         if(loanList.isEmpty()) {
             this.userService.removeById(selectedUser.getId());
-            this.popUp("Utente rimosso correttamente");
+            this.popUp(Alert.AlertType.INFORMATION, "Successo", "Libro rimosso correttamente.");
             this.updateTable();
         }else
-            this.popUp("Non puoi rimuovere un utente che ha ancora prestiti attivi");
+            this.popUp(Alert.AlertType.WARNING,"Errore selezione", "Non puoi rimuovere un utente che ha ancora prestiti attivi");
     }
 
     /**
@@ -217,7 +213,7 @@ public class UserSceneController extends GuiController implements Initializable{
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser== null) {
-            super.popUp("Seleziona un utente da modificare.");
+            super.popUp(Alert.AlertType.WARNING,"Errore selezione", "Seleziona un utente da modificare.");
             return;
         }
 
@@ -260,7 +256,7 @@ public class UserSceneController extends GuiController implements Initializable{
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser == null) {
-            this.popUp("Seleziona un utente per visualizzarne il profilo.");
+            this.popUp(Alert.AlertType.WARNING,"Errore selezione", "Seleziona un utente per visualizzarne il profilo.");
             return;
         }
 

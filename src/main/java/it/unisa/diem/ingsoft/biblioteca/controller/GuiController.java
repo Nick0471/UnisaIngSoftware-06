@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -92,22 +93,17 @@ public abstract class GuiController {
     }
 
     /**
-     * @brief Mostra una finestra di pop-up con un messaggio di errore.
+     * @brief Mostra una finestra di pop-up (Alert).
      *
-     * @param message Il messaggio di testo da visualizzare nel pop-up.
+     * @param type Il tipo di alert (Alert.AlertType.ERROR, INFORMATION, WARNING, etc.)
+     * @param title Il titolo della finestra.
+     * @param message Il messaggio da visualizzare.
      */
-    protected void popUp(String message) {
-        // Creo un nuovo Stage
-        Stage confirmationStage = new Stage();
-        confirmationStage.setTitle("POP-UP");
-
-        Label mess = new Label(message);
-        StackPane stackPane = new StackPane();
-        stackPane.getChildren().add(mess);
-
-        // Creo la nuova scena dove metto la stackPane
-        Scene scene = new Scene(stackPane, 250, 100);
-        confirmationStage.setScene(scene);
-        confirmationStage.show();
+    protected void popUp(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

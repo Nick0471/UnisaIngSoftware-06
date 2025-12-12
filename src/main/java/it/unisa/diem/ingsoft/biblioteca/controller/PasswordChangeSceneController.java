@@ -9,6 +9,7 @@ import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 
@@ -51,7 +52,7 @@ public class PasswordChangeSceneController extends GuiController {
 
 
         if (!this.passwordService.check(pass)) {
-            this.popUp("La password inserita non è corretta.");
+            this.popUp(Alert.AlertType.ERROR, "Errore password", "La password inserita non è corretta.");
             return;
         }
 
@@ -60,7 +61,7 @@ public class PasswordChangeSceneController extends GuiController {
             this.passwordService.change(this.newPassword.getText());
             this.changeScene(event, HOMEPAGE_PATH );
         } else {
-            this.popUp("La nuova password deve essere da 6 a 10 caratteri.");
+            this.popUp(Alert.AlertType.WARNING, "Valutazione password", "La nuova password deve essere da 6 a 10 caratteri.");
 
         }
 

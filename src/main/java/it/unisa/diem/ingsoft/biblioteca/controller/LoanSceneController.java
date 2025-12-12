@@ -19,11 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.ADD_LOAN_PATH;
@@ -191,15 +187,16 @@ public class LoanSceneController extends GuiController implements Initializable 
         Loan selectedLoan = this.loanTable.getSelectionModel().getSelectedItem();
 
         if (selectedLoan == null) {
-            super.popUp("Seleziona un prestito da restituire.");
+            super.popUp(Alert.AlertType.WARNING,"Prestito non selezionato","Seleziona un prestito da restituire.");
             return;
         }
 
         try{
             this.loanService.complete(selectedLoan.getUserId(), selectedLoan.getBookIsbn(), selectedLoan.getLoanDeadline());
             this.updateTable();
+            super.popUp(Alert.AlertType.INFORMATION, "Successo", "Prestito rimosso correttamente.");
         }catch(LoanException e){
-            super.popUp(e.getMessage());
+            super.popUp(Alert.AlertType.ERROR, "Errore durante la rimozione", e.getMessage());
         }
     }
 
