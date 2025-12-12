@@ -234,11 +234,5 @@ public class LoanSceneControllerTest extends ApplicationTest {
         System.out.println("Homepage raggiunta.");
 
         this.sleep(1000);
-        System.out.println("Clicco Home...");
-        this.clickOn("#btnHome");
-        this.sleep(2000);
-
-        FxAssert.verifyThat("Biblioteca Universitaria", NodeMatchers.isVisible());
-        System.out.println("Homepage raggiunta.");
     }
 }

@@ -105,8 +105,8 @@ public class DatabaseBookService implements BookService {
     public List<Book> getAllByReleaseYear(int releaseYear){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
-                                + "WHERE release_year = :releaseYear")
-                        .bind("releaseYear", releaseYear)
+                                + "WHERE release_year = :release_year")
+                        .bind("release_year", releaseYear)
                         .mapTo(Book.class)
                         .list());
     }
@@ -173,15 +173,15 @@ public class DatabaseBookService implements BookService {
         this.database.getJdbi()
                 .withHandle(handle -> handle.createUpdate(
                                 "INSERT INTO books (isbn, title, author, genre, release_year, total_copies, remaining_copies, description) " +
-                                        "VALUES (:isbn, :title, :author, :genre, :releaseYear, :totalCopies, :remainingCopies, :description)"
+                                        "VALUES (:isbn, :title, :author, :genre, :release_year, :total_copies, :remaining_copies, :description)"
                         )
                         .bind("isbn", book.getIsbn())
                         .bind("title", book.getTitle())
                         .bind("author", book.getAuthor())
                         .bind("genre", book.getGenre())
-                        .bind("releaseYear", book.getReleaseYear())
-                        .bind("totalCopies", book.getTotalCopies())
-                        .bind("remainingCopies", book.getRemainingCopies())
+                        .bind("release_year", book.getReleaseYear())
+                        .bind("total_copies", book.getTotalCopies())
+                        .bind("remaining_copies", book.getRemainingCopies())
                         .bind("description", book.getDescription())
                         .execute());
     }
@@ -220,7 +220,7 @@ public class DatabaseBookService implements BookService {
         this.database.getJdbi()
                 .useHandle(handle -> {
                     String sql = "INSERT INTO books (isbn, title, author, genre, release_year, total_copies, remaining_copies, description) " +
-                            "VALUES (:isbn, :title, :author, :genre, :releaseYear, :totalCopies, :remainingCopies, :description)";
+                            "VALUES (:isbn, :title, :author, :genre, :release_year, :total_copies, :remaining_copies, :description)";
 
                     var batch = handle.prepareBatch(sql);
 
@@ -229,9 +229,9 @@ public class DatabaseBookService implements BookService {
                                 .bind("title", book.getTitle())
                                 .bind("author", book.getAuthor())
                                 .bind("genre", book.getGenre())
-                                .bind("releaseYear", book.getReleaseYear())
-                                .bind("totalCopies", book.getTotalCopies())
-                                .bind("remainingCopies", book.getRemainingCopies())
+                                .bind("release_year", book.getReleaseYear())
+                                .bind("total_copies", book.getTotalCopies())
+                                .bind("remaining_copies", book.getRemainingCopies())
                                 .bind("description", book.getDescription())
                                 .add();
                     }
@@ -270,18 +270,18 @@ public class DatabaseBookService implements BookService {
                                 + "title = :title, "
                                 + "author = :author, "
                                 + "genre = :genre, "
-                                + "release_year = :releaseYear, "
-                                + "total_copies = :totalCopies, "
-                                + "remaining_copies = :remainingCopies, "
+                                + "release_year = :release_year, "
+                                + "total_copies = :total_copies, "
+                                + "remaining_copies = :remaining_copies, "
                                 + "description = :description "
                                 + "WHERE isbn = :isbn")
                         .bind("isbn", isbn)
                         .bind("title", title)
                         .bind("author", author)
                         .bind("genre", genre)
-                        .bind("releaseYear", releaseYear)
-                        .bind("totalCopies", totalCopies)
-                        .bind("remainingCopies", remainingCopies)
+                        .bind("release_year", releaseYear)
+                        .bind("total_copies", totalCopies)
+                        .bind("remaining_copies", remainingCopies)
                         .bind("description", description)
                         .execute());
     }
@@ -343,4 +343,37 @@ public class DatabaseBookService implements BookService {
 	public boolean isIsbnValid(String isbn) {
         return isbn.length() == 13;
 	}
+
+    /**
+     * @brief Aggiorna il numero di copie rimanenti di un libro.
+     * Somma il valore 'delta' alle copie attuali.
+     * - Passare un valore NEGATIVO per registrare un PRESTITO (es. -1).
+     * - Passare un valore POSITIVO per registrare una RESTITUZIONE (es. +1).
+     * * @param isbn L'ISBN del libro da aggiornare.
+     * @param delta Il numero di copie da aggiungere (positivo) o rimuovere (negativo).
+     * @throws UnknownBookByIsbnException Se il libro non esiste.
+     * @throws NegativeBookCopiesException Se l'operazione porterebbe le copie < 0 o > totale.
+     */
+    @Override
+    public void updateRemainingCopies(String isbn, int delta) throws UnknownBookByIsbnException, NegativeBookCopiesException {
+        Book book = this.getByIsbn(isbn).orElseThrow(UnknownBookByIsbnException::new);
+
+        int currentCopies = book.getRemainingCopies();
+        int totalCopies = book.getTotalCopies();
+        int newRemainingCopies = currentCopies + delta;
+
+        if (newRemainingCopies < 0) {
+            throw new NegativeBookCopiesException();
+        }
+
+        if (newRemainingCopies > totalCopies)
+            throw new NegativeBookCopiesException();
+
+        this.database.getJdbi().withHandle(handle ->
+                handle.createUpdate("UPDATE books SET remaining_copies = :remaining_copies WHERE isbn = :isbn")
+                        .bind("remaining_copies", newRemainingCopies)
+                        .bind("isbn", isbn)
+                        .execute()
+        );
+    }
 }
