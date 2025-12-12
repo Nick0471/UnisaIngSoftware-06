@@ -3,13 +3,10 @@ package it.unisa.diem.ingsoft.biblioteca;
 import java.time.Duration;
 import java.util.List;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.WrongIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
@@ -39,6 +36,16 @@ public class DatabaseBookServiceTest {
 
         assertThrows(WrongIsbnException.class, () -> {
             Book duplicateBook = new Book("123456789", "1984", "George Orwell", 1948, 50,3,"Distopico","Un romanzo cupo");
+            this.bookService.add(duplicateBook);
+        });
+
+        assertThrows(NegativeBookCopiesException.class, () -> {
+            Book duplicateBook = new Book("2134657890000", "1984", "George Orwell", 1948, -4,3,"Distopico","Un romanzo cupo");
+            this.bookService.add(duplicateBook);
+        });
+
+        assertThrows(NegativeBookCopiesException.class, () -> {
+            Book duplicateBook = new Book("2134657890000", "1984", "George Orwell", 1948, 50,-3,"Distopico","Un romanzo cupo");
             this.bookService.add(duplicateBook);
         });
 
@@ -133,6 +140,11 @@ public class DatabaseBookServiceTest {
         assertDoesNotThrow(() -> {
             Book book = new Book("1234321690000", "Striano, Montoro e Atripalda", "Vincenzo D. Raimo", 2025, 4,4,"Politica","Origine di queste 3 città che hanno dato i natali a 3 scienziati.");
             this.bookService.add(book);
+        });
+
+        assertThrows(NegativeBookCopiesException.class, () -> {
+            Book duplicateBook = new Book("1234321690000", "1984", "George Orwell", 1948, -4,3,"Distopico","Un romanzo cupo");
+            this.bookService.updateByIsbn(duplicateBook);
         });
 
         assertDoesNotThrow(() -> {
