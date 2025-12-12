@@ -25,7 +25,7 @@ public class DatabasePasswordServiceTest {
     }
 
     @Test
-    public void change() {
+    public void change_NewPassword() {
         String testPassword = "TEST-!%123";
 
         assertDoesNotThrow(() -> {
@@ -34,40 +34,41 @@ public class DatabasePasswordServiceTest {
     }
 
     @Test
-    public void check() {
+    public void check_CorrectPassword() {
         String testPassword = "q!!@ABC123";
-
-        assertThrows(UnsetPasswordException.class, () -> {
-            this.passwordService.check(testPassword);
-        });
-
-        assertDoesNotThrow(() -> {
-            this.passwordService.change(testPassword);
-        });
+        this.passwordService.change(testPassword);
 
         assertTrue(this.passwordService.check(testPassword));
-        assertFalse(this.passwordService.check("INVALID_PASSWORD!@#"));
     }
 
     @Test
-    public void isPresent() {
-        assertFalse(this.passwordService.isPresent());
+    public void check_IncorrectPassword() {
+        String testPassword = "correctPassword";
+        this.passwordService.change(testPassword);
 
+        assertFalse(this.passwordService.check("WRONG_PASSWORD"));
+    }
+
+    @Test
+    public void check_UnsetPassword() {
         assertThrows(UnsetPasswordException.class, () -> {
-            this.passwordService.check("NONEXISTENT");
+            this.passwordService.check("anyPassword");
         });
+    }
 
-        assertFalse(this.passwordService.isPresent());
-
-        assertDoesNotThrow(() -> {
-            this.passwordService.change("SETPASSWORD");
-        });
-
+    @Test
+    public void isPresent_WhenPasswordSet() {
+        this.passwordService.change("SETPASSWORD");
         assertTrue(this.passwordService.isPresent());
     }
 
     @Test
-    public void speed() {
+    public void isPresent_WhenPasswordNotSet() {
+        assertFalse(this.passwordService.isPresent());
+    }
+
+    @Test
+    public void speed_Methods() {
         Duration duration = Duration.ofMillis(100);
 
         assertDoesNotThrow(() -> {
@@ -76,6 +77,10 @@ public class DatabasePasswordServiceTest {
 
         assertTimeout(duration, () -> {
             this.passwordService.isPresent();
+        });
+
+        assertTimeout(duration, () -> {
+            this.passwordService.check("PASSWORD123!@@!");
         });
     }
 }
