@@ -143,7 +143,7 @@ public class AccountUserSceneController extends GuiController implements Initial
      */
     private void updateTable() {
 
-        List<Loan> userLoans = this.loanService.getAllActiveByUserID(this.user.getId());
+        List<Loan> userLoans = this.loanService.getActiveByUserID(this.user.getId());
 
 
         // Converto la lista in ObservableList
