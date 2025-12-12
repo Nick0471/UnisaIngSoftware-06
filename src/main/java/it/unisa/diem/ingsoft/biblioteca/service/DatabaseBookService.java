@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.WrongIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.*;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 /**
@@ -158,6 +155,8 @@ public class DatabaseBookService implements BookService {
             throw new DuplicateBookByIsbnException();
         }
 
+        if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) throw new WrongIsbnException();
+
         if (book.getIsbn().length() != 13) throw new WrongIsbnException();
 
         this.database.getJdbi()
@@ -186,6 +185,7 @@ public class DatabaseBookService implements BookService {
     public void addAll(List<Book> books) throws DuplicateBooksByIsbnException, WrongIsbnException {
         for(Book book : books){
             if (book.getIsbn().length() != 13) throw new WrongIsbnException();
+            if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) throw new WrongIsbnException();
         }
 
         List<String> newIsbns = books.stream()
@@ -230,9 +230,12 @@ public class DatabaseBookService implements BookService {
      *  bisogna eliminare e reinserire il libro.
      */
     @Override
-    public void updateByIsbn(Book book) throws UnknownBookByIsbnException{
+    public void updateByIsbn(Book book) throws UnknownBookByIsbnException, NegativeBookCopiesException {
         if(!this.existsByIsbn(book.getIsbn()))
             throw new UnknownBookByIsbnException();
+
+        if(book.getTotalCopies() < 0 || book.getRemainingCopies() < 0)
+            throw new NegativeBookCopiesException();
 
         String isbn = book.getIsbn();
         String title = book.getTitle();

@@ -7,10 +7,7 @@ package it.unisa.diem.ingsoft.biblioteca.service;
 import java.util.List;
 import java.util.Optional;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.WrongIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.*;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 
 /**
@@ -92,7 +89,7 @@ public interface BookService {
      * @invariant L'ISBN del libro è un invariante. Se è necessario modificarlo
      *  bisogna eliminare e reinserire il libro.
      */
-    void updateByIsbn(Book book) throws UnknownBookByIsbnException;
+    void updateByIsbn(Book book) throws UnknownBookByIsbnException, NegativeBookCopiesException;
 
     /**
      * @brief Controlla se un libro con determinato ISBN è già stato registrato.
