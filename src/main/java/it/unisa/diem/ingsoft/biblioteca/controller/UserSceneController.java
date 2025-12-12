@@ -155,12 +155,26 @@ public class UserSceneController extends GuiController implements Initializable{
 
 
         switch (type) {
-            case "Matricola" -> this.userService.getById(query1).ifPresent(result::add);
-            case "Cognome" -> result = this.userService.getAllByFullNameContaining(query2, query1);
-            case "Email" -> result = this.userService.getAllByEmailContaining(query1);
-            default -> result = this.userService.getAll();
+            case "Matricola":
+                result = this.userService.getAll().stream()
+                        .filter(user -> user.getId().startsWith(query1))
+                        .toList();
+                break;
+
+            case "Cognome":
+                result = this.userService.getAllByFullNameContaining(query2, query1);
+                break;
+
+            case "Email":
+                result = this.userService.getAllByEmailContaining(query1);
+                break;
+
+            default:
+                result = this.userService.getAll();
+                break;
         }
-        ;
+
+
 
         this.users = FXCollections.observableArrayList(result);
         this.userTable.setItems(this.users);
