@@ -127,19 +127,19 @@ public class BookSceneController extends GuiController implements Initializable 
         List<Book> result = new ArrayList<>();
 
         switch (type) {
-            case "Titolo":
+            case "Titolo ":
                 result = this.bookService.getAllByTitleContaining(query);
                 break;
-            case "Autore":
+            case "Autore ":
                 result = this.bookService.getAllByAuthorContaining(query);
                 break;
-            case "Genere":
+            case "Genere ":
                 result = this.bookService.getAllByGenreContaining(query);
                 break;
-            case "ISBN":
+            case "ISBN ":
                 this.bookService.getByIsbn(query).ifPresent(result::add);
                 break;
-            case "Anno":
+            case "Anno ":
                 try {
                     int year = Integer.parseInt(query);
                     result = this.bookService.getAllByReleaseYear(year);

@@ -130,24 +130,10 @@ public class BookSceneControllerTest extends ApplicationTest {
     @Test
     public void test3_SearchFunctionality() {
         System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
-
-        System.out.println("Cerco titolo: The Silmarillion");
-        this.clickOn("#searchType").clickOn("Titolo");
-        this.clickOn("#searchField").write("The Silmarillion");
-        this.sleep(1000);
-        FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 1);
-
-        this.resetSearchField();
-
-        System.out.println("Cerco titolo inesistente: Harry Potter");
-        this.clickOn("#searchField").write("Harry Potter");
-        this.sleep(1000);
-        FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().isEmpty());
-
-        this.resetSearchField();
+        this.sleep(500);
 
         System.out.println("Cerco autore: J.R.R. Tolkien");
-        this.clickOn("#searchType").clickOn("Autore");
+        this.clickOn("#searchType").clickOn("Autore ");
         this.clickOn("#searchField").write("J.R.R. Tolkien");
         this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 5);
@@ -161,8 +147,23 @@ public class BookSceneControllerTest extends ApplicationTest {
 
         this.resetSearchField();
 
+        System.out.println("Cerco titolo: The Silmarillion");
+        this.clickOn("#searchType").clickOn("Titolo ");
+        this.clickOn("#searchField").write("The Silmarillion");
+        this.sleep(1000);
+        FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 1);
+
+        this.resetSearchField();
+
+        System.out.println("Cerco titolo inesistente: Harry Potter");
+        this.clickOn("#searchField").write("Harry Potter");
+        this.sleep(1000);
+        FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().isEmpty());
+
+        this.resetSearchField();
+
         System.out.println("Cerco ISBN: 9780451524935");
-        this.clickOn("#searchType").clickOn("ISBN");
+        this.clickOn("#searchType").clickOn("ISBN ");
         this.clickOn("#searchField").write("9780451524935");
         this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 1);
@@ -172,7 +173,7 @@ public class BookSceneControllerTest extends ApplicationTest {
         this.resetSearchField();
 
         System.out.println("Cerco Genere: Fantasy");
-        this.clickOn("#searchType").clickOn("Genere");
+        this.clickOn("#searchType").clickOn("Genere ");
         this.clickOn("#searchField").write("Fantasy");
         this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 6);
@@ -180,7 +181,7 @@ public class BookSceneControllerTest extends ApplicationTest {
         this.resetSearchField();
 
         System.out.println("Cerco Anno: 1954");
-        this.clickOn("#searchType").clickOn("Anno");
+        this.clickOn("#searchType").clickOn("Anno ");
         this.clickOn("#searchField").write("1954");
         this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 2);

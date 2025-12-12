@@ -56,11 +56,11 @@
                   <ComboBox fx:id="searchType" prefHeight="35.0" prefWidth="140.0" promptText="Filtra per..." style="-fx-background-color: transparent; -fx-border-color: transparent #ddd transparent transparent; -fx-font-weight: bold;">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Titolo" />
-                            <String fx:value="Autore" />
-                            <String fx:value="Genere" />
-                            <String fx:value="Anno" />
-                            <String fx:value="ISBN" />
+                            <String fx:value="Titolo " />
+                            <String fx:value="Autore " />
+                            <String fx:value="Genere " />
+                            <String fx:value="Anno " />
+                            <String fx:value="ISBN " />
                         </FXCollections>
                       </items>
                       <value>

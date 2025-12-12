@@ -136,6 +136,7 @@ public class LoanSceneControllerTest extends ApplicationTest {
     @Test
     public void test3_SearchFunctionality() {
         System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
+        this.sleep(500);
 
         System.out.println("Cerco matricola: 0612700003");
         this.clickOn("#searchType").clickOn("Matricola");
