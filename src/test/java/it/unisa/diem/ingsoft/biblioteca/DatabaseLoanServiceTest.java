@@ -68,6 +68,7 @@ public class DatabaseLoanServiceTest {
         assertEquals(this.loanService.getByBookIsbn("ISBNTEST12345").size(), 2);
         assertEquals(this.loanService.getAll().size(), 3);
         assertEquals(this.loanService.getAllActive().size(), 3);
+        assertEquals(this.loanService.getAllActiveByUserID("USERID3214").size(), 2);
         assertTrue(this.loanService.isActive("USERID3214", "ISBNTEST12345"));
         assertEquals(this.loanService.countById("USERID3214"), 2);
     }
@@ -93,6 +94,7 @@ public class DatabaseLoanServiceTest {
         assertFalse(this.loanService.isActive("NICOLA1234", "ANIMAL_FARM"));
 
         assertEquals(this.loanService.getAllActive().size(), 0);
+        assertEquals(this.loanService.getAllActiveByUserID("NICOLA1234").size(), 0);
 
         assertThrows(UnknownLoanException.class, () -> {
             this.loanService.complete("NICOLA1234", "RANDOM_ISB_NON_EXISTENT", LocalDate.now());
@@ -114,6 +116,10 @@ public class DatabaseLoanServiceTest {
 
         assertTimeout(duration, () -> {
             this.loanService.getAll();
+        });
+
+        assertTimeout(duration, () -> {
+            this.loanService.getAllActiveByUserID("ABC1314156");
         });
 
         assertTimeout(duration, () -> {
