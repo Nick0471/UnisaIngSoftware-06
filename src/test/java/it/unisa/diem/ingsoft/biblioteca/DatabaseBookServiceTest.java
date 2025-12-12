@@ -152,6 +152,13 @@ public class DatabaseBookServiceTest {
         
         assertFalse(this.bookService.getAllByGenreContaining("Dark fantasy").isEmpty());
     }
+
+    @Test
+    public void getAllByIsbn_MatchingString() throws Exception {
+        this.bookService.add(new Book("1234567890000", "L'attacco dei giganti", "Isayama", 2009, 50, 5, "Dark fantasy", "Desc"));
+        
+        assertFalse(this.bookService.getAllByIsbnContaining("789").isEmpty());
+    }
     
     @Test
     public void getAllByTitle_MatchingString() throws Exception {

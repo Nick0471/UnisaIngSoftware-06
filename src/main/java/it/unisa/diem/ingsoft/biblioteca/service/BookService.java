@@ -33,6 +33,15 @@ public interface BookService {
     Optional<Book> getByIsbn(String isbn);
 
     /**
+     * @brief Recupare una lista di libri il cui ISBN contiene la stringa specificata
+     *  in qualsiasi posizione.
+     * @param isbn L'ISBN da cercare.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * criterio.
+     */
+    List<Book> getAllByIsbnContaining(String isbn);
+
+    /**
      * @brief Recupera una lista di libri il cui autore contiene la stringa specificata
      *  in qualsiasi posizione.
      * @param author Il nome dell'autore da cercare.

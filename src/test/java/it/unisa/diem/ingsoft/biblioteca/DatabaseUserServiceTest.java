@@ -85,13 +85,13 @@ public class DatabaseUserServiceTest {
         User user = new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI");
         this.userService.register(user);
 
-        assertTrue(this.userService.getById("ABC123DEF5").isPresent());
-        assertEquals("SOFIA", this.userService.getById("ABC123DEF5").get().getName());
+        assertTrue(this.userService.getByIdContaining("ABC123DEF5").isPresent());
+        assertEquals("SOFIA", this.userService.getByIdContaining("ABC123DEF5").get().getName());
     }
 
     @Test
     public void getById_NonExistingId() {
-        assertTrue(this.userService.getById("ABC123PEFO").isEmpty());
+        assertTrue(this.userService.getByIdContaining("ABC123PEFO").isEmpty());
     }
 
     @Test
@@ -162,7 +162,7 @@ public class DatabaseUserServiceTest {
         User updatedUser = new User("ABC123DEF5", "modified@studenti.unisa.it", "PICARELLA", "PICARELLA");
         assertDoesNotThrow(() -> this.userService.updateById(updatedUser));
 
-        User retrieved = this.userService.getById("ABC123DEF5").get();
+        User retrieved = this.userService.getByIdContaining("ABC123DEF5").get();
         assertEquals("modified@studenti.unisa.it", retrieved.getEmail());
         assertEquals("PICARELLA", retrieved.getName());
         assertEquals("PICARELLA", retrieved.getSurname());
@@ -203,7 +203,7 @@ public class DatabaseUserServiceTest {
         assertTimeout(duration, () -> this.userService.getAllByIdContaining("ABC"));
         assertTimeout(duration, () -> this.userService.getAllByEmailContaining("test@studenti.unisa"));
         assertTimeout(duration, () -> this.userService.getAllByFullNameContaining("NIC", "PIC"));
-        assertTimeout(duration, () -> this.userService.getById("ABC123DEF5"));
+        assertTimeout(duration, () -> this.userService.getByIdContaining("ABC123DEF5"));
         
         assertTimeout(duration, () -> {
             User user = new User("IDPAZZO123", "rara@studenti.unisa.it", "EMPTY", "EMPTY");

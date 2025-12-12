@@ -107,8 +107,8 @@ public class DatabaseBookService implements BookService {
     public List<Book> getAllByReleaseYear(int releaseYear){
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
-                                + "WHERE release_year = :release_year")
-                        .bind("release_year", releaseYear)
+                                + "WHERE release_year LIKE :release_year")
+                        .bind("release_year", "%" + releaseYear + "%")
                         .mapTo(Book.class)
                         .list());
     }
@@ -378,4 +378,23 @@ public class DatabaseBookService implements BookService {
                         .execute()
         );
     }
+
+
+    /**
+     * @brief Recupare una lista di libri il cui ISBN contiene la stringa specificata
+     *  in qualsiasi posizione.
+     *  Esegue una select SQL per ottenere i libri dal database.
+     * @param isbn L'ISBN da cercare.
+     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * criterio.
+     */
+	@Override
+	public List<Book> getAllByIsbnContaining(String isbn) {
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT * FROM books "
+                                + "WHERE isbn LIKE :isbn")
+                        .bind("isbn", "%" + isbn + "%")
+                        .mapTo(Book.class)
+                        .list());
+	}
 }

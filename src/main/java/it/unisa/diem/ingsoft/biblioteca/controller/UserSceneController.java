@@ -1,6 +1,10 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.ACCOUNT_USER_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_USER_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +21,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import static it.unisa.diem.ingsoft.biblioteca.Views.*;
 
 /**
 * @brief Questo Controller gestisce la scena "Gestione utenti" permettendo
@@ -152,25 +159,12 @@ public class UserSceneController extends GuiController implements Initializable{
         List<User> result = new ArrayList<>();
 
 
-        switch (type) {
-            case "Matricola ":
-                result = this.userService.getAll().stream()
-                        .filter(user -> user.getId().startsWith(query1))
-                        .toList();
-                break;
-
-            case "Cognome ":
-                result = this.userService.getAllByFullNameContaining(query2, query1);
-                break;
-
-            case "Email ":
-                result = this.userService.getAllByEmailContaining(query1);
-                break;
-
-            default:
-                result = this.userService.getAll();
-                break;
-        }
+        result = switch (type) {
+            case "Matricola " -> this.userService.getAllByIdContaining(query1);
+            case "Cognome " -> this.userService.getAllByFullNameContaining(query2, query1);
+            case "Email " -> this.userService.getAllByEmailContaining(query1);
+            default -> this.userService.getAll();
+        };
 
 
 
@@ -265,8 +259,5 @@ public class UserSceneController extends GuiController implements Initializable{
         });
 
         this.updateTable();
-
-
     }
-
 }

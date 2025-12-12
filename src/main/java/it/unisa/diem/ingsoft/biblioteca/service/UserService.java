@@ -54,7 +54,7 @@ public interface UserService {
      * @param id La matricola dell'utente.
      * @return Un Optional contenente l'utente registrato, Optional.empty() altrimenti.
      */
-    Optional<User> getById(String id);
+    Optional<User> getByIdContaining(String id);
 
     /**
      * @brief Registra un nuovo utente.
