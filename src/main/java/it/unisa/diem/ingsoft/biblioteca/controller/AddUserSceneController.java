@@ -137,7 +137,7 @@ public class AddUserSceneController extends GuiController{
             try {
                 this.userService.updateById(user);
                 this.popUp("Utente aggiornato con successo!");
-            }catch(UnknownUserByIdException | InvalidIdException e){
+            }catch(UnknownUserByIdException |  InvalidIdException  e){
                 this.popUp(e.getMessage());
             }
         } else {

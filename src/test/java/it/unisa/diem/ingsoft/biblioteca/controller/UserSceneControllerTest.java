@@ -29,7 +29,7 @@ public class UserSceneControllerTest extends ApplicationTest {
         Database db = Database.inMemory();
 
         this.userService = new DatabaseUserService(db);
-        this.loanService = new DatabaseLoanService(db);
+        this.loanService = new DatabaseLoanService(userService, bookService , db);
         this.bookService = new DatabaseBookService(db);
 
         ServiceRepository serviceRepository = new ServiceRepository(null, this.userService, this.bookService, this.loanService);
