@@ -138,23 +138,15 @@ public class LoanSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
         this.sleep(500);
 
-        System.out.println("Cerco matricola: 0612700003");
-        this.clickOn("#searchType").clickOn("Matricola");
+        System.out.println("Cerco matricola senza criterio di ricerca: 0612700003");
         this.clickOn("#searchField").write("0612700003");
         this.sleep(2000);
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == 1);
 
         this.resetSearchField();
 
-        System.out.println("Cerco matricola inesistente: 0612708994");
-        this.clickOn("#searchField").write("0612708994");
-        this.sleep(2000);
-        FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
-
-        this.resetSearchField();
-
         System.out.println("Cerco ISBN: 0003000000000");
-        this.clickOn("#searchType").clickOn("ISBN");
+        this.clickOn("#searchType").clickOn("ISBN ");
         this.clickOn("#searchField").write("0003000000000");
         this.sleep(2000);
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == 1);
@@ -163,6 +155,21 @@ public class LoanSceneControllerTest extends ApplicationTest {
 
         System.out.println("Cerco ISBN inesistente: 9780618391110");
         this.clickOn("#searchField").write("9780618391110");
+        this.sleep(2000);
+        FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
+
+        this.resetSearchField();
+
+        System.out.println("Cerco matricola: 0612700003");
+        this.clickOn("#searchType").clickOn("Matricola ");
+        this.clickOn("#searchField").write("0612700003");
+        this.sleep(2000);
+        FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == 1);
+
+        this.resetSearchField();
+
+        System.out.println("Cerco matricola inesistente: 0612708994");
+        this.clickOn("#searchField").write("0612708994");
         this.sleep(2000);
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().isEmpty());
     }

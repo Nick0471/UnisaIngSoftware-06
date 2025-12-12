@@ -4,6 +4,9 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UserException;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
@@ -136,10 +139,12 @@ public class AddLoanSceneController extends GuiController {
             return;
         }
 
-        if (loanService.countById(matricola) == 3) {
-            super.popUp("L'utente ha già tre prestiti attivi.\nRestituire almeno un libro per poter richiedere un nuovo prestito");
-            return;
-        }
+        try {
+            if (loanService.countById(matricola) == 3) {
+                super.popUp("L'utente ha già tre prestiti attivi.\nRestituire almeno un libro per poter richiedere un nuovo prestito");
+                return;
+            }
+        }catch(InvalidIdException e){super.popUp(e.getMessage());}
 
         if (!bookService.existsByIsbn(isbn)) {
             super.popUp("ISBN libro non valido.");
@@ -154,7 +159,7 @@ public class AddLoanSceneController extends GuiController {
         try {
             loanService.register(matricola, isbn, start, end);
             super.closeScene(event);
-        } catch (LoanException e) {
+        } catch (LoanException | InvalidIdException | InvalidIsbnException e) {
             super.popUp(e.getMessage());
         }
     }

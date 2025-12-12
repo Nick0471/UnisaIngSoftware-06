@@ -104,6 +104,8 @@ public class LoanSceneController extends GuiController implements Initializable 
             this.filterLoans(newValue);
         });
 
+        this.searchType.setValue("Matricola ");
+
         // Codice per visualizzare in rosso i prestiti "scaduti"
         this.loanTable.setRowFactory(tv -> new javafx.scene.control.TableRow<Loan>() {
             @Override
@@ -149,8 +151,8 @@ public class LoanSceneController extends GuiController implements Initializable 
         List<Loan> result = new ArrayList<>();
 
         switch (type) {
-            case "Matricola" -> result = this.loanService.getByUserId(query);
-            case "ISBN" -> result = this.loanService.getByBookIsbn(query);
+            case "Matricola " -> result = this.loanService.getByUserId(query);
+            case "ISBN " -> result = this.loanService.getByBookIsbn(query);
             default -> this.updateTable();
         };
 
