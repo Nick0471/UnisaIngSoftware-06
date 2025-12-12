@@ -114,6 +114,8 @@ public class UserSceneController extends GuiController implements Initializable{
         // Listener sui campi di testo: ogni volta che si scrive, filtra
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
         this.searchFieldSecondary.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
+
+        this.searchType.setValue("Matricola");
     }
 
     /**
@@ -145,21 +147,17 @@ public class UserSceneController extends GuiController implements Initializable{
      */
     private void filterUsers(String type, String query1, String query2) {
 
-        // Se il campo principale è vuoto e non siamo in modalità "Tutti", resetta la tabella
-        if ((query1 == null || query1.trim().isEmpty()) && !"Tutti".equals(type)) {
+        if (query1 == null || query1.isEmpty()) {
             this.updateTable();
             return;
         }
-
         List<User> result = new ArrayList<>();
 
-        if (type == null) type = "Tutti";
 
         switch (type) {
             case "Matricola" -> this.userService.getById(query1).ifPresent(result::add);
-            case "Cognome" -> result = this.userService.getAllByFullNameContaining(query2, query1); //query1=cognome e query2=nome
+            case "Cognome" -> result = this.userService.getAllByFullNameContaining(query2, query1);
             case "Email" -> result = this.userService.getAllByEmailContaining(query1);
-            case "Tutti" -> result = this.userService.getAll();
             default -> result = this.userService.getAll();
         }
         ;

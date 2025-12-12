@@ -10,6 +10,8 @@ import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -143,6 +145,12 @@ public class AccountUserSceneController extends GuiController implements Initial
 
         // Chiamo il metodo dell'interfaccia che recupera SOLO i prestiti di questo utente
         List<Loan> userLoans = this.loanService.getByUserId(this.user.getId());
+
+        // Converto la lista in ObservableList
+        ObservableList<Loan> observableLoans = FXCollections.observableArrayList(userLoans);
+
+        // Imposto la lista nella tabella
+        this.loansTable.setItems(observableLoans);
 
         // Codice per visualizzare in rosso i prestiti "scaduti"
         this.loansTable.setRowFactory(tv -> new javafx.scene.control.TableRow<Loan>() {
