@@ -137,7 +137,7 @@ public class AddUserSceneController extends GuiController{
             try {
                 this.userService.updateById(user);
                 this.popUp("Utente aggiornato con successo!");
-            }catch(UnknownUserByIdException e){
+            }catch(UnknownUserByIdException |  InvalidIdException  e){
                 this.popUp(e.getMessage());
             }
         } else {
@@ -146,7 +146,7 @@ public class AddUserSceneController extends GuiController{
                 this.popUp("Nuovo Utente registrato con successo!");
             } catch (DuplicateUserByEmailException e) {
                 this.popUp(e.getMessage());
-            } catch (DuplicateUserByIdException e) {
+            } catch (DuplicateUserByIdException | InvalidEmailException | InvalidIdException e) {
                 this.popUp(e.getMessage());
             }
         }
