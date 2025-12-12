@@ -150,12 +150,12 @@ public class DatabaseBookService implements BookService {
      * @param book Il libro da aggiungere.
      */
     @Override
-    public void add(Book book) throws DuplicateBookByIsbnException, WrongIsbnException {
+    public void add(Book book) throws DuplicateBookByIsbnException, WrongIsbnException, NegativeBookCopiesException {
         if (this.existsByIsbn(book.getIsbn())) {
             throw new DuplicateBookByIsbnException();
         }
 
-        if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) throw new WrongIsbnException();
+        if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) throw new NegativeBookCopiesException();
 
         if (book.getIsbn().length() != 13) throw new WrongIsbnException();
 
@@ -182,10 +182,10 @@ public class DatabaseBookService implements BookService {
      * @param books La lista di libri da aggiungere.
      */
     @Override
-    public void addAll(List<Book> books) throws DuplicateBooksByIsbnException, WrongIsbnException {
+    public void addAll(List<Book> books) throws DuplicateBooksByIsbnException, WrongIsbnException, NegativeBookCopiesException {
         for(Book book : books){
             if (book.getIsbn().length() != 13) throw new WrongIsbnException();
-            if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) throw new WrongIsbnException();
+            if (book.getRemainingCopies() < 0 || book.getTotalCopies() < 0) throw new NegativeBookCopiesException();
         }
 
         List<String> newIsbns = books.stream()

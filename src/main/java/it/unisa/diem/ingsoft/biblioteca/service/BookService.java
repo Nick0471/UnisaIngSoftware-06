@@ -74,13 +74,13 @@ public interface BookService {
      * @brief Aggiunge un libro al catalogo.
      * @param book Il libro da aggiungere.
      */
-    void add(Book book) throws DuplicateBookByIsbnException, WrongIsbnException;
+    void add(Book book) throws DuplicateBookByIsbnException, WrongIsbnException, NegativeBookCopiesException;
 
     /**
      * @brief Aggiunge una lista di libri al catalogo.
      * @param books La lista di libri da aggiungere.
      */
-    void addAll(List<Book> books) throws DuplicateBookByIsbnException, DuplicateBooksByIsbnException, WrongIsbnException;
+    void addAll(List<Book> books) throws DuplicateBookByIsbnException, DuplicateBooksByIsbnException, WrongIsbnException, NegativeBookCopiesException;
 
     /**
      * @brief Aggiorna le informazioni di un libro già registrato.
