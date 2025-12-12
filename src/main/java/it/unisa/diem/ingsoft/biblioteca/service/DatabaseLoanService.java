@@ -174,9 +174,9 @@ public class DatabaseLoanService implements LoanService {
 	}
 
     /**
-     * @brief Recupera una lista di tutti i prestiti registrati attualmente attivi
-     *  Esegue una select SQL per ottenere tutti i prestiti il cui loan_end è nullo
-     * @return Una lista contenente i prestiti attivi
+     * @brief Recupera una lista di tutti i prestiti registrati attualmente attivi.
+     *  Esegue una select SQL per ottenere tutti i prestiti il cui loan_end è nullo.
+     * @return Una lista contenente i prestiti attivi.
      */
 	@Override
 	public List<Loan> getAllActive() {
@@ -186,4 +186,21 @@ public class DatabaseLoanService implements LoanService {
                     .mapTo(Loan.class)
                     .list());
 	}
+
+    /**
+     * @brief Recupera una lista di tutti i prestiti registrati attualmente attivi
+     * per l'utente passato.
+     *  Esegue una select SQL per ottenere tutti i prestiti il cui loan_end è nullo.
+     * @return Una lista contenente i prestiti attivi dell'utente.
+     */
+    @Override
+    public List<Loan> getAllActiveByUserID(String userId) {
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
+                                + "WHERE user_id = :userId "
+                                + "AND loan_end IS NULL")
+                        .bind("userId", userId)
+                        .mapTo(Loan.class)
+                        .list());
+    }
 }

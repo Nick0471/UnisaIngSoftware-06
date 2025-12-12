@@ -86,4 +86,14 @@ public interface LoanService {
      * @return Il numero di prestiti attualmente attivi.
      */
     int countById(String userId);
+
+    /**
+     * @brief Recupera una lista di tutti i prestiti registrati attualmente attivi per
+     * l'utente specificato.
+     * @param userId La matricola dell'utente di cui si vogliono conoscere i prestiti
+     *               attivi.
+     * @return Una lista contenente i prestiti attivi per l'utente.
+     */
+    List<Loan> getAllActiveByUserID(String userId);
+
 };
