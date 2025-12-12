@@ -2,7 +2,7 @@ package it.unisa.diem.ingsoft.biblioteca.exception;
 
 /**
  * @brief Ecceziona lanciata quando si tenta una modifica relativa ad un utente usando
- *  un'email non valida (non istituzionale)
+ *  un'email non valida.
  */
 public class InvalidEmailException extends Exception {
 
