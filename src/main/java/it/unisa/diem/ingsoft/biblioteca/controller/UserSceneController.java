@@ -66,7 +66,12 @@ public class UserSceneController extends GuiController implements Initializable{
     @Override
     public void setServices(ServiceRepository serviceRepository){
         super.setServices(serviceRepository);
+
         this.userService= serviceRepository.getUserService();
+        this.loanService = serviceRepository.getLoanService();
+        this.bookService = serviceRepository.getBookService();
+
+        this.updateTable();
     }
 
 
@@ -109,10 +114,6 @@ public class UserSceneController extends GuiController implements Initializable{
         // Listener sui campi di testo: ogni volta che si scrive, filtra
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
         this.searchFieldSecondary.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
-
-        // Caricamento iniziale
-        this.updateTable();
-
     }
 
     /**
