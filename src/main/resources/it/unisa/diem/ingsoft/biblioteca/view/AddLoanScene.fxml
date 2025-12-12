@@ -73,7 +73,7 @@
                         <Font size="14.0" />
                     </font>
                 </TextField>
-                <Button fx:id="btnSearchUser" mnemonicParsing="false" onAction="#handleSearchUser" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Cerca" GridPane.columnIndex="2">
+                <Button fx:id="btnResetUser" mnemonicParsing="false" onAction="#handleSearchUser" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Reset" GridPane.columnIndex="2">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
@@ -89,7 +89,7 @@
                         <Font size="14.0" />
                     </font>
                 </TextField>
-                <Button fx:id="btnSearchBook" mnemonicParsing="false" onAction="#handleSearchBook" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Cerca" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <Button fx:id="btnResetBook" mnemonicParsing="false" onAction="#handleSearchBook" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Reset" GridPane.columnIndex="2" GridPane.rowIndex="1">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
