@@ -143,8 +143,8 @@ public class AccountUserSceneController extends GuiController implements Initial
      */
     private void updateTable() {
 
-        // Chiamo il metodo dell'interfaccia che recupera SOLO i prestiti di questo utente
-        List<Loan> userLoans = this.loanService.getByUserId(this.user.getId());
+        List<Loan> userLoans = this.loanService.getAllActiveByUserID(this.user.getId());
+
 
         // Converto la lista in ObservableList
         ObservableList<Loan> observableLoans = FXCollections.observableArrayList(userLoans);
