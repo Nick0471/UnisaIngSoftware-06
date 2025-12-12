@@ -220,4 +220,9 @@ public class DatabaseUserService implements UserService {
         String domain = email.substring(atIndex);
         return "@studenti.unisa.it".equals(domain);
 	}
+
+    @Override
+    public boolean isIdValid(String id) {
+        return id.length() == 10;
+    }
 }

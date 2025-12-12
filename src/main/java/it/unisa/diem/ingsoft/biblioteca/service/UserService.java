@@ -99,4 +99,6 @@ public interface UserService {
      * @return true se la mail è valida, false altrimenti.
      */
     boolean isEmailValid(String email);
+
+    boolean isIdValid(String id);
 }
