@@ -28,6 +28,11 @@ import javafx.stage.Stage;
 public abstract class GuiController {
     private ServiceRepository serviceRepository;
 
+    /**
+     * @brief Imposta il repository dei servizi.
+     *
+     * @param serviceRepository Il contenitore dei servizi.
+     */
     public void setServices(ServiceRepository serviceRepository) {
         this.serviceRepository = serviceRepository;
     }
