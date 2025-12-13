@@ -78,7 +78,7 @@ public class DatabaseUserService implements UserService {
      * @return Un Optional contenente l'utente registrato, Optional.empty() altrimenti.
      */
 	@Override
-	public Optional<User> getByIdContaining(String id) {
+	public Optional<User> getById(String id) {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM users "
                         + "WHERE id LIKE :id")

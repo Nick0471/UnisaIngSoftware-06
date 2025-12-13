@@ -1,22 +1,24 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.Scenes;
-import it.unisa.diem.ingsoft.biblioteca.model.Book;
-import it.unisa.diem.ingsoft.biblioteca.model.User;
-import it.unisa.diem.ingsoft.biblioteca.service.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.TableView;
+import static it.unisa.diem.ingsoft.biblioteca.Views.USER_PATH;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import static it.unisa.diem.ingsoft.biblioteca.Views.USER_PATH;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.Scenes;
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
+import it.unisa.diem.ingsoft.biblioteca.model.User;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 
 public class EditUserSceneControllerTest extends ApplicationTest{
 
@@ -154,7 +156,7 @@ public class EditUserSceneControllerTest extends ApplicationTest{
         this.clickOn("#btnModify");
         this.sleep(500);
 
-        FxAssert.verifyThat("#idField", (javafx.scene.control.TextField t) -> t.getText().equals("1234567890"));
+        FxAssert.verifyThat("#idField", (javafx.scene.control.TextField t) -> "1234567890".equals(t.getText()));
         FxAssert.verifyThat("#idField", (javafx.scene.control.TextField t) -> t.isDisabled());
 
 
@@ -165,7 +167,7 @@ public class EditUserSceneControllerTest extends ApplicationTest{
         this.clickOn("OK");
 
 
-        User updateUser = this.userService.getByIdContaining("1234567890").get();
+        User updateUser = this.userService.getById("1234567890").get();
         assertEquals("GiorgiaMaria", updateUser.getName());
     }
 
@@ -206,12 +208,4 @@ public class EditUserSceneControllerTest extends ApplicationTest{
 
         FxAssert.verifyThat("#userTable", (TableView<Book> t) -> t.getItems().size() == initialSize);
     }
-
-
-
-
-
-
-
-
 }
