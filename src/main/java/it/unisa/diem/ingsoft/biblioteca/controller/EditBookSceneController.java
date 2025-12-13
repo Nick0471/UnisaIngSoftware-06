@@ -86,6 +86,10 @@ public class EditBookSceneController extends GuiController{
             if (!newValue.matches("\\d{4}")) {
                 this.yearField.setText(newValue.replaceAll("[^\\d]", ""));
             }
+
+            if (newValue.length() > 4) {
+                this.yearField.setText(newValue.substring(0, 4));
+            }
         });
 
 
