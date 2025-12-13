@@ -200,7 +200,6 @@ public class LoanSceneController extends GuiController implements Initializable 
         try{
             this.loanService.complete(selectedLoan.getUserId(), selectedLoan.getBookIsbn(), selectedLoan.getLoanDeadline());
             this.updateTable();
-            super.popUp(Alert.AlertType.INFORMATION, "Successo", "Prestito rimosso correttamente.");
         }catch(LoanException e){
             super.popUp(Alert.AlertType.ERROR, "Errore durante la rimozione", e.getMessage());
         }

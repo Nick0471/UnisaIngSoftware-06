@@ -181,7 +181,6 @@ public class BookSceneController extends GuiController implements Initializable 
 
         if (success) {
             this.updateTable();
-            super.popUp(Alert.AlertType.INFORMATION, "Successo", "Libro rimosso correttamente.");
         } else {
             super.popUp(Alert.AlertType.ERROR, "Errore validazione", "Libro specificato inesistente.");
         }
