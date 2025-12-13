@@ -137,14 +137,14 @@ public class EditUserSceneController extends GuiController{
         if (this.isEditMode) {
             try {
                 this.userService.updateById(user);
-                this.popUp(Alert.AlertType.INFORMATION, "Successo", "Utente modificato");
+                //this.popUp(Alert.AlertType.INFORMATION, "Successo", "Utente modificato");
             }catch(UnknownUserByIdException |  InvalidIdException  e){
                 this.popUp(Alert.AlertType.ERROR, "Errore salvataggio", e.getMessage());
             }
         } else {
             try {
                 this.userService.register(user);
-                this.popUp(Alert.AlertType.INFORMATION, "Successo", "Utente aggiunto");
+                //this.popUp(Alert.AlertType.INFORMATION, "Successo", "Utente aggiunto");
             } catch (DuplicateUserByEmailException e) {
                 this.popUp(Alert.AlertType.ERROR ,"Errore salvataggio", e.getMessage());
             } catch (DuplicateUserByIdException | InvalidEmailException | InvalidIdException e) {

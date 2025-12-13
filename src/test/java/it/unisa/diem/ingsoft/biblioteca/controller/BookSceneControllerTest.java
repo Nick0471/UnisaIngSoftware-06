@@ -212,7 +212,7 @@ public class BookSceneControllerTest extends ApplicationTest {
 
         System.out.println("Clicco su Rimuovi");
         this.clickOn("#btnRemove");
-        this.clickOn("OK");
+        //this.clickOn("OK");per chiudere il popup
 
         this.sleep(2000);
 

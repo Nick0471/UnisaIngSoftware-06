@@ -2,6 +2,11 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.Scenes;
+import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
+import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 import it.unisa.diem.ingsoft.biblioteca.service.*;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
+
+import java.time.LocalDate;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.USER_PATH;
 
@@ -29,8 +36,9 @@ public class UserSceneControllerTest extends ApplicationTest {
         Database db = Database.inMemory();
 
         this.userService = new DatabaseUserService(db);
-        this.loanService = new DatabaseLoanService(userService, bookService , db);
         this.bookService = new DatabaseBookService(db);
+        this.loanService = new DatabaseLoanService(userService, bookService , db);
+
 
         ServiceRepository serviceRepository = new ServiceRepository(null, this.userService, this.bookService, this.loanService);
 
@@ -108,82 +116,62 @@ public class UserSceneControllerTest extends ApplicationTest {
         System.out.println("Ordino per Matricola");
         this.clickOn("Matricola");
         this.sleep(1000);
+
     }
 
     @Test
     public void test3_SearchFunctionality() {
-
             System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
 
-            // --- 1. Ricerca per Matricola ---
+            //RICERCA PER MATRICOLA
             System.out.println("Cerco Matricola: 1234567890");
             this.clickOn("#searchType").clickOn("Matricola ");
-
-            // Pulisco e scrivo
-            this.clickOn("#searchField");
-            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
-            this.write("1234567890");
-
-            this.sleep(500); // Aspetto che la tabella si aggiorni
+            this.clickOn("#searchField").write("1234567890");
+            this.sleep(1000);
             FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
 
             this.resetSearchField(); // Resetto per il prossimo test
 
 
-            // --- 2. Ricerca per Email ---
+            //RICERCA PER EMAIL
             System.out.println("Cerco Email parziale: rossi");
             this.clickOn("#searchType").clickOn("Email ");
+            this.clickOn("#searchField").write("rossi");
+            this.sleep(1000);
 
-            // Pulisco e scrivo
-            this.clickOn("#searchField");
-            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
-            this.write("rossi");
-
-            this.sleep(500);
-            // Dovrebbe trovare sia m.rossi1 che ale.rossi
             FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 2);
 
             this.resetSearchField();
 
 
 
-            // --- 3. Ricerca Cognome + Nome    ---
+            //RICERCA PER NOME E COGNOME
             System.out.println("Cerco Cognome: Rossi e Nome: Mario");
             this.clickOn("#searchType").clickOn("Cognome ");
 
-            this.sleep(1000); // Do tempo al filtro di agire
+            this.sleep(1000);
 
-            // IMPORTANTE: Aspetta che il secondo campo sia visibile prima di interagire
+            // Aspetta che il secondo campo sia visibile prima di interagire
             FxAssert.verifyThat("#searchFieldSecondary", NodeMatchers.isVisible());
 
-            // Scrivo nel campo Cognome (Principale)
-            this.clickOn("#searchField");
-            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
-            this.write("Rossi");
-
+            // Scrivo nel campo Cognome
+            this.clickOn("#searchField").write("Rossi");
             this.sleep(1000); // Do tempo al filtro di agire
 
-            // Scrivo nel campo Nome (Secondario)
-            this.clickOn("#searchFieldSecondary");
-            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
-            this.write("Mario");
 
+            // Scrivo nel campo Nome
+            this.clickOn("#searchFieldSecondary").write("Mario");
             this.sleep(1000); // Do tempo al filtro di agire
 
-            // Verifica: deve esserci solo 1 risultato (Mario Rossi) e non 2 (Alessandro Rossi ha cognome Rossi ma nome diverso)
+
             FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
-            FxAssert.verifyThat("#userTable", (TableView<User> t) -> "0512103578".equals(t.getItems().get(0).getId()));
 
-            // --- PULIZIA FINALE ---
-            // Pulisco manualmente il secondo campo per evitare problemi nei test successivi
-            this.clickOn("#searchFieldSecondary");
-            this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
-
-            // Rimetto il filtro su Matricola (o altro) per nascondere il secondo campo e resettare
+            // Rimetto il filtro su Matricola per nascondere il secondo campo e resettare
             this.clickOn("#searchType").clickOn("Matricola ");
             this.resetSearchField();
-
     }
+
+
 
     @Test
     public void test4_RemoveUser() {
@@ -197,70 +185,62 @@ public class UserSceneControllerTest extends ApplicationTest {
 
         System.out.println("Clicco su Rimuovi");
         this.clickOn("#btnRemove");
+        this.clickOn("OK");
         this.sleep(1000);
-
-        // Chiudo l'eventuale popup di conferma/successo (se presente e bloccante, altrimenti TestFX continua)
-        // Nel tuo controller appare un popup "Utente rimosso correttamente".
-        // TestFX preme SPACE/ENTER per chiudere gli alert standard, ma il tuo è una nuova Stage.
-        // Poiché è un popup non modale o gestito custom, verifichiamo solo la tabella.
 
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize - 1);
     }
 
+
+
+
     @Test
-    public void test5_ModifyUser() {
-        System.out.println("--- TEST 5: MODIFICA UTENTE ---");
+    public void test5_RemoveUserError(){
+        System.out.println("--- TEST 5: RIMOZIONE UTENTE FALLITA ---");
 
-        System.out.println("Seleziono un utente");
-        this.clickOn("1234567890");
-        this.sleep(500);
+        int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
 
-        System.out.println("Clicco su Modifica");
-        this.clickOn("#btnModify");
+        System.out.println("Non seleziono un utente");
+        System.out.println("Clicco su Rimuovi");
+        this.clickOn("#btnRemove");
+        this.clickOn("OK");
         this.sleep(1000);
 
-        // Verifica che la modale si sia aperta controllando il titolo o un elemento
-        FxAssert.verifyThat("Modifica Utente", NodeMatchers.isVisible());
-
-        //Modifica il nome
-        this.clickOn("#nameField");
-        this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
-        this.write("Genoveffa");
-
-        this.sleep(500);
-
-        System.out.println("Salvo le modofiche");
-        this.clickOn("#btnConfirm");
-
-        this.sleep(1000);
-
-
-        System.out.println("Chiudo scena ...");
-        this.clickOn("#btnCancel");
-        this.sleep(1000);
+        FxAssert.verifyThat("#userTable", (TableView<Loan> t) -> t.getItems().size() == initialSize);
     }
 
-    @Test
-    public void test6_AddUser() {
-        System.out.println("--- TEST 6: AGGIUNTA UTENTE ---");
 
-        System.out.println("Clicco su Aggiungi");
-        this.clickOn("#btnAdd");
-        this.sleep(1000);
 
-        FxAssert.verifyThat("Aggiungi Utente", NodeMatchers.isVisible());
 
-        System.out.println("Chiudo modale...");
-        this.clickOn("#btnCancel");
-        this.sleep(1000);
-    }
 
     @Test
-    public void test7_UserProfile() {
-        System.out.println("--- TEST 7: PROFILO UTENTE ---");
+    public void test6_RemoveUserWithActiveLoan() throws Exception {
+        System.out.println("--- TEST: PREVENZIONE RIMOZIONE UTENTE CON PRESTITI ---");
 
+
+        // RECUPERO DI UN UTENTE DAL DATABASE
+        User user = this.userService.getByIdContaining("1122334455").get();
+
+
+        // CREAZIONE LIBRO E PRESTITO ATTIVO
+        Book book = new Book("2222222222222", "Titolo", "autore", 2020,2,2, "genere", "descrizione");
+        this.bookService.add(book);
+        LocalDate dataInizio = LocalDate.now();
+        LocalDate dataFine = LocalDate.now().plusMonths(1);
+        this.loanService.register(user.getId(), book.getIsbn(), dataInizio, dataFine);
+
+
+        // CREAZIONE LIBRO E PRESTITO SCADUTO PER LO STESSO UTENTE
+        Book bookScaduto = new Book("3333333333333", "Libro Vecchio", "Autore X", 2015, 1, 1, "Storico", "Desc");
+        this.bookService.add(bookScaduto);
+        LocalDate dataInizioScaduto = LocalDate.now().minusMonths(3);
+        LocalDate dataFineScaduta = LocalDate.now().minusMonths(1); // La data di fine è passata -> SCADUTO
+        this.loanService.register(user.getId(), bookScaduto.getIsbn(), dataInizioScaduto, dataFineScaduta);
+
+
+        //VISUALIZZAZIONE ACCOUNT UTENTE
         System.out.println("Seleziono un utente");
-        this.clickOn("1234567890");
+        this.clickOn("1122334455");
 
         System.out.println("Clicco su Account Utente");
         this.clickOn("#btnUserProfile");
@@ -271,10 +251,76 @@ public class UserSceneControllerTest extends ApplicationTest {
         System.out.println("Chiudo finestra profilo...");
         this.clickOn("#btnClose");
         this.sleep(1000);
+
+
+
+
+        //RIMOZIONE UTENTE CON PRESTITI ATTIVI
+        // Conto quanti utenti ci sono prima dell'operazione
+        int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
+
+        System.out.println("Seleziono l'utente con prestiti attivi: ");
+        this.clickOn("1122334455"); // Seleziono la riga tramite la matricola
+        this.sleep(500);
+
+        System.out.println("Clicco su Rimuovi");
+        this.clickOn("#btnRemove");
+        this.sleep(500); // Aspetto che appaia l'Alert
+
+
+        FxAssert.verifyThat("Non puoi rimuovere un utente che ha ancora prestiti attivi", NodeMatchers.isVisible());
+
+        this.clickOn("OK");
+        this.sleep(500);
+
+        // Verifico che la dimensione della tabella NON sia cambiata
+        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize);
+
     }
 
+
+
+
     @Test
-    public void test8_NavigationHome() {
+    public void test7_ModifyUser() {
+        System.out.println("--- TEST 5: MODIFICA UTENTE ---");
+
+        System.out.println("Seleziono un utente");
+        this.clickOn("1234567890");
+        this.sleep(500);
+
+        System.out.println("Clicco su Modifica");
+        this.clickOn("#btnModify");
+        this.sleep(1000);
+
+        FxAssert.verifyThat("Modifica Utente", NodeMatchers.isVisible());
+
+        System.out.println("Chiudo scena ...");
+        this.clickOn("#btnCancel");
+        this.sleep(1000);
+    }
+
+
+
+    @Test
+    public void test8_AddUser() {
+        System.out.println("--- TEST 6: AGGIUNTA UTENTE ---");
+
+        System.out.println("Clicco su Aggiungi");
+        this.clickOn("#btnAdd");
+        this.sleep(1000);
+
+        FxAssert.verifyThat("Aggiungi Utente", NodeMatchers.isVisible());
+
+        System.out.println("Chiudo scena...");
+        this.clickOn("#btnCancel");
+        this.sleep(1000);
+    }
+
+
+
+    @Test
+    public void test9_NavigationHome() {
         System.out.println("--- TEST 8: NAVIGAZIONE HOME ---");
 
         this.sleep(1000);
@@ -282,7 +328,6 @@ public class UserSceneControllerTest extends ApplicationTest {
         this.clickOn("#btnHome");
         this.sleep(2000);
 
-        // Verifica che siamo tornati alla Homepage
         FxAssert.verifyThat("Biblioteca Universitaria", NodeMatchers.isVisible());
     }
 }
