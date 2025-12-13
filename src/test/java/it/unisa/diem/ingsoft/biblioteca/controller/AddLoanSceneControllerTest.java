@@ -107,7 +107,7 @@ public class AddLoanSceneControllerTest extends ApplicationTest{
     }
 
     @Test
-    public void test4_BookNotFound(){
+    public void test4_ResetBookSelection(){
         System.out.println("--- TEST 4: RESET SLEZIONE LIBRO ---");
 
         this.clickOn("#isbnField").write("9780618391110");
