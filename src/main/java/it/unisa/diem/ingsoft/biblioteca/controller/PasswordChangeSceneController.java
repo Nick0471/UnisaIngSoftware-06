@@ -25,9 +25,9 @@ public class PasswordChangeSceneController extends GuiController {
     private PasswordService passwordService;
 
     @Override
-    public void setServices(ServiceRepository serviceRepository){
+    public void setServices(ServiceRepository serviceRepository) {
         super.setServices(serviceRepository);
-        this.passwordService= serviceRepository.getPasswordService();
+        this.passwordService = serviceRepository.getPasswordService();
     }
 
 
@@ -44,26 +44,36 @@ public class PasswordChangeSceneController extends GuiController {
     private PasswordField newPasswordConfirm;
 
 
-
     @FXML
     private void handleGoToViewHomepage(ActionEvent event) {
-        // Password inserita dall'utente
-        String pass = this.currentPassword.getText();
+        String oldPass = this.currentPassword.getText();
+        String newPass = this.newPassword.getText();
+        String confirmPass = this.newPasswordConfirm.getText();
 
 
-        if (!this.passwordService.check(pass)) {
-            this.popUp(Alert.AlertType.ERROR, "Errore password", "La password inserita non è corretta.");
+        if (!this.passwordService.check(oldPass)) {
+            this.popUp(Alert.AlertType.ERROR, "Errore password", "La vecchia password inserita non è corretta.");
             return;
         }
 
-        // Cambio password solo se rispetta il requisito di lunghezza (in questo caso == 6)
-        if(this.newPassword.getText().length() >= 6 && this.newPassword.getText().length() <= 10){
-            this.passwordService.change(this.newPassword.getText());
-            this.changeScene(event, HOMEPAGE_PATH );
-        } else {
-            this.popUp(Alert.AlertType.WARNING, "Valutazione password", "La nuova password deve essere da 6 a 10 caratteri.");
-
+        if (!newPass.equals(confirmPass)) {
+            this.popUp(Alert.AlertType.WARNING, "Valutazione password", "Le due password non coincidono.");
+            return;
         }
 
+
+        if (newPass.length() < 6 || newPass.length() > 10) {
+            this.popUp(Alert.AlertType.WARNING, "Valutazione password", "La nuova password deve essere da 6 a 10 caratteri.");
+            return;
+        }
+
+
+
+        this.passwordService.change(newPass);
+
+        this.popUp(Alert.AlertType.CONFIRMATION, "Successo", "Password aggiornata correttamente.");
+
+        this.changeScene(event, HOMEPAGE_PATH);
     }
+
 }
