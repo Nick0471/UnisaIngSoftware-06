@@ -30,7 +30,7 @@ import javafx.scene.control.TextField;
  */
 
 
-public class AddUserSceneController extends GuiController{
+public class EditUserSceneController extends GuiController{
 
     @FXML private TextField idField;
     @FXML private TextField surnameField;

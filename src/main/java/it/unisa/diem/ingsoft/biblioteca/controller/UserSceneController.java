@@ -188,7 +188,7 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        List<Loan> loanList = this.loanService.getByUserIdContaining(selectedUser.getId());
+        List<Loan> loanList = this.loanService.getActiveByUserId(selectedUser.getId());
 
         if(loanList.isEmpty()) {
             this.userService.removeById(selectedUser.getId());
@@ -211,7 +211,7 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        this.modalScene(EDIT_USER_PATH , "Modifica Utente", (AddUserSceneController controller) -> {
+        this.modalScene(EDIT_USER_PATH , "Modifica Utente", (EditUserSceneController controller) -> {
             controller.editUser(selectedUser);
         });
 
