@@ -98,7 +98,7 @@ public abstract class GuiController {
     /**
      * @brief Mostra una finestra di pop-up (Alert).
      *
-     * @param type Il tipo di alert (Alert.AlertType.ERROR, INFORMATION, WARNING, etc.)
+     * @param type Il tipo di alert.
      * @param title Il titolo della finestra.
      * @param message Il messaggio da visualizzare.
      */
