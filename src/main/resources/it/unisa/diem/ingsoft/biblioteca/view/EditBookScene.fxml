@@ -158,7 +158,7 @@
                     </font>
                 </Button>
 
-                <Button fx:id="btnConfirm" mnemonicParsing="false" onAction="#handleConfirmAdd" prefHeight="45.0" prefWidth="140.0" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);" text="Conferma">
+                <Button fx:id="btnConfirm" mnemonicParsing="false" onAction="#handleConfirm" prefHeight="45.0" prefWidth="140.0" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);" text="Conferma">
                     <font>
                         <Font name="System Bold" size="15.0" />
                     </font>

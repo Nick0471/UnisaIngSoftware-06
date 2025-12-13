@@ -53,7 +53,7 @@ public class EditBookSceneController extends GuiController{
     }
 
     /**
-     * @brief Setter per modificare i dati della tabella.
+     * @brief Popola i campi del form con i dati del libro selezionato per la modifica.
      *
      * @param book Il libro passatogli dall'handleModifyBook di BookSceneController
      */
@@ -77,7 +77,8 @@ public class EditBookSceneController extends GuiController{
     /**
      * @brief Inizializza il controller
      *
-     * @note Fa in modo che i campi per l'inserimento dell'anno e del numero di copie accettino solo numeri interi
+     * @note Fa in modo che i campi per l'inserimento dell'anno, del numero di copie e dell'ISBN accettino solo numeri interi
+     * @note Blocca l'inserimento dell'ISBN a 13 caratteri.
      */
     @FXML
     public void initialize() {
@@ -106,7 +107,7 @@ public class EditBookSceneController extends GuiController{
     }
 
     /**
-     * Gestisce la conferma per l'aggiunta di un nuovo libro.
+     * Gestisce la conferma la conferma dell'operazione di aggiunta o modifica.
 
      * Recupera i dati dai campi di testo, verifica che i campi obbligatori non siano vuoti
      * e converte i valori numerici. Crea un nuovo oggetto Book e salva i dati sul database.
@@ -115,7 +116,7 @@ public class EditBookSceneController extends GuiController{
      * event L'evento generato dal click sul pulsante "Conferma".
      */
     @FXML
-    private void handleConfirmAdd(ActionEvent event) {
+    private void handleConfirm(ActionEvent event) {
         String title = this.titleField.getText();
         String author = this.authorField.getText();
         String genre = this.genreField.getText();
@@ -133,13 +134,12 @@ public class EditBookSceneController extends GuiController{
             int year = Integer.parseInt(yearText);
             int copies = Integer.parseInt(copiesText);
 
-            Book book = new Book(isbn, title, author, year, copies, copies, genre, description);
-
             try {
                 if (isEditMode) {
-                    this.bookService.updateByIsbn(book);
+                    int remainingCopies = this.bookService.countRemainingCopies(isbn);
+                    this.bookService.updateByIsbn(new Book(isbn, title, author, year, copies, remainingCopies, genre, description));
                 } else {
-                    this.bookService.add(book);
+                    this.bookService.add(new Book(isbn, title, author, year, copies, copies, genre, description));
                 }
                 super.closeScene(event);
             } catch (BookException e) {

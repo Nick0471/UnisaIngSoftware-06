@@ -31,10 +31,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
- * @brief Controller per la gestione della view dei prestit.
+ * @brief Controller per la gestione della view dei prestiti.
  *
  * Gestisce la visualizzazione dei prestiti e implementa un filtro di ricerca,
- * inoltre rende possibile aggiungere o rimuovere prestiti attivi .
+ * inoltre rende possibile aggiungere o rimuovere prestiti attivi.
  *
  *Estende {@link GuiController} e implementa {@link Initializable}.
  */
@@ -88,8 +88,9 @@ public class LoanSceneController extends GuiController implements Initializable 
 
     /**
      * @brief Inizializza il controller.
-     * Configura le colonne della tabella, imposta i tipi di ricerca disponibili
-     * e carica i dati iniziali.
+     * Configura le colonne della tabella, evidenziando i prestiti scaduti,
+     * imposta i tipi di ricerca disponibili e
+     * carica i dati iniziali.
      *
      * @param location La location utilizzata per risolvere i percorsi relativi all'oggetto root, o null se non nota.
      * @param resources Le risorse utilizzate per localizzare l'oggetto root, o null se non localizzato.
@@ -186,7 +187,7 @@ public class LoanSceneController extends GuiController implements Initializable 
      * Salva la restituzione di un prestito.
      *
      * Verifica che un prestito sia selezionato
-     * chiama il metodo di rimozione e aggiorna la lista dei prestiti.
+     * chiama il metodo di restituzione e aggiorna la lista dei prestiti.
      */
     @FXML
     private void handleReturnLoan(ActionEvent event) {

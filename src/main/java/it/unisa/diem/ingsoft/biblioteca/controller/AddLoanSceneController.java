@@ -73,6 +73,9 @@ public class AddLoanSceneController extends GuiController {
      * @brief Inizializza il controller
      *
      * @note Imposta la data odierna come inizio prestito e +30 giorni come fine prestito di default.
+     * @note Controlla che ISBN accetti solo 13 caratteri numerici.
+     * @note Controlla che la matricola non sia più lunga di 10 caratteri.
+     * @note Disabilita i tasti di reset.
      */
     @FXML
     public void initialize() {
@@ -201,12 +204,10 @@ public class AddLoanSceneController extends GuiController {
     }
 
     /**
-     * Gestisce la ricerca dell'utente tramite matricola.
-     *
-     * Verifica l'esistenza dell'utente e la possibilità di concedergli il prestito.
+     * Abilita il campo di testo per permettere l'inserimento di una nuova matricola.
      */
     @FXML
-    private void handleSearchUser(ActionEvent event) {
+    private void handleResetUser(ActionEvent event) {
         this.userMatricolaField.setDisable(false);
         this.userMatricolaField.clear();
         this.btnResetUser.setDisable(true);
@@ -214,12 +215,10 @@ public class AddLoanSceneController extends GuiController {
     }
 
     /**
-     * Gestisce la ricerca del libro tramite ISBN.
-     *
-     * Verifica l'esistenza del libro e la disponibilità di copie.
+     * Abilita il campo di testo per permettere l'inserimento di un nuovo ISBN.
      */
     @FXML
-    private void handleSearchBook(ActionEvent event) {
+    private void handleResetBook(ActionEvent event) {
         this.isbnField.setDisable(false);
         this.isbnField.clear();
         this.btnResetBook.setDisable(true);
