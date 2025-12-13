@@ -2,9 +2,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.Scenes;
-import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
+
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
