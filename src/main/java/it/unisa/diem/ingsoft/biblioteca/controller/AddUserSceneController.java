@@ -98,7 +98,7 @@ public class AddUserSceneController extends GuiController{
     @FXML
     private void handleConfirmAdd(ActionEvent event){
 
-        String id = this.idField.getText();
+        String id = this.idField.getText().trim().toUpperCase();
         String email = this.emailField.getText();
         String name = this.nameField.getText();
         String surname = this.surnameField.getText();
