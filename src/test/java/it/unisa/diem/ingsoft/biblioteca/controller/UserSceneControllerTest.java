@@ -129,6 +129,7 @@ public class UserSceneControllerTest extends ApplicationTest {
 
             this.resetSearchField(); // Resetto per il prossimo test
 
+
             // --- 2. Ricerca per Email ---
             System.out.println("Cerco Email parziale: rossi");
             this.clickOn("#searchType").clickOn("Email ");
@@ -144,9 +145,13 @@ public class UserSceneControllerTest extends ApplicationTest {
 
             this.resetSearchField();
 
-            // --- 3. Ricerca Complessa (Cognome + Nome) ---
+
+
+            // --- 3. Ricerca Cognome + Nome    ---
             System.out.println("Cerco Cognome: Rossi e Nome: Mario");
             this.clickOn("#searchType").clickOn("Cognome ");
+
+            this.sleep(1000); // Do tempo al filtro di agire
 
             // IMPORTANTE: Aspetta che il secondo campo sia visibile prima di interagire
             FxAssert.verifyThat("#searchFieldSecondary", NodeMatchers.isVisible());
@@ -155,6 +160,8 @@ public class UserSceneControllerTest extends ApplicationTest {
             this.clickOn("#searchField");
             this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
             this.write("Rossi");
+
+            this.sleep(1000); // Do tempo al filtro di agire
 
             // Scrivo nel campo Nome (Secondario)
             this.clickOn("#searchFieldSecondary");
@@ -215,7 +222,20 @@ public class UserSceneControllerTest extends ApplicationTest {
         // Verifica che la modale si sia aperta controllando il titolo o un elemento
         FxAssert.verifyThat("Modifica Utente", NodeMatchers.isVisible());
 
-        System.out.println("Chiudo modale...");
+        //Modifica il nome
+        this.clickOn("#nameField");
+        this.push(KeyCode.CONTROL, KeyCode.A).push(KeyCode.DELETE);
+        this.write("Genoveffa");
+
+        this.sleep(500);
+
+        System.out.println("Salvo le modofiche");
+        this.clickOn("#btnConfirm");
+
+        this.sleep(1000);
+
+
+        System.out.println("Chiudo scena ...");
         this.clickOn("#btnCancel");
         this.sleep(1000);
     }

@@ -90,7 +90,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
         // Listener per cambiare la visibilità del secondo campo di ricerca
         this.searchType.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if ("Cognome".equals(newVal)) {
+            if ("Cognome ".equals(newVal)) {
                 // Se filtro per Cognome, mostro il campo per il Nome
                 this.searchFieldSecondary.setVisible(true);
                 this.searchFieldSecondary.setManaged(true);
