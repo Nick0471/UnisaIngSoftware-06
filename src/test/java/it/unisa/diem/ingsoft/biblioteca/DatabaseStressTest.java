@@ -26,7 +26,7 @@ import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class StressTest {
+public class DatabaseStressTest {
 
     // Cartella temporanea creata da JUnit
     // Viene eliminata quando il test finisce
@@ -41,7 +41,7 @@ public class StressTest {
     // DEVE ESSERE STATICO!
     @BeforeAll
     public static void setup() {
-        Path dbPath = tempDir.resolve("temp.db");
+        Path dbPath = tempDir.resolve("stress.db");
         database = Database.at(dbPath);
 
         userService = new DatabaseUserService(database);

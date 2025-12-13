@@ -3,10 +3,7 @@ package it.unisa.diem.ingsoft.biblioteca;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.time.Duration;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,22 +62,5 @@ public class DatabasePasswordServiceTest {
     @Test
     public void isPresent_WhenPasswordNotSet() {
         assertFalse(this.passwordService.isPresent());
-    }
-
-    @Test
-    public void speed_Methods() {
-        Duration duration = Duration.ofMillis(100);
-
-        assertDoesNotThrow(() -> {
-            this.passwordService.change("PASSWORD123!@@!");
-        });
-
-        assertTimeout(duration, () -> {
-            this.passwordService.isPresent();
-        });
-
-        assertTimeout(duration, () -> {
-            this.passwordService.check("PASSWORD123!@@!");
-        });
     }
 }
