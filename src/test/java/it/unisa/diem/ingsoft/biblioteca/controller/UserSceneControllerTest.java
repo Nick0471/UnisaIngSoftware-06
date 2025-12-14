@@ -106,18 +106,16 @@ public class UserSceneControllerTest extends ApplicationTest {
         this.sleep(1000);
         // Verifica che ci siano 7 utenti caricati
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 7);
+        this.sleep(1000);
     }
 
     @Test
     public void test2_Sorting() {
         System.out.println("--- TEST 2: ORDINAMENTO ---");
-        this.sleep(500);
 
-        System.out.println("Ordino per Cognome");
         this.clickOn("Cognome");
         this.sleep(1000);
 
-        System.out.println("Ordino per Matricola");
         this.clickOn("Matricola");
         this.sleep(1000);
 
@@ -125,54 +123,56 @@ public class UserSceneControllerTest extends ApplicationTest {
 
     @Test
     public void test3_SearchFunctionality() {
-            System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
+        System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
 
-            //RICERCA PER MATRICOLA
-            System.out.println("Cerco Matricola: 1234567890");
-            this.clickOn("#searchType").clickOn("Matricola ");
-            this.clickOn("#searchField").write("1234567890");
-            this.sleep(1000);
-            FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
+        //RICERCA PER MATRICOLA
+        System.out.println("Cerco Matricola: 1234567890");
+        this.clickOn("#searchType").clickOn("Matricola ");
+        this.clickOn("#searchField").write("1234567890");
+        this.sleep(1000);
+        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
 
-            this.resetSearchField(); // Resetto per il prossimo test
-
-
-            //RICERCA PER EMAIL
-            System.out.println("Cerco Email parziale: rossi");
-            this.clickOn("#searchType").clickOn("Email ");
-            this.clickOn("#searchField").write("rossi");
-            this.sleep(1000);
-
-            FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 2);
-
-            this.resetSearchField();
+        this.resetSearchField(); // Resetto per il prossimo test
 
 
+        //RICERCA PER EMAIL
+        System.out.println("Cerco Email parziale: rossi");
+        this.clickOn("#searchType").clickOn("Email ");
+        this.clickOn("#searchField").write("rossi");
+        this.sleep(1000);
 
-            //RICERCA PER NOME E COGNOME
-            System.out.println("Cerco Cognome: Rossi e Nome: Mario");
-            this.clickOn("#searchType").clickOn("Cognome ");
+        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 2);
 
-            this.sleep(1000);
-
-            // Aspetta che il secondo campo sia visibile prima di interagire
-            FxAssert.verifyThat("#searchFieldSecondary", NodeMatchers.isVisible());
-
-            // Scrivo nel campo Cognome
-            this.clickOn("#searchField").write("Rossi");
-            this.sleep(1000); // Do tempo al filtro di agire
+        this.resetSearchField();
 
 
-            // Scrivo nel campo Nome
-            this.clickOn("#searchFieldSecondary").write("Mario");
-            this.sleep(1000); // Do tempo al filtro di agire
+
+        //RICERCA PER NOME E COGNOME
+        System.out.println("Cerco Cognome: Rossi e Nome: Mario");
+        this.clickOn("#searchType").clickOn("Cognome ");
+
+        this.sleep(1000);
+
+        // Aspetta che il secondo campo sia visibile prima di interagire
+        FxAssert.verifyThat("#searchFieldSecondary", NodeMatchers.isVisible());
+
+        // Scrivo nel campo Cognome
+        this.clickOn("#searchField").write("Rossi");
+        this.sleep(1000); // Do tempo al filtro di agire
 
 
-            FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
+        // Scrivo nel campo Nome
+        this.clickOn("#searchFieldSecondary").write("Mario");
+        this.sleep(1000); // Do tempo al filtro di agire
 
-            // Rimetto il filtro su Matricola per nascondere il secondo campo e resettare
-            this.clickOn("#searchType").clickOn("Matricola ");
-            this.resetSearchField();
+
+        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
+
+        // Rimetto il filtro su Matricola per nascondere il secondo campo e resettare
+        this.clickOn("#searchType").clickOn("Matricola ");
+        this.resetSearchField();
+        this.sleep(1000);
+
     }
 
 
@@ -190,6 +190,7 @@ public class UserSceneControllerTest extends ApplicationTest {
           this.sleep(1000);
 
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize - 1);
+        this.sleep(1000);
     }
 
 
@@ -201,13 +202,16 @@ public class UserSceneControllerTest extends ApplicationTest {
 
         int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
 
-        System.out.println("Non seleziono un utente");
-        System.out.println("Clicco su Rimuovi");
         this.clickOn("#btnRemove");
+        this.sleep(1000);
+
+        FxAssert.verifyThat("Seleziona un utente da rimuovere", NodeMatchers.isVisible());
+
         this.clickOn("OK");
         this.sleep(1000);
 
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize);
+        this.sleep(1000);
     }
 
 
@@ -216,7 +220,7 @@ public class UserSceneControllerTest extends ApplicationTest {
 
     @Test
     public void test6_RemoveUserWithActiveLoan() throws Exception {
-        System.out.println("--- TEST: PREVENZIONE RIMOZIONE UTENTE CON PRESTITI ---");
+        System.out.println("--- TEST 6: PROVA RIMOZIONE UTENTE CON PRESTITI ---");
 
 
         // RECUPERO DI UN UTENTE DAL DATABASE
@@ -235,36 +239,31 @@ public class UserSceneControllerTest extends ApplicationTest {
         Book bookScaduto = new Book("3333333333333", "Libro Vecchio", "Autore X", 2015, 1, 1, "Storico", "Desc");
         this.bookService.add(bookScaduto);
         LocalDate dataInizioScaduto = LocalDate.now().minusMonths(3);
-        LocalDate dataFineScaduta = LocalDate.now().minusMonths(1); // La data di fine è passata -> SCADUTO
+        LocalDate dataFineScaduta = LocalDate.now().minusMonths(1);
         this.loanService.register(user.getId(), bookScaduto.getIsbn(), dataInizioScaduto, dataFineScaduta);
 
 
         //VISUALIZZAZIONE ACCOUNT UTENTE
-        System.out.println("Seleziono un utente");
         this.clickOn("1122334455");
 
-        System.out.println("Clicco su Account Utente");
         this.clickOn("#btnUserProfile");
         this.sleep(1000);
 
         FxAssert.verifyThat("Account Utente", NodeMatchers.isVisible());
 
-        System.out.println("Chiudo finestra profilo...");
         this.clickOn("#btnClose");
         this.sleep(1000);
-
-
 
 
         //RIMOZIONE UTENTE CON PRESTITI ATTIVI
         // Conto quanti utenti ci sono prima dell'operazione
         int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
 
-        System.out.println("Seleziono l'utente con prestiti attivi: ");
-        this.clickOn("1122334455"); // Seleziono la riga tramite la matricola
-        this.sleep(500);
 
-        System.out.println("Clicco su Rimuovi");
+        this.clickOn("1122334455"); // Seleziono la riga tramite la matricola
+        this.sleep(1000);
+
+
         this.clickOn("#btnRemove");
         this.sleep(500); // Aspetto che appaia l'Alert
 
@@ -272,10 +271,11 @@ public class UserSceneControllerTest extends ApplicationTest {
         FxAssert.verifyThat("Non puoi rimuovere un utente che ha ancora prestiti attivi", NodeMatchers.isVisible());
 
         this.clickOn("OK");
-        this.sleep(500);
+        this.sleep(1000);
 
         // Verifico che la dimensione della tabella NON sia cambiata
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize);
+        this.sleep(1000);
 
     }
 
@@ -284,7 +284,7 @@ public class UserSceneControllerTest extends ApplicationTest {
 
     @Test
     public void test7_ModifyUser() {
-        System.out.println("--- TEST 5: MODIFICA UTENTE ---");
+        System.out.println("--- TEST 7: MODIFICA UTENTE ---");
 
         this.clickOn("1234567890");
         this.sleep(500);
@@ -303,7 +303,7 @@ public class UserSceneControllerTest extends ApplicationTest {
 
     @Test
     public void test8_AddUser() {
-        System.out.println("--- TEST 6: AGGIUNTA UTENTE ---");
+        System.out.println("--- TEST 8: AGGIUNTA UTENTE ---");
 
 
         this.clickOn("#btnAdd");
@@ -320,7 +320,7 @@ public class UserSceneControllerTest extends ApplicationTest {
 
     @Test
     public void test9_NavigationHome() {
-        System.out.println("--- TEST 8: NAVIGAZIONE HOME ---");
+        System.out.println("--- TEST 9: NAVIGAZIONE HOME ---");
 
         this.clickOn("#btnHome");
         this.sleep(2000);

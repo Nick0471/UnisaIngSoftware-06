@@ -30,7 +30,7 @@
 
                 <Region HBox.hgrow="ALWAYS" />
 
-                <Label  fx:id="titleLabel" text="Aggiungi Nuovo Utente" textFill="WHITE">
+                <Label  fx:id="titleLabel" text="Aggiungi Utente" textFill="WHITE">
                     <font>
                         <Font name="Segoe UI Bold" size="26.0" />
                     </font>
@@ -101,7 +101,7 @@
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="emailField" promptText="esempio@email.com" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <TextField fx:id="emailField" promptText="esempio@studenti.unisa.it" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <font>
                         <Font size="14.0" />
                     </font>

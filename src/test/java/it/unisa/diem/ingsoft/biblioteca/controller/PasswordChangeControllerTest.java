@@ -53,10 +53,10 @@ public class PasswordChangeControllerTest extends ApplicationTest {
 
         this.clickOn("#newPassword").write("NewPass123");
         this.clickOn("#newPasswordConfirm").write("NewPass123");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#btnUpdate");
-        this.sleep(500);
+        this.sleep(1000);
 
     }
 
@@ -69,14 +69,15 @@ public class PasswordChangeControllerTest extends ApplicationTest {
 
         this.clickOn("#newPassword").write("NewPass123");
         this.clickOn("#newPasswordConfirm").write("NewPass123");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#btnUpdate");
-        this.sleep(500);
+        this.sleep(1000);
 
         FxAssert.verifyThat("La password vecchia inserita non è corretta.", NodeMatchers.isVisible());
 
         this.clickOn("OK");
+        this.sleep(1000);
 
     }
 
@@ -89,14 +90,15 @@ public class PasswordChangeControllerTest extends ApplicationTest {
 
         this.clickOn("#newPassword").write("New");
         this.clickOn("#newPasswordConfirm").write("NewPass");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#btnUpdate");
-        this.sleep(500);
+        this.sleep(1000);
 
         FxAssert.verifyThat("Le due password non coincidono.", NodeMatchers.isVisible());
 
         this.clickOn("OK");
+        this.sleep(1000);
     }
 
 
@@ -108,23 +110,24 @@ public class PasswordChangeControllerTest extends ApplicationTest {
 
         this.clickOn("#newPassword").write("12345");
         this.clickOn("#newPasswordConfirm").write("12345");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#btnUpdate");
-        this.sleep(500);
+        this.sleep(1000);
 
         FxAssert.verifyThat("La nuova password deve essere da 6 a 10 caratteri.", NodeMatchers.isVisible());
 
         this.clickOn("OK");
+        this.sleep(1000);
     }
 
 
     @Test
     public void test5_AbortOperation() {
-        System.out.println("--- TEST 4: ANNULLA OPERAZIONE ---");
+        System.out.println("--- TEST 5: ANNULLA OPERAZIONE ---");
 
         this.clickOn("#btnReturn");
-        this.sleep(500);
+        this.sleep(1000);
     }
 }
 

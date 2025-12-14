@@ -42,9 +42,6 @@ public class LogInSceneControllerTest extends ApplicationTest {
 
     }
 
-
-
-
     @Test
     public void test1_LogInSuccess(){
         System.out.println("--- TEST 1: LOGIN SUCCESSO---");
@@ -53,29 +50,30 @@ public class LogInSceneControllerTest extends ApplicationTest {
         this.passwordService.change("OldPassword");
 
         this.clickOn("#insertedPassword").write("OldPassword");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#btnLogin");
-        this.sleep(500);
+        this.sleep(1000);
 
     }
 
 
     @Test
     public void test2_PasswordMissing(){
-        System.out.println("--- TEST 2: NESSUNA PASSWORD E' PRESENTE NEL DATABASE ---");
+        System.out.println("--- TEST 2: NON E' PRESENTE NESSUNA PASSWORD NEL DATABASE ---");
 
         //nel database non ho inserito nessuna password
 
         this.clickOn("#insertedPassword").write("OldPassword");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#btnLogin");
-        this.sleep(500);
+        this.sleep(1000);
 
         FxAssert.verifyThat("Non è presente alcuna password nel database", NodeMatchers.isVisible());
+
         this.clickOn("OK");
-        this.sleep(500);
+        this.sleep(1000);
     }
 
 
@@ -87,14 +85,15 @@ public class LogInSceneControllerTest extends ApplicationTest {
         this.passwordService.change("OldPassword");
 
         this.clickOn("#insertedPassword").write("Old");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#btnLogin");
-        this.sleep(500);
+        this.sleep(1000);
 
         FxAssert.verifyThat("La password inserita non è corretta.", NodeMatchers.isVisible());
+
         this.clickOn("OK");
-        this.sleep(500);
+        this.sleep(1000);
     }
 
 

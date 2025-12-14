@@ -132,7 +132,7 @@ public class EditUserSceneController extends GuiController{
 
 
         if (id.isEmpty() || surname.isEmpty() || name.isEmpty() || email.isEmpty()) {
-            this.popUp(Alert.AlertType.ERROR,"Errore validazione", " Compila tutti i campi obbligatori.");
+            this.popUp(Alert.AlertType.ERROR,"Errore validazione", "Compila tutti i campi obbligatori.");
             return;
         }
 

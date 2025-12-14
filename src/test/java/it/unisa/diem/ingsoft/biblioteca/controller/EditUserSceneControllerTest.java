@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import org.testfx.matcher.base.NodeMatchers;
 
 public class EditUserSceneControllerTest extends ApplicationTest{
 
@@ -83,7 +84,7 @@ public class EditUserSceneControllerTest extends ApplicationTest{
         int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
 
         this.clickOn("#btnAdd");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#idField").write("E123456789");
         this.clickOn("#surnameField.").write("Altieri");
@@ -95,17 +96,18 @@ public class EditUserSceneControllerTest extends ApplicationTest{
 
 
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize + 1);
+        this.sleep(1000);
     }
 
 
     @Test
     public void test2_AddNewUserWithWrongEmail(){
-        System.out.println("--- TEST 1: AGGIUNTA NUOVO UTENTE---");
+        System.out.println("--- TEST 2: PROVA AGGIUNTA NUOVO UTENTE CON EMAIL ERRATA---");
 
         int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
 
         this.clickOn("#btnAdd");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#idField").write("E123456789");
         this.clickOn("#surnameField.").write("Altieri");
@@ -115,20 +117,24 @@ public class EditUserSceneControllerTest extends ApplicationTest{
         this.clickOn("#btnConfirm");
         this.sleep(1000);
 
+        FxAssert.verifyThat("La mail inserita per la registrazione non è valida!", NodeMatchers.isVisible());
+        this.sleep(1000);
+
         this.clickOn("OK");
         this.sleep(1000);
 
         FxAssert.verifyThat("#userTable", (TableView<Book> t) -> t.getItems().size() == initialSize);
+        this.sleep(1000);
     }
 
     @Test
     public void test3_AddNewUserWithWrongId(){
-        System.out.println("--- TEST 1: AGGIUNTA NUOVO UTENTE---");
+        System.out.println("--- TEST 3: PROVA AGGIUNTA NUOVO UTENTE CON MATRICOLA ERRATA ---");
 
         int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
 
         this.clickOn("#btnAdd");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#idField").write("E12");
         this.clickOn("#surnameField.").write("Altieri");
@@ -138,21 +144,26 @@ public class EditUserSceneControllerTest extends ApplicationTest{
         this.clickOn("#btnConfirm");
         this.sleep(1000);
 
+
+        FxAssert.verifyThat("La matricola inserita per la registrazione non è valida!", NodeMatchers.isVisible());
+        this.sleep(1000);
+
         this.clickOn("OK");
         this.sleep(1000);
 
         FxAssert.verifyThat("#userTable", (TableView<Book> t) -> t.getItems().size() == initialSize);
+        this.sleep(1000);
     }
 
 
     @Test
     public void test4_ModifyUser() {
-        System.out.println("--- TEST 3: MODIFICA UTENTE ---");
+        System.out.println("--- TEST 4: MODIFICA UTENTE ---");
 
         this.clickOn("1234567890");
 
         this.clickOn("#btnModify");
-        this.sleep(500);
+        this.sleep(1000);
 
         FxAssert.verifyThat("#idField", (javafx.scene.control.TextField t) -> "1234567890".equals(t.getText()));
         FxAssert.verifyThat("#idField", (javafx.scene.control.TextField t) -> t.isDisabled());
@@ -166,43 +177,49 @@ public class EditUserSceneControllerTest extends ApplicationTest{
 
         User updateUser = this.userService.getById("1234567890").get();
         assertEquals("GiorgiaMaria", updateUser.getName());
+        this.sleep(1000);
     }
 
 
     @Test
     public void test5_EmptyFields() {
-        System.out.println("--- TEST 4: VALIDAZIONE CAMPI VUOTI ---");
+        System.out.println("--- TEST 5: VALIDAZIONE CAMPI VUOTI ---");
 
         int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
 
         this.clickOn("#btnAdd");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.clickOn("#btnConfirm");
-        this.sleep(500);
+        this.sleep(1000);
+
+        FxAssert.verifyThat("Compila tutti i campi obbligatori.", NodeMatchers.isVisible());
+        this.sleep(1000);
 
         this.clickOn("OK");
-
+        this.sleep(1000);
 
         FxAssert.verifyThat("#userTable", (TableView<Book> t) -> t.getItems().size() == initialSize);
+        this.sleep(1000);
     }
 
 
 
     @Test
     public void test6_AbortOperation() {
-        System.out.println("--- TEST 2: ANNULLA INSERIMENTO ---");
+        System.out.println("--- TEST 6: ANNULLA INSERIMENTO ---");
 
         int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
 
         this.clickOn("#btnAdd");
-        this.sleep(500);
+        this.sleep(1000);
 
         this.doubleClickOn("#idField").write("1234");
 
         this.clickOn("#btnCancel");
-        this.sleep(500);
+        this.sleep(1000);
 
         FxAssert.verifyThat("#userTable", (TableView<Book> t) -> t.getItems().size() == initialSize);
+        this.sleep(1000);
     }
 }
