@@ -58,9 +58,6 @@ public class PasswordChangeControllerTest extends ApplicationTest {
         this.clickOn("#btnUpdate");
         this.sleep(500);
 
-        FxAssert.verifyThat("Password aggiornata correttamente.", NodeMatchers.isVisible());
-
-        this.clickOn("OK");
     }
 
 

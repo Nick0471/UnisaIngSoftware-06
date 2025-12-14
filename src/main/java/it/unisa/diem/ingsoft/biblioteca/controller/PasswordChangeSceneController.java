@@ -17,13 +17,23 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 
 
 /**
- * @brief Questo Controller gestisce la scena "Modifica Passwrod".
+ * @brief  Controller per il cambio password per accdere al sistema".
+ *
+ * Permette di verificare la vecchia password inserita e di sostituirla
+ * con una nuova.
+ *
+ * Estende {@link GuiController} per ereditare funzionalità comuni.
  */
 public class PasswordChangeSceneController extends GuiController {
 
 
     private PasswordService passwordService;
 
+    /**
+     * @brief Setter per i servizi di gestione della password.
+     * @param serviceRepository Contenitore dei servizi da cui recuperare il Service
+     *
+     */
     @Override
     public void setServices(ServiceRepository serviceRepository) {
         super.setServices(serviceRepository);
@@ -44,8 +54,15 @@ public class PasswordChangeSceneController extends GuiController {
     private PasswordField newPasswordConfirm;
 
 
+
+
+    /**
+     * @brief Gestisce il tentativo di cambio password.
+     * @param event L'evento ActionEvent generato dal click sul pulsante.
+     */
     @FXML
     private void handleGoToViewHomepage(ActionEvent event) {
+
         String oldPass = this.currentPassword.getText();
         String newPass = this.newPassword.getText();
         String confirmPass = this.newPasswordConfirm.getText();
@@ -67,11 +84,8 @@ public class PasswordChangeSceneController extends GuiController {
             return;
         }
 
-
-
+        //cambio effettivamente la password
         this.passwordService.change(newPass);
-
-        this.popUp(Alert.AlertType.CONFIRMATION, "Successo", "Password aggiornata correttamente.");
 
         this.changeScene(event, HOMEPAGE_PATH);
     }

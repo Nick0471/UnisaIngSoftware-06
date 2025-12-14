@@ -18,17 +18,23 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 
 
 /**
- * @brief  Questo Controller gestisce la scena "Accesso".
+ * @brief  Controller per la verifica di accesso al sistema".
  *
- * Verifica che le credenziali inserite dall'utente, prima di consentire
- * l'accesso alla dashboard principale, siano corrette.
+ * Permette di verifica che le credenziali inserite dall'utente prima di
+ * accedere alla homepage.
  *
- * Estende {@link GuiController} per ereditare le funzionalità di navigazione e gestione popup.
+ * Estende {@link GuiController} per ereditare funzionalità comuni.
  */
 public class LogInSceneController extends GuiController {
 
     private PasswordService passwordService;
 
+
+    /**
+     * @brief Setter per i servizi di gestione della password.
+     * @param serviceRepository Contenitore dei servizi da cui recuperare i Service
+     *
+     */
     @Override
     public void setServices(ServiceRepository serviceRepository){
         super.setServices(serviceRepository);
