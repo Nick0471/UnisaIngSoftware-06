@@ -72,7 +72,7 @@ public class PasswordChangeSceneController extends GuiController {
 
 
         if (!this.passwordService.check(oldPass)) {
-            this.popUp(Alert.AlertType.ERROR, "Errore password", "La vecchia password inserita non è corretta.");
+            this.popUp(Alert.AlertType.ERROR, "Errore password", "La password vecchia inserita non è corretta.");
             return;
         }
 

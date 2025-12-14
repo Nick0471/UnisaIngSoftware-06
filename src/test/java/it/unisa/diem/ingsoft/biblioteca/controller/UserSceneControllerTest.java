@@ -183,14 +183,11 @@ public class UserSceneControllerTest extends ApplicationTest {
 
         int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
 
-        System.out.println("Seleziono l'utente con matricola AB12345678");
-        this.clickOn("AB12345678"); // TestFX clicca sulla cella con questo testo
+        this.clickOn("AB12345678");
         this.sleep(1000);
 
-        System.out.println("Clicco su Rimuovi");
         this.clickOn("#btnRemove");
-        this.clickOn("OK");
-        this.sleep(1000);
+          this.sleep(1000);
 
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize - 1);
     }
@@ -210,7 +207,7 @@ public class UserSceneControllerTest extends ApplicationTest {
         this.clickOn("OK");
         this.sleep(1000);
 
-        FxAssert.verifyThat("#userTable", (TableView<Loan> t) -> t.getItems().size() == initialSize);
+        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize);
     }
 
 
@@ -289,17 +286,15 @@ public class UserSceneControllerTest extends ApplicationTest {
     public void test7_ModifyUser() {
         System.out.println("--- TEST 5: MODIFICA UTENTE ---");
 
-        System.out.println("Seleziono un utente");
         this.clickOn("1234567890");
         this.sleep(500);
 
-        System.out.println("Clicco su Modifica");
         this.clickOn("#btnModify");
         this.sleep(1000);
 
+
         FxAssert.verifyThat("Modifica Utente", NodeMatchers.isVisible());
 
-        System.out.println("Chiudo scena ...");
         this.clickOn("#btnCancel");
         this.sleep(1000);
     }
@@ -310,13 +305,13 @@ public class UserSceneControllerTest extends ApplicationTest {
     public void test8_AddUser() {
         System.out.println("--- TEST 6: AGGIUNTA UTENTE ---");
 
-        System.out.println("Clicco su Aggiungi");
+
         this.clickOn("#btnAdd");
         this.sleep(1000);
 
         FxAssert.verifyThat("Aggiungi Utente", NodeMatchers.isVisible());
 
-        System.out.println("Chiudo scena...");
+
         this.clickOn("#btnCancel");
         this.sleep(1000);
     }
@@ -327,8 +322,6 @@ public class UserSceneControllerTest extends ApplicationTest {
     public void test9_NavigationHome() {
         System.out.println("--- TEST 8: NAVIGAZIONE HOME ---");
 
-        this.sleep(1000);
-        System.out.println("Clicco Home...");
         this.clickOn("#btnHome");
         this.sleep(2000);
 

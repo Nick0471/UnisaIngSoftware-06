@@ -164,7 +164,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
         if (this.userService == null) return;
 
-        if (val1 == null || val2.isEmpty()) {
+        if (val1 == null || val1.isEmpty()) {
             this.updateTable();
             return;
         }

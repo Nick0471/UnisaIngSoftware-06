@@ -93,10 +93,8 @@ public class EditUserSceneControllerTest extends ApplicationTest{
         this.clickOn("#btnConfirm");
         this.sleep(1000);
 
-        this.clickOn("OK");
-        this.sleep(1000);
 
-        FxAssert.verifyThat("#userTable", (TableView<Book> t) -> t.getItems().size() == initialSize + 1);
+        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize + 1);
     }
 
 
@@ -164,7 +162,6 @@ public class EditUserSceneControllerTest extends ApplicationTest{
 
         this.clickOn("#btnConfirm");
         this.sleep(1000);
-        this.clickOn("OK");
 
 
         User updateUser = this.userService.getById("1234567890").get();
