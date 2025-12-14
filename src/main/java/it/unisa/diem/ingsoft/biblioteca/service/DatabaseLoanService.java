@@ -131,10 +131,13 @@ public class DatabaseLoanService implements LoanService {
      * @throws UnknownLoanException Il prestito tra utente e libro specificati è inesistente.
      */
 	@Override
-	public void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException {
+	public void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException,
+            UnknownBookByIsbnException, NegativeBookCopiesException, InvalidBookCopiesException {
         if (!this.isActive(userId, bookIsbn)) {
             throw new UnknownLoanException();
         }
+
+        this.bookService.updateRemainingCopies(bookIsbn, 1);
 
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("UPDATE loans SET loan_end = :loan_end "

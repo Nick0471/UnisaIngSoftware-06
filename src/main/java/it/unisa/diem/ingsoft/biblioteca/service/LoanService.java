@@ -77,7 +77,7 @@ public interface LoanService {
      * @param end Data di restituzione del libro.
      * @throws UnknownLoanException Il prestito tra utente e libro specificati è inesistente.
      */
-    void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException;
+    void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException, UnknownBookByIsbnException, NegativeBookCopiesException, InvalidBookCopiesException;
 
     /**
      * @brief Verifica se un utente ha preso in prestito un libro che non
