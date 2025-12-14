@@ -229,9 +229,43 @@ public class DatabaseLoanService implements LoanService {
     public List<Loan> getActiveByUserId(String userId) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
-                                + "WHERE user_id = :userId "
+                                + "WHERE user_id = :user_id "
                                 + "AND loan_end IS NULL")
                         .bind("userId", userId)
+                        .mapTo(Loan.class)
+                        .list());
+    }
+
+    /**
+     * @brief Recupera una lista di prestiti attivi filtrati per matricola utente (ricerca parziale).
+     * Esegue una select SQL usando LIKE per trovare le matricole che contengono la
+     * stringa o carattere passato.
+     * @param userId La stringa (o carattere) contenuta nella matricola da cercare.
+     * @return Una lista di prestiti attivi che corrispondono al criterio.
+     */
+    @Override
+    public List<Loan> getActiveByUserIdContaining(String userId) {
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
+                                + "WHERE user_id LIKE :user_id "
+                                + "AND loan_end IS NULL")
+                        .bind("user_id", "%" + userId + "%")
+                        .mapTo(Loan.class)
+                        .list());
+    }
+
+    /**
+     * @brief Recupera una lista di prestiti attivi filtrati per Isbn (ricerca parziale).
+     * Esegue una select SQL usando LIKE per trovare gli Isbn che contengono la
+     * stringa o carattere passato.
+     * @param bookIsbn La stringa (o carattere) contenuta nel Isbn da cercare.
+     * @return Una lista di prestiti attivi che corrispondono al criterio.
+     */
+    public List<Loan> getActiveByBookIsbnContaining(String bookIsbn) {
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
+                                + "WHERE book_isbn LIKE :book_isbn "                                + "AND loan_end IS NULL")
+                        .bind("book_isbn", "%" + bookIsbn + "%")
                         .mapTo(Loan.class)
                         .list());
     }

@@ -104,4 +104,24 @@ public interface LoanService {
      */
     List<Loan> getActiveByUserId(String userId);
 
+    /**
+     * @brief Recupera una lista di prestiti attivi cercando parzialmente la matricola
+     * utente.
+     * Restituisce i prestiti attivi in cui la matricola dell'utente *contiene* la
+     * stringa passata.
+     * @param userId La stringa (o parte di essa) da cercare nella matricola.
+     * @return Una lista contenente i prestiti attivi che soddisfano il criterio di ricerca.
+     */
+    List<Loan> getActiveByUserIdContaining(String userId);
+
+    /**
+     * @brief Recupera una lista di prestiti attivi cercando parzialmente l'ISBN del
+     * libro.
+     * Restituisce i prestiti attivi in cui l'ISBN del libro *contiene* la stringa
+     * passata.
+     * @param bookIsbn La stringa (o parte di essa) da cercare nell'ISBN.
+     * @return Una lista contenente i prestiti attivi che soddisfano il criterio di ricerca.
+     */
+    List<Loan> getActiveByBookIsbnContaining(String bookIsbn);
+
 };
