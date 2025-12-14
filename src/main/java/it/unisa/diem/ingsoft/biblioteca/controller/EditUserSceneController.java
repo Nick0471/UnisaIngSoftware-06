@@ -16,22 +16,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+
 /**
- * @brief Questo Controller gestisce la scena di Aggiunta (e Modifica) utente.
+ * @brief Controller per l'inserimento e modifica di nuovi utenti all'interno della lista.
  *
- * Questa classe gestisce l'inserimento dei dati anagrafici di un utente.
- * Supporta due modalità operative:
- * 1. **Creazione:** Permette di registrare un nuovo utente (tutti i campi sono modificabili).
- * 2. **Modifica:** Permette di aggiornare un utente esistente (il campo ID/Matricola viene bloccato).
- *
- * Estende {@link GuiController} per ereditare funzionalità comuni come la gestione dei popup e la chiusura della scena.
+ * Permette di specificare i vari attributi del utente da aggiungere.
+ * Estende {@link GuiController} per ereditare funzionalità comuni
  */
-
-
 public class EditUserSceneController extends GuiController{
-
+    @FXML private Label titleLabel;
     @FXML private TextField idField;
     @FXML private TextField surnameField;
     @FXML private TextField nameField;
@@ -46,6 +42,11 @@ public class EditUserSceneController extends GuiController{
     private boolean isEditMode = false;
 
 
+    /**
+     * @brief Setter per lo userService.
+     *
+     * @param serviceRepository Il contenitore dei servizi da cui prelevare quello per la gestione dei libri
+     */
     @Override
     public void setServices(ServiceRepository serviceRepository){
         super.setServices(serviceRepository);
@@ -55,16 +56,9 @@ public class EditUserSceneController extends GuiController{
 
 
     /**
-     * @brief Prepara la scena per la modifica di un utente esistente.
+     * @brief Setter per modificare i dati della tabella.
      *
-     * Questo metodo deve essere chiamato da "userScene" prima di mostrare la scena, se si intende modificare un utente.
-     * Effettua le seguenti operazioni:
-     * - Imposta il flag `isEditMode` a `true`(che vuol dire che la modifica è abilitata)
-     * - Popola i campi di testo con i dati dell'utente passato in input.
-     * - Disabilita il campo `idField` per impedire la modifica della matricola.
-     * - Modifica il testo del pulsante di conferma in "Aggiorna".
-     *
-     * @param user L'oggetto User contenente i dati attuali da modificare.
+     * @param user l'utente passatogli dall'handleModifyUser di UserSceneController
      */
     //Metodo che permette di MODICIARE un utente già esistente
     public void editUser(User user) {
@@ -77,24 +71,18 @@ public class EditUserSceneController extends GuiController{
 
             this.idField.setDisable(true); //Quando si MODIFICA un utente non è possibile cambiare la matricola
             this.btnConfirm.setText("Aggiorna"); //Cambia il testo del pulsante da "Conferma" ad  "Aggiorna"
+            this.titleLabel.setText("Modifica Utente"); //Cambio il titolo della scena da "Aggiungi nuovo utente" a "Modifica Utente"
         }
     }
 
     /**
-     * @brief Gestisce l'azione di conferma (Aggiunta o Aggiornamento).
+     * @brief Gestisce la conferma per l'aggiunta di un nuovo utente
      *
-     * Questo metodo viene invocato al click del pulsante `btnConfirm`.
-     * La logica esecutiva è la seguente:
+     * Recupera i dati dai campi di testo e verifica che i campi obbligatori non siano vuoti.
+     * Crea un nuovo oggetto User e salva i dati sul database.
+     * In caso di errore (campi vuoti o formato errato), mostra un popup di errore.
      *
-     * 1. Valida che tutti i campi obbligatori siano riempiti.
-     * 2. Crea un oggetto {@link User} temporaneo con i dati inseriti.
-     * 3. In base a `isEditMode`:
-     * - Se **Modifica**: Chiama `userService.updateById(user)`. Gestisce `UnknownUserByIdException`.
-     * - Se **Nuovo**: Chiama `userService.register(user)`. Gestisce eccezioni di duplicazione (`DuplicateUserByEmailException`, `DuplicateUserByIdException`).
-     * 4. Mostra un popup di successo o di errore.
-     * 5. Chiude la scena in caso di successo.
-     *
-     * @param event L'evento generato dal click sul bottone.
+     * @param event L'evento generato dal click sul pulsante "Conferma"/"Aggiorna".
      */
     @FXML
     private void handleConfirmAdd(ActionEvent event){
@@ -128,23 +116,18 @@ public class EditUserSceneController extends GuiController{
             return;
         }
 
-
-
-
-
         User user = new User(id,email,name,surname);
 
         if (this.isEditMode) {
             try {
                 this.userService.updateById(user);
-                //this.popUp(Alert.AlertType.INFORMATION, "Successo", "Utente modificato");
             }catch(UnknownUserByIdException |  InvalidIdException  e){
                 this.popUp(Alert.AlertType.ERROR, "Errore salvataggio", e.getMessage());
             }
         } else {
             try {
                 this.userService.register(user);
-                //this.popUp(Alert.AlertType.INFORMATION, "Successo", "Utente aggiunto");
+
             } catch (DuplicateUserByEmailException e) {
                 this.popUp(Alert.AlertType.ERROR ,"Errore salvataggio", e.getMessage());
             } catch (DuplicateUserByIdException | InvalidEmailException | InvalidIdException e) {
@@ -161,7 +144,7 @@ public class EditUserSceneController extends GuiController{
      *
      * Chiude la finestra corrente senza effettuare alcuna modifica o inserimento.
      *
-     * @param event L'evento generato dal click sul bottone Annulla.
+     * @param event L'evento generato dal click sul pulsante "Rimuovi".
      */
     @FXML
     private void handleCancel(ActionEvent event){

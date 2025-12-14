@@ -30,7 +30,7 @@
 
                 <Region HBox.hgrow="ALWAYS" />
 
-                <Label text="Aggiungi Nuovo Utente" textFill="WHITE">
+                <Label  fx:id="titleLabel" text="Aggiungi Nuovo Utente" textFill="WHITE">
                     <font>
                         <Font name="Segoe UI Bold" size="26.0" />
                     </font>
