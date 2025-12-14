@@ -202,7 +202,7 @@ public class LoanSceneController extends GuiController implements Initializable 
 
         switch (type) {
             case "Matricola " -> result = this.loanService.getActiveByUserIdContaining(query);
-            case "ISBN " -> result = this.loanService.getActiveByBookIsbnContaining(query);at
+            case "ISBN " -> result = this.loanService.getActiveByBookIsbnContaining(query);
             default -> {
                 this.updateTable();
                 return;
