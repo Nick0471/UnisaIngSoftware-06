@@ -47,11 +47,17 @@ public class App extends Application {
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("Biblioteca");
-
         primaryStage.setScene(scene);
-        primaryStage.setMaximized(true);
+
+        primaryStage.setOpacity(0); //Rendiamo la finestra invisibile all'inizio
+        primaryStage.setMaximized(true); //Serve a rendere la finestra grande quanto tutto lo schermo
 
         primaryStage.show();
+
+        //Rendiamo la finisce di nuovo visibile
+        javafx.application.Platform.runLater(() -> {
+            primaryStage.setOpacity(1);
+        });
     }
 
     private Optional<Database> connectToDatabase() {
