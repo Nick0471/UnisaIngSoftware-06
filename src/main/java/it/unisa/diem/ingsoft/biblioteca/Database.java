@@ -53,7 +53,9 @@ public class Database {
             Connection connection = DriverManager.getConnection(connectionUrl);
             Database database = new Database(connection);
             opt = Optional.of(database);
-        } catch(SQLException e) {}
+        } catch(SQLException e) {
+            throw new RuntimeException("Eccezione nella connessione Database: ", e);
+        }
 
         return opt;
     }

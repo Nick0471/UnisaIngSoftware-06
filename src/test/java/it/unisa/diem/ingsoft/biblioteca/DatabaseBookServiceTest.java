@@ -236,12 +236,16 @@ public class DatabaseBookServiceTest {
             this.bookService.add(book);
         });
 
-        assertTrue(this.bookService.removeByIsbn("6767676760000"));
+        assertDoesNotThrow(() -> {
+            assertTrue(this.bookService.removeByIsbn("6767676760000"));
+        });
     }
 
     @Test
     public void removeByIsbn_NonExistingIsbn() {
-        assertFalse(this.bookService.removeByIsbn("INESISTENTE"));
+        assertDoesNotThrow(() -> {
+            assertFalse(this.bookService.removeByIsbn("INESISTENTE"));
+        });
     }
 
     @Test
