@@ -229,7 +229,7 @@ public class BookSceneController extends GuiController implements Initializable 
             super.popUp(Alert.AlertType.WARNING,"Errore selezione","Seleziona un libro da rimuovere.");
             return;
         }
-        
+
         boolean success = false;
         try {
             success = this.bookService.removeByIsbn(selectedBook.getIsbn());
