@@ -54,6 +54,44 @@ public class EditUserSceneController extends GuiController{
 
     }
 
+    /**
+     * @brief Inizializza il controller
+     *
+     * @note Fa in modo che i campi per l'inserimento  del nome e del cognome accettino solo lettere
+     * @note Blocca l'inserimento della matricola a 10 caratteri.
+     */
+
+    @FXML
+    public void initialize() {
+
+        this.nameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Verifica se il testo contiene qualcosa che NON è una lettera o uno spazio
+            // [a-zA-Z ]* significa: accetta lettere minuscole, maiuscole e spazi
+            if (!newValue.matches("[a-zA-Z ]*")) {
+                // Rimuove tutto ciò che non è lettera o spazio
+                this.nameField.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+            }
+
+        });
+
+
+        this.surnameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z ]*")) {
+                this.surnameField.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+            }
+        });
+
+
+        this.idField.textProperty().addListener( (observable, oldValue, newValue) -> {
+            if (newValue.length() > 10) {
+                this.idField.setText(newValue.substring(0, 10));
+            }
+
+        });
+
+    }
+
+
 
     /**
      * @brief Setter per modificare i dati della tabella.
@@ -99,6 +137,16 @@ public class EditUserSceneController extends GuiController{
         }
 
         try {
+            if (!this.userService.isIdValid(id)) {
+                throw new InvalidIdException();
+            }
+        } catch (InvalidIdException e) {
+            this.popUp(Alert.AlertType.ERROR, "ID non valido", e.getMessage());
+            return;
+        }
+
+
+        try {
             if (!this.userService.isEmailValid(email)) {
                 throw new InvalidEmailException();
             }
@@ -107,14 +155,6 @@ public class EditUserSceneController extends GuiController{
             return;
         }
 
-        try {
-            if (!this.userService.isIdValid(id)) {
-                throw new InvalidIdException();
-            }
-        } catch (InvalidIdException e) {
-            this.popUp(Alert.AlertType.ERROR, "ID non valido", e.getMessage());
-            return;
-        }
 
         User user = new User(id,email,name,surname);
 
