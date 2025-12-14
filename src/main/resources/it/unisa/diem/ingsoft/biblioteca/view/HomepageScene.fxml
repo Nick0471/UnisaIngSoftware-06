@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f4f4f4;"
+<BorderPane style="-fx-background-color: #f4f4f4;"
             xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.HomepageSceneController">
 
     <top>
@@ -33,7 +33,7 @@
                     </font>
                 </Label>
 
-                <Region HBox.hgrow="ALWAYS" />
+
 
                 <Button fx:id="btnProfile" mnemonicParsing="false" onAction="#handleGoToViewProfile"
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 28px; -fx-border-color: transparent; -fx-padding: 0 15 0 0;"
