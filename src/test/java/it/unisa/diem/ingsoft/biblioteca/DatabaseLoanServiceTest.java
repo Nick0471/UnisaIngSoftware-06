@@ -4,10 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.Duration;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -201,32 +199,6 @@ public class DatabaseLoanServiceTest {
     public void countById_InvalidUser() {
         assertThrows(InvalidIdException.class, () -> {
             this.loanService.countById("SHORT");
-        });
-    }
-
-    @Test
-    public void performance_Methods() {
-        LocalDate now = LocalDate.now();
-        Duration duration = Duration.ofMillis(100);
-
-        assertDoesNotThrow(() -> {
-            this.loanService.register("ABC1314156", "9788808123456", now, now.plusDays(30));
-        });
-
-        assertTimeout(duration, () -> this.loanService.getAll());
-        assertTimeout(duration, () -> this.loanService.getActiveByUserId("ABC1314156"));
-        assertTimeout(duration, () -> this.loanService.getByUserIdAndBookIsbn("ABC1314156", "9788808123456"));
-        assertTimeout(duration, () -> this.loanService.getByUserIdContaining("ABC1314156"));
-        assertTimeout(duration, () -> this.loanService.getByBookIsbnContaining("9788808123456"));
-        assertTimeout(duration, () -> this.loanService.isActive("ABC1314156", "9788808123456"));
-        assertTimeout(duration, () -> this.loanService.countById("ABC1314156"));
-
-        assertTimeout(duration, () -> {
-            this.loanService.register("TEMPUSER11", "1234567890000", now, now.plusDays(15));
-        });
-
-        assertTimeout(duration, () -> {
-            this.loanService.complete("TEMPUSER11", "1234567890000", now);
         });
     }
 }

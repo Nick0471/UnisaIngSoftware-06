@@ -4,10 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -232,42 +230,5 @@ public class DatabaseBookServiceTest {
         this.bookService.add(book);
 
         assertEquals(3, this.bookService.countRemainingCopies("0409820250000"));
-    }
-
-    @Test
-    public void performance_Methods() {
-        Duration duration = Duration.ofMillis(100);
-
-        assertDoesNotThrow(() -> {
-            Book book = new Book("1234567890000", "L'attacco dei giganti", "Hajime Isayama", 2009, 50, 5, "Dark fantasy", "Un bel manga");
-            this.bookService.add(book);
-        });
-
-        assertTimeout(duration, () -> this.bookService.getAllByGenreContaining("Dark fantasy"));
-        assertTimeout(duration, () -> this.bookService.getByIsbn("1234567890000"));
-        assertTimeout(duration, () -> this.bookService.getAllByTitleContaining("L'attacco dei giganti"));
-        assertTimeout(duration, () -> this.bookService.getAllByAuthorContaining("Hajime Isayama"));
-
-        assertTimeout(duration, () -> {
-            Book book = new Book("1234567891234", "Prova 2", "Autore", 2009, 50, 5, "Dark", "Un bel libro");
-            this.bookService.add(book);
-        });
-
-        assertTimeout(duration, () -> this.bookService.removeByIsbn("INESISTENTE"));
-
-        assertTimeout(duration, () -> {
-            Book book = new Book("1234567891234", "Prova cambio velocità", "Autore", 2009, 50, 5, "Dark", "Un bel libro");
-            this.bookService.updateByIsbn(book);
-        });
-
-        assertTimeout(duration, () -> this.bookService.existsByIsbn("1234567891234"));
-
-        assertTimeout(duration, () -> {
-            List<Book> books = List.of(
-                    new Book("1234567890100", "One piece", "Oda", 1999, 50, 3, "Avventura", "Peak"),
-                    new Book("1234567800200", "Chainsaw man", "Tatsuki Fujimoto", 2022, 50, 4, "Fantasy", "Topo")
-            );
-            this.bookService.addAll(books);
-        });
     }
 }

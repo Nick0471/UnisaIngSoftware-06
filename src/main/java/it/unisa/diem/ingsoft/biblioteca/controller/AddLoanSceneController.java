@@ -273,7 +273,6 @@ public class AddLoanSceneController extends GuiController {
         try {
             this.loanService.register(matricola, isbn, start, end);
             super.closeScene(event);
-            //super.popUp(Alert.AlertType.INFORMATION, "Successo", "Prestito registrato.");
         } catch (LoanException | InvalidIdException | InvalidIsbnException e) {
             super.popUp(Alert.AlertType.ERROR, "Errore durante la registrazione", e.getMessage());
         }

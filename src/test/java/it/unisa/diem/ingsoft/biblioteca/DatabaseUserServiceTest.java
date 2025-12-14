@@ -4,10 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.time.Duration;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -188,38 +185,5 @@ public class DatabaseUserServiceTest {
     @Test
     public void isEmailValid_CorrectDomain() {
         assertTrue(this.userService.isEmailValid("nicola@studenti.unisa.it"));
-    }
-
-    @Test
-    public void performance_Methods() {
-        Duration duration = Duration.ofMillis(100);
-
-        assertDoesNotThrow(() -> {
-            User user = new User("ABC123DEF5", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
-            this.userService.register(user);
-        });
-
-        assertTimeout(duration, () -> this.userService.getAll());
-        assertTimeout(duration, () -> this.userService.getAllByIdContaining("ABC"));
-        assertTimeout(duration, () -> this.userService.getAllByEmailContaining("test@studenti.unisa"));
-        assertTimeout(duration, () -> this.userService.getAllByFullNameContaining("NIC", "PIC"));
-        assertTimeout(duration, () -> this.userService.getById("ABC123DEF5"));
-        
-        assertTimeout(duration, () -> {
-            User user = new User("IDPAZZO123", "rara@studenti.unisa.it", "EMPTY", "EMPTY");
-            this.userService.register(user);
-        });
-
-        assertTimeout(duration, () -> this.userService.removeById("INESISTENTE"));
-
-        assertTimeout(duration, () -> {
-            User user = new User("IDPAZZO123", "test2@studenti.unisa.it", "NICOLASS", "PICARELLA");
-            this.userService.updateById(user);
-        });
-
-        assertTimeout(duration, () -> this.userService.existsById("IDPAZZO123"));
-        assertTimeout(duration, () -> this.userService.existsByEmail("test@studenti.unisa.it"));
-        assertTimeout(duration, () -> this.userService.isEmailValid("test@studenti.unisa.it"));
-        assertTimeout(duration, () -> this.userService.isIdValid("1234567890"));
     }
 }

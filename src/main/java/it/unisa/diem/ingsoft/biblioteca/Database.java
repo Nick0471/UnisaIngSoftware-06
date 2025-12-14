@@ -4,6 +4,7 @@
  */
 package it.unisa.diem.ingsoft.biblioteca;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,6 +20,7 @@ import it.unisa.diem.ingsoft.biblioteca.mapper.UserMapper;
  * @brief Classe di incapsulamento del database con JDBI
  */
 public class Database {
+    private final Connection connection;
     private final Jdbi jdbi;
 
     /**
@@ -26,6 +28,8 @@ public class Database {
      * @param connection La connessione verso il database
      */
     public Database(Connection connection) {
+        this.connection = connection;
+
         this.jdbi = Jdbi.create(connection);
         this.jdbi.registerRowMapper(new UserMapper());
         this.jdbi.registerRowMapper(new LoanMapper());
@@ -36,7 +40,7 @@ public class Database {
 
     /**
      * @brief Crea un oggetto di classe Database che incapsula JDBI per la connessione ad un
-     *  database
+     *  database.
      * @param connectionUrl L'URL che identifica la locazione del database
      * @return Un oggetto di tipo Optional<Database> con un database se la connessione e' andata a
      *  buon fine, Optional.empty() altrimenti.
@@ -56,12 +60,10 @@ public class Database {
 
     /**
      * @brief Crea un oggetto di classe Database che incapsula JDBI per la connessione ad un
-     *  database IN-MEMORIA.
-     *  Generalmente utilizzato per i test
+     *  database IN-MEMORIA con SQLite.
      * @return Un oggetto di tipo Database con la connessione ad un database in memoria
      */
     public static Database inMemory() {
-        // Non usiamo il try-with-resources: JDBI gestisce la connessione
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite::memory:");
             return new Database(connection);
@@ -72,12 +74,38 @@ public class Database {
         }
     }
 
+    /**
+     * @brief Crea un oggetto di classe Database che incapsula JDBI per la connessione ad un
+     *  database SU DISCO con SQLite.
+     * @return Un oggetto di tipo Database con la connessione ad un database su disco
+     */
+    public static Database at(Path path) {
+        String url = "jdbc:sqlite:" + path.toAbsolutePath().toString();
+        try {
+            Connection connection = DriverManager.getConnection(url);
+            return new Database(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException("Eccezione SQL con Database sul disco: " + path, e);
+        }
+    }
 
     /**
      * @brief Getter per l'istanza di JDBI connessa al database
      */
     public Jdbi getJdbi() {
         return this.jdbi;
+    }
+
+    /**
+     * @brief Chiude la connessione col database
+     */
+    public void close() {
+        try {
+            if (this.connection.isClosed()) { return; }
+            this.connection.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupTables() {
