@@ -5,8 +5,8 @@
 package it.unisa.diem.ingsoft.biblioteca.exception;
 
 /**
- * @brief Ecceziona lanciata quando si tenta una modifica relativa ad un libro
- *  con un numero di copie negativo.
+ * @brief Eccezione lanciata quando si tenta di inserire un numero negativo
+ * di copie.
  */
 public class NegativeBookCopiesException extends BookException {
 

@@ -4,8 +4,9 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UserException;
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
@@ -16,7 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
-import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -262,7 +262,7 @@ public class AddLoanSceneController extends GuiController {
                 super.popUp(Alert.AlertType.ERROR, "L'utente ha già tre prestiti attivi", "Restituire almeno un libro per poter richiedere un nuovo prestito");
                 return;
             }
-        }catch(InvalidIdException e){super.popUp(Alert.AlertType.ERROR, "ID non valido", e.getMessage());}
+        }catch(UserException e){super.popUp(Alert.AlertType.ERROR, "ID non valido", e.getMessage());}
 
         if (this.bookService.countRemainingCopies(isbn) == 0) {
             super.popUp(Alert.AlertType.ERROR, "Copie non disponibili", "Attualmente non ci sono copie disponibili per questo libro.");
@@ -272,7 +272,7 @@ public class AddLoanSceneController extends GuiController {
         try {
             this.loanService.register(matricola, isbn, start, end);
             super.closeScene(event);
-        } catch (LoanException | InvalidIdException | InvalidIsbnException e) {
+        } catch (LoanException | BookException | UserException e) {
             super.popUp(Alert.AlertType.ERROR, "Errore durante la registrazione", e.getMessage());
         }
     }

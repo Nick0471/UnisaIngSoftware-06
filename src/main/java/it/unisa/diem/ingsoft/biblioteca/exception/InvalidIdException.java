@@ -8,7 +8,7 @@ package it.unisa.diem.ingsoft.biblioteca.exception;
  * @brief Ecceziona lanciata quando si tenta una modifica relativa ad un utente usando
  *  una matricola non valida.
  */
-public class InvalidIdException extends Exception {
+public class InvalidIdException extends UserException {
 
     /**
      * @brief Costruttore di default, inizializza l'eccezione con un messaggio di errore

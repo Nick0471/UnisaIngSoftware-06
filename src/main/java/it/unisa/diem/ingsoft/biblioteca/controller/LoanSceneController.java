@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
 import it.unisa.diem.ingsoft.biblioteca.exception.LoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
@@ -157,7 +158,7 @@ public class LoanSceneController extends GuiController implements Initializable 
             case "Matricola " -> result = this.loanService.getByUserIdContaining(query);
             case "ISBN " -> result = this.loanService.getByBookIsbnContaining(query);
             default -> this.updateTable();
-        };
+        }
 
         this.loans = FXCollections.observableArrayList(result);
         this.loanTable.setItems(this.loans);
@@ -201,7 +202,7 @@ public class LoanSceneController extends GuiController implements Initializable 
         try{
             this.loanService.complete(selectedLoan.getUserId(), selectedLoan.getBookIsbn(), selectedLoan.getLoanDeadline());
             this.updateTable();
-        }catch(LoanException e){
+        }catch(LoanException  | BookException e){
             super.popUp(Alert.AlertType.ERROR, "Errore durante la rimozione", e.getMessage());
         }
     }

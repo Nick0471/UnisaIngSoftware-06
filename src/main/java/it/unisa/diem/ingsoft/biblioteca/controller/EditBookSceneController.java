@@ -140,8 +140,11 @@ public class EditBookSceneController extends GuiController{
 
             try {
                 if (isEditMode) {
+                    int totalCopies = this.bookService.getByIsbn(isbn).get().getTotalCopies();
                     int remainingCopies = this.bookService.countRemainingCopies(isbn);
-                    this.bookService.updateByIsbn(new Book(isbn, title, author, year, copies, copies - remainingCopies, genre, description));
+                    int loanCopies = totalCopies - remainingCopies;
+
+                    this.bookService.updateByIsbn(new Book(isbn, title, author, year, copies, copies - loanCopies, genre, description));
                 } else {
                     this.bookService.add(new Book(isbn, title, author, year, copies, copies, genre, description));
                 }
