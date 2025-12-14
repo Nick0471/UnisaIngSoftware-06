@@ -9,10 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownLoanException;
+import it.unisa.diem.ingsoft.biblioteca.exception.*;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 
 /**
@@ -98,7 +95,8 @@ public class DatabaseLoanService implements LoanService {
      */
     @Override
     public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline)
-        throws LoanAlreadyRegisteredException, InvalidIdException, InvalidIsbnException {
+            throws LoanAlreadyRegisteredException, InvalidIdException, InvalidIsbnException,
+            UnknownBookByIsbnException, NegativeBookCopiesException, InvalidBookCopiesException {
 
         if (!this.userService.isIdValid(userId)) {
             throw new InvalidIdException();
@@ -110,6 +108,8 @@ public class DatabaseLoanService implements LoanService {
 
         if (this.isActive(userId, bookIsbn))
             throw new LoanAlreadyRegisteredException();
+
+        this.bookService.updateRemainingCopies(bookIsbn, -1);
 
         this.database.getJdbi()
             .useHandle(handle -> handle.createUpdate("INSERT INTO loans(book_isbn, user_id,"
