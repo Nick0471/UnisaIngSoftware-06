@@ -28,7 +28,7 @@ public class DatabaseLoanServiceTest {
     public void setup() {
         Database database = Database.inMemory();
         UserService userService = new DatabaseUserService(database);
-        BookService bookService = new DatabaseBookService(database);
+        this.bookService = new DatabaseBookService(database);
         this.loanService = new DatabaseLoanService(userService, bookService, database);
     }
 
@@ -55,6 +55,11 @@ public class DatabaseLoanServiceTest {
     public void register_LoanAlreadyRegistered() {
         LocalDate start = LocalDate.now();
         LocalDate deadline = start.plusDays(30);
+
+        assertDoesNotThrow(() -> {
+            Book book = new Book("1234567890000", "Titolo Test Prestiti", "Autore Test Prestiti", 2000, 5, 5, "Test", "Descrizione simpy");
+            this.bookService.add(book);
+        });
 
         assertDoesNotThrow(() -> {
             this.loanService.register("USERID3214", "1234567890000", start, deadline);
@@ -138,6 +143,12 @@ public class DatabaseLoanServiceTest {
 
     @Test
     public void complete_NonExistentLoan() {
+
+        assertDoesNotThrow(() -> {
+            Book book = new Book("1234567890000", "Titolo Test Prestiti", "Autore Test Prestiti", 2000, 5, 5, "Test", "Descrizione simpy");
+            this.bookService.add(book);
+        });
+
         assertThrows(UnknownLoanException.class, () -> {
             this.loanService.complete("NON_EXISTENT", "1234567890000", LocalDate.now());
         });
