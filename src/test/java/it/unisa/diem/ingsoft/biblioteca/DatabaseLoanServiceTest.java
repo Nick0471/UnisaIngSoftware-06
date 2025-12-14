@@ -8,13 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.*;
+import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownLoanException;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseLoanService;
@@ -24,6 +22,7 @@ import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 
 public class DatabaseLoanServiceTest {
     private LoanService loanService;
+    private BookService bookService;
 
     @BeforeEach
     public void setup() {
@@ -39,8 +38,17 @@ public class DatabaseLoanServiceTest {
         LocalDate deadline = start.plusDays(30);
 
         assertDoesNotThrow(() -> {
+            Book book = new Book("1234567890000", "Titolo Test Prestiti", "Autore Test Prestiti", 2000, 5, 5, "Test", "Descrizione simpy");
+            this.bookService.add(book);
+        });
+
+        assertEquals(5, bookService.countRemainingCopies("1234567890000"));
+
+        assertDoesNotThrow(() -> {
             this.loanService.register("USERID3214", "1234567890000", start, deadline);
         });
+
+        assertEquals(4, bookService.countRemainingCopies("1234567890000"));
     }
 
     @Test
@@ -78,6 +86,30 @@ public class DatabaseLoanServiceTest {
     }
 
     @Test
+    public void register_NoCopiesRemaining() {
+        LocalDate start = LocalDate.now();
+        LocalDate deadline = start.plusDays(30);
+
+        Book Book = new Book("9999999999999", "Raro", "Autore", 2000, 1, 0, "Test", "Descrizione simpy");
+        assertDoesNotThrow(() -> this.bookService.add(Book));
+
+        assertThrows(NegativeBookCopiesException.class, () -> {
+            this.loanService.register("1234567890", "9999999999999", start, deadline);
+        });
+    }
+
+    @Test
+    public void register_UnknownBookByIsbn() {
+        LocalDate start = LocalDate.now();
+        LocalDate deadline = start.plusDays(30);
+
+        assertThrows(UnknownBookByIsbnException.class, () -> {
+            this.loanService.register("USERID3214", "1111111111111", start, deadline);
+        });
+    }
+
+
+    @Test
     public void complete_ActiveLoan() {
         LocalDate start = LocalDate.now();
         LocalDate deadline = start.plusDays(30);
@@ -85,16 +117,23 @@ public class DatabaseLoanServiceTest {
         String isbn = "1234567890000";
 
         assertDoesNotThrow(() -> {
+            Book book = new Book(isbn, "Titolo Test Prestiti", "Autore Test Prestiti", 2000, 5, 5, "Test", "Descrizione simpy");
+            this.bookService.add(book);
+        });
+
+        assertDoesNotThrow(() -> {
             this.loanService.register(userId, isbn, start, deadline);
         });
 
         assertTrue(this.loanService.isActive(userId, isbn));
+        assertEquals(4, bookService.countRemainingCopies(isbn));
 
         assertDoesNotThrow(() -> {
             this.loanService.complete(userId, isbn, LocalDate.now());
         });
 
         assertFalse(this.loanService.isActive(userId, isbn));
+        assertEquals(5, bookService.countRemainingCopies(isbn));
     }
 
     @Test
