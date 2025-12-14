@@ -1,26 +1,32 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.USER_PATH;
+
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
+import org.testfx.api.FxAssert;
+import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
+
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.Scenes;
-
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 import it.unisa.diem.ingsoft.biblioteca.model.User;
-import it.unisa.diem.ingsoft.biblioteca.service.*;
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseLoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
+import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.Test;
-import org.testfx.api.FxAssert;
-import org.testfx.framework.junit5.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
-
-import java.time.LocalDate;
-
-import static it.unisa.diem.ingsoft.biblioteca.Views.USER_PATH;
 
 
 public class UserSceneControllerTest extends ApplicationTest {
@@ -35,7 +41,7 @@ public class UserSceneControllerTest extends ApplicationTest {
 
         this.userService = new DatabaseUserService(db);
         this.bookService = new DatabaseBookService(db);
-        this.loanService = new DatabaseLoanService(userService, bookService , db);
+        this.loanService = new DatabaseLoanService(this.userService, this.bookService , db);
 
 
         ServiceRepository serviceRepository = new ServiceRepository(null, this.userService, this.bookService, this.loanService);
@@ -217,7 +223,7 @@ public class UserSceneControllerTest extends ApplicationTest {
 
 
         // RECUPERO DI UN UTENTE DAL DATABASE
-        User user = this.userService.getByIdContaining("1122334455").get();
+        User user = this.userService.getById("1122334455").get();
 
 
         // CREAZIONE LIBRO E PRESTITO ATTIVO
