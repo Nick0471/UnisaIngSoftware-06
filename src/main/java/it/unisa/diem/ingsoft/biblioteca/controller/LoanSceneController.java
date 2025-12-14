@@ -201,9 +201,12 @@ public class LoanSceneController extends GuiController implements Initializable 
         List<Loan> result = new ArrayList<>();
 
         switch (type) {
-            case "Matricola " -> result = this.loanService.getActiveByUserId(query);
-            case "ISBN " -> result = this.loanService.getByBookIsbnContaining(query);
-            default -> this.updateTable();
+            case "Matricola " -> result = this.loanService.getActiveByUserIdContaining(query);
+            case "ISBN " -> result = this.loanService.getActiveByBookIsbnContaining(query);at
+            default -> {
+                this.updateTable();
+                return;
+            }
         }
 
         this.loans = FXCollections.observableArrayList(result);
