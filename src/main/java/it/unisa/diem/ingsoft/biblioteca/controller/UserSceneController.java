@@ -1,3 +1,7 @@
+/**
+ * @brief Package dei controller
+ * @package it.unisa.diem.ingsoft.biblioteca.controller
+ */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
@@ -30,9 +34,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
-* @brief Questo Controller gestisce la scena "Gestione utenti" permettendo
- * la visualizzazione di tutti gli utenti in una tabella
-*/
+ * @brief Controller per la gestione della view della lista utenti.
+ *
+ * Gestisce la visualizzazione degli utenti e implementa un filtro di ricerca,
+ * inoltre rende possibile aggiungere, modificare o rimuovere utenti dalla lista.
+ *
+ *Estende {@link GuiController} e implementa {@link Initializable}.
+ */
 
 public class UserSceneController extends GuiController implements Initializable{
 
@@ -65,7 +73,10 @@ public class UserSceneController extends GuiController implements Initializable{
     private ObservableList<User> users;
 
 
-
+    /**
+     * @brief Setter per lo userService.
+     * @param serviceRepository Il contenitore dei servizi da cui prelevare quello per la gestione degli utenti
+     */
     @Override
     public void setServices(ServiceRepository serviceRepository){
         super.setServices(serviceRepository);
@@ -79,12 +90,16 @@ public class UserSceneController extends GuiController implements Initializable{
 
 
     /**
-     * @brief Inizializza il controller, le colonne della tabella e i listener per la ricerca.
-     * @param location  URL location per i percorsi relativi.
-     * @param resources ResourceBundle per la localizzazione.
+     * @brief Inizializza il controller.
+     *
+     * Configura le colonne della tabella e configura i Listener per la visibilitò
+     *
+     * @param location La location utilizzata per risolvere i percorsi relativi all'oggetto root, o null se non nota.
+     * @param resources Le risorse utilizzate per localizzare l'oggetto root, o null se non localizzato.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
+
         this.columnMatricola.setCellValueFactory(new PropertyValueFactory<>("id")); //matricola
         this.columnSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
         this.columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -93,6 +108,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
         // Listener per cambiare la visibilità del secondo campo di ricerca
         this.searchType.valueProperty().addListener((obs, oldVal, newVal) -> {
+
             if ("Cognome ".equals(newVal)) {
                 // Se filtro per Cognome, mostro il campo per il Nome
                 this.searchFieldSecondary.setVisible(true);
@@ -108,18 +124,22 @@ public class UserSceneController extends GuiController implements Initializable{
 
                 if("Matricola".equals(newVal)) this.searchField.setPromptText("Inserisci Matricola...");
                 else if("Email".equals(newVal)) this.searchField.setPromptText("Inserisci Email...");
-                else this.searchField.setPromptText("Cerca utente...");
+
             }
-            // Aggiorno la tabella quando cambio filtro
-            this.executeFilter();
+            // Aggiorno la tabella dopo aver scelto il filtro di ricerca
+            this.filterUsers();
         });
 
+
+
         // Listener sui campi di testo: ogni volta che si scrive, filtra
-        this.searchField.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
-        this.searchFieldSecondary.textProperty().addListener((observable, oldValue, newValue) -> this.executeFilter());
+        this.searchField.textProperty().addListener((observable, oldValue, newValue) -> this.filterUsers());
+        this.searchFieldSecondary.textProperty().addListener((observable, oldValue, newValue) -> this.filterUsers());
 
         this.searchType.setValue("Matricola ");
     }
+
+
 
     /**
      * @brief Aggiorna la tabella recuperando tutti gli utenti registrati.
@@ -130,57 +150,59 @@ public class UserSceneController extends GuiController implements Initializable{
         this.userTable.setItems(this.users);
     }
 
-    /**
-     * @brief Metodo helper che recupera i valori dai campi di ricerca e invoca il filterUser.
-     */
-    private void executeFilter() {
-        String type = this.searchType.getValue();
-        String val1 = this.searchField.getText();
-        String val2 = this.searchFieldSecondary.getText();
-
-        this.filterUsers(type, val1, val2);
-    }
 
 
     /**
      * @brief Filtra la lista degli utenti in base ai criteri specificati.
-     * @param type   Il tipo di filtro selezionato (es. "Matricola", "Cognome").
-     * @param query1 Il valore del campo di ricerca principale.
-     * @param query2 Il valore del campo di ricerca secondario (usato solo per il Nome).
+     *
      */
-    private void filterUsers(String type, String query1, String query2) {
+    private void filterUsers() {
+
+        String type = this.searchType.getValue();
+        String val1 = this.searchField.getText();
+        String val2 = this.searchFieldSecondary.getText();
 
         if (this.userService == null) return;
 
-        if (query1 == null || query1.isEmpty()) {
+        if (val1 == null || val2.isEmpty()) {
             this.updateTable();
             return;
         }
         List<User> result = new ArrayList<>();
 
+        switch (type) {
+            case "Matricola ":
+                result = this.userService.getAllByIdContaining(val1);
+                break;
+            case "Cognome ":
+                result = this.userService.getAllByFullNameContaining(val2, val1);
+                break;
+            case "Email ":
+                result = this.userService.getAllByEmailContaining(val1);
+                break;
+            default:
+                result = this.userService.getAll();
+                break;
+        }
 
-        result = switch (type) {
-            case "Matricola " -> this.userService.getAllByIdContaining(query1);
-            case "Cognome " -> this.userService.getAllByFullNameContaining(query2, query1);
-            case "Email " -> this.userService.getAllByEmailContaining(query1);
-            default -> this.userService.getAll();
-        };
-
-
-
+        //prima di caricare gli elementi in tabella è necessario inseririli in una observableArrayList
         this.users = FXCollections.observableArrayList(result);
+
+        //popola la tabella
         this.userTable.setItems(this.users);
     }
+
+
 
     /**
      * @brief Gestisce l'eliminazione dell'utente selezionato.
      *
-     * Verifica preventivamente se l'utente ha prestiti attivi:
-     * - Se ha prestiti: Mostra un popup di errore e blocca l'eliminazione.
-     * - Se non ha prestiti: Elimina l'utente tramite `userService` e aggiorna la tabella.
+     * Verifica che un utente sia selezionato e che non abbia prestiti attivi,
+     * in quel caso lo elimina.
      */
     @FXML
     private void handleDeleteUser(){
+        //seleziono la riga dell'utente scelto
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser== null) {
@@ -188,22 +210,25 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
+        //ottengo la lista dei SOLI prestiti attivi di un singolo utente
         List<Loan> loanList = this.loanService.getActiveByUserId(selectedUser.getId());
 
         if(loanList.isEmpty()) {
             this.userService.removeById(selectedUser.getId());
-            //this.popUp(Alert.AlertType.INFORMATION, "Successo", "Libro rimosso correttamente.");
             this.updateTable();
         }else
             this.popUp(Alert.AlertType.WARNING,"Errore selezione", "Non puoi rimuovere un utente che ha ancora prestiti attivi");
     }
 
+
     /**
-     * @brief Apre la scena "AddUserScene".
-     * @param event L'evento che ha scatenato l'azione.
+     * @brief Apre la scena per la modifica dell'utente selezionato.
+     *
+     * Verifica che un utente sia selezionato, chiama il metodo di modifica
+     * e aggiorna la lista.
      */
     @FXML
-    private void handleModifyUser(ActionEvent event) {
+    private void handleModifyUser() {
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser== null) {
@@ -211,20 +236,19 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        this.modalScene(EDIT_USER_PATH , "Modifica Utente", (EditUserSceneController controller) -> {
-            controller.editUser(selectedUser);
-        });
+        this.modalScene(EDIT_USER_PATH , "Modifica Utente", (EditUserSceneController controller) -> {controller.editUser(selectedUser); });
 
         this.updateTable();
 
     }
 
     /**
-     * @brief Apre la scena "AddUserScene".
-     * @param event L'evento che ha scatenato l'azione.
+     * @brief Apre la scena per l'inserimento di un utente.
+     *
      */
     @FXML
-    private void handleAddUser(ActionEvent event) {
+    private void handleAddUser() {
+
         this.modalScene(EDIT_USER_PATH , "Aggiungi Utente", null);
 
         this.updateTable();
@@ -234,19 +258,19 @@ public class UserSceneController extends GuiController implements Initializable{
 
     /**
      * @brief Torna alla schermata principale (Homepage).
-     *
      * @param event L'evento che ha scatenato l'azione.
      */
     @FXML
-    private void handleBackToHome(ActionEvent event) {super.changeScene(event, HOMEPAGE_PATH);}
+    private void handleBackToHome(ActionEvent event) {this.changeScene(event, HOMEPAGE_PATH);}
+
 
 
     /**
-     * @brief Apre la scena "Account Utente"
-     *@param event L'evento che ha scatenato l'azione.
+     * @brief Apre la scena per la visualizzazione dell'utente selezionato.
+     *
      */
    @FXML
-    private void handleViewUserProfile(ActionEvent event) {
+    private void handleViewUserProfile() {
         User selectedUser = this.userTable.getSelectionModel().getSelectedItem();
 
         if (selectedUser == null) {
