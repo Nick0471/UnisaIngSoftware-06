@@ -78,9 +78,12 @@ public class DatabaseUserServiceTest {
     }
 
     @Test
-    public void getById_ExistingId() throws Exception {
+    public void getById_ExistingId() {
         User user = new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI");
-        this.userService.register(user);
+
+        assertDoesNotThrow(() -> {
+            this.userService.register(user);
+        });
 
         assertTrue(this.userService.getById("ABC123DEF5").isPresent());
         assertEquals("SOFIA", this.userService.getById("ABC123DEF5").get().getName());
@@ -92,31 +95,39 @@ public class DatabaseUserServiceTest {
     }
 
     @Test
-    public void getAll_Populated() throws Exception {
-        this.userService.register(new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI"));
+    public void getAll_Populated() {
+        assertDoesNotThrow(() -> {
+            this.userService.register(new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI"));
+        });
         assertFalse(this.userService.getAll().isEmpty());
     }
 
     @Test
-    public void getAllByEmailContaining_ValidString() throws Exception {
-        this.userService.register(new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI"));
+    public void getAllByEmailContaining_ValidString() {
+        assertDoesNotThrow(() -> {
+            this.userService.register(new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI"));
+        });
         assertFalse(this.userService.getAllByEmailContaining("studenti.unisa.it").isEmpty());
     }
 
     @Test
-    public void getAllByFullNameContaining_ValidStrings() throws Exception {
-        this.userService.register(new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI"));
-        
+    public void getAllByFullNameContaining_ValidStrings() {
+        assertDoesNotThrow(() -> {
+            this.userService.register(new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI"));
+        });
+
         assertFalse(this.userService.getAllByFullNameContaining("SOF", "NCI").isEmpty());
         assertFalse(this.userService.getAllByFullNameContaining("OF", "MAN").isEmpty());
         assertFalse(this.userService.getAllByFullNameContaining("", "INI").isEmpty());
     }
 
     @Test
-    public void existsById_ExistingId() throws Exception {
+    public void existsById_ExistingId() {
         User user = new User("ABC123DEF5", "test@studenti.unisa.it", "VINCENZO DANIEL", "RAIMO");
-        this.userService.register(user);
-        
+        assertDoesNotThrow(() -> {
+            this.userService.register(user);
+        });
+
         assertTrue(this.userService.existsById("ABC123DEF5"));
     }
 
@@ -126,9 +137,11 @@ public class DatabaseUserServiceTest {
     }
 
     @Test
-    public void existsByEmail_ExistingEmail() throws Exception {
+    public void existsByEmail_ExistingEmail() {
         User user = new User("ABC123DEF5", "test@studenti.unisa.it", "VINCENZO DANIEL", "RAIMO");
-        this.userService.register(user);
+        assertDoesNotThrow(() -> {
+            this.userService.register(user);
+        });
 
         assertTrue(this.userService.existsByEmail("test@studenti.unisa.it"));
     }
@@ -139,9 +152,11 @@ public class DatabaseUserServiceTest {
     }
 
     @Test
-    public void removeById_ExistingId() throws Exception {
+    public void removeById_ExistingId() {
         User user = new User("ABC123DEF5", "test@studenti.unisa.it", "NICOLO' MASSIMO", "LISENA");
-        this.userService.register(user);
+        assertDoesNotThrow(() -> {
+            this.userService.register(user);
+        });
 
         assertTrue(this.userService.removeById("ABC123DEF5"));
     }
@@ -152,9 +167,11 @@ public class DatabaseUserServiceTest {
     }
 
     @Test
-    public void updateById_ExistingUser() throws Exception {
+    public void updateById_ExistingUser() {
         User user = new User("ABC123DEF5", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
-        this.userService.register(user);
+        assertDoesNotThrow(() -> {
+            this.userService.register(user);
+        });
 
         User updatedUser = new User("ABC123DEF5", "modified@studenti.unisa.it", "PICARELLA", "PICARELLA");
         assertDoesNotThrow(() -> this.userService.updateById(updatedUser));

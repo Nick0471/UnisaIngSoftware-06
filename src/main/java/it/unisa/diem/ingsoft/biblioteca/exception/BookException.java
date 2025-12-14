@@ -1,3 +1,7 @@
+/**
+ * @brief Package delle eccezionie
+ * @package it.unisa.diem.ingsoft.biblioteca.exception
+ */
 package it.unisa.diem.ingsoft.biblioteca.exception;
 
 /**

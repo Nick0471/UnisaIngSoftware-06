@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
@@ -142,12 +143,12 @@ public interface BookService {
     /**
      * @brief Aggiorna il numero di copie rimanenti di un libro.
      * Somma il valore 'delta' alle copie attuali.
-     * - Passare un valore NEGATIVO per registrare un PRESTITO (es. -1).
-     * - Passare un valore POSITIVO per registrare una RESTITUZIONE (es. +1).
-     * * @param isbn L'ISBN del libro da aggiornare.
+     * @param isbn L'ISBN del libro da aggiornare.
      * @param delta Il numero di copie da aggiungere (positivo) o rimuovere (negativo).
      * @throws UnknownBookByIsbnException Se il libro non esiste.
-     * @throws NegativeBookCopiesException Se l'operazione porterebbe le copie < 0 o > totale.
+     * @throws NegativeBookCopiesException Se l'operazione porterebbe le copie < 0.
+     * @throws InvalidBookCopiesException Se l'operazione porterebbe le copie > totale.
      */
-    void updateRemainingCopies(String isbn, int delta) throws UnknownBookByIsbnException, NegativeBookCopiesException;
+    void updateRemainingCopies(String isbn, int delta) throws UnknownBookByIsbnException,
+         NegativeBookCopiesException, InvalidBookCopiesException;
 }

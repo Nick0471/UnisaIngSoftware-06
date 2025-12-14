@@ -78,13 +78,16 @@ public class DatabaseLoanServiceTest {
     }
 
     @Test
-    public void complete_ActiveLoan() throws Exception {
+    public void complete_ActiveLoan() {
         LocalDate start = LocalDate.now();
         LocalDate deadline = start.plusDays(30);
         String userId = "NICOLA1234";
         String isbn = "1234567890000";
 
-        this.loanService.register(userId, isbn, start, deadline);
+        assertDoesNotThrow(() -> {
+            this.loanService.register(userId, isbn, start, deadline);
+        });
+
         assertTrue(this.loanService.isActive(userId, isbn));
 
         assertDoesNotThrow(() -> {
@@ -102,20 +105,27 @@ public class DatabaseLoanServiceTest {
     }
 
     @Test
-    public void complete_AlreadyCompletedLoan() throws Exception {
-        this.loanService.register("NICOLA1234", "1234567890000", LocalDate.now(), LocalDate.now().plusDays(30));
-        this.loanService.complete("NICOLA1234", "1234567890000", LocalDate.now());
+    public void complete_AlreadyCompletedLoan() {
+        LocalDate now = LocalDate.now();
+        assertDoesNotThrow(() -> {
+            this.loanService.register("NICOLA1234", "1234567890000", now, now.plusDays(30));
+            this.loanService.complete("NICOLA1234", "1234567890000", now);
+        });
 
         assertThrows(UnknownLoanException.class, () -> {
-            this.loanService.complete("NICOLA1234", "1234567890000", LocalDate.now());
+            this.loanService.complete("NICOLA1234", "1234567890000", now);
         });
     }
 
     @Test
-    public void getByUserIdAndBookIsbn_ExistingLoan() throws Exception {
+    public void getByUserIdAndBookIsbn_ExistingLoan() {
+        LocalDate now = LocalDate.now();
         String userId = "USERID3214";
         String isbn = "1234567890000";
-        this.loanService.register(userId, isbn, LocalDate.now(), LocalDate.now().plusDays(30));
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register(userId, isbn, now, now.plusDays(30));
+        });
 
         assertTrue(this.loanService.getByUserIdAndBookIsbn(userId, isbn).isPresent());
     }
@@ -126,73 +136,109 @@ public class DatabaseLoanServiceTest {
     }
 
     @Test
-    public void getByUserId_ExistingLoans() throws Exception {
+    public void getByUserId_ExistingLoans() {
+        LocalDate now = LocalDate.now();
         String userId = "USERID3214";
-        this.loanService.register(userId, "1234567890000", LocalDate.now(), LocalDate.now().plusDays(30));
-        this.loanService.register(userId, "1234567890001", LocalDate.now(), LocalDate.now().plusDays(30));
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register(userId, "1234567890000", now, now.plusDays(30));
+            this.loanService.register(userId, "1234567890001", now, now.plusDays(30));
+        });
 
         assertEquals(2, this.loanService.getByUserIdContaining(userId).size());
     }
 
     @Test
-    public void getByBookIsbn_ExistingLoans() throws Exception {
+    public void getByBookIsbn_ExistingLoans() {
+        LocalDate now = LocalDate.now();
         String isbn = "1234567890000";
-        this.loanService.register("USER111111", isbn, LocalDate.now(), LocalDate.now().plusDays(30));
-        this.loanService.register("USER222222", isbn, LocalDate.now(), LocalDate.now().plusDays(30));
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register("USER111111", isbn, now, now.plusDays(30));
+            this.loanService.register("USER222222", isbn, now, now.plusDays(30));
+        });
 
         assertEquals(2, this.loanService.getByBookIsbnContaining(isbn).size());
     }
 
     @Test
-    public void getAll_Populated() throws Exception {
-        this.loanService.register("USER111111", "1234567890000", LocalDate.now(), LocalDate.now().plusDays(30));
-        this.loanService.register("USER222222", "1234567890001", LocalDate.now(), LocalDate.now().plusDays(30));
+    public void getAll_Populated() {
+        LocalDate now = LocalDate.now();
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register("USER111111", "1234567890000", now, now.plusDays(30));
+            this.loanService.register("USER222222", "1234567890001", now, now.plusDays(30));
+        });
 
         assertEquals(2, this.loanService.getAll().size());
     }
 
     @Test
-    public void getActive_AfterComplete() throws Exception {
-        this.loanService.register("USER111111", "1234567890000", LocalDate.now(), LocalDate.now().plusDays(30));
-        
-        this.loanService.register("USER222222", "1234567890001", LocalDate.now(), LocalDate.now().plusDays(30));
-        this.loanService.complete("USER222222", "1234567890001", LocalDate.now());
+    public void getActive_AfterComplete() {
+        LocalDate now = LocalDate.now();
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register("USER111111", "1234567890000", now, now.plusDays(30));
+
+            this.loanService.register("USER222222", "1234567890001", now, now.plusDays(30));
+            this.loanService.complete("USER222222", "1234567890001", now);
+        });
 
         assertEquals(1, this.loanService.getActive().size());
     }
 
     @Test
-    public void getActiveByUserId_AfterComplete() throws Exception {
+    public void getActiveByUserId_AfterComplete() {
+        LocalDate now = LocalDate.now();
         String user = "USER_MIXED";
-        this.loanService.register(user, "1234567890000", LocalDate.now(), LocalDate.now().plusDays(30));
-        
-        this.loanService.register(user, "1234567890001", LocalDate.now(), LocalDate.now().plusDays(30));
-        this.loanService.complete(user, "1234567890000", LocalDate.now());
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register(user, "1234567890000", now, now.plusDays(30));
+
+            this.loanService.register(user, "1234567890001", now, now.plusDays(30));
+            this.loanService.complete(user, "1234567890000", now);
+        });
 
         assertEquals(1, this.loanService.getActiveByUserId(user).size());
     }
 
     @Test
-    public void isActive_ActiveLoan() throws Exception {
-        this.loanService.register("USERID3214", "1234567890000", LocalDate.now(), LocalDate.now().plusDays(30));
+    public void isActive_ActiveLoan() {
+        LocalDate now = LocalDate.now();
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register("USERID3214", "1234567890000", now, now.plusDays(30));
+        });
+
         assertTrue(this.loanService.isActive("USERID3214", "1234567890000"));
     }
 
     @Test
-    public void isActive_ClosedLoan() throws Exception {
-        this.loanService.register("USERID3214", "1234567890000", LocalDate.now(), LocalDate.now().plusDays(30));
-        this.loanService.complete("USERID3214", "1234567890000", LocalDate.now());
-        
+    public void isActive_ClosedLoan() {
+        LocalDate now = LocalDate.now();
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register("USERID3214", "1234567890000", now, now.plusDays(30));
+            this.loanService.complete("USERID3214", "1234567890000", now);
+        });
+
         assertFalse(this.loanService.isActive("USERID3214", "1234567890000"));
     }
 
     @Test
-    public void countById_ValidUser() throws Exception {
+    public void countById_ValidUser() {
+        LocalDate now = LocalDate.now();
         String user = "USERID3214";
-        this.loanService.register(user, "1234567890000", LocalDate.now(), LocalDate.now().plusDays(30));
-        this.loanService.register(user, "1234567890001", LocalDate.now(), LocalDate.now().plusDays(30));
+
+        assertDoesNotThrow(() -> {
+            this.loanService.register(user, "1234567890000", now, now.plusDays(30));
+            this.loanService.register(user, "1234567890001", now, now.plusDays(30));
+        });
+
+        assertDoesNotThrow(() -> {
+            assertEquals(2, this.loanService.countById(user));
+        });
         
-        assertEquals(2, this.loanService.countById(user));
     }
 
     @Test
