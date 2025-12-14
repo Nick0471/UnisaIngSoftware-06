@@ -200,8 +200,10 @@ public class LoanSceneControllerTest extends ApplicationTest {
 
         System.out.println("Clicco su Restituisci...");
         this.clickOn("#btnReturn");
+        this.sleep(500);
 
-        this.sleep(2000);
+        this.clickOn("OK");
+        this.sleep(500);
 
         FxAssert.verifyThat("#loanTable", (TableView<Loan> t) -> t.getItems().size() == initialSize);
     }

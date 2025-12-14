@@ -107,8 +107,6 @@ public class EditBookSceneControllerTest extends ApplicationTest {
         this.clickOn("#btnConfirm");
         this.sleep(500);
 
-        this.clickOn("OK");
-        this.sleep(500);
 
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == initialSize + 1);
     }
@@ -147,8 +145,6 @@ public class EditBookSceneControllerTest extends ApplicationTest {
 
         this.clickOn("#btnConfirm");
         this.sleep(500);
-        this.clickOn("OK");
-
 
         Book updatedBook = this.bookService.getByIsbn("9780618391110").get();
         assertEquals(5, updatedBook.getTotalCopies());
