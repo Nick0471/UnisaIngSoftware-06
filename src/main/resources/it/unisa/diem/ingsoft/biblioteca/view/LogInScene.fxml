@@ -12,25 +12,30 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane
-        fx:controller = "it.unisa.diem.ingsoft.biblioteca.controller.LogInSceneController"
-        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-        style="-fx-background-color: #f4f7fa;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.LogInSceneController"
+            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            style="-fx-background-color: #f4f7fa;"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
-        <HBox alignment="CENTER" prefHeight="80.0" spacing="15.0" style="-fx-background-color: #2D3447; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="15.0"
+              style="-fx-background-color: #2D3447; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);"
+              BorderPane.alignment="CENTER">
             <children>
-                <ImageView fitHeight="77.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../img/logo_progetto.jpg" />
                     </image>
+                    <HBox.margin>
+                        <Insets left="20.0" />
+                    </HBox.margin>
                 </ImageView>
 
-                <VBox alignment="CENTER">
+                <VBox alignment="CENTER_LEFT">
                     <children>
                         <Label text="Biblioteca Universitaria" textFill="WHITE">
                             <font>
-                                <Font name="Segoe UI Bold" size="26.0" />
+                                <Font name="Segoe UI Bold" size="24.0" />
                             </font>
                         </Label>
                         <Label text="Gruppo 6" textFill="#aab2bd">
@@ -47,32 +52,36 @@
     <center>
         <VBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
-                <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="380.0" spacing="25.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-background-insets: 0;">
-                    <padding>
-                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-                    </padding>
-                    <effect>
-                        <DropShadow color="#0000001a" height="30.0" radius="14.5" width="30.0" />
-                    </effect>
-                    <children>
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="400.0" spacing="35.0"
+                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-background-insets: 0;">
 
+                    <padding>
+                        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                    </padding>
+
+                    <effect>
+                        <DropShadow color="#0000001a" height="40.0" radius="19.5" width="40.0" />
+                    </effect>
+
+                    <children>
                         <Label alignment="CENTER" maxWidth="Infinity" text="Accesso Riservato" textFill="#2d3447">
                             <font>
-                                <Font name="Segoe UI Bold" size="20.0" />
+                                <Font name="Segoe UI Bold" size="22.0" />
                             </font>
                             <VBox.margin>
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
 
-                        <VBox spacing="8.0">
+                        <VBox spacing="10.0">
                             <children>
                                 <Label text="Password di Sicurezza" textFill="#7c8184">
                                     <font>
-                                        <Font name="Segoe UI Bold" size="13.0" />
+                                        <Font name="Segoe UI Bold" size="14.0" />
                                     </font>
                                 </Label>
-                                <PasswordField fx:id="insertedPassword" prefHeight="45.0" promptText="Inserisci la chiave d'accesso" style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-color: #fafafa;">
+                                <PasswordField fx:id="insertedPassword" prefHeight="50.0" promptText="Inserisci la chiave d'accesso"
+                                               style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-color: #fafafa;">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -80,7 +89,10 @@
                             </children>
                         </VBox>
 
-                        <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleLogin" prefHeight="50.0" prefWidth="Infinity" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.4), 10, 0, 0, 4);" text="ENTRA NEL SISTEMA">
+                        <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleLogin"
+                                prefHeight="50.0" prefWidth="Infinity"
+                                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.4), 10, 0, 0, 4);"
+                                text="ENTRA NEL SISTEMA">
                             <font>
                                 <Font name="Segoe UI Bold" size="14.0" />
                             </font>
