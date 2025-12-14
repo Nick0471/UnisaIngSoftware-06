@@ -11,83 +11,94 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="400.0" prefWidth="640.0" style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.HomepageSceneController">
-   <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="60.0" spacing="15.0" style="-fx-background-color: #2D3447;" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/logo_progetto.jpg" />
-               </image>
-            </ImageView>
-            
-            <Label text="Biblioteca Universitaria" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f4f4f4;"
+            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.HomepageSceneController">
 
-            <Region HBox.hgrow="ALWAYS" />
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="70.0" spacing="15.0" style="-fx-background-color: #2D3447; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);"
+              BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/logo_progetto.jpg" />
+                    </image>
+                    <HBox.margin>
+                        <Insets left="20.0" />
+                    </HBox.margin>
+                </ImageView>
 
-            <Button fx:id="btnProfile" mnemonicParsing="false" onAction="#handleGoToViewProfile" style="-fx-background-color: transparent; -fx-cursor: hand;">
-               <graphic>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/settings.jpg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-         </padding>
-      </HBox>
-   </top>
+                <Label text="Biblioteca Universitaria" textFill="WHITE">
+                    <font>
+                        <Font name="Segoe UI Bold" size="26.0" />
+                    </font>
+                </Label>
 
-   <center>
-      <VBox alignment="TOP_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
-         </padding>
-         <children>
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <Label text="Bentornato!" textFill="#555555">
-                     <font>
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button fx:id="btnProfile" mnemonicParsing="false" onAction="#handleGoToViewProfile"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 28px; -fx-border-color: transparent; -fx-padding: 0 15 0 0;"
+                        text="⚙">
+                    <font>
                         <Font name="System Bold" size="28.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+    </top>
 
-            <Region VBox.vgrow="ALWAYS" />
+    <center>
+        <VBox alignment="CENTER" spacing="40.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="40.0" left="50.0" right="50.0" top="40.0" />
+            </padding>
+            <children>
 
-            <HBox alignment="CENTER" spacing="20.0">
-               <children>
-                  <Button fx:id="btnBook" maxHeight="60.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGoToViewBooks" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);" text="Catalogo libri" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Button>
-                  
-                  <Button fx:id="btnUser" maxHeight="60.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGoToViewUsers" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);" text="Lista utenti" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Button>
-                  
-                  <Button fx:id="btnLoan" maxHeight="60.0" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGoToViewLoans" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);" text="Prestiti attivi" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-            
-            <Region VBox.vgrow="ALWAYS" />
-            <Region layoutX="60.0" layoutY="111.0" />
-         </children>
-      </VBox>
-   </center>
+                <VBox alignment="CENTER" spacing="5.0">
+                    <children>
+                        <Label text="Bentornato!" textFill="#2d3447">
+                            <font>
+                                <Font name="Segoe UI Bold" size="36.0" />
+                            </font>
+                        </Label>
+                        <Label text="Pannello di controllo gestione biblioteca" textFill="#7f8c8d">
+                            <font>
+                                <Font name="Segoe UI" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <HBox alignment="CENTER" spacing="30.0">
+                    <children>
+                        <Button fx:id="btnBook" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleGoToViewBooks"
+                                prefHeight="130.0" prefWidth="170.0"
+                                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);"
+                                text="Catalogo Libri">
+                            <font>
+                                <Font name="Segoe UI Bold" size="16.0" />
+                            </font>
+                        </Button>
+
+                        <Button fx:id="btnUser" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleGoToViewUsers"
+                                prefHeight="130.0" prefWidth="170.0"
+                                style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);"
+                                text="Gestione Utenti">
+                            <font>
+                                <Font name="Segoe UI Bold" size="16.0" />
+                            </font>
+                        </Button>
+
+                        <Button fx:id="btnLoan" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleGoToViewLoans"
+                                prefHeight="130.0" prefWidth="170.0"
+                                style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);"
+                                text="Prestiti Attivi">
+                            <font>
+                                <Font name="Segoe UI Bold" size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
 </BorderPane>
