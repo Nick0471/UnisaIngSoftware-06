@@ -47,8 +47,10 @@ public class App extends Application {
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("Biblioteca Login");
-        primaryStage.setMaximized(true);
+
         primaryStage.setScene(scene);
+        primaryStage.setMaximized(true);
+
         primaryStage.show();
     }
 

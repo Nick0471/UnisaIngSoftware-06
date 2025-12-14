@@ -49,14 +49,9 @@ public abstract class GuiController {
             Parent root = loader.getRoot();
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene currentScene = stage.getScene();
+            currentScene.setRoot(root);
 
-            Scene newScene = new Scene(root);
-
-            stage.setScene(newScene);
-            stage.setMaximized(false);
-            stage.setMaximized(true);
-
-            stage.show();
         } catch (NullPointerException e) {
             this.popUp(Alert.AlertType.ERROR, "Scena non trovata", "Il file " + scene + " non è stato trovato nel percorso specificato.");
         }
