@@ -155,6 +155,10 @@ public class DatabaseBookService implements BookService {
      *  Esegue un insert SQL per l'inserimento del libro nel database, controllando che
      *  l'isbn inserito sia corretto.
      * @param book Il libro da aggiungere.
+     * @throws DuplicateBookByIsbnException Se esiste già un libro con lo stesso ISBN.
+     * @throws InvalidIsbnException Se l'ISBN del libro non è valido.
+     * @throws NegativeBookCopiesException Se il numero di copie totali o rimanenti
+     * è negativo.
      */
     @Override
     public void add(Book book) throws DuplicateBookByIsbnException, InvalidIsbnException,
@@ -194,6 +198,12 @@ public class DatabaseBookService implements BookService {
      *  Esegue una insert SQL per l'inserimento dei libri nel database, controllando che
      *  l'isbn sia corretto per ogni libro.
      * @param books La lista di libri da aggiungere.
+     * @throws DuplicateBooksByIsbnException Se uno o più ISBN nella lista sono già
+     * presenti nel database.
+     * @throws InvalidIsbnException Se almeno un libro nella lista ha un ISBN non
+     * valido.
+     * @throws NegativeBookCopiesException Se almeno un libro ha un numero di copie
+     * negativo.
      */
     @Override
     public void addAll(List<Book> books) throws DuplicateBooksByIsbnException, InvalidIsbnException,
@@ -250,6 +260,8 @@ public class DatabaseBookService implements BookService {
      *  le nuove informazioni da salvare.
      * @invariant L'ISBN del libro è un invariante. Se è necessario modificarlo
      *  bisogna eliminare e reinserire il libro.
+     * @throws UnknownBookByIsbnException Se il libro con l'ISBN specificato non esiste.
+     * @throws NegativeBookCopiesException Se il nuovo numero di copie è negativo.
      */
     @Override
     public void updateByIsbn(Book book) throws UnknownBookByIsbnException, NegativeBookCopiesException {
