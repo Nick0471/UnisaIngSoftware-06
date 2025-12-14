@@ -87,11 +87,9 @@ public interface BookService {
     /**
      * @brief Aggiunge un libro al catalogo.
      * @param book Il libro da aggiungere.
-     * @pre book != null
-     * @pre book.getIsbn() deve essere un ISBN valido
-     * @pre Non deve esistere già un libro con lo stesso ISBN nel database.
-     * @pre book.getTotalCopies() >= 0 e book.getRemainingCopies() >= 0.
-     * @post Il libro viene registrato nel catalogo.
+     * @throws DuplicateBookByIsbnException Se esiste già un libro con lo stesso ISBN.
+     * @throws InvalidIsbnException Se l'ISBN del libro non è valido.
+     * @throws NegativeBookCopiesException Se il numero di copie è negativo.
      */
     void add(Book book) throws DuplicateBookByIsbnException, InvalidIsbnException,
          NegativeBookCopiesException;
@@ -99,6 +97,10 @@ public interface BookService {
     /**
      * @brief Aggiunge una lista di libri al catalogo.
      * @param books La lista di libri da aggiungere.
+     * @throws DuplicateBookByIsbnException Se esiste un libro duplicato (singolo).
+     * @throws DuplicateBooksByIsbnException Se uno o più ISBN nella lista sono già presenti.
+     * @throws InvalidIsbnException Se uno o più libri hanno un ISBN non valido.
+     * @throws NegativeBookCopiesException Se uno o più libri hanno un numero di copie negativo.
      */
     void addAll(List<Book> books) throws DuplicateBookByIsbnException, DuplicateBooksByIsbnException,
          InvalidIsbnException, NegativeBookCopiesException;
@@ -109,6 +111,8 @@ public interface BookService {
      *  le nuove informazioni da salvare.
      * @invariant L'ISBN del libro è un invariante. Se è necessario modificarlo
      *  bisogna eliminare e reinserire il libro.
+     * @throws UnknownBookByIsbnException Se il libro da aggiornare non esiste.
+     * @throws NegativeBookCopiesException Se i nuovi dati comportano un numero di copie negativo.
      */
     void updateByIsbn(Book book) throws UnknownBookByIsbnException, NegativeBookCopiesException;
 
