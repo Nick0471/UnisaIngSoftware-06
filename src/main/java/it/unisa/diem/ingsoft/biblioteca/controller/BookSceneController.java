@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
+import it.unisa.diem.ingsoft.biblioteca.exception.MissingBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
@@ -100,16 +102,68 @@ public class BookSceneController extends GuiController implements Initializable 
         this.columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.filterBooks(newValue);
+
+            String selectedType = this.searchType.getValue();
+            String input;
+            if(newValue == null){
+                input = "";
+            }else{
+                input = newValue;
+            }
+
+            if ("ISBN ".equals(selectedType)) {
+
+                if (!input.matches("\\d*")) {
+                    input = input.replaceAll("[^\\d]", "");
+                }
+
+                if (input.length() > 13) {
+                    input = input.substring(0, 13);
+                }
+
+                if (!input.equals(newValue)) {
+                    this.searchField.setText(input);
+                    return;
+                }
+            }
+
+            if ("Anno ".equals(selectedType)) {
+
+                if (!input.matches("\\d*")) {
+                    input = input.replaceAll("[^\\d]", "");
+                }
+
+                if (input.length() > 4) {
+                    input = input.substring(0, 4);
+                }
+
+                if (!input.equals(newValue)) {
+                    this.searchField.setText(input);
+                    return;
+                }
+            }
+
+            this.filterBooks(this.searchField.getText());
+        });
+
+        this.searchType.valueProperty().addListener((obs, oldVal, newVal) -> {
+            this.searchField.setText("");
+            this.updateTable();
         });
 
         this.searchType.setValue("Titolo ");
+
+
     }
 
     /**
      * Aggiorna la TableView recuperando tutti i libri del catalogo.
      */
     private void updateTable() {
+        if (this.bookService == null) {
+            return;
+        }
+
         List<Book> list = this.bookService.getAll();
         this.books = FXCollections.observableArrayList(list);
         this.bookCatalog.setItems(this.books);
@@ -175,14 +229,17 @@ public class BookSceneController extends GuiController implements Initializable 
             super.popUp(Alert.AlertType.WARNING,"Errore selezione","Seleziona un libro da rimuovere.");
             return;
         }
-
-
-        boolean success = this.bookService.removeByIsbn(selectedBook.getIsbn());
-
-        if (success) {
-            this.updateTable();
-        } else {
-            super.popUp(Alert.AlertType.ERROR, "Errore validazione", "Libro specificato inesistente.");
+        
+        boolean success = false;
+        try {
+            success = this.bookService.removeByIsbn(selectedBook.getIsbn());
+            if (success) {
+                this.updateTable();
+            } else {
+                super.popUp(Alert.AlertType.ERROR, "Errore validazione", "Libro specificato inesistente.");
+            }
+        } catch (BookException e) {
+            super.popUp(Alert.AlertType.ERROR, "Errore selezione", e.getMessage());
         }
 
         this.updateTable();

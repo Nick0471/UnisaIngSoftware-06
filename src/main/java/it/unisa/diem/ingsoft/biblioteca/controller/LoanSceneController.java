@@ -105,7 +105,49 @@ public class LoanSceneController extends GuiController implements Initializable 
         this.columnDeadline.setCellValueFactory(new PropertyValueFactory<>("loanDeadline"));
 
         this.searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.filterLoans(newValue);
+
+            String selectedType = this.searchType.getValue();
+            String input;
+            if(newValue == null){
+                input = "";
+            }else{
+                input = newValue;
+            }
+
+            if ("ISBN ".equals(selectedType)) {
+
+                if (!input.matches("\\d*")) {
+                    input = input.replaceAll("[^\\d]", "");
+                }
+
+                if (input.length() > 13) {
+                    input = input.substring(0, 13);
+                }
+
+                if (!input.equals(newValue)) {
+                    this.searchField.setText(input);
+                    return;
+                }
+            }
+
+            if ("Matricola ".equals(selectedType)) {
+
+                if (input.length() > 10) {
+                    input = input.substring(0, 10);
+                }
+
+                if (!input.equals(newValue)) {
+                    this.searchField.setText(input);
+                    return;
+                }
+            }
+
+            this.filterLoans(this.searchField.getText());
+        });
+
+        this.searchType.valueProperty().addListener((obs, oldVal, newVal) -> {
+            this.searchField.setText("");
+            this.updateTable();
         });
 
         this.searchType.setValue("Matricola ");
@@ -134,6 +176,10 @@ public class LoanSceneController extends GuiController implements Initializable 
      * Aggiorna la TableView recuperando tutti i prestiti attivi.
      */
     private void updateTable() {
+        if (this.loanService == null) {
+            return;
+        }
+
         List<Loan> list = this.loanService.getActive();
         this.loans = FXCollections.observableArrayList(list);
         this.loanTable.setItems(this.loans);
@@ -155,7 +201,7 @@ public class LoanSceneController extends GuiController implements Initializable 
         List<Loan> result = new ArrayList<>();
 
         switch (type) {
-            case "Matricola " -> result = this.loanService.getByUserIdContaining(query);
+            case "Matricola " -> result = this.loanService.getActiveByUserId(query);
             case "ISBN " -> result = this.loanService.getByBookIsbnContaining(query);
             default -> this.updateTable();
         }
