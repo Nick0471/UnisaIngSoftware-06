@@ -46,7 +46,7 @@ public class App extends Application {
         Parent root = loader.getRoot();
         Scene scene = new Scene(root);
 
-        primaryStage.setTitle("Biblioteca Login");
+        primaryStage.setTitle("Biblioteca");
 
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);

@@ -249,7 +249,7 @@ public class UserSceneController extends GuiController implements Initializable{
     @FXML
     private void handleAddUser() {
 
-        this.modalScene(EDIT_USER_PATH , "Aggiungi Utente", null);
+        this.modalScene(EDIT_USER_PATH , "Aggiungi Nuovo Utente", null);
 
         this.updateTable();
     }
@@ -278,7 +278,7 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        this.modalScene(ACCOUNT_USER_PATH, "Profilo Utente", (AccountUserSceneController controller) -> {
+        this.modalScene(ACCOUNT_USER_PATH, "Account Utente", (AccountUserSceneController controller) -> {
             controller.setUserProfile(selectedUser, this.loanService);
         });
 
