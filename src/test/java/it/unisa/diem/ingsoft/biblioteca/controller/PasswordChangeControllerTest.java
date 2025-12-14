@@ -117,5 +117,14 @@ public class PasswordChangeControllerTest extends ApplicationTest {
 
         this.clickOn("OK");
     }
+
+
+    @Test
+    public void test5_AbortOperation() {
+        System.out.println("--- TEST 4: ANNULLA OPERAZIONE ---");
+
+        this.clickOn("#btnReturn");
+        this.sleep(500);
+    }
 }
 

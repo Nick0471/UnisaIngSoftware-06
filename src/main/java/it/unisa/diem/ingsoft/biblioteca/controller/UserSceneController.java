@@ -279,7 +279,7 @@ public class UserSceneController extends GuiController implements Initializable{
         }
 
         this.modalScene(ACCOUNT_USER_PATH, "Profilo Utente", (AccountUserSceneController controller) -> {
-            controller.setUserProfile(selectedUser, this.loanService, this.bookService);
+            controller.setUserProfile(selectedUser, this.loanService);
         });
 
         this.updateTable();

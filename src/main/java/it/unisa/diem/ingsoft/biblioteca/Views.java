@@ -11,7 +11,7 @@ public class Views {
 
 
     public static final String LOGIN_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/LogInScene.fxml";
-    public static final String EDIT_PASSWORD_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/PasswordScene.fxml";
+    public static final String EDIT_PASSWORD_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/PasswordChangeScene.fxml";
     public static final String USER_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/UserScene.fxml";
     public static final String EDIT_USER_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/EditUserScene.fxml";
     public static final String ACCOUNT_USER_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/AccountUserScene.fxml";

@@ -17,7 +17,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 
 
 /**
- * @brief  Controller per il cambio password per accdere al sistema".
+ * @brief  Controller per il cambio password per accedere al sistema".
  *
  * Permette di verificare la vecchia password inserita e di sostituirla
  * con una nuova.
@@ -45,6 +45,9 @@ public class PasswordChangeSceneController extends GuiController {
     private Button btnUpdate;
 
     @FXML
+    private Button btnReturn;
+
+    @FXML
     private PasswordField currentPassword;
 
     @FXML
@@ -58,7 +61,7 @@ public class PasswordChangeSceneController extends GuiController {
 
     /**
      * @brief Gestisce il tentativo di cambio password.
-     * @param event L'evento ActionEvent generato dal click sul pulsante.
+     * @param event L'evento ActionEvent generato dal click sul pulsante "Aggiorna".
      */
     @FXML
     private void handleGoToViewHomepage(ActionEvent event) {
@@ -89,5 +92,13 @@ public class PasswordChangeSceneController extends GuiController {
 
         this.changeScene(event, HOMEPAGE_PATH);
     }
+
+
+    /**
+     * @brief Gestisce l'annullamento dell'operazione
+     * @param event
+     */
+    @FXML
+    private void handleReturn(ActionEvent event){ this.changeScene(event, HOMEPAGE_PATH);}
 
 }
