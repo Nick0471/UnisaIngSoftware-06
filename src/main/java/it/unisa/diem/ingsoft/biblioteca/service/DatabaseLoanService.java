@@ -9,7 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.exception.*;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidBookCopiesException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
+import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownLoanException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 
 /**

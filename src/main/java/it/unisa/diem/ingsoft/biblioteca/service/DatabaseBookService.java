@@ -13,6 +13,7 @@ import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.InvalidBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.MissingBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
@@ -52,7 +53,7 @@ public class DatabaseBookService implements BookService {
      * altrimenti Optional.empty().
      */
     @Override
-    public Optional<Book> getByIsbn(String isbn){
+    public Optional<Book> getByIsbn(String isbn) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
                                 + "WHERE isbn = :isbn")
@@ -70,7 +71,7 @@ public class DatabaseBookService implements BookService {
      * criterio.
      */
     @Override
-    public List<Book> getAllByAuthorContaining(String author){
+    public List<Book> getAllByAuthorContaining(String author) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
                                 + "WHERE author LIKE :author")
@@ -88,7 +89,7 @@ public class DatabaseBookService implements BookService {
      * criterio.
      */
     @Override
-    public List<Book> getAllByGenreContaining(String genre){
+    public List<Book> getAllByGenreContaining(String genre) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
                                 + "WHERE genre LIKE :genre")
@@ -105,7 +106,7 @@ public class DatabaseBookService implements BookService {
      * criterio.
      */
     @Override
-    public List<Book> getAllByReleaseYear(int releaseYear){
+    public List<Book> getAllByReleaseYear(int releaseYear) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
                                 + "WHERE release_year LIKE :release_year")
@@ -123,7 +124,7 @@ public class DatabaseBookService implements BookService {
      * criterio.
      */
     @Override
-    public List<Book> getAllByTitleContaining(String title){
+    public List<Book> getAllByTitleContaining(String title) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM books "
                                 + "WHERE title LIKE :title")
@@ -137,11 +138,20 @@ public class DatabaseBookService implements BookService {
      *  Esegue una delete SQL per rimuovere il libro se presente nel database.
      * @param isbn Il codice ISBN del libro da rimuovere.
      * @return true se il libro è stato rimosso, false altrimenti.
+     * @throws MissingBookCopiesException Se il libro specificato e' parte di un prestito attivo.
      */
     @Override
-    public boolean removeByIsbn(String isbn){
-        if(!this.existsByIsbn(isbn))
+    public boolean removeByIsbn(String isbn) throws MissingBookCopiesException {
+        if(!this.existsByIsbn(isbn)) {
             return false;
+        }
+
+        Book book = this.getByIsbn(isbn)
+            .get();
+
+        if (book.getRemainingCopies() != book.getTotalCopies()) {
+            throw new MissingBookCopiesException();
+        }
 
         return this.database.getJdbi()
                             .withHandle(handle -> handle.createUpdate("DELETE FROM books "
@@ -262,14 +272,22 @@ public class DatabaseBookService implements BookService {
      *  bisogna eliminare e reinserire il libro.
      * @throws UnknownBookByIsbnException Se il libro con l'ISBN specificato non esiste.
      * @throws NegativeBookCopiesException Se il nuovo numero di copie è negativo.
+     * @throws InvalidBookCopiesException Se il numero di copie rimanenti > numero di copie totali.
      */
     @Override
-    public void updateByIsbn(Book book) throws UnknownBookByIsbnException, NegativeBookCopiesException {
-        if(!this.existsByIsbn(book.getIsbn()))
+    public void updateByIsbn(Book book) throws UnknownBookByIsbnException,
+           NegativeBookCopiesException, InvalidBookCopiesException {
+        if (!this.existsByIsbn(book.getIsbn())) {
             throw new UnknownBookByIsbnException();
+        }
 
-        if(book.getTotalCopies() < 0 || book.getRemainingCopies() < 0)
+        if (book.getTotalCopies() < 0 || book.getRemainingCopies() < 0) {
             throw new NegativeBookCopiesException();
+        }
+
+        if (book.getRemainingCopies() > book.getTotalCopies()) {
+            throw new InvalidBookCopiesException();
+        }
 
         String isbn = book.getIsbn();
         String title = book.getTitle();
@@ -325,7 +343,7 @@ public class DatabaseBookService implements BookService {
      *  La lista sarà vuota se non ci sono duplicati.
      */
     @Override
-    public List<String> existingIsbns(List<String> isbns){
+    public List<String> existingIsbns(List<String> isbns) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT isbn FROM books WHERE isbn IN (<isbns>)")
                         .bindList("isbns", isbns)
@@ -371,25 +389,18 @@ public class DatabaseBookService implements BookService {
     @Override
     public void updateRemainingCopies(String isbn, int delta) throws UnknownBookByIsbnException,
            NegativeBookCopiesException, InvalidBookCopiesException {
-        Book book = this.getByIsbn(isbn).orElseThrow(UnknownBookByIsbnException::new);
-
-        int currentCopies = book.getRemainingCopies();
-        int totalCopies = book.getTotalCopies();
-        int newRemainingCopies = currentCopies + delta;
-
-        if (newRemainingCopies < 0) {
-            throw new NegativeBookCopiesException();
+        if (!this.existsByIsbn(isbn)) {
+            throw new UnknownBookByIsbnException();
         }
 
-        if (newRemainingCopies > totalCopies)
-            throw new InvalidBookCopiesException();
+        Book book = this.getByIsbn(isbn)
+            .get();
 
-        this.database.getJdbi().withHandle(handle ->
-                handle.createUpdate("UPDATE books SET remaining_copies = :remaining_copies WHERE isbn = :isbn")
-                        .bind("remaining_copies", newRemainingCopies)
-                        .bind("isbn", isbn)
-                        .execute()
-        );
+        int currentCopies = book.getRemainingCopies();
+        int newRemainingCopies = currentCopies + delta;
+
+        book.setRemainingCopies(newRemainingCopies);
+        this.updateByIsbn(book);
     }
 
 

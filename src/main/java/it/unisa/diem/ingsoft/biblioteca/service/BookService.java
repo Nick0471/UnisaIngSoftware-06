@@ -11,6 +11,7 @@ import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.InvalidBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.MissingBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
@@ -81,8 +82,9 @@ public interface BookService {
      * @brief Rimuove un libro dal catalogo basandosi sul suo codice ISBN.
      * @param isbn Il codice ISBN del libro da rimuovere.
      * @return true se il libro è stato rimosso, false altrimenti.
+     * @throws MissingBookCopiesException Se il libro specificato e' parte di un prestito attivo.
      */
-    boolean removeByIsbn(String isbn);
+    boolean removeByIsbn(String isbn) throws MissingBookCopiesException;
 
     /**
      * @brief Aggiunge un libro al catalogo.
@@ -113,8 +115,10 @@ public interface BookService {
      *  bisogna eliminare e reinserire il libro.
      * @throws UnknownBookByIsbnException Se il libro da aggiornare non esiste.
      * @throws NegativeBookCopiesException Se i nuovi dati comportano un numero di copie negativo.
+     * @throws InvalidBookCopiesException Se il numero di copie rimanenti > numero di copie totali.
      */
-    void updateByIsbn(Book book) throws UnknownBookByIsbnException, NegativeBookCopiesException;
+    void updateByIsbn(Book book) throws UnknownBookByIsbnException, NegativeBookCopiesException,
+         InvalidBookCopiesException;
 
     /**
      * @brief Controlla se un libro con determinato ISBN è già stato registrato.
