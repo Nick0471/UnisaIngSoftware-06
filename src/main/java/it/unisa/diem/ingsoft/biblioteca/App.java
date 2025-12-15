@@ -2,13 +2,13 @@ package it.unisa.diem.ingsoft.biblioteca;
 
 import java.util.Optional;
 
+import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseLoanService;
-import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
-import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.application.Application;
@@ -39,7 +39,7 @@ public class App extends Application {
 
         // password di default
         if (!passwordService.isPresent()) {
-            passwordService.changePassword("admin");
+            passwordService.setDefault("admin", "GRUPPO06", "INGEGNERIA SOFTWARE", "NICOLA CAPUANO");
         }
 
         FXMLLoader loader = Scenes.setupLoader(Views.LOGIN_PATH, serviceRepository);
