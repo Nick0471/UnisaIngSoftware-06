@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,10 @@ public class DatabasePostgresTest {
 
     @BeforeAll
     public static void setup() {
+        System.out.println("--- INIZIO TEST POSTGRES ---");
+        System.out.println("Assicurati di essere connesso ad internet!");
+        System.out.println("Connessione...");
+
         String postgres = "jdbc:postgresql://nicolatorch.duckdns.org:5432/postgres?user=postgres&password=abc123";
 
         assertDoesNotThrow(() -> {
@@ -27,6 +32,8 @@ public class DatabasePostgresTest {
         });
 
         userService = new DatabaseUserService(database);
+
+        System.out.println("Connesso!");
     }
 
     @Test
@@ -45,5 +52,10 @@ public class DatabasePostgresTest {
         assertEquals("nicola@studenti.unisa.it", userService.getById("MATRICOLA1")
                 .get()
                 .getEmail());
+    }
+
+    @AfterAll
+    public static void teardown () {
+        System.out.println("--- FINE TEST POSTGRES ---");
     }
 }
