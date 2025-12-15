@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
-import it.unisa.diem.ingsoft.biblioteca.exception.MissingBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
@@ -153,7 +152,7 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Aggiorna la TableView recuperando tutti i libri del catalogo.
+     * @brief Aggiorna la TableView recuperando tutti i libri del catalogo.
      */
     private void updateTable() {
         if (this.bookService == null) {
@@ -166,9 +165,7 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Filtra i libri nella tabella in base alla query e al tipo di ricerca selezionato.
-     *
-     * query La stringa di ricerca inserita dall'utente.
+     * @brief Filtra i libri nella tabella in base alla query e al tipo di ricerca selezionato.
      */
     @FXML
     private void filterBooks(String query) {
@@ -212,13 +209,11 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Rimuove il libro selezionato dal catalogo.
-     *
-     * Verifica che un libro sia selezionato, chiama il metodo di rimozione
-     * e aggiorna il catalogo.
+     * @brief Rimuove il libro selezionato dal catalogo.
      */
     @FXML
     private void handleDeleteBook() {
+        // Verifica che un libro sia selezionato, chiama il metodo di rimozione e aggiorna il catalogo.
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
 
         if (selectedBook == null) {
@@ -246,15 +241,11 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Modifica il libro selezionato.
-     *
-     * Verifica che un libro sia selezionato, chiama il metodo di modifica
-     * e aggiorna il catalogo.
-     *
-     * Non è possibile modificare il codice ISBN del libro selezionato
+     * @brief Modifica il libro selezionato.
      */
     @FXML
     private void handleModifyBook() {
+        //Verifica che un libro sia selezionato, chiama il metodo di modifica e aggiorna il catalogo.
         Book selectedBook = this.bookCatalog.getSelectionModel().getSelectedItem();
         if (selectedBook == null) {
             super.popUp(Alert.AlertType.WARNING, "Errore selezione", "Seleziona un libro da modificare.");
@@ -269,8 +260,7 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Torna alla scena Homepage.
-     * event L'evento generato dal click del pulsante.
+     * @brief Torna alla scena Homepage.
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
@@ -278,8 +268,7 @@ public class BookSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Mostra la scena per l'aggiunta di un nuovo libro nel catalogo.
-     * event L'evento generato dal click del pulsante.
+     * @brief Mostra la scena per l'aggiunta di un nuovo libro nel catalogo.
      */
     @FXML
     private void handleAddBook(ActionEvent event) {

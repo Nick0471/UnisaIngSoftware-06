@@ -92,10 +92,6 @@ public class UpdateSecurityAnswersSceneController extends GuiController {
 
     /**
      * @brief Gestisce l'annullamento dell'operazione.
-     *
-     * Ritorna alla scena di modifica password (Gestione Password).
-     *
-     * @param event L'evento generato dal click sul pulsante "Annulla".
      */
     @FXML
     private void handleCancel(ActionEvent event) {

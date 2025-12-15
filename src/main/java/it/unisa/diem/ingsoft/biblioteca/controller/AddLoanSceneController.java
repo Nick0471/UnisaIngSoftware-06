@@ -105,7 +105,7 @@ public class AddLoanSceneController extends GuiController {
     }
 
     /**
-     * Gestisce la logica di autocompletamento per gli UTENTI.
+     * @brief Gestisce la logica di autocompletamento per gli utenti.
      */
     private void setupUserAutocomplete() {
         this.userMatricolaField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -155,7 +155,7 @@ public class AddLoanSceneController extends GuiController {
     }
 
     /**
-     * Gestisce la logica di autocompletamento per i LIBRI.
+     * @brief Gestisce la logica di autocompletamento per i libri.
      */
     private void setupBookAutocomplete() {
         this.isbnField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -204,7 +204,7 @@ public class AddLoanSceneController extends GuiController {
     }
 
     /**
-     * Abilita il campo di testo per permettere l'inserimento di una nuova matricola.
+     * @brief Abilita il campo di testo per permettere l'inserimento di una nuova matricola.
      */
     @FXML
     private void handleResetUser(ActionEvent event) {
@@ -215,7 +215,7 @@ public class AddLoanSceneController extends GuiController {
     }
 
     /**
-     * Abilita il campo di testo per permettere l'inserimento di un nuovo ISBN.
+     * @brief Abilita il campo di testo per permettere l'inserimento di un nuovo ISBN.
      */
     @FXML
     private void handleResetBook(ActionEvent event) {
@@ -226,8 +226,7 @@ public class AddLoanSceneController extends GuiController {
     }
 
     /**
-     * Conferma l'inserimento del prestito.
-     *
+     * @brief Conferma l'inserimento del prestito.
      * Raccoglie i dati, effettua le validazioni finali e salva il prestito.
      */
     @FXML
@@ -278,9 +277,7 @@ public class AddLoanSceneController extends GuiController {
     }
 
     /**
-     * Chiude la finestra di aggiunta senza salvare le modifiche.
-     *
-     * event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
+     * @brief Chiude la finestra di aggiunta senza salvare le modifiche.
      */
     @FXML
     private void handleCancel(ActionEvent event) {
