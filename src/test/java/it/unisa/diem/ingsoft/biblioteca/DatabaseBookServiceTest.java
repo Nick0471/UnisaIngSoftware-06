@@ -23,14 +23,39 @@ import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
 
 public class DatabaseBookServiceTest {
-    private static final String VALID_ISBN = "1234567890000";
-    private static final String SECOND_VALID_ISBN = "1234567800000";
-    private static final String SEARCH_TEST_ISBN = "1334567810000";
-    private static final String REMOVE_TEST_ISBN = "6767676760000";
-    private static final String UPDATE_TEST_ISBN = "3519034830000";
-    private static final String COPIES_TEST_ISBN = "0409820250000";
-    private static final String INVALID_ISBN = "123456789";
-    private static final String NON_EXISTENT_ISBN = "NON-ESISTE";
+
+    private final String VALID_ISBN = "1234567890000";
+    private final String SECOND_VALID_ISBN = "1234567800000";
+    private final String INVALID_ISBN = "123456789";
+    private final String NON_EXISTENT_ISBN = "0000000000000";
+
+    private final Book VALID_BOOK = new Book(
+        this.VALID_ISBN, "AOT", "Hajime Isayama", 2009, 50, 5, "Dark fantasy", "Un bel manga"
+    );
+
+    private final Book SECOND_VALID_BOOK = new Book(
+        this.SECOND_VALID_ISBN, "Chainsaw man", "Tatsuki Fujimoto", 2022, 50, 50, "Urban Fantasy", "Pochita"
+    );
+
+    private final Book DUPLICATE_ISBN_BOOK = new Book(
+        this.VALID_ISBN, "Duplicato", "Autore X", 2025, 10, 10, "Genere", "Desc"
+    );
+
+    private final Book INVALID_ISBN_BOOK = new Book(
+        this.INVALID_ISBN, "Invalid", "Author", 2000, 10, 10, "Genere", "Desc"
+    );
+
+    private final Book NEGATIVE_TOTAL_COPIES_BOOK = new Book(
+        this.VALID_ISBN, "AOT", "Hajime Isayama", 2009, -5, 5, "Dark fantasy", "Desc"
+    );
+
+    private final Book NEGATIVE_REMAINING_COPIES_BOOK = new Book(
+        this.VALID_ISBN, "AOT", "Hajime Isayama", 2009, 50, -5, "Dark fantasy", "Desc"
+    );
+
+    private final Book UPDATED_BOOK = new Book(
+        this.VALID_ISBN, "AOT: The Final Season", "MAPPA", 2023, 50, 5, "Dark fantasy", "Updated Desc"
+    );
 
     private BookService bookService;
 
@@ -42,59 +67,43 @@ public class DatabaseBookServiceTest {
 
     @Test
     public void add_ValidBook() {
-        assertDoesNotThrow(() -> {
-            Book book = new Book(VALID_ISBN, "AOT", "Hajime Isayama", 2009, 50, 5, "Dark fantasy", "Un bel manga");
-            this.bookService.add(book);
-        });
+        this.addBooks(this.VALID_BOOK);
     }
 
     @Test
     public void add_DuplicateIsbn() {
-        assertDoesNotThrow(() -> {
-            Book book = new Book(VALID_ISBN, "AOT", "Hajime Isayama", 2009, 50, 5, "Dark fantasy", "Un bel manga");
-            this.bookService.add(book);
-        });
+        this.addBooks(this.VALID_BOOK);
 
         assertThrows(DuplicateBookByIsbnException.class, () -> {
-            // Tentativo di aggiungere un libro diverso ma con lo stesso ISBN
-            Book duplicateBook = new Book(VALID_ISBN, "1984", "George Orwell", 1948, 50, 3, "Distopico", "Un romanzo cupo");
-            this.bookService.add(duplicateBook);
+            this.bookService.add(this.DUPLICATE_ISBN_BOOK);
         });
     }
 
     @Test
     public void add_InvalidIsbn() {
         assertThrows(InvalidIsbnException.class, () -> {
-            Book invalidBook = new Book(INVALID_ISBN, "1984", "George Orwell", 1948, 50, 3, "Distopico", "Un romanzo cupo");
-            this.bookService.add(invalidBook);
+            this.bookService.add(this.INVALID_ISBN_BOOK);
         });
     }
 
     @Test
     public void add_NegativeTotalCopies() {
         assertThrows(NegativeBookCopiesException.class, () -> {
-            // Uso VALID_ISBN perché l'errore atteso è sulle copie, non sull'ISBN
-            Book negativeCopiesBook = new Book(VALID_ISBN, "1984", "George Orwell", 1948, -4, 3, "Distopico", "Un romanzo cupo");
-            this.bookService.add(negativeCopiesBook);
+            this.bookService.add(this.NEGATIVE_TOTAL_COPIES_BOOK);
         });
     }
 
     @Test
     public void add_NegativeRemainingCopies() {
         assertThrows(NegativeBookCopiesException.class, () -> {
-            Book negativeRemainingBook = new Book(VALID_ISBN, "1984", "George Orwell", 1948, 50, -3, "Distopico", "Un romanzo cupo");
-            this.bookService.add(negativeRemainingBook);
+            this.bookService.add(this.NEGATIVE_REMAINING_COPIES_BOOK);
         });
     }
 
     @Test
     public void addAll_ValidList() {
         assertDoesNotThrow(() -> {
-            List<Book> books = List.of(
-                    new Book(VALID_ISBN, "One piece", "Oda", 1999, 50, 3, "Adv", "Peak"),
-                    new Book(SECOND_VALID_ISBN, "Chainsaw man", "Tatsuki Fujimoto", 2022, 50, 4, "Fantasy", "Topo di campagna o di città?")
-            );
-
+            List<Book> books = List.of(this.VALID_BOOK, this.SECOND_VALID_BOOK);
             this.bookService.addAll(books);
         });
     }
@@ -102,18 +111,12 @@ public class DatabaseBookServiceTest {
     @Test
     public void addAll_NegativeCopies() {
         assertThrows(NegativeBookCopiesException.class, () -> {
-            List<Book> books = List.of(
-                new Book(SECOND_VALID_ISBN, "Chainsaw man", "Tatsuki Fujimoto", 2022, 50, 4, "Fantasy", "Desc"),
-                new Book(VALID_ISBN, "One piece", "Oda", 1999, 50, -10, "Adv", "Peak")
-            );
+            List<Book> books = List.of(this.SECOND_VALID_BOOK, this.NEGATIVE_REMAINING_COPIES_BOOK);
             this.bookService.addAll(books);
         });
 
         assertThrows(NegativeBookCopiesException.class, () -> {
-            List<Book> books = List.of(
-                new Book(SECOND_VALID_ISBN, "Chainsaw man", "Tatsuki Fujimoto", 2022, 50, 4, "Fantasy", "Desc"),
-                new Book(VALID_ISBN, "One piece", "Oda", 1999, -12, 1, "Adv", "Peak")
-            );
+            List<Book> books = List.of(this.SECOND_VALID_BOOK, this.NEGATIVE_TOTAL_COPIES_BOOK);
             this.bookService.addAll(books);
         });
     }
@@ -121,242 +124,190 @@ public class DatabaseBookServiceTest {
     @Test
     public void addAll_InvalidIsbn() {
         assertThrows(InvalidIsbnException.class, () -> {
-            List<Book> books = List.of(
-                new Book(VALID_ISBN, "One piece", "Oda", 1999, 10, 1, "Adv", "Peak"),
-                new Book(INVALID_ISBN, "Chainsaw man", "Tatsuki Fujimoto", 2022, 50, 4, "Fantasy", "Desc")
-            );
+            List<Book> books = List.of(this.VALID_BOOK, this.INVALID_ISBN_BOOK);
             this.bookService.addAll(books);
         });
     }
 
     @Test
     public void addAll_DuplicateInList() {
-        assertDoesNotThrow(() -> {
-            this.bookService.add(new Book(SECOND_VALID_ISBN, "Chainsaw man", "Tatsuki Fujimoto", 2022, 50, 4, "Fantasy", "Desc"));
-        });
+        this.addBooks(this.VALID_BOOK);
 
         assertThrows(DuplicateBooksByIsbnException.class, () -> {
-            List<Book> books = List.of(
-                    new Book("1235567800000", "Jojo", "Hirohiko Araki", 1987, 50, 9, "Fantasy", "Parte 7"),
-                    new Book(SECOND_VALID_ISBN, "Chainsaw man", "Tatsuki Fujimoto", 2022, 50, 4, "Fantasy", "Duplicato")
-                    );
+            List<Book> books = List.of(this.SECOND_VALID_BOOK, this.DUPLICATE_ISBN_BOOK);
             this.bookService.addAll(books);
         });
     }
 
     @Test
     public void getByIsbn_ExistingIsbn() {
-        assertDoesNotThrow(() -> {
-            this.bookService.add(new Book(SEARCH_TEST_ISBN, "Blue lock S1", "Muneyuki Kaneshiro", 2018, 50, 19, "Sportivo", "Reo è il goat"));
-        });
+        this.addBooks(this.VALID_BOOK);
 
-        assertTrue(this.bookService.getByIsbn(SEARCH_TEST_ISBN).isPresent());
+        assertTrue(this.bookService.getByIsbn(this.VALID_ISBN).isPresent());
 
-        Book retrieved = this.bookService.getByIsbn(SEARCH_TEST_ISBN).get();
-        assertEquals("Muneyuki Kaneshiro", retrieved.getAuthor());
-        assertEquals("Blue lock S1", retrieved.getTitle());
-        assertEquals(2018, retrieved.getReleaseYear());
-        assertEquals(50, retrieved.getTotalCopies());
-        assertEquals(19, retrieved.getRemainingCopies());
-        assertEquals("Sportivo", retrieved.getGenre());
-        assertEquals("Reo è il goat", retrieved.getDescription());
+        Book retrieved = this.bookService.getByIsbn(this.VALID_ISBN).get();
+        assertEquals(this.VALID_BOOK.getAuthor(), retrieved.getAuthor());
+        assertEquals(this.VALID_BOOK.getTitle(), retrieved.getTitle());
+        assertEquals(this.VALID_BOOK.getReleaseYear(), retrieved.getReleaseYear());
+        assertEquals(this.VALID_BOOK.getTotalCopies(), retrieved.getTotalCopies());
+        assertEquals(this.VALID_BOOK.getRemainingCopies(), retrieved.getRemainingCopies());
+        assertEquals(this.VALID_BOOK.getGenre(), retrieved.getGenre());
+        assertEquals(this.VALID_BOOK.getDescription(), retrieved.getDescription());
     }
 
     @Test
     public void getByIsbn_NonExistingIsbn() {
-        assertTrue(this.bookService.getByIsbn(NON_EXISTENT_ISBN).isEmpty());
+        assertTrue(this.bookService.getByIsbn(this.NON_EXISTENT_ISBN).isEmpty());
     }
 
     @Test
     public void getAll_Populated() {
-        assertDoesNotThrow(() -> {
-            this.bookService.add(new Book(VALID_ISBN, "Libro Test", "Autore", 2020, 10, 5, "Genere", "Desc"));
-        });
+        this.addBooks(this.VALID_BOOK);
         assertFalse(this.bookService.getAll().isEmpty());
     }
 
     @Test
     public void getAllByAuthor_MatchingString() {
-        assertDoesNotThrow(() -> {
-            this.bookService.add(new Book(SEARCH_TEST_ISBN, "Blue lock S1", "Muneyuki Kaneshiro", 2018, 50, 19, "Sportivo", "Desc"));
-            this.bookService.add(new Book("1334967820000", "Blue lock S2", "Muneyuki Kaneshiro", 2019, 50, 19, "Sportivo", "Desc"));
-            this.bookService.add(new Book("1384567830000", "Blue lock S3", "Muneyuki Kaneshiro", 2020, 50, 19, "Sportivo", "Desc"));
-        });
+        this.addBooks(this.VALID_BOOK, this.SECOND_VALID_BOOK);
 
-        assertEquals(3, this.bookService.getAllByAuthorContaining("Kane").size());
+        assertEquals(1, this.bookService.getAllByAuthorContaining("Isayama").size());
+        assertEquals(2, this.bookService.getAllByAuthorContaining("a").size());
     }
 
     @Test
     public void getAllByReleaseYear_MatchingYear() {
-        assertDoesNotThrow(() -> {
-            this.bookService.add(new Book(SEARCH_TEST_ISBN, "Book 2018", "Author", 2018, 50, 19, "Genre", "Desc"));
-        });
+        this.addBooks(this.VALID_BOOK, this.SECOND_VALID_BOOK);
 
-        assertFalse(this.bookService.getAllByReleaseYear(2018).isEmpty());
-        assertTrue(this.bookService.getAllByReleaseYear(2000).isEmpty());
+        assertFalse(this.bookService.getAllByReleaseYear(2009).isEmpty());
+        assertTrue(this.bookService.getAllByReleaseYear(1900).isEmpty());
     }
 
     @Test
     public void getAllByGenre_MatchingString() {
-        assertDoesNotThrow(() -> {
-            this.bookService.add(new Book(VALID_ISBN, "AOT", "Isayama", 2009, 50, 5, "Dark fantasy", "Desc"));
-        });
+        this.addBooks(this.VALID_BOOK, this.SECOND_VALID_BOOK);
 
-        assertFalse(this.bookService.getAllByGenreContaining("Dark fantasy").isEmpty());
+        assertFalse(this.bookService.getAllByGenreContaining("Dark").isEmpty());
     }
 
     @Test
     public void getAllByIsbn_MatchingString() {
-        assertDoesNotThrow(() -> {
-            this.bookService.add(new Book(VALID_ISBN, "AOT", "Isayama", 2009, 50, 5, "Dark fantasy", "Desc"));
-        });
+        this.addBooks(this.VALID_BOOK);
 
         assertFalse(this.bookService.getAllByIsbnContaining("789").isEmpty());
     }
 
     @Test
     public void getAllByTitle_MatchingString() {
-        assertDoesNotThrow(() -> {
-            this.bookService.add(new Book(VALID_ISBN, "AOT", "Isayama", 2009, 50, 5, "Dark fantasy", "Desc"));
-        });
+        this.addBooks(this.VALID_BOOK);
 
         assertFalse(this.bookService.getAllByTitleContaining("AOT").isEmpty());
     }
 
     @Test
     public void existsByIsbn_ExistingIsbn() {
-        Book book = new Book(REMOVE_TEST_ISBN, "Dragon Ball", "Toriyama", 1984, 50, 40, "Fantasy", "Kamehamea!!!");
-        assertDoesNotThrow(() -> {
-            this.bookService.add(book);
-        });
-
-        assertTrue(this.bookService.existsByIsbn(REMOVE_TEST_ISBN));
+        this.addBooks(this.VALID_BOOK);
+        assertTrue(this.bookService.existsByIsbn(this.VALID_ISBN));
     }
 
     @Test
     public void existsByIsbn_NonExistingIsbn() {
-        assertFalse(this.bookService.existsByIsbn(NON_EXISTENT_ISBN));
+        assertFalse(this.bookService.existsByIsbn(this.NON_EXISTENT_ISBN));
     }
 
     @Test
     public void removeByIsbn_ExistingIsbn() {
-        Book book = new Book(REMOVE_TEST_ISBN, "Dragon Ball", "Toriyama", 1984, 50, 50, "Fantasy", "Kamehamea!!!");
-        assertDoesNotThrow(() -> {
-            this.bookService.add(book);
-        });
+        this.addBooks(this.SECOND_VALID_BOOK);
 
         assertDoesNotThrow(() -> {
-            assertTrue(this.bookService.removeByIsbn(REMOVE_TEST_ISBN));
+            assertTrue(this.bookService.removeByIsbn(this.SECOND_VALID_ISBN));
         });
     }
 
     @Test
     public void removeByIsbn_MissingCopies() {
-        Book book = new Book(REMOVE_TEST_ISBN, "Dragon Ball", "Toriyama", 1984, 50, 49, "Fantasy", "Kamehamea!!!");
-        assertDoesNotThrow(() -> {
-            this.bookService.add(book);
-        });
+        this.addBooks(this.VALID_BOOK);
 
         assertThrows(MissingBookCopiesException.class, () -> {
-            this.bookService.removeByIsbn(REMOVE_TEST_ISBN);
+            this.bookService.removeByIsbn(this.VALID_ISBN);
         });
     }
 
     @Test
     public void removeByIsbn_NonExistingIsbn() {
         assertDoesNotThrow(() -> {
-            assertFalse(this.bookService.removeByIsbn(NON_EXISTENT_ISBN));
+            assertFalse(this.bookService.removeByIsbn(this.NON_EXISTENT_ISBN));
         });
     }
 
     @Test
     public void updateByIsbn_ExistingBook() {
-        Book book = new Book(UPDATE_TEST_ISBN, "Storia di un piatto vuoto", "Vincenzo D. Raimo", 2026, 1, 0, "Adv", "R.I.P. Mattia L. Santoro");
-        assertDoesNotThrow(() -> {
-            this.bookService.add(book);
-        });
+        this.addBooks(this.VALID_BOOK);
 
-        Book updatedBook = new Book(UPDATE_TEST_ISBN, "An empty plate 's tale", "Vincenzo Dan. Raimo", 2026, 1, 0, "Adv", "R.I.P. Mattia L. Santoro");
-        assertDoesNotThrow(() -> this.bookService.updateByIsbn(updatedBook));
+        assertDoesNotThrow(() -> this.bookService.updateByIsbn(this.UPDATED_BOOK));
 
-        Book retrieved = this.bookService.getByIsbn(UPDATE_TEST_ISBN).get();
-        assertEquals("An empty plate 's tale", retrieved.getTitle());
-        assertEquals("Vincenzo Dan. Raimo", retrieved.getAuthor());
+        Book retrieved = this.bookService.getByIsbn(this.VALID_ISBN).get();
+        assertEquals(this.UPDATED_BOOK.getTitle(), retrieved.getTitle());
+        assertEquals(this.UPDATED_BOOK.getAuthor(), retrieved.getAuthor());
     }
 
     @Test
     public void updateByIsbn_NonExistingBook() {
-        // Uso un ISBN valido ma non presente nel DB per questo test
-        Book book = new Book(VALID_ISBN, "Titolo", "Autore", 2025, 4, 4, "Politica", "Desc");
-
         assertThrows(UnknownBookByIsbnException.class, () -> {
-            this.bookService.updateByIsbn(book);
+            this.bookService.updateByIsbn(this.VALID_BOOK);
         });
     }
 
     @Test
     public void updateByIsbn_NegativeCopies() {
-        // Uso VALID_ISBN per semplicità
-        Book book = new Book(VALID_ISBN, "Titolo", "Autore", 2025, 4, 4, "Politica", "Desc");
-        assertDoesNotThrow(() -> {
-            this.bookService.add(book);
-        });
+        this.addBooks(this.VALID_BOOK);
 
-        Book invalidUpdate = new Book(VALID_ISBN, "Titolo", "Autore", 2025, -4, 3, "Politica", "Desc");
         assertThrows(NegativeBookCopiesException.class, () -> {
-            this.bookService.updateByIsbn(invalidUpdate);
+            this.bookService.updateByIsbn(this.NEGATIVE_TOTAL_COPIES_BOOK);
         });
     }
 
     @Test
     public void countRemainingCopies_ExistingBook() {
-        Book book = new Book(COPIES_TEST_ISBN, "Trip to Sofia", "Ancel P.", 2027, 14, 3, "Fantascienza", "Desc");
-        assertDoesNotThrow(() -> {
-            this.bookService.add(book);
-        });
-
-        assertEquals(3, this.bookService.countRemainingCopies(COPIES_TEST_ISBN));
+        this.addBooks(this.VALID_BOOK);
+        assertEquals(5, this.bookService.countRemainingCopies(this.VALID_ISBN));
     }
 
     @Test
     public void updateRemainingCopies_Success() {
-        String isbn = COPIES_TEST_ISBN;
-        Book book = new Book(isbn, "Trip to Sofia", "Ancel P.", 2027, 14, 3, "Fantascienza", "Desc");
+        this.addBooks(this.VALID_BOOK);
 
         assertDoesNotThrow(() -> {
-            this.bookService.add(book);
+            this.bookService.updateRemainingCopies(this.VALID_ISBN, 2);
+            assertEquals(7, this.bookService.countRemainingCopies(this.VALID_ISBN));
 
-            this.bookService.updateRemainingCopies(isbn, 2);
-            assertEquals(this.bookService.countRemainingCopies(isbn), 5);
-
-            this.bookService.updateRemainingCopies(isbn, -2);
-            assertEquals(this.bookService.countRemainingCopies(isbn), 3);
-        });
-
-        assertThrows(UnknownBookByIsbnException.class, () -> {
-            this.bookService.updateRemainingCopies(NON_EXISTENT_ISBN, 1);
+            this.bookService.updateRemainingCopies(this.VALID_ISBN, -2);
+            assertEquals(5, this.bookService.countRemainingCopies(this.VALID_ISBN));
         });
     }
 
     @Test
     public void updateRemainingCopies_NegativeCopies() {
-        String isbn = COPIES_TEST_ISBN;
-        Book book = new Book(isbn, "Trip to Sofia", "Ancel P.", 2027, 14, 3, "Fantascienza", "Desc");
-
-        assertDoesNotThrow(() -> {
-            this.bookService.add(book);
-        });
+        this.addBooks(this.VALID_BOOK);
 
         assertThrows(NegativeBookCopiesException.class, () -> {
-            this.bookService.updateRemainingCopies(isbn, -10);
+            this.bookService.updateRemainingCopies(this.VALID_ISBN, -10);
         });
 
         assertThrows(InvalidBookCopiesException.class, () -> {
-            this.bookService.updateRemainingCopies(isbn, 100);
+            this.bookService.updateRemainingCopies(this.VALID_ISBN, 100);
         });
 
         assertThrows(UnknownBookByIsbnException.class, () -> {
-            this.bookService.updateRemainingCopies(NON_EXISTENT_ISBN, 1);
+            this.bookService.updateRemainingCopies(this.NON_EXISTENT_ISBN, 1);
+        });
+    }
+
+    // I punti servono per far passare uno o piu' libri
+    private void addBooks(Book... books) {
+        assertDoesNotThrow(() -> {
+            for (Book book : books) {
+                this.bookService.add(book);
+            }
         });
     }
 }

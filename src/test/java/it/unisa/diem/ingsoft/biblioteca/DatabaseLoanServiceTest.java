@@ -28,7 +28,6 @@ import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 
 public class DatabaseLoanServiceTest {
-
     private LoanService loanService;
     private BookService bookService;
     private UserService userService;
