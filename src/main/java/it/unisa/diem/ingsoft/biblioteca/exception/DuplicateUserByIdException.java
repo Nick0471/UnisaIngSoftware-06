@@ -16,6 +16,6 @@ public class DuplicateUserByIdException extends UserException {
      * fornita.
      */
 	public DuplicateUserByIdException() {
-		super("Esiste già un utente registrato con questa matricola");
+		super("Esiste già un utente registrato con questa matricola!");
 	}
 }

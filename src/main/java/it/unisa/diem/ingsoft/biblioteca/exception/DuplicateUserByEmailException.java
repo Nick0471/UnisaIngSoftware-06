@@ -15,6 +15,6 @@ public class DuplicateUserByEmailException extends UserException {
      * standard che notifica la presenza di un utente già registrato con l'email fornita.
      */
 	public DuplicateUserByEmailException() {
-		super("Esiste già un utente registrato con questa email");
+		super("Esiste già un utente registrato con questa email!");
 	}
 }

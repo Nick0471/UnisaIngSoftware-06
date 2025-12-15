@@ -167,11 +167,8 @@ public class EditUserSceneController extends GuiController{
         } else {
             try {
                 this.userService.register(user);
-
-            } catch (DuplicateUserByEmailException e) {
-                this.popUp(Alert.AlertType.ERROR ,"Errore salvataggio", e.getMessage());
-            } catch (DuplicateUserByIdException | InvalidEmailException | InvalidIdException e) {
-                this.popUp(Alert.AlertType.ERROR ,"Errore salvataggio", e.getMessage());
+            } catch (DuplicateUserByEmailException | DuplicateUserByIdException | InvalidEmailException | InvalidIdException e) {
+                this.popUp(Alert.AlertType.ERROR, "Errore salvataggio", e.getMessage());
             }
         }
 

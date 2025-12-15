@@ -222,4 +222,65 @@ public class EditUserSceneControllerTest extends ApplicationTest{
         FxAssert.verifyThat("#userTable", (TableView<Book> t) -> t.getItems().size() == initialSize);
         this.sleep(1000);
     }
+
+    @Test
+    public void test7_AddWithDuplicateId(){
+        System.out.println("--- TEST 7: PROVA AGGIUNTA NUOVO UTENTE CON MATRICOLA DUPLICATA ---");
+
+        int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
+
+        this.clickOn("#btnAdd");
+        this.sleep(1000);
+
+        this.clickOn("#idField").write("1234567890");
+        this.clickOn("#surnameField.").write("Andolfi");
+        this.clickOn("#nameField").write("Genoveffa");
+        this.clickOn("#emailField").write("g.andolfi@studenti.unisa.it");
+
+        this.clickOn("#btnConfirm");
+        this.sleep(1000);
+
+
+        FxAssert.verifyThat("Esiste già un utente registrato con questa matricola!", NodeMatchers.isVisible());
+        this.sleep(1000);
+
+        this.clickOn("OK");
+        this.sleep(1000);
+
+        FxAssert.verifyThat("#userTable", (TableView<Book> t) -> t.getItems().size() == initialSize);
+        this.sleep(1000);
+
+    }
+
+
+    @Test
+    public void test8_AddWithDuplicateEmail(){
+        System.out.println("--- TEST 8: PROVA AGGIUNTA NUOVO UTENTE CON EMAIL DUPLICATA ---");
+
+        int initialSize = this.lookup("#userTable").queryTableView().getItems().size();
+
+        this.clickOn("#btnAdd");
+        this.sleep(1000);
+
+        this.clickOn("#idField").write("1234567999");
+        this.clickOn("#surnameField.").write("Altieri");
+        this.clickOn("#nameField").write("Giovanna");
+        this.clickOn("#emailField").write("g.altieri2@studenti.unisa.it");
+
+        this.clickOn("#btnConfirm");
+        this.sleep(1000);
+
+
+        FxAssert.verifyThat("Esiste già un utente registrato con questa email!", NodeMatchers.isVisible());
+        this.sleep(1000);
+
+        this.clickOn("OK");
+        this.sleep(1000);
+
+        FxAssert.verifyThat("#userTable", (TableView<Book> t) -> t.getItems().size() == initialSize);
+        this.sleep(1000);
+
+    }
+
+
 }
