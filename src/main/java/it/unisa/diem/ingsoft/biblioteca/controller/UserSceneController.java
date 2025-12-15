@@ -206,7 +206,7 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        Optional<ButtonType> result = super.popUpConfirmation("Eliminazione utente", "Sei sicuro di volere eliminare l'utente selezionato?");
+        Optional<ButtonType> result = super.popUp(Alert.AlertType.CONFIRMATION,"Eliminazione utente", "Sei sicuro di volere eliminare l'utente selezionato?");
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             //ottengo la lista dei SOLI prestiti attivi di un singolo utente

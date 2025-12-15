@@ -226,7 +226,7 @@ public class BookSceneController extends GuiController implements Initializable 
             return;
         }
 
-        Optional<ButtonType> result = super.popUpConfirmation("Eliminazione Libro", "Sei sicuro di volere rimuovere il libro selezionato?");
+        Optional<ButtonType> result = super.popUp(Alert.AlertType.CONFIRMATION,"Eliminazione Libro", "Sei sicuro di volere rimuovere il libro selezionato?");
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             boolean success = false;

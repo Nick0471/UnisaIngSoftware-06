@@ -244,7 +244,7 @@ public class LoanSceneController extends GuiController implements Initializable 
             return;
         }
 
-        Optional<ButtonType> result = super.popUpConfirmation("Restituzione prestito", "Sei sicuro di volere restituire il prestito selezionato?");
+        Optional<ButtonType> result = super.popUp(Alert.AlertType.CONFIRMATION,"Restituzione prestito", "Sei sicuro di volere restituire il prestito selezionato?");
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {

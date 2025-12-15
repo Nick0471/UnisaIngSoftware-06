@@ -102,22 +102,8 @@ public abstract class GuiController {
      * @param title Il titolo della finestra.
      * @param message Il messaggio da visualizzare.
      */
-    protected void popUp(Alert.AlertType type, String title, String message) {
+    protected Optional<ButtonType> popUp(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    /**
-     * @brief Mostra una finestra di pop-up per la conferma.
-     *
-     * @param title Il titolo della finestra.
-     * @param message Il messaggio da visualizzare.
-     */
-    protected Optional<ButtonType> popUpConfirmation(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
