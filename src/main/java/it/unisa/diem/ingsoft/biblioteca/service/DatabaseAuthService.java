@@ -140,6 +140,11 @@ public class DatabaseAuthService implements AuthService {
         return BCrypt.checkpw(answer, hash);
     }
 
+    /**
+     * @brief Cambia una delle risposte alle domande di accesso al software.
+     * @param answer La nuova risposta.
+     * @param number Il numero della domanda da modificare.
+     */
     @Override
     public void changeAnswer(String answer, int number) {
         String hash = BCrypt.hashpw(answer, BCrypt.gensalt());
