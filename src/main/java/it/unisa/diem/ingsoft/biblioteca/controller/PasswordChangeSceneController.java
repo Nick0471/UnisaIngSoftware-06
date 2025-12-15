@@ -91,11 +91,4 @@ public class PasswordChangeSceneController extends GuiController {
         this.changeScene(event, HOMEPAGE_PATH);
     }
 
-
-
-    @FXML
-    private void handleGoToUpdateQuestions(ActionEvent event) {
-        super.changeScene(event, UPDATE_QUESTIONS_PATH);
-    }
-
 }

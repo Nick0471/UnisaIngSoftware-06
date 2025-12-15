@@ -86,7 +86,7 @@ public class UpdateSecurityQuestionsSceneController extends GuiController {
             super.changeScene(event, HOMEPAGE_PATH);
 
         } catch (Exception e) {
-            super.popUp(Alert.AlertType.ERROR, "Errore salvataggio", "Impossibile aggiornare i dati: " + e.getMessage());
+            super.popUp(Alert.AlertType.ERROR, "Errore salvataggio", e.getMessage());
         }
     }
 
