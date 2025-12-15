@@ -39,34 +39,36 @@ public class EditPasswordControllerTest extends ApplicationTest {
         stage.setScene(scene);
         stage.show();
 
-        this.authService.changePassword("OldPassword");
+        if (!authService.isPresent()) {
+            authService.setup("admin", "GRUPPO06", "INGEGNERIA SOFTWARE", "NICOLA CAPUANO");
+        }
     }
 
     @Test
     public void test1_ChangePasswordSuccess() {
         System.out.println("--- TEST 1: CAMBIO PASSWORD CON SUCCESSO ---");
 
-        this.clickOn("#currentPassword").write("OldPassword");
+        this.clickOn("#currentPassword").write("admin");
 
-        this.clickOn("#newPassword").write("NewPass1");
-        this.clickOn("#newPasswordConfirm").write("NewPass1");
+        this.clickOn("#newPassword").write("Tolkien");
+        this.clickOn("#newPasswordConfirm").write("Tolkien");
         this.sleep(500);
 
         this.clickOn("#btnUpdate");
         this.sleep(1000);
 
-        boolean passwordChanged = this.authService.checkPassword("NewPass123");
-        assertTrue(passwordChanged, "La password nel DB dovrebbe essere aggiornata a 'NewPass123'");
+        boolean passwordChanged = this.authService.checkPassword("Tolkien");
+        assertTrue(passwordChanged, "La password nel DB dovrebbe essere aggiornata a 'Tolkien'");
     }
 
     @Test
     public void test2_NewPasswordsMismatch() {
         System.out.println("--- TEST 2: LE DUE PASSWORD NON COINCIDONO ---");
 
-        this.clickOn("#currentPassword").write("OldPassword");
+        this.clickOn("#currentPassword").write("admin");
 
-        this.clickOn("#newPassword").write("NewPass1");
-        this.clickOn("#newPasswordConfirm").write("NewPass2");
+        this.clickOn("#newPassword").write("Tolkien");
+        this.clickOn("#newPasswordConfirm").write("tolkien");
         this.sleep(500);
 
         this.clickOn("#btnUpdate");
@@ -82,10 +84,10 @@ public class EditPasswordControllerTest extends ApplicationTest {
     public void test3_NewPasswordLengthError() {
         System.out.println("--- TEST 3: LUNGHEZZA PASSWORD ERRATA (TROPPO CORTA) ---");
 
-        this.clickOn("#currentPassword").write("OldPassword");
+        this.clickOn("#currentPassword").write("admin");
 
-        this.clickOn("#newPassword").write("123");
-        this.clickOn("#newPasswordConfirm").write("123");
+        this.clickOn("#newPassword").write("ciao");
+        this.clickOn("#newPasswordConfirm").write("ciao");
         this.sleep(500);
 
         this.clickOn("#btnUpdate");
@@ -101,10 +103,10 @@ public class EditPasswordControllerTest extends ApplicationTest {
     public void test4_OldPasswordWrong() {
         System.out.println("--- TEST 4: VECCHIA PASSWORD ERRATA ---");
 
-        this.clickOn("#currentPassword").write("WrongPass");
+        this.clickOn("#currentPassword").write("Tolkien");
 
-        this.clickOn("#newPassword").write("NewPass1");
-        this.clickOn("#newPasswordConfirm").write("NewPass1");
+        this.clickOn("#newPassword").write("THE_HOBBIT");
+        this.clickOn("#newPasswordConfirm").write("THE_HOBBIT");
         this.sleep(500);
 
         this.clickOn("#btnUpdate");
@@ -122,6 +124,8 @@ public class EditPasswordControllerTest extends ApplicationTest {
 
         this.clickOn("#btnReturn");
         this.sleep(500);
+
+        FxAssert.verifyThat("Bentornato!", NodeMatchers.isVisible());
     }
 
     @Test
@@ -131,6 +135,6 @@ public class EditPasswordControllerTest extends ApplicationTest {
         this.clickOn("#btnUpdateQuestions");
         this.sleep(1000);
 
-
+        FxAssert.verifyThat("Gestione Sicurezza", NodeMatchers.isVisible());
     }
 }
