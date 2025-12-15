@@ -34,7 +34,7 @@ public class DatabaseAuthService implements AuthService {
      * @param answer3 la terza risposta da inserire
      */
     @Override
-    public void setDefault(String password, String answer1, String answer2, String answer3) {
+    public void setup(String password, String answer1, String answer2, String answer3) {
         String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
         String ans1Hash = BCrypt.hashpw(answer1, BCrypt.gensalt());
         String ans2Hash = BCrypt.hashpw(answer2, BCrypt.gensalt());
@@ -132,7 +132,7 @@ public class DatabaseAuthService implements AuthService {
      */
     @Override
     public boolean checkAnswer(String answer, int number) {
-        String column = getQuestionColumn(number);
+        String column = this.getQuestionColumn(number);
 
         Optional<String> hashOpt = this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT " + column + " FROM auth LIMIT 1")
@@ -151,7 +151,7 @@ public class DatabaseAuthService implements AuthService {
     @Override
     public void changeAnswer(String answer, int number) {
         String hash = BCrypt.hashpw(answer, BCrypt.gensalt());
-        String column = getQuestionColumn(number);
+        String column = this.getQuestionColumn(number);
 
         if (!this.isPresent()) {
             throw new UnsetAnswerException(number);

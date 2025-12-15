@@ -16,7 +16,7 @@ public interface AuthService {
      * @param answer2 La risposta alla seconda domanda.
      * @param answer3 La risposta alla terza domanda.
      */
-    void setDefault(String password, String answer1, String answer2, String answer3);
+    void setup(String password, String answer1, String answer2, String answer3);
 
     /**
      * @brief Cambia la password di accesso al software.
