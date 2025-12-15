@@ -8,7 +8,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.*;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidBookCopiesException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
+import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
+import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownLoanException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 
 /**
@@ -66,9 +73,15 @@ public interface LoanService {
      *  è già esistente.
      * @throws InvalidIdException Se la matricola non è valida.
      * @throws InvalidIsbnException Se l'ISBN non è valido.
+     * @throws UnknownBookByIsbnException Se l'ISBN non corrisponde ad un libro esistente.
+     * @throws UnknownUserByIdException Se la matricola non corrisponde ad un utente registrato.
+     * @throws NegativeBookCopiesException Se non ci sono copie sufficienti per prestare il libro.
+     * @throws InvalidBookCopiesException Se le copie rimanenti del libro superano quelle totali.
      */
 	void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline)
-            throws LoanAlreadyRegisteredException, InvalidIdException, InvalidIsbnException, UnknownBookByIsbnException, UnknownBookByIsbnException, NegativeBookCopiesException, InvalidBookCopiesException;
+            throws LoanAlreadyRegisteredException, InvalidIdException, InvalidIsbnException,
+                              UnknownBookByIsbnException, UnknownUserByIdException,
+                              NegativeBookCopiesException, InvalidBookCopiesException;
 
     /**
      * @brief Registra la restituzione di un libro da parte di un utente.
@@ -77,7 +90,8 @@ public interface LoanService {
      * @param end Data di restituzione del libro.
      * @throws UnknownLoanException Il prestito tra utente e libro specificati è inesistente.
      */
-    void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException, UnknownBookByIsbnException, NegativeBookCopiesException, InvalidBookCopiesException;
+    void complete(String userId, String bookIsbn, LocalDate end) throws UnknownLoanException,
+         UnknownBookByIsbnException, NegativeBookCopiesException, InvalidBookCopiesException;
 
     /**
      * @brief Verifica se un utente ha preso in prestito un libro che non

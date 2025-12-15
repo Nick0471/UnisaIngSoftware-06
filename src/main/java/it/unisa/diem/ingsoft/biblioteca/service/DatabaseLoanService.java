@@ -16,6 +16,7 @@ import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException
 import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownLoanException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
 
 /**
@@ -96,13 +97,22 @@ public class DatabaseLoanService implements LoanService {
      * @param bookIsbn L'ISBN del libro dato in prestito.
      * @param start La data di inizio del prestito.
      * @param deadline La data di restituzione massima.
-     * @throws LoanAlreadyRegisteredException Il prestito per l'utente ed il libro specificati.
-     *  è già esistente
+     * @pre userId deve rispettare il formato matricola valido.
+     * @pre bookIsbn deve rispettare il formato ISBN valido.
+     * @pre Non deve esistere un prestito attivo per la coppia (userId, bookIsbn).
+     * @post Viene registrato un nuovo prestito.
+     * @throws LoanAlreadyRegisteredException Il prestito per l'utente ed il libro specificati
+     *  è già esistente.
+     * @throws InvalidIdException Se la matricola non è valida.
+     * @throws InvalidIsbnException Se l'ISBN non è valido.
+     * @throws UnknownBookByIsbnException Se l'ISBN non corrisponde ad un libro esistente.
+     * @throws NegativeBookCopiesException Se non ci sono copie sufficienti per prestare il libro.
+     * @throws InvalidBookCopiesException Se le copie rimanenti del libro superano quelle totali.
      */
     @Override
     public void register(String userId, String bookIsbn, LocalDate start, LocalDate deadline)
             throws LoanAlreadyRegisteredException, InvalidIdException, InvalidIsbnException,
-            UnknownBookByIsbnException, NegativeBookCopiesException, InvalidBookCopiesException {
+            UnknownBookByIsbnException, UnknownUserByIdException,  NegativeBookCopiesException, InvalidBookCopiesException {
 
         if (!this.userService.isIdValid(userId)) {
             throw new InvalidIdException();
@@ -110,6 +120,10 @@ public class DatabaseLoanService implements LoanService {
 
         if (!this.bookService.isIsbnValid(bookIsbn)) {
             throw new InvalidIsbnException();
+        }
+
+        if (!this.userService.existsById(userId)) {
+            throw new UnknownUserByIdException();
         }
 
         if (this.isActive(userId, bookIsbn))
@@ -261,6 +275,7 @@ public class DatabaseLoanService implements LoanService {
      * @param bookIsbn La stringa (o carattere) contenuta nel Isbn da cercare.
      * @return Una lista di prestiti attivi che corrispondono al criterio.
      */
+    @Override
     public List<Loan> getActiveByBookIsbnContaining(String bookIsbn) {
         return this.database.getJdbi()
                 .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
