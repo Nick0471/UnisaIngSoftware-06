@@ -15,6 +15,7 @@ import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.DuplicateBooksByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.exception.InvalidBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
+import it.unisa.diem.ingsoft.biblioteca.exception.MissingBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
 import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
@@ -231,13 +232,25 @@ public class DatabaseBookServiceTest {
 
     @Test
     public void removeByIsbn_ExistingIsbn() {
-        Book book = new Book("6767676760000", "Dragon Ball", "Akira Toriyama", 1984, 50, 40, "Fantasy", "Kamehamea!!!");
+        Book book = new Book("6767676760000", "Dragon Ball", "Akira Toriyama", 1984, 50, 50, "Fantasy", "Kamehamea!!!");
         assertDoesNotThrow(() -> {
             this.bookService.add(book);
         });
 
         assertDoesNotThrow(() -> {
             assertTrue(this.bookService.removeByIsbn("6767676760000"));
+        });
+    }
+
+    @Test
+    public void removeByIsbn_MissingCopies() {
+        Book book = new Book("6767676760000", "Dragon Ball", "Akira Toriyama", 1984, 50, 49, "Fantasy", "Kamehamea!!!");
+        assertDoesNotThrow(() -> {
+            this.bookService.add(book);
+        });
+
+        assertThrows(MissingBookCopiesException.class, () -> {
+            this.bookService.removeByIsbn("6767676760000");
         });
     }
 

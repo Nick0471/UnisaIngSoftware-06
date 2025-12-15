@@ -138,15 +138,18 @@ public class Database {
             + "description TEXT NOT NULL"
             + ");";
 
-        String passwordSql = "CREATE TABLE IF NOT EXISTS auth ("
-            + "password_hash TEXT NOT NULL PRIMARY KEY"
+        String authSql = "CREATE TABLE IF NOT EXISTS auth ("
+            + "password_hash TEXT NOT NULL PRIMARY KEY,"
+            + "question_one TEXT NOT NULL,"
+            + "question_two TEXT NOT NULL,"
+            + "question_three TEXT NOT NULL,"
             + ");";
 
         this.jdbi.useHandle(handle -> {
             handle.execute(usersSql);
             handle.execute(loansSql);
             handle.execute(booksSql);
-            handle.execute(passwordSql);
+            handle.execute(authSql);
         });
     }
 }
