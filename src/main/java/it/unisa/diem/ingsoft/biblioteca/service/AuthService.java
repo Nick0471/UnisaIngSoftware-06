@@ -8,6 +8,16 @@ package it.unisa.diem.ingsoft.biblioteca.service;
  * @brief Interfaccia per la gestione della password e delle domande
  */
 public interface AuthService {
+
+    /**
+     * @brief Configura inizialmente il servizio inserendo password e risposte di default.
+     * @param password La password principale.
+     * @param answer1 La risposta alla prima domanda.
+     * @param answer2 La risposta alla seconda domanda.
+     * @param answer3 La risposta alla terza domanda.
+     */
+    void setDefault(String password, String answer1, String answer2, String answer3);
+
     /**
      * @brief Cambia la password di accesso al software.
      * @param password La nuova password.

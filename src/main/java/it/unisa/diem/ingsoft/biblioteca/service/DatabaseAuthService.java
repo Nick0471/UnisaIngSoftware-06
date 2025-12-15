@@ -26,6 +26,34 @@ public class DatabaseAuthService implements AuthService {
     }
 
     /**
+     * @brief Inizializza o sovrascrive completamente la configurazione di sicurezza.
+     * Cancella qualsiasi dato esistente e inserisce la nuova password e le risposte.
+     * @param password la password da inserire.
+     * @param answer1 la prima risposta da inserire
+     * @param answer2 la seconda risposta da inserire
+     * @param answer3 la terza risposta da inserire
+     */
+    @Override
+    public void setDefault(String password, String answer1, String answer2, String answer3) {
+        String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
+        String ans1Hash = BCrypt.hashpw(answer1, BCrypt.gensalt());
+        String ans2Hash = BCrypt.hashpw(answer2, BCrypt.gensalt());
+        String ans3Hash = BCrypt.hashpw(answer3, BCrypt.gensalt());
+
+        this.database.getJdbi().useTransaction(handle -> {
+            handle.execute("DELETE FROM auth");
+
+            handle.createUpdate("INSERT INTO auth (password_hash, question_one, question_two, question_three) " +
+                            "VALUES (:p, :q1, :q2, :q3)")
+                    .bind("p", passHash)
+                    .bind("q1", ans1Hash)
+                    .bind("q2", ans2Hash)
+                    .bind("q3", ans3Hash)
+                    .execute();
+        });
+    }
+
+/**
      * @brief Cambia la password di accesso al software.
      *  Esegue un updare SQL per aggiornare l'hash nel database.
      * @param password La nuova password.
@@ -73,15 +101,17 @@ public class DatabaseAuthService implements AuthService {
     }
 
     /**
-     * @brief Controlla se esiste una password nel database
-     *  Esegue una select SQL per controllare se la password esiste
-     * @return true se la password esiste, false altrimenti
-     */
-	@Override
-	public boolean isPresent() {
-        return this.getPasswordHash()
-            .isPresent();
-	}
+    * @brief Controlla se password e risposte sono state inserite.
+    * Conta le righe nella tabella auth.
+    * @return true se è tutto inserito, false altrimenti.
+    */
+    @Override
+    public boolean isPresent() {
+        return this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT count(*) FROM auth")
+                        .mapTo(Integer.class)
+                        .one()) > 0;
+    }
 
     private void insertPassword(String hash) {
         this.database.getJdbi()
