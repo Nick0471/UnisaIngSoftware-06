@@ -1,5 +1,12 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.BOOK_PATH;
+
+import org.junit.jupiter.api.Test;
+import org.testfx.api.FxAssert;
+import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
+
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.Scenes;
 import it.unisa.diem.ingsoft.biblioteca.model.Book;
@@ -11,14 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.Test;
-import org.testfx.api.FxAssert;
-import org.testfx.framework.junit5.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
-
-import static it.unisa.diem.ingsoft.biblioteca.Views.BOOK_PATH;
 
 public class BookSceneControllerTest extends ApplicationTest {
     private BookService bookService;
@@ -91,8 +91,10 @@ public class BookSceneControllerTest extends ApplicationTest {
 
     private void resetSearchField(){
         this.doubleClickOn("#searchField");
-        this.push(KeyCode.CONTROL, KeyCode.A);
-        this.push(KeyCode.DELETE);
+        this.interact(() -> {
+            this.lookup("#searchField").queryTextInputControl().clear();
+        });
+
         this.sleep(1000);
         FxAssert.verifyThat("#bookCatalog", (TableView<Book> t) -> t.getItems().size() == 8);
     }
