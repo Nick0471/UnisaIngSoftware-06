@@ -39,7 +39,7 @@ public class App extends Application {
 
         // password di default
         if (!authService.isPresent()) {
-            authService.setDefault("admin", "GRUPPO06", "INGEGNERIA SOFTWARE", "NICOLA CAPUANO");
+            authService.setup("admin", "GRUPPO06", "INGEGNERIA SOFTWARE", "NICOLA CAPUANO");
         }
 
         FXMLLoader loader = Scenes.setupLoader(Views.LOGIN_PATH, serviceRepository);

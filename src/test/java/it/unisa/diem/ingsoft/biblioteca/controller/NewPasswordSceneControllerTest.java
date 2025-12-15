@@ -28,7 +28,7 @@ public class NewPasswordSceneControllerTest extends ApplicationTest {
         this.authService = new DatabaseAuthService(db);
 
         //simulo le risposte di default salvate nel database
-        this.authService.setDefault("oldPass", "R1", "R2", "R3");
+        this.authService.setup("oldPass", "R1", "R2", "R3");
 
         ServiceRepository serviceRepository = new ServiceRepository(this.authService, null, null, null);
 

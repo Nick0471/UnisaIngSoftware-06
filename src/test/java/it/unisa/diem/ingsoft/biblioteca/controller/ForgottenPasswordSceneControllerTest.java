@@ -29,7 +29,7 @@ public class ForgottenPasswordSceneControllerTest extends ApplicationTest {
         this.authService = new DatabaseAuthService(db);
 
         //simulo le risposte di default salvate nel database
-        this.authService.setDefault("admin", "R1", "R2", "R3");
+        this.authService.setup("admin", "R1", "R2", "R3");
 
         ServiceRepository serviceRepository = new ServiceRepository(this.authService, null, null, null);
 
