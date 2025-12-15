@@ -27,7 +27,7 @@ public class UpdateSecurityAnswersSceneControllerTest extends ApplicationTest {
         Database db = Database.inMemory();
 
         this.authService = new DatabaseAuthService(db);
-        this.authService.setDefault("admin", "GRUPPO06", "INGEGNERIA SOFTWARE", "NICOLA CAPUANO");
+        this.authService.setup("admin", "GRUPPO06", "INGEGNERIA SOFTWARE", "NICOLA CAPUANO");
 
         ServiceRepository serviceRepository = new ServiceRepository(this.authService, null, null, null);
         FXMLLoader loader = Scenes.setupLoader(UPDATE_ANSWERS_PATH, serviceRepository);
