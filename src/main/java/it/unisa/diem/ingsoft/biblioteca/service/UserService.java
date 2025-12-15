@@ -81,6 +81,7 @@ public interface UserService {
      * @invariant La matricola dell'utente è un invariante. Se è necessario modificarla
      *  bisogna eliminare e reinserire l'utente.
      * @throws UnknownUserByIdException Non esiste alcun utente con la matricola specificata.
+     * @throws InvalidIdException La matricola specificata non è valida.
      */
     void updateById(User user) throws InvalidIdException, UnknownUserByIdException;
 
