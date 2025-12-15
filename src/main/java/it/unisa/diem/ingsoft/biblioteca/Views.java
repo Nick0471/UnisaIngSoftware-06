@@ -8,7 +8,7 @@ public class Views {
     public static final String ADD_LOAN_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/AddLoanScene.fxml";
     public static final String BOOK_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/BookScene.fxml";
     public static final String EDIT_BOOK_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/EditBookScene.fxml";
-    public static final String UPDATE_QUESTIONS_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/UpdateSecurityQuestionsScene.fxml";
+    public static final String UPDATE_ANSWERS_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/UpdateSecurityAnswersScene.fxml";
     public static final String LOGIN_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/LogInScene.fxml";
     public static final String EDIT_PASSWORD_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/EditPasswordScene.fxml";
     public static final String NEW_PASSWORD_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/NewPasswordScene.fxml";

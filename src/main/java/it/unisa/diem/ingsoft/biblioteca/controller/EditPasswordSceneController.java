@@ -13,7 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
-import static it.unisa.diem.ingsoft.biblioteca.Views.UPDATE_QUESTIONS_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.UPDATE_ANSWERS_PATH;
 
 /**
  * @brief Controller per il cambio password per accedere al sistema.
@@ -89,6 +89,6 @@ public class EditPasswordSceneController extends GuiController {
      */
     @FXML
     private void handleGoToUpdateSecurityQuestions(ActionEvent event) {
-        this.changeScene(event, UPDATE_QUESTIONS_PATH);
+        this.changeScene(event, UPDATE_ANSWERS_PATH);
     }
 }
