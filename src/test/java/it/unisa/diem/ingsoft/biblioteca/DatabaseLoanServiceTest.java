@@ -32,15 +32,15 @@ public class DatabaseLoanServiceTest {
     private BookService bookService;
     private UserService userService;
 
-    private static final String VALID_ISBN = "1234567890000";
-    private static final String SECOND_ISBN = "1234567890001";
-    private static final String INVALID_ISBN = "INVALID";
-    private static final String NON_EXISTENT_ISBN = "1111111111111";
+    private final String validIsbn = "1234567890000";
+    private final String secondIsbn = "1234567890001";
+    private final String invalidIsbn = "INVALID";
+    private final String nonExistentIsbn = "1111111111111";
     
-    private static final String VALID_USER_ID = "USERID3214";
-    private static final String SECOND_USER_ID = "USERID9999";
-    private static final String INVALID_USER_ID = "SHORT";
-    private static final String NON_EXISTENT_USER_ID = "GHOST12345";
+    private final String validUserId = "USERID3214";
+    private final String secondUserId = "USERID9999";
+    private final String invalidUserId = "SHORT";
+    private final String nonExistentUserId = "GHOST12345";
 
     private final LocalDate start = LocalDate.now();
     private final LocalDate deadline = this.start.plusDays(30);
@@ -55,159 +55,159 @@ public class DatabaseLoanServiceTest {
 
     @Test
     public void register_ValidLoan() {
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddUser(VALID_USER_ID);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddUser(this.validUserId);
 
-        assertEquals(5, this.bookService.countRemainingCopies(VALID_ISBN));
+        assertEquals(5, this.bookService.countRemainingCopies(this.validIsbn));
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
         });
 
-        assertEquals(4, this.bookService.countRemainingCopies(VALID_ISBN));
+        assertEquals(4, this.bookService.countRemainingCopies(this.validIsbn));
     }
 
     @Test
     public void register_LoanAlreadyRegistered() {
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddUser(VALID_USER_ID);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddUser(this.validUserId);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
         });
 
         assertThrows(LoanAlreadyRegisteredException.class, () -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
         });
     }
 
     @Test
     public void register_InvalidUserId() {
         assertThrows(InvalidIdException.class, () -> {
-            this.loanService.register(INVALID_USER_ID, VALID_ISBN, this.start, this.deadline);
+            this.loanService.register(this.invalidUserId, this.validIsbn, this.start, this.deadline);
         });
     }
 
     @Test
     public void register_InvalidBookIsbn() {
         assertThrows(InvalidIsbnException.class, () -> {
-            this.loanService.register(VALID_USER_ID, INVALID_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.invalidIsbn, this.start, this.deadline);
         });
     }
 
     @Test
     public void register_NoCopiesRemaining() {
         assertDoesNotThrow(() -> {
-            Book book = new Book(VALID_ISBN, "Raro", "Autore", 2000, 1, 0, "Test", "Desc");
+            Book book = new Book(this.validIsbn, "Raro", "Autore", 2000, 1, 0, "Test", "Desc");
             this.bookService.add(book);
         });
 
-        this.createAndAddUser(VALID_USER_ID);
+        this.createAndAddUser(this.validUserId);
 
         assertThrows(NegativeBookCopiesException.class, () -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
         });
     }
 
     @Test
     public void register_UnknownBookByIsbn() {
-        this.createAndAddUser(VALID_USER_ID);
+        this.createAndAddUser(this.validUserId);
 
         assertThrows(UnknownBookByIsbnException.class, () -> {
-            this.loanService.register(VALID_USER_ID, NON_EXISTENT_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.nonExistentIsbn, this.start, this.deadline);
         });
     }
 
     @Test
     public void register_UnknownUserById() {
-        this.createAndAddBook(VALID_ISBN, 5);
+        this.createAndAddBook(this.validIsbn, 5);
 
         assertThrows(UnknownUserByIdException.class, () -> {
-            this.loanService.register(NON_EXISTENT_USER_ID, VALID_ISBN, this.start, this.deadline);
+            this.loanService.register(this.nonExistentUserId, this.validIsbn, this.start, this.deadline);
         });
     }
 
     @Test
     public void complete_ActiveLoan() {
-        this.createAndAddUser(VALID_USER_ID);
-        this.createAndAddBook(VALID_ISBN, 5);
+        this.createAndAddUser(this.validUserId);
+        this.createAndAddBook(this.validIsbn, 5);
 
-        assertDoesNotThrow(() -> this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline));
+        assertDoesNotThrow(() -> this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline));
 
-        assertTrue(this.loanService.isActive(VALID_USER_ID, VALID_ISBN));
-        assertEquals(4, this.bookService.countRemainingCopies(VALID_ISBN));
+        assertTrue(this.loanService.isActive(this.validUserId, this.validIsbn));
+        assertEquals(4, this.bookService.countRemainingCopies(this.validIsbn));
 
         assertDoesNotThrow(() -> {
-            this.loanService.complete(VALID_USER_ID, VALID_ISBN, LocalDate.now());
+            this.loanService.complete(this.validUserId, this.validIsbn, LocalDate.now());
         });
 
-        assertFalse(this.loanService.isActive(VALID_USER_ID, VALID_ISBN));
-        assertEquals(5, this.bookService.countRemainingCopies(VALID_ISBN));
+        assertFalse(this.loanService.isActive(this.validUserId, this.validIsbn));
+        assertEquals(5, this.bookService.countRemainingCopies(this.validIsbn));
     }
 
     @Test
     public void complete_NonExistentLoan() {
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddUser(VALID_USER_ID);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddUser(this.validUserId);
 
         assertThrows(UnknownLoanException.class, () -> {
-            this.loanService.complete(VALID_USER_ID, VALID_ISBN, LocalDate.now());
+            this.loanService.complete(this.validUserId, this.validIsbn, LocalDate.now());
         });
     }
 
     @Test
     public void getByUserIdAndBookIsbn_ExistingLoan() {
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddUser(VALID_USER_ID);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddUser(this.validUserId);
 
-        assertDoesNotThrow(() -> this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline));
+        assertDoesNotThrow(() -> this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline));
 
-        assertTrue(this.loanService.getByUserIdAndBookIsbn(VALID_ISBN, VALID_USER_ID).isPresent());
+        assertTrue(this.loanService.getByUserIdAndBookIsbn(this.validUserId, this.validIsbn).isPresent());
     }
 
     @Test
     public void getByUserIdAndBookIsbn_NonExistingLoan() {
-        assertTrue(this.loanService.getByUserIdAndBookIsbn(VALID_ISBN, VALID_USER_ID).isEmpty());
+        assertTrue(this.loanService.getByUserIdAndBookIsbn(this.validIsbn, this.validUserId).isEmpty());
     }
 
     @Test
     public void getByUserId_ExistingLoans() {
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddBook(SECOND_ISBN, 5);
-        this.createAndAddUser(VALID_USER_ID);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddBook(this.secondIsbn, 5);
+        this.createAndAddUser(this.validUserId);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
-            this.loanService.register(VALID_USER_ID, SECOND_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.secondIsbn, this.start, this.deadline);
         });
 
-        assertEquals(2, this.loanService.getByUserIdContaining(VALID_USER_ID).size());
+        assertEquals(2, this.loanService.getByUserIdContaining(this.validUserId).size());
     }
 
     @Test
     public void getByBookIsbn_ExistingLoans() {
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddUser(VALID_USER_ID);
-        this.createAndAddUser(SECOND_USER_ID);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddUser(this.validUserId);
+        this.createAndAddUser(this.secondUserId);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
-            this.loanService.register(SECOND_USER_ID, VALID_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
+            this.loanService.register(this.secondUserId, this.validIsbn, this.start, this.deadline);
         });
 
-        assertEquals(2, this.loanService.getByBookIsbnContaining(VALID_ISBN).size());
+        assertEquals(2, this.loanService.getByBookIsbnContaining(this.validIsbn).size());
     }
 
     @Test
     public void getAll_Populated() {
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddBook(SECOND_ISBN, 5);
-        this.createAndAddUser(VALID_USER_ID);
-        this.createAndAddUser(SECOND_USER_ID);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddBook(this.secondIsbn, 5);
+        this.createAndAddUser(this.validUserId);
+        this.createAndAddUser(this.secondUserId);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
-            this.loanService.register(SECOND_USER_ID, SECOND_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
+            this.loanService.register(this.secondUserId, this.secondIsbn, this.start, this.deadline);
         });
 
         assertEquals(2, this.loanService.getAll().size());
@@ -215,16 +215,16 @@ public class DatabaseLoanServiceTest {
 
     @Test
     public void getActive_AfterComplete() {
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddBook(SECOND_ISBN, 5);
-        this.createAndAddUser(VALID_USER_ID);
-        this.createAndAddUser(SECOND_USER_ID);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddBook(this.secondIsbn, 5);
+        this.createAndAddUser(this.validUserId);
+        this.createAndAddUser(this.secondUserId);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
-            this.loanService.register(SECOND_USER_ID, SECOND_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
+            this.loanService.register(this.secondUserId, this.secondIsbn, this.start, this.deadline);
             
-            this.loanService.complete(SECOND_USER_ID, SECOND_ISBN, LocalDate.now());
+            this.loanService.complete(this.secondUserId, this.secondIsbn, LocalDate.now());
         });
 
         assertEquals(1, this.loanService.getActive().size());
@@ -232,65 +232,65 @@ public class DatabaseLoanServiceTest {
 
     @Test
     public void getActiveByUserId_AfterComplete() {
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddBook(SECOND_ISBN, 5);
-        this.createAndAddUser(VALID_USER_ID);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddBook(this.secondIsbn, 5);
+        this.createAndAddUser(this.validUserId);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
-            this.loanService.register(VALID_USER_ID, SECOND_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.secondIsbn, this.start, this.deadline);
             
-            this.loanService.complete(VALID_USER_ID, VALID_ISBN, LocalDate.now());
+            this.loanService.complete(this.validUserId, this.validIsbn, LocalDate.now());
         });
 
-        assertEquals(1, this.loanService.getActiveByUserId(VALID_USER_ID).size());
+        assertEquals(1, this.loanService.getActiveByUserId(this.validUserId).size());
     }
 
     @Test
     public void isActive_ActiveLoan() {
-        this.createAndAddUser(VALID_USER_ID);
-        this.createAndAddBook(VALID_ISBN, 5);
+        this.createAndAddUser(this.validUserId);
+        this.createAndAddBook(this.validIsbn, 5);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
         });
 
-        assertTrue(this.loanService.isActive(VALID_USER_ID, VALID_ISBN));
+        assertTrue(this.loanService.isActive(this.validUserId, this.validIsbn));
     }
 
     @Test
     public void isActive_ClosedLoan() {
-        this.createAndAddUser(VALID_USER_ID);
-        this.createAndAddBook(VALID_ISBN, 5);
+        this.createAndAddUser(this.validUserId);
+        this.createAndAddBook(this.validIsbn, 5);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
-            this.loanService.complete(VALID_USER_ID, VALID_ISBN, LocalDate.now());
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
+            this.loanService.complete(this.validUserId, this.validIsbn, LocalDate.now());
         });
 
-        assertFalse(this.loanService.isActive(VALID_USER_ID, VALID_ISBN));
+        assertFalse(this.loanService.isActive(this.validUserId, this.validIsbn));
     }
 
     @Test
     public void countById_ValidUser() {
-        this.createAndAddUser(VALID_USER_ID);
-        this.createAndAddBook(VALID_ISBN, 5);
-        this.createAndAddBook(SECOND_ISBN, 5);
+        this.createAndAddUser(this.validUserId);
+        this.createAndAddBook(this.validIsbn, 5);
+        this.createAndAddBook(this.secondIsbn, 5);
 
         assertDoesNotThrow(() -> {
-            this.loanService.register(VALID_USER_ID, VALID_ISBN, this.start, this.deadline);
-            this.loanService.register(VALID_USER_ID, SECOND_ISBN, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.validIsbn, this.start, this.deadline);
+            this.loanService.register(this.validUserId, this.secondIsbn, this.start, this.deadline);
         });
 
         assertDoesNotThrow(() -> {
-            assertEquals(2, this.loanService.countById(VALID_USER_ID));
+            assertEquals(2, this.loanService.countById(this.validUserId));
         });
     }
 
     @Test
     public void countById_InvalidUser() {
         assertThrows(InvalidIdException.class, () -> {
-            this.loanService.countById(INVALID_USER_ID);
+            this.loanService.countById(this.invalidUserId);
         });
     }
 

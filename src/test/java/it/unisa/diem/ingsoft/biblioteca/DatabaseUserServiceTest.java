@@ -20,25 +20,34 @@ import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 
 public class DatabaseUserServiceTest {
     private UserService userService;
+    private User validUser;
+
+    private final String validId = "ABC123DEF5";
+    private final String validEmail = "test@studenti.unisa.it";
+    private final String validName = "NICOLA";
+    private final String validSurname = "PICARELLA";
+    private final String invalidEmail = "test@gmail.com";
+    private final String invalidId = "ABC123";
 
     @BeforeEach
     public void setup() {
         Database database = Database.inMemory();
         this.userService = new DatabaseUserService(database);
+        
+        this.validUser = new User(this.validId, this.validEmail, this.validName, this.validSurname);
     }
 
     @Test
     public void register_ValidUser() {
         assertDoesNotThrow(() -> {
-            User user = new User("ABC123DEF4", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
-            this.userService.register(user);
+            this.userService.register(this.validUser);
         });
     }
 
     @Test
     public void register_InvalidEmail() {
         assertThrows(InvalidEmailException.class, () -> {
-            User user = new User("ABC123DEF4", "test@gmail.com", "NICOLA", "PICARELLA");
+            User user = new User(this.validId, this.invalidEmail, this.validName, this.validSurname);
             this.userService.register(user);
         });
     }
@@ -46,47 +55,37 @@ public class DatabaseUserServiceTest {
     @Test
     public void register_InvalidId() {
         assertThrows(InvalidIdException.class, () -> {
-            User user = new User("ABC123", "test2@studenti.unisa.it", "NICOLA", "PICARELLA");
+            User user = new User(this.invalidId, "test2@studenti.unisa.it", this.validName, this.validSurname);
             this.userService.register(user);
         });
     }
 
     @Test
     public void register_DuplicateId() {
-        assertDoesNotThrow(() -> {
-            User user = new User("ABC123DEF5", "test2@studenti.unisa.it", "NICOLA", "PICARELLA");
-            this.userService.register(user);
-        });
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
 
         assertThrows(DuplicateUserByIdException.class, () -> {
-            User duplicateId = new User("ABC123DEF5", "test3@studenti.unisa.it", "NICOLA", "PICARELLA");
+            User duplicateId = new User(this.validId, "test3@studenti.unisa.it", this.validName, this.validSurname);
             this.userService.register(duplicateId);
         });
     }
 
     @Test
     public void register_DuplicateEmail() {
-        assertDoesNotThrow(() -> {
-            User user = new User("ABC123DEF4", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
-            this.userService.register(user);
-        });
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
 
         assertThrows(DuplicateUserByEmailException.class, () -> {
-            User duplicateEmail = new User("DEF1231239", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
+            User duplicateEmail = new User("DEF1231239", this.validEmail, this.validName, this.validSurname);
             this.userService.register(duplicateEmail);
         });
     }
 
     @Test
     public void getById_ExistingId() {
-        User user = new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI");
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
 
-        assertDoesNotThrow(() -> {
-            this.userService.register(user);
-        });
-
-        assertTrue(this.userService.getById("ABC123DEF5").isPresent());
-        assertEquals("SOFIA", this.userService.getById("ABC123DEF5").get().getName());
+        assertTrue(this.userService.getById(this.validId).isPresent());
+        assertEquals(this.validName, this.userService.getById(this.validId).get().getName());
     }
 
     @Test
@@ -96,39 +95,29 @@ public class DatabaseUserServiceTest {
 
     @Test
     public void getAll_Populated() {
-        assertDoesNotThrow(() -> {
-            this.userService.register(new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI"));
-        });
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
         assertFalse(this.userService.getAll().isEmpty());
     }
 
     @Test
     public void getAllByEmailContaining_ValidString() {
-        assertDoesNotThrow(() -> {
-            this.userService.register(new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI"));
-        });
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
         assertFalse(this.userService.getAllByEmailContaining("studenti.unisa.it").isEmpty());
     }
 
     @Test
     public void getAllByFullNameContaining_ValidStrings() {
-        assertDoesNotThrow(() -> {
-            this.userService.register(new User("ABC123DEF5", "test@studenti.unisa.it", "SOFIA", "MANCINI"));
-        });
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
 
-        assertFalse(this.userService.getAllByFullNameContaining("SOF", "NCI").isEmpty());
-        assertFalse(this.userService.getAllByFullNameContaining("OF", "MAN").isEmpty());
-        assertFalse(this.userService.getAllByFullNameContaining("", "INI").isEmpty());
+        assertFalse(this.userService.getAllByFullNameContaining("NICO", "ELLA").isEmpty());
+        assertFalse(this.userService.getAllByFullNameContaining("LA", "PIC").isEmpty());
+        assertFalse(this.userService.getAllByFullNameContaining("", "AREL").isEmpty());
     }
 
     @Test
     public void existsById_ExistingId() {
-        User user = new User("ABC123DEF5", "test@studenti.unisa.it", "VINCENZO DANIEL", "RAIMO");
-        assertDoesNotThrow(() -> {
-            this.userService.register(user);
-        });
-
-        assertTrue(this.userService.existsById("ABC123DEF5"));
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
+        assertTrue(this.userService.existsById(this.validId));
     }
 
     @Test
@@ -138,12 +127,8 @@ public class DatabaseUserServiceTest {
 
     @Test
     public void existsByEmail_ExistingEmail() {
-        User user = new User("ABC123DEF5", "test@studenti.unisa.it", "VINCENZO DANIEL", "RAIMO");
-        assertDoesNotThrow(() -> {
-            this.userService.register(user);
-        });
-
-        assertTrue(this.userService.existsByEmail("test@studenti.unisa.it"));
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
+        assertTrue(this.userService.existsByEmail(this.validEmail));
     }
 
     @Test
@@ -153,12 +138,8 @@ public class DatabaseUserServiceTest {
 
     @Test
     public void removeById_ExistingId() {
-        User user = new User("ABC123DEF5", "test@studenti.unisa.it", "NICOLO' MASSIMO", "LISENA");
-        assertDoesNotThrow(() -> {
-            this.userService.register(user);
-        });
-
-        assertTrue(this.userService.removeById("ABC123DEF5"));
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
+        assertTrue(this.userService.removeById(this.validId));
     }
 
     @Test
@@ -168,23 +149,20 @@ public class DatabaseUserServiceTest {
 
     @Test
     public void updateById_ExistingUser() {
-        User user = new User("ABC123DEF5", "test@studenti.unisa.it", "NICOLA", "PICARELLA");
-        assertDoesNotThrow(() -> {
-            this.userService.register(user);
-        });
+        assertDoesNotThrow(() -> this.userService.register(this.validUser));
 
-        User updatedUser = new User("ABC123DEF5", "modified@studenti.unisa.it", "PICARELLA", "PICARELLA");
+        User updatedUser = new User(this.validId, "modified@studenti.unisa.it", "MODIFIED_NAME", "MODIFIED_SURNAME");
         assertDoesNotThrow(() -> this.userService.updateById(updatedUser));
 
-        User retrieved = this.userService.getById("ABC123DEF5").get();
+        User retrieved = this.userService.getById(this.validId).get();
         assertEquals("modified@studenti.unisa.it", retrieved.getEmail());
-        assertEquals("PICARELLA", retrieved.getName());
-        assertEquals("PICARELLA", retrieved.getSurname());
+        assertEquals("MODIFIED_NAME", retrieved.getName());
+        assertEquals("MODIFIED_SURNAME", retrieved.getSurname());
     }
 
     @Test
     public void updateById_NonExistingUser() {
-        User user = new User("1234567890", "test@studenti.unisa.it", "EMPTY", "EMPTY");
+        User user = new User("1234567890", this.validEmail, "EMPTY", "EMPTY");
         assertThrows(UnknownUserByIdException.class, () -> {
             this.userService.updateById(user);
         });
