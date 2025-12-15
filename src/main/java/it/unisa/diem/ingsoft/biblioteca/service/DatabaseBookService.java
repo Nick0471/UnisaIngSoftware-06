@@ -49,7 +49,7 @@ public class DatabaseBookService implements BookService {
      * @brief Recupera un libro tramite il suo codice ISBN.
      *  Esegue una query SQL per ottenere il libro dal database.
      * @param isbn Il codice isbn del libro da cercare.
-     * @return Un Optional<Book> {@link Book} che contiene il libro se trovato,
+     * @return Un Optional<Book> che contiene il libro se trovato,
      * altrimenti Optional.empty().
      */
     @Override
@@ -67,7 +67,7 @@ public class DatabaseBookService implements BookService {
      *  in qualsiasi posizione.
      *  Esegue una query SQL per ottenere la lista dei libri dal database.
      * @param author Il nome dell'autore da cercare.
-     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * @return Una lista contenente i libri che rispettano questo
      * criterio.
      */
     @Override
@@ -85,7 +85,7 @@ public class DatabaseBookService implements BookService {
      *  in qualsiasi posizione.
      *  Esegue una query SQL per ottenere la lista dei libri dal database.
      * @param genre Il genere dei libri da cercare.
-     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * @return Una lista contenente i libri che rispettano questo
      * criterio.
      */
     @Override
@@ -102,7 +102,7 @@ public class DatabaseBookService implements BookService {
      * @brief Recupera una lista di libri il cui anno di pubblicazione coincide con quello specificato.
      *  Esegue una query SQL per ottenere la lista dei libri dal database.
      * @param releaseYear L'anno di pubblicazione da cercare.
-     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * @return Una lista contenente i libri che rispettano questo
      * criterio.
      */
     @Override
@@ -120,7 +120,7 @@ public class DatabaseBookService implements BookService {
      *  in qualsiasi posizione.
      *  Esegue una query SQL per ottenere la lista dei libri dal database.
      * @param title Il titolo dei libri da cercare.
-     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * @return Una lista contenente i libri che rispettano questo
      * criterio.
      */
     @Override
@@ -338,8 +338,8 @@ public class DatabaseBookService implements BookService {
     /**
      * @brief Recupera tutti gli ISBN che esistono già nel catalogo tra quelli forniti.
      *  Esegue una select SQL per recuperare la lista degli isbn già presenti.
-     * @param isbns Una List<String> contenente gli ISBN da verificare.
-     * @return Una List<String> contenente solo gli ISBN già esistenti nel catalogo.
+     * @param isbns Una lista contenente gli ISBN da verificare.
+     * @return Una lista contenente solo gli ISBN già esistenti nel catalogo.
      *  La lista sarà vuota se non ci sono duplicati.
      */
     @Override
@@ -405,11 +405,11 @@ public class DatabaseBookService implements BookService {
 
 
     /**
-     * @brief Recupare una lista di libri il cui ISBN contiene la stringa specificata
+     * @brief Recupera una lista di libri il cui ISBN contiene la stringa specificata
      *  in qualsiasi posizione.
      *  Esegue una select SQL per ottenere i libri dal database.
      * @param isbn L'ISBN da cercare.
-     * @return Una lista di {@link Book} contenente i libri che rispettano questo
+     * @return Una lista contenente i libri che rispettano questo
      * criterio.
      */
 	@Override
