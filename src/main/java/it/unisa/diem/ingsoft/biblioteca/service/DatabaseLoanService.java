@@ -231,7 +231,7 @@ public class DatabaseLoanService implements LoanService {
                 .withHandle(handle -> handle.createQuery("SELECT * FROM loans "
                                 + "WHERE user_id = :user_id "
                                 + "AND loan_end IS NULL")
-                        .bind("userId", userId)
+                        .bind("user_id", userId)
                         .mapTo(Loan.class)
                         .list());
     }
