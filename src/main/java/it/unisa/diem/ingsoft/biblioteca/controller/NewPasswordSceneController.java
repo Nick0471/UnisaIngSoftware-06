@@ -5,6 +5,8 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+
 import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
@@ -12,9 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-
-import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
-import static it.unisa.diem.ingsoft.biblioteca.Views.UPDATE_QUESTIONS_PATH;
 
 
 /**
@@ -28,7 +27,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.UPDATE_QUESTIONS_PATH;
 public class NewPasswordSceneController extends GuiController {
 
 
-    private AuthService passwordService;
+    private AuthService authService;
 
     /**
      * @brief Setter per i servizi di gestione della password.
@@ -38,7 +37,7 @@ public class NewPasswordSceneController extends GuiController {
     @Override
     public void setServices(ServiceRepository serviceRepository) {
         super.setServices(serviceRepository);
-        this.passwordService = serviceRepository.getPasswordService();
+        this.authService = serviceRepository.getAuthService();
     }
 
 
@@ -86,7 +85,7 @@ public class NewPasswordSceneController extends GuiController {
         }
 
         //cambio effettivamente la password
-        this.passwordService.changePassword(newPass);
+        this.authService.changePassword(newPass);
 
         this.changeScene(event, HOMEPAGE_PATH);
     }

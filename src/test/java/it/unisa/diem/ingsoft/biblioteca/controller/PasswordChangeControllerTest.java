@@ -1,34 +1,34 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.Scenes;
-import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
+import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_PASSWORD_PATH;
 
-import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
-import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 
-import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_PASSWORD_PATH;
+import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.Scenes;
+import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 
 public class PasswordChangeControllerTest extends ApplicationTest {
 
-    private AuthService passwordService;
+    private AuthService authService;
 
     @Override
     public void start(Stage stage) {
         Database db = Database.inMemory();
 
-        this.passwordService = new DatabaseAuthService(db);
+        this.authService = new DatabaseAuthService(db);
 
-        ServiceRepository serviceRepository = new ServiceRepository(this.passwordService, null, null, null);
+        ServiceRepository serviceRepository = new ServiceRepository(this.authService, null, null, null);
 
         FXMLLoader loader = Scenes.setupLoader(EDIT_PASSWORD_PATH, serviceRepository);
         Parent root = loader.getRoot();
@@ -39,7 +39,7 @@ public class PasswordChangeControllerTest extends ApplicationTest {
         stage.setScene(scene);
         stage.show();
 
-        this.passwordService.changePassword("OldPassword");
+        this.authService.changePassword("OldPassword");
     }
 
 

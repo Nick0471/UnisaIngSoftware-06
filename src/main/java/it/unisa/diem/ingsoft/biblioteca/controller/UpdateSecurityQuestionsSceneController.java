@@ -4,6 +4,9 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_PASSWORD_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+
 import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
@@ -11,9 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
-import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_PASSWORD_PATH;
-import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 
 /**
  * @brief Controller per la modifica delle domande di sicurezza.
@@ -32,7 +32,7 @@ public class UpdateSecurityQuestionsSceneController extends GuiController {
     @FXML private Button btnCancel;
     @FXML private Button btnSave;
 
-    private AuthService passwordService;
+    private AuthService authService;
 
     /**
      * @brief Costruttore vuoto del controller.
@@ -46,7 +46,7 @@ public class UpdateSecurityQuestionsSceneController extends GuiController {
     @Override
     public void setServices(ServiceRepository serviceRepository) {
         super.setServices(serviceRepository);
-        this.passwordService = serviceRepository.getPasswordService();
+        this.authService = serviceRepository.getAuthService();
     }
 
     /**
@@ -70,15 +70,15 @@ public class UpdateSecurityQuestionsSceneController extends GuiController {
 
         try {
             if(!ans1.isEmpty()) {
-                this.passwordService.changeAnswer(ans1, 1);
+                this.authService.changeAnswer(ans1, 1);
             }
 
             if(!ans2.isEmpty()) {
-                this.passwordService.changeAnswer(ans2, 2);
+                this.authService.changeAnswer(ans2, 2);
             }
 
             if(!ans3.isEmpty()) {
-                this.passwordService.changeAnswer(ans3, 3);
+                this.authService.changeAnswer(ans3, 3);
             }
 
             super.popUp(Alert.AlertType.INFORMATION, "Operazione completata", "Le domande di sicurezza sono state aggiornate con successo.");

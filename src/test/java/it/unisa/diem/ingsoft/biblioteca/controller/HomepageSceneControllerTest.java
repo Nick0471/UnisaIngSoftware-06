@@ -1,20 +1,27 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.Scenes;
-import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
-import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
-import it.unisa.diem.ingsoft.biblioteca.service.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 
-import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.Scenes;
+import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
+import it.unisa.diem.ingsoft.biblioteca.service.BookService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseLoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
+import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
+import it.unisa.diem.ingsoft.biblioteca.service.UserService;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class HomepageSceneControllerTest extends ApplicationTest {
     @Override
@@ -23,9 +30,9 @@ public class HomepageSceneControllerTest extends ApplicationTest {
         UserService userService = new DatabaseUserService(db);
         BookService bookService = new DatabaseBookService(db);
         LoanService loanService = new DatabaseLoanService(userService, bookService, db);
-        AuthService passwordService = new DatabaseAuthService(db);
+        AuthService authService = new DatabaseAuthService(db);
 
-        ServiceRepository serviceRepository = new ServiceRepository(passwordService, userService, bookService, loanService);
+        ServiceRepository serviceRepository = new ServiceRepository(authService, userService, bookService, loanService);
 
         FXMLLoader loader = Scenes.setupLoader(HOMEPAGE_PATH, serviceRepository);
         Parent root =  loader.getRoot();
@@ -40,7 +47,7 @@ public class HomepageSceneControllerTest extends ApplicationTest {
     @Test
     public void test1_GoToViewBooks() {
         System.out.println("--- TEST 1: CATALOGO LIBRI ---");
-        clickOn("#btnBook");
+        this.clickOn("#btnBook");
         this.sleep(1000);
 
         FxAssert.verifyThat("#bookCatalog", NodeMatchers.isVisible());
@@ -58,7 +65,7 @@ public class HomepageSceneControllerTest extends ApplicationTest {
     @Test
     public void test3_GoToViewLoans() {
         System.out.println("--- TEST 1: PRESTITI ATTIVI ---");
-        clickOn("#btnLoan");
+        this.clickOn("#btnLoan");
         this.sleep(1000);
 
         FxAssert.verifyThat("#loanTable", NodeMatchers.isVisible());
@@ -68,7 +75,7 @@ public class HomepageSceneControllerTest extends ApplicationTest {
     @Test
     public void test4_GoToViewProfile() {
         System.out.println("--- TEST 1: GESTIONE PASSWORD ---");
-        clickOn("#btnProfile");
+        this.clickOn("#btnProfile");
         this.sleep(1000);
 
         FxAssert.verifyThat("#currentPassword", NodeMatchers.isVisible());

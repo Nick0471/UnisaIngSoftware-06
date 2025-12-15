@@ -1,33 +1,34 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
-import it.unisa.diem.ingsoft.biblioteca.Database;
-import it.unisa.diem.ingsoft.biblioteca.Scenes;
-import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
-import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
-import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import static it.unisa.diem.ingsoft.biblioteca.Views.LOGIN_PATH;
+
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 
-import static it.unisa.diem.ingsoft.biblioteca.Views.LOGIN_PATH;
+import it.unisa.diem.ingsoft.biblioteca.Database;
+import it.unisa.diem.ingsoft.biblioteca.Scenes;
+import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
+import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 
 public class LogInSceneControllerTest extends ApplicationTest {
 
-    private AuthService passwordService;
+    private AuthService authService;
 
     @Override
     public void start(Stage stage) {
         Database db = Database.inMemory();
 
-        this.passwordService = new DatabaseAuthService(db);
+        this.authService = new DatabaseAuthService(db);
 
-        ServiceRepository serviceRepository = new ServiceRepository(this.passwordService, null, null, null);
+        ServiceRepository serviceRepository = new ServiceRepository(this.authService, null, null, null);
 
         FXMLLoader loader = Scenes.setupLoader(LOGIN_PATH, serviceRepository);
         Parent root = loader.getRoot();
@@ -46,7 +47,7 @@ public class LogInSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 1: LOGIN SUCCESSO---");
 
         //inserisco una password nel database
-        this.passwordService.changePassword("OldPassword");
+        this.authService.changePassword("OldPassword");
 
         this.clickOn("#insertedPassword").write("OldPassword");
         this.sleep(1000);
@@ -81,7 +82,7 @@ public class LogInSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 3: LA PASSWORD INSERITA E' ERRATA ---");
 
         //inserisco una password nel database
-        this.passwordService.changePassword("OldPassword");
+        this.authService.changePassword("OldPassword");
 
         this.clickOn("#insertedPassword").write("Old");
         this.sleep(1000);

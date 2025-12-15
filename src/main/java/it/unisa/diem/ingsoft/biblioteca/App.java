@@ -31,15 +31,15 @@ public class App extends Application {
 
         Database database = databaseOpt.get();
         UserService userService = new DatabaseUserService(database);
-        AuthService passwordService = new DatabaseAuthService(database);
+        AuthService authService = new DatabaseAuthService(database);
         BookService bookService = new DatabaseBookService(database);
         LoanService loanService = new DatabaseLoanService(userService, bookService, database);
-        ServiceRepository serviceRepository = new ServiceRepository(passwordService, userService,
+        ServiceRepository serviceRepository = new ServiceRepository(authService, userService,
                 bookService, loanService);
 
         // password di default
-        if (!passwordService.isPresent()) {
-            passwordService.setDefault("admin", "GRUPPO06", "INGEGNERIA SOFTWARE", "NICOLA CAPUANO");
+        if (!authService.isPresent()) {
+            authService.setDefault("admin", "GRUPPO06", "INGEGNERIA SOFTWARE", "NICOLA CAPUANO");
         }
 
         FXMLLoader loader = Scenes.setupLoader(Views.LOGIN_PATH, serviceRepository);

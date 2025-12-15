@@ -5,6 +5,9 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.FORGOTTEN_PASSWORD_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+
 import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;
 import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
@@ -13,9 +16,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-
-import static it.unisa.diem.ingsoft.biblioteca.Views.FORGOTTEN_PASSWORD_PATH;
-import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 
 
 /**
@@ -28,7 +28,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
  */
 public class LogInSceneController extends GuiController {
 
-    private AuthService passwordService;
+    private AuthService authService;
 
 
     /**
@@ -39,7 +39,7 @@ public class LogInSceneController extends GuiController {
     @Override
     public void setServices(ServiceRepository serviceRepository){
         super.setServices(serviceRepository);
-        this.passwordService= serviceRepository.getPasswordService();
+        this.authService= serviceRepository.getAuthService();
     }
 
 
@@ -64,7 +64,7 @@ public class LogInSceneController extends GuiController {
         String pass = this.insertedPassword.getText();
 
         try {
-            if (this.passwordService.checkPassword(pass))
+            if (this.authService.checkPassword(pass))
                 this.changeScene(event, HOMEPAGE_PATH );
             else
                 this.popUp(Alert.AlertType.ERROR, "Errore password", "La password inserita non è corretta.");

@@ -5,21 +5,21 @@
 package it.unisa.diem.ingsoft.biblioteca.service;
 
 public class ServiceRepository {
-    private final AuthService passwordService;
+    private final AuthService authService;
     private final UserService userService;
     private final BookService bookService;
     private final LoanService loanService;
 
-    public ServiceRepository(AuthService passwordService, UserService userService,
+    public ServiceRepository(AuthService authService, UserService userService,
                              BookService bookService, LoanService loanService) {
         this.userService = userService;
         this.bookService = bookService;
         this.loanService = loanService;
-        this.passwordService = passwordService;
+        this.authService = authService;
     }
 
-    public AuthService getPasswordService() {
-        return this.passwordService;
+    public AuthService getAuthService() {
+        return this.authService;
     }
 
     public BookService getBookService() {
