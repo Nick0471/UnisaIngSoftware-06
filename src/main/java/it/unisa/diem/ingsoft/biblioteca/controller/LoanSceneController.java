@@ -11,6 +11,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
@@ -23,12 +24,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -248,11 +244,15 @@ public class LoanSceneController extends GuiController implements Initializable 
             return;
         }
 
-        try{
-            this.loanService.complete(selectedLoan.getUserId(), selectedLoan.getBookIsbn(), selectedLoan.getLoanDeadline());
-            this.updateTable();
-        }catch(LoanException  | BookException e){
-            super.popUp(Alert.AlertType.ERROR, "Errore durante la rimozione", e.getMessage());
+        Optional<ButtonType> result = super.popUpConfirmation("Restituzione prestito", "Sei sicuro di volere restituire il prestito selezionato?");
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                this.loanService.complete(selectedLoan.getUserId(), selectedLoan.getBookIsbn(), selectedLoan.getLoanDeadline());
+                this.updateTable();
+            } catch (LoanException | BookException e) {
+                super.popUp(Alert.AlertType.ERROR, "Errore durante la restituzione", e.getMessage());
+            }
         }
     }
 

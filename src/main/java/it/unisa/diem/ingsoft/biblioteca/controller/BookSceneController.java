@@ -10,6 +10,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import it.unisa.diem.ingsoft.biblioteca.exception.BookException;
@@ -22,12 +23,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -230,19 +226,23 @@ public class BookSceneController extends GuiController implements Initializable 
             return;
         }
 
-        boolean success = false;
-        try {
-            success = this.bookService.removeByIsbn(selectedBook.getIsbn());
-            if (success) {
-                this.updateTable();
-            } else {
-                super.popUp(Alert.AlertType.ERROR, "Errore validazione", "Libro specificato inesistente.");
-            }
-        } catch (BookException e) {
-            super.popUp(Alert.AlertType.ERROR, "Errore selezione", e.getMessage());
-        }
+        Optional<ButtonType> result = super.popUpConfirmation("Eliminazione Libro", "Sei sicuro di volere rimuovere il libro selezionato?");
 
-        this.updateTable();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            boolean success = false;
+            try {
+                success = this.bookService.removeByIsbn(selectedBook.getIsbn());
+                if (success) {
+                    this.updateTable();
+                } else {
+                    super.popUp(Alert.AlertType.ERROR, "Errore validazione", "Libro specificato inesistente.");
+                }
+            } catch (BookException e) {
+                super.popUp(Alert.AlertType.ERROR, "Errore selezione", e.getMessage());
+            }
+
+            this.updateTable();
+        }
     }
 
     /**

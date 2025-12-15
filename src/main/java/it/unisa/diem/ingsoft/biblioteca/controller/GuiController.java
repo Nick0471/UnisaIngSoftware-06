@@ -4,8 +4,8 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import java.util.Optional;
 import java.util.function.Consumer;
-
 import it.unisa.diem.ingsoft.biblioteca.Scenes;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -107,5 +108,19 @@ public abstract class GuiController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /**
+     * @brief Mostra una finestra di pop-up per la conferma.
+     *
+     * @param title Il titolo della finestra.
+     * @param message Il messaggio da visualizzare.
+     */
+    protected Optional<ButtonType> popUpConfirmation(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        return alert.showAndWait();
     }
 }

@@ -12,6 +12,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import it.unisa.diem.ingsoft.biblioteca.model.Loan;
@@ -25,12 +26,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -210,14 +206,18 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
-        //ottengo la lista dei SOLI prestiti attivi di un singolo utente
-        List<Loan> loanList = this.loanService.getActiveByUserId(selectedUser.getId());
+        Optional<ButtonType> result = super.popUpConfirmation("Eliminazione utente", "Sei sicuro di volere eliminare l'utente selezionato?");
 
-        if(loanList.isEmpty()) {
-            this.userService.removeById(selectedUser.getId());
-            this.updateTable();
-        }else
-            this.popUp(Alert.AlertType.WARNING,"Errore selezione", "Non puoi rimuovere un utente che ha ancora prestiti attivi");
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            //ottengo la lista dei SOLI prestiti attivi di un singolo utente
+            List<Loan> loanList = this.loanService.getActiveByUserId(selectedUser.getId());
+
+            if (loanList.isEmpty()) {
+                this.userService.removeById(selectedUser.getId());
+                this.updateTable();
+            } else
+                this.popUp(Alert.AlertType.WARNING, "Errore selezione", "Non puoi rimuovere un utente che ha ancora prestiti attivi");
+        }
     }
 
 
