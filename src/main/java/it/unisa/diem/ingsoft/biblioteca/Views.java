@@ -1,8 +1,6 @@
 package it.unisa.diem.ingsoft.biblioteca;
 
 public class Views {
-
-
     public static final String HOMEPAGE_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/HomepageScene.fxml";
     public static final String LOAN_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/LoanScene.fxml";
     public static final String ADD_LOAN_PATH = "/it/unisa/diem/ingsoft/biblioteca/view/AddLoanScene.fxml";

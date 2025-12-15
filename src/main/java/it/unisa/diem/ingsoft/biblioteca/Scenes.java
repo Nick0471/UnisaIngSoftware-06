@@ -14,6 +14,7 @@ public class Scenes {
     /**
      * @brief Restituisce un FXMLLoader per una view al cui GuiController viene passata la reference
      *  ad un {@link ServiceRepository}.
+     *  Necessario per inizializzare un controller che usa i servizi del backend.
      * @return L'FXMLLoader creato.
      * @throws RuntimeException Se il controller della view non e' un GuiController.
      */

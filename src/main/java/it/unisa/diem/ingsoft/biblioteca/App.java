@@ -2,13 +2,6 @@ package it.unisa.diem.ingsoft.biblioteca;
 
 import java.util.Optional;
 
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidBookCopiesException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIdException;
-import it.unisa.diem.ingsoft.biblioteca.exception.InvalidIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.LoanAlreadyRegisteredException;
-import it.unisa.diem.ingsoft.biblioteca.exception.NegativeBookCopiesException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownBookByIsbnException;
-import it.unisa.diem.ingsoft.biblioteca.exception.UnknownUserByIdException;
 import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
@@ -28,7 +21,7 @@ public class App extends Application {
     private static final String DATABASE_CONNECTION_URL = "jdbc:sqlite:database.db";
 
     @Override
-    public void start(Stage primaryStage) throws LoanAlreadyRegisteredException, InvalidIdException, InvalidIsbnException, UnknownBookByIsbnException, UnknownUserByIdException, NegativeBookCopiesException, InvalidBookCopiesException {
+    public void start(Stage primaryStage) {
         Optional<Database> databaseOpt = this.connectToDatabase();
 
         if (databaseOpt.isEmpty()) {
