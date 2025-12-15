@@ -22,4 +22,5 @@ module it.unisa.diem.ingsoft.biblioteca {
 
     requires org.slf4j;
     requires jdk.jshell;
+
 }

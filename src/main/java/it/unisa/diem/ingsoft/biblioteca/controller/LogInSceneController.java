@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.FORGOTTEN_PASSWORD_PATH;
 import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 
 
@@ -49,6 +50,9 @@ public class LogInSceneController extends GuiController {
     @FXML
     private Button btnLogin;
 
+    @FXML
+    private Button btnForgottenPassword;
+
 
     /**
      * @brief Gestisce il tentativo di accesso al sistema.
@@ -71,6 +75,11 @@ public class LogInSceneController extends GuiController {
 
 
     }
+
+
+    @FXML
+    private void handleforgot(ActionEvent event){this.changeScene(event, FORGOTTEN_PASSWORD_PATH);}
+
 
 
 }
