@@ -34,4 +34,11 @@ public interface AuthService {
      * @return true se la risposta è corretta, false altrimenti.
      */
     boolean checkAnswer(String answer, int number);
+
+    /**
+     * @brief Cambia una delle risposte alle domande di accesso al software.
+     * @param answer La nuova risposta.
+     * @param number Il numero della domanda da modificare.
+     */
+    void changeAnswer(String answer, int number);
 }

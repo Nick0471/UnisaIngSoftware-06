@@ -6,6 +6,7 @@ package it.unisa.diem.ingsoft.biblioteca.service;
 
 import java.util.Optional;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.UnsetAnswerException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
@@ -88,5 +89,57 @@ public class DatabaseAuthService implements AuthService {
                         + "VALUES (:password_hash)")
                     .bind("password_hash", hash)
                     .execute());
+    }
+
+    /**
+     * @brief Controlla se la risposta inserita è corretta.
+     * Esegue una select SQL per ottenere l'hash della risposta specifica da confrontare.
+     * @param answer La risposta da controllare.
+     * @param number Il numero della risposta da controllare (1, 2 o 3).
+     * @return true se la risposta è corretta, false altrimenti.
+     * @throws UnsetPasswordException Se non c'è alcuna password/risposta salvata nel database.
+     * @throws IllegalArgumentException Se il numero della domanda non è valido (es. < 1 o > 3).
+     */
+    @Override
+    public boolean checkAnswer(String answer, int number) {
+        String column = getQuestionColumn(number);
+
+        Optional<String> hashOpt = this.database.getJdbi()
+                .withHandle(handle -> handle.createQuery("SELECT " + column + " FROM auth LIMIT 1")
+                        .mapTo(String.class)
+                        .findFirst());
+
+        if (hashOpt.isEmpty()) {
+            throw new UnsetAnswerException(number);
+        }
+
+        String hash = hashOpt.get();
+
+        return BCrypt.checkpw(answer, hash);
+    }
+
+    @Override
+    public void changeAnswer(String answer, int number) {
+        String hash = BCrypt.hashpw(answer, BCrypt.gensalt());
+        String column = getQuestionColumn(number);
+
+        if (!this.isPresent()) {
+            throw new UnsetAnswerException(number);
+        }
+
+        this.database.getJdbi()
+                .useHandle(handle -> handle.createUpdate("UPDATE auth "
+                                + "SET " + column + " = :answer_hash")
+                        .bind("answer_hash", hash)
+                        .execute());
+    }
+
+    private String getQuestionColumn(int number) {
+        return switch (number) {
+            case 1 -> "question_one";
+            case 2 -> "question_two";
+            case 3 -> "question_three";
+            default -> throw new IllegalArgumentException("Numero domanda non valido: " + number);
+        };
     }
 }
