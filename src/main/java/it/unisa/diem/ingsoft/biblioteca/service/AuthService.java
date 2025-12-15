@@ -36,7 +36,8 @@ public interface AuthService {
     boolean checkPassword(String password);
 
     /**
-     * @brief Controlla se esiste una password per il software
+     * @brief Controlla se esiste una password e le risposte alle domande
+     *  di default per il software
      * @return true se la password esiste, false altrimenti
      */
     boolean isPresent();
@@ -54,7 +55,7 @@ public interface AuthService {
     /**
      * @brief Cambia una delle risposte alle domande di accesso al software.
      * @param answer La nuova risposta.
-     * @param number Il numero della domanda da modificare.
+     * @param number Il numero della risposta da modificare.
      */
     void changeAnswer(String answer, int number);
 }
