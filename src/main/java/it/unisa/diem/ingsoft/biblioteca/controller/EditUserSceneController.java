@@ -172,7 +172,6 @@ public class EditUserSceneController extends GuiController{
             }
         }
 
-        this.closeScene(event);
     }
 
 
