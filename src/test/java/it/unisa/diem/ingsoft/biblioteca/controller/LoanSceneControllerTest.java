@@ -186,6 +186,7 @@ public class LoanSceneControllerTest extends ApplicationTest {
 
         System.out.println("Clicco su Restituisci...");
         this.clickOn("#btnReturn");
+        this.clickOn("OK");
 
         this.sleep(2000);
 

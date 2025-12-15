@@ -79,7 +79,7 @@ public class BookSceneControllerTest extends ApplicationTest {
         }
 
         if(!this.bookService.existsByIsbn("9780451524935")) {
-            this.bookService.add(new Book("9780451524935", "1984", "George Orwell", 1949, 15, 5, "Dystopian",
+            this.bookService.add(new Book("9780451524935", "1984", "George Orwell", 1949, 5, 5, "Dystopian",
                     "Un romanzo agghiacciante su un regime totalitario che sorveglia ogni mossa dei cittadini. Il Grande Fratello ti sta guardando."));
         }
 
@@ -212,7 +212,7 @@ public class BookSceneControllerTest extends ApplicationTest {
 
         System.out.println("Clicco su Rimuovi");
         this.clickOn("#btnRemove");
-        //this.clickOn("OK");per chiudere il popup
+        this.clickOn("OK");
 
         this.sleep(2000);
 
