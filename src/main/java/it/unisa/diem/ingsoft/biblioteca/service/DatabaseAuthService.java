@@ -14,13 +14,13 @@ import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;
 /**
  * @brief Implementazione del PasswordService usando un Database per la persistenza
  */
-public class DatabasePasswordService implements PasswordService {
+public class DatabaseAuthService implements AuthService {
     private final Database database;
 
     /**
      * @brief Costruisce un oggetto che implementa il PasswordService usando un database
      */
-    public DatabasePasswordService(Database database) {
+    public DatabaseAuthService(Database database) {
         this.database = database;
     }
 
@@ -30,7 +30,7 @@ public class DatabasePasswordService implements PasswordService {
      * @param password La nuova password.
      */
 	@Override
-	public void change(String password) {
+	public void changePassword(String password) {
         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         if (!this.isPresent()) {
@@ -53,7 +53,7 @@ public class DatabasePasswordService implements PasswordService {
      * @throws UnsetPasswordException Se non c'è alcuna password salvata nel database.
      */
 	@Override
-	public boolean check(String password) {
+	public boolean checkPassword(String password) {
         Optional<String> hashOpt = this.getPasswordHash();
 
         if (hashOpt.isEmpty()) {

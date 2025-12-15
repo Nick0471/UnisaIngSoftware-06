@@ -23,7 +23,7 @@ public class HomepageSceneControllerTest extends ApplicationTest {
         UserService userService = new DatabaseUserService(db);
         BookService bookService = new DatabaseBookService(db);
         LoanService loanService = new DatabaseLoanService(userService, bookService, db);
-        PasswordService passwordService = new DatabasePasswordService(db);
+        AuthService passwordService = new DatabaseAuthService(db);
 
         ServiceRepository serviceRepository = new ServiceRepository(passwordService, userService, bookService, loanService);
 

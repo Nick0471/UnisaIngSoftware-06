@@ -5,7 +5,7 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
-import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +27,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
 public class PasswordChangeSceneController extends GuiController {
 
 
-    private PasswordService passwordService;
+    private AuthService passwordService;
 
     /**
      * @brief Setter per i servizi di gestione della password.
@@ -71,7 +71,7 @@ public class PasswordChangeSceneController extends GuiController {
         String confirmPass = this.newPasswordConfirm.getText();
 
 
-        if (!this.passwordService.check(oldPass)) {
+        if (!this.passwordService.checkPassword(oldPass)) {
             this.popUp(Alert.AlertType.ERROR, "Errore password", "La password vecchia inserita non è corretta.");
             return;
         }
@@ -88,7 +88,7 @@ public class PasswordChangeSceneController extends GuiController {
         }
 
         //cambio effettivamente la password
-        this.passwordService.change(newPass);
+        this.passwordService.changePassword(newPass);
 
         this.changeScene(event, HOMEPAGE_PATH);
     }

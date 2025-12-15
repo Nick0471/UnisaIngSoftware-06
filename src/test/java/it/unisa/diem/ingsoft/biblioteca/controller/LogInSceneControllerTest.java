@@ -2,9 +2,8 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.Scenes;
-import it.unisa.diem.ingsoft.biblioteca.service.DatabasePasswordService;
-import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
-import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
+import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,13 +19,13 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.LOGIN_PATH;
 
 public class LogInSceneControllerTest extends ApplicationTest {
 
-    private PasswordService passwordService;
+    private AuthService passwordService;
 
     @Override
     public void start(Stage stage) {
         Database db = Database.inMemory();
 
-        this.passwordService = new DatabasePasswordService(db);
+        this.passwordService = new DatabaseAuthService(db);
 
         ServiceRepository serviceRepository = new ServiceRepository(this.passwordService, null, null, null);
 
@@ -47,7 +46,7 @@ public class LogInSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 1: LOGIN SUCCESSO---");
 
         //inserisco una password nel database
-        this.passwordService.change("OldPassword");
+        this.passwordService.changePassword("OldPassword");
 
         this.clickOn("#insertedPassword").write("OldPassword");
         this.sleep(1000);
@@ -82,7 +81,7 @@ public class LogInSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 3: LA PASSWORD INSERITA E' ERRATA ---");
 
         //inserisco una password nel database
-        this.passwordService.change("OldPassword");
+        this.passwordService.changePassword("OldPassword");
 
         this.clickOn("#insertedPassword").write("Old");
         this.sleep(1000);

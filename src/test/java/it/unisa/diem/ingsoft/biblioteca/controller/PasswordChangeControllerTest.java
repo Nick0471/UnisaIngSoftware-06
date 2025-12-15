@@ -2,9 +2,9 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import it.unisa.diem.ingsoft.biblioteca.Database;
 import it.unisa.diem.ingsoft.biblioteca.Scenes;
-import it.unisa.diem.ingsoft.biblioteca.service.DatabasePasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
 
-import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,19 +16,18 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_PASSWORD_PATH;
-import static it.unisa.diem.ingsoft.biblioteca.Views.USER_PATH;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PasswordChangeControllerTest extends ApplicationTest {
 
-    private PasswordService passwordService;
+    private AuthService passwordService;
 
     @Override
     public void start(Stage stage) {
         Database db = Database.inMemory();
 
-        this.passwordService = new DatabasePasswordService(db);
+        this.passwordService = new DatabaseAuthService(db);
 
         ServiceRepository serviceRepository = new ServiceRepository(this.passwordService, null, null, null);
 
@@ -41,7 +40,7 @@ public class PasswordChangeControllerTest extends ApplicationTest {
         stage.setScene(scene);
         stage.show();
 
-        this.passwordService.change("OldPassword");
+        this.passwordService.changePassword("OldPassword");
     }
 
 

@@ -5,10 +5,10 @@ import java.util.Optional;
 import it.unisa.diem.ingsoft.biblioteca.service.BookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseBookService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseLoanService;
-import it.unisa.diem.ingsoft.biblioteca.service.DatabasePasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.DatabaseAuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.DatabaseUserService;
 import it.unisa.diem.ingsoft.biblioteca.service.LoanService;
-import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import it.unisa.diem.ingsoft.biblioteca.service.UserService;
 import javafx.application.Application;
@@ -31,7 +31,7 @@ public class App extends Application {
 
         Database database = databaseOpt.get();
         UserService userService = new DatabaseUserService(database);
-        PasswordService passwordService = new DatabasePasswordService(database);
+        AuthService passwordService = new DatabaseAuthService(database);
         BookService bookService = new DatabaseBookService(database);
         LoanService loanService = new DatabaseLoanService(userService, bookService, database);
         ServiceRepository serviceRepository = new ServiceRepository(passwordService, userService,
@@ -39,7 +39,7 @@ public class App extends Application {
 
         // password di default
         if (!passwordService.isPresent()) {
-            passwordService.change("admin");
+            passwordService.changePassword("admin");
         }
 
         FXMLLoader loader = Scenes.setupLoader(Views.LOGIN_PATH, serviceRepository);

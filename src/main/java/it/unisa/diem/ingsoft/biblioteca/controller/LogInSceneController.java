@@ -6,7 +6,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
 import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;
-import it.unisa.diem.ingsoft.biblioteca.service.PasswordService;
+import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +27,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
  */
 public class LogInSceneController extends GuiController {
 
-    private PasswordService passwordService;
+    private AuthService passwordService;
 
 
     /**
@@ -60,7 +60,7 @@ public class LogInSceneController extends GuiController {
         String pass = this.insertedPassword.getText();
 
         try {
-            if (this.passwordService.check(pass))
+            if (this.passwordService.checkPassword(pass))
                 this.changeScene(event, HOMEPAGE_PATH );
             else
                 this.popUp(Alert.AlertType.ERROR, "Errore password", "La password inserita non è corretta.");
