@@ -142,7 +142,7 @@ public class Database {
             + "password_hash TEXT NOT NULL PRIMARY KEY,"
             + "question_one TEXT NOT NULL,"
             + "question_two TEXT NOT NULL,"
-            + "question_three TEXT NOT NULL,"
+            + "question_three TEXT NOT NULL"
             + ");";
 
         this.jdbi.useHandle(handle -> {
