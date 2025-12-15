@@ -23,7 +23,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
  *
  * Estende {@link GuiController} per ereditare funzionalità comuni.
  */
-public class UpdateSecurityQuestionsController extends GuiController {
+public class UpdateSecurityQuestionsSceneController extends GuiController {
 
     @FXML private TextField answer1Field;
     @FXML private TextField answer2Field;
@@ -37,7 +37,7 @@ public class UpdateSecurityQuestionsController extends GuiController {
     /**
      * @brief Costruttore vuoto del controller.
      */
-    public UpdateSecurityQuestionsController() {}
+    public UpdateSecurityQuestionsSceneController() {}
 
     /**
      * @brief Setter per i servizi necessari.
