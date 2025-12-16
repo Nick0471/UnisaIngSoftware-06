@@ -161,6 +161,7 @@ public class DatabaseAuthService implements AuthService {
                         .execute());
     }
 
+    //Funzione di utilità
     private String getSecretAnswer(int questionNumber) {
         return switch (questionNumber) {
             case 1 -> "question_one";
