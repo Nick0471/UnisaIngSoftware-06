@@ -4,6 +4,9 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.service;
 
+import it.unisa.diem.ingsoft.biblioteca.exception.UnsetAnswerException;
+import it.unisa.diem.ingsoft.biblioteca.exception.UnsetPasswordException;
+
 /**
  * @brief Interfaccia per la gestione della password e delle domande
  */
@@ -28,6 +31,7 @@ public interface AuthService {
      * @brief Controlla se la password inserita è corretta.
      * @param password La password da controllare.
      * @return true se la password è corretta, false altrimenti.
+     * @throws UnsetPasswordException Se non c'è alcuna password salvata nel database.
      */
     boolean checkPassword(String password);
 
@@ -42,6 +46,8 @@ public interface AuthService {
      * @param answer La risposta da controllare.
      * @param number Il numero della risposta da controllare.
      * @return true se la risposta è corretta, false altrimenti.
+     * @throws UnsetAnswerException Se non c'è alcuna risposta alla domanda specificata.
+     * @throws IllegalArgumentException Se il numero della domanda non è valido.
      */
     boolean checkAnswer(String answer, int number);
 

@@ -4,6 +4,9 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
+import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.UPDATE_ANSWERS_PATH;
+
 import it.unisa.diem.ingsoft.biblioteca.service.AuthService;
 import it.unisa.diem.ingsoft.biblioteca.service.ServiceRepository;
 import javafx.event.ActionEvent;
@@ -11,9 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-
-import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
-import static it.unisa.diem.ingsoft.biblioteca.Views.UPDATE_ANSWERS_PATH;
 
 /**
  * @brief Controller per il cambio password per accedere al sistema.

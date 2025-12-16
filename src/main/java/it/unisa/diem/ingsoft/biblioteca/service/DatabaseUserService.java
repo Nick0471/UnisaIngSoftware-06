@@ -219,7 +219,7 @@ public class DatabaseUserService implements UserService {
 	public List<User> getAllByFullNameContaining(String name, String surname) {
         return this.database.getJdbi()
             .withHandle(handle -> handle.createQuery("SELECT * FROM users "
-                        + "WHERE name LIKE :name AND surname LIKE :surname")
+                        + "WHERE name LIKE :name OR surname LIKE :surname")
                     .bind("name", "%" + name + "%")       
                     .bind("surname", "%" + surname + "%") 
                     .mapTo(User.class)

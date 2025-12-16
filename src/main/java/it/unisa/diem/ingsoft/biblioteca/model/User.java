@@ -4,13 +4,11 @@
  */
 package it.unisa.diem.ingsoft.biblioteca.model;
 
-import java.io.Serializable;
-
 /**
  * @brief Rappresenta un'entità Utente nel sistema della biblioteca.
  * Questa classe contiene tutte le informazioni relative a un singolo utente.
  */
-public class User implements Serializable {
+public class User {
     private String id;
     private String email;
     private String name;
