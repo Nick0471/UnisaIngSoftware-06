@@ -181,7 +181,7 @@ public class UserSceneController extends GuiController implements Initializable{
                 break;
         }
 
-        //prima di caricare gli elementi in tabella è necessario inseririli in una observableArrayList
+        //prima di caricare gli elementi in tabella è necessario inserirli in una observableArrayList
         this.users = FXCollections.observableArrayList(result);
 
         //popola la tabella
@@ -236,6 +236,7 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
+        //Specifico il metodo da chiamare e gli passo l'utente selezionato
         this.modalScene(EDIT_USER_PATH , "Modifica Utente", (EditUserSceneController controller) -> {controller.editUser(selectedUser); });
 
         this.updateTable();
@@ -278,6 +279,7 @@ public class UserSceneController extends GuiController implements Initializable{
             return;
         }
 
+       //Specifico il metodo da chiamare e gli passo l'utente selezionato e il servizio loanervice
         this.modalScene(ACCOUNT_USER_PATH, "Account Utente", (AccountUserSceneController controller) -> {
             controller.setUserProfile(selectedUser, this.loanService);
         });

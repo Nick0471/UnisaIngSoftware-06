@@ -88,10 +88,7 @@ public class AccountUserSceneController extends GuiController implements Initial
     public void initialize(URL location, ResourceBundle resources) {
 
         this.columnIsbn.setCellValueFactory(new PropertyValueFactory<>("bookIsbn"));
-
         this.columnStartDate.setCellValueFactory(new PropertyValueFactory<>("loanStart"));
-
-
         this.columnDeadline.setCellValueFactory(new PropertyValueFactory<>("loanDeadline"));
 
 
@@ -100,7 +97,7 @@ public class AccountUserSceneController extends GuiController implements Initial
             Loan loan = cellData.getValue();
             String isbn = loan.getBookIsbn();
 
-            // Recupera il titolo usando il servizio libri
+            // Recupera il titolo usando il servizio bookService
             return this.bookService.getByIsbn(isbn)
                                     .map(book -> new SimpleStringProperty(book.getTitle()))
                                     .orElse(new SimpleStringProperty("Titolo non trovato"));
@@ -118,7 +115,6 @@ public class AccountUserSceneController extends GuiController implements Initial
      * @param loanService Il servizio di gestione dei prestiti, utilizzato per recuperare i prestiti dell'utente
      *
      */
-
     public void setUserProfile(User user, LoanService loanService) {
         this.user = user;
         this.loanService = loanService;
@@ -131,13 +127,13 @@ public class AccountUserSceneController extends GuiController implements Initial
             this.labelEmail.setText(user.getEmail());
         }
 
-        //ottengo la lista dei prestiti si un singolo utente
+        //ottengo la lista dei prestiti di un singolo utente
         List<Loan> userLoans = this.loanService.getActiveByUserId(this.user.getId());
 
         // Converto la lista in ObservableList
         ObservableList<Loan> observableLoans = FXCollections.observableArrayList(userLoans);
 
-
+        //popolo la tabella
         this.loansTable.setItems(observableLoans);
 
         // Codice per visualizzare in rosso i prestiti "scaduti"

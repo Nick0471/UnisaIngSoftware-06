@@ -39,7 +39,9 @@ public class EditUserSceneController extends GuiController{
 
     private UserService userService;
 
-    private boolean isEditMode = false;
+    //Di default questa classe serve ad aggiungere un utente.
+    //Se imposti idEditMode=true allora la classe permetterà di modificare un utente
+        private boolean isEditMode = false;
 
 
     /**
@@ -66,7 +68,7 @@ public class EditUserSceneController extends GuiController{
 
         this.nameField.textProperty().addListener((observable, oldValue, newValue) -> {
             // Verifica se il testo contiene qualcosa che NON è una lettera o uno spazio
-            // [a-zA-Z ]* significa: accetta lettere minuscole, maiuscole e spazi
+            // "[a-zA-Z ]*" significa: accetta lettere minuscole, maiuscole e spazi
             if (!newValue.matches("[a-zA-Z ]*")) {
                 // Rimuove tutto ciò che non è lettera o spazio
                 this.nameField.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
@@ -83,6 +85,7 @@ public class EditUserSceneController extends GuiController{
 
 
         this.idField.textProperty().addListener( (observable, oldValue, newValue) -> {
+            //Impedisce di scrivere più di 10 caratteri per la matricola
             if (newValue.length() > 10) {
                 this.idField.setText(newValue.substring(0, 10));
             }
@@ -114,11 +117,10 @@ public class EditUserSceneController extends GuiController{
     }
 
     /**
-     * @brief Gestisce la conferma per l'aggiunta di un nuovo utente
+     * @brief Gestisce la conferma per l'aggiunta o la modifica di un utente
      *
      * Recupera i dati dai campi di testo e verifica che i campi obbligatori non siano vuoti.
-     * Crea un nuovo oggetto User e salva i dati sul database.
-     * In caso di errore (campi vuoti o formato errato), mostra un popup di errore.
+     * Verifica se si vuole inserire un utente (in questo caso lo crea) o modificarne uno già esistente.
      *
      * @param event L'evento generato dal click sul pulsante "Conferma"/"Aggiorna".
      */
@@ -154,7 +156,6 @@ public class EditUserSceneController extends GuiController{
             this.popUp(Alert.AlertType.ERROR, "Email non valida", e.getMessage());
             return;
         }
-
 
         User user = new User(id,email,name,surname);
 
