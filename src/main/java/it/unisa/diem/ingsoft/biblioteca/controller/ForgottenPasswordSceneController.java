@@ -10,8 +10,7 @@ import javafx.scene.control.Button;
 
 import javafx.scene.control.TextField;
 
-import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_PASSWORD_PATH;
-import static it.unisa.diem.ingsoft.biblioteca.Views.LOGIN_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.*;
 
 
 public class ForgottenPasswordSceneController extends GuiController {
@@ -53,7 +52,7 @@ public class ForgottenPasswordSceneController extends GuiController {
         boolean a3 = this.passwordService.checkAnswer(answer3Field.getText(), 3);
 
         if( a1 && a2 && a3 )
-           changeScene(event,EDIT_PASSWORD_PATH);
+           changeScene(event,NEW_PASSWORD_PATH);
        else {
            this.popUp(Alert.AlertType.WARNING, "Valutazione password", "I campi non sono corretti");
            return;

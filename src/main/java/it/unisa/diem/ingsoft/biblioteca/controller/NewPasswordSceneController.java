@@ -25,7 +25,7 @@ import static it.unisa.diem.ingsoft.biblioteca.Views.UPDATE_QUESTIONS_PATH;
  *
  * Estende {@link GuiController} per ereditare funzionalità comuni.
  */
-public class PasswordChangeSceneController extends GuiController {
+public class NewPasswordSceneController extends GuiController {
 
 
     private AuthService passwordService;
