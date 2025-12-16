@@ -76,7 +76,7 @@ public class ForgottenPasswordSceneController extends GuiController {
             String tf3 = this.answer3Field.getText().trim();
 
             if(tf1.isEmpty() && tf2.isEmpty() && tf3.isEmpty()) {
-                this.popUp(Alert.AlertType.WARNING, "Valutazione password", "I campi non vuoti");
+                this.popUp(Alert.AlertType.WARNING, "Valutazione password", "Completa tutti i campi obligatori");
                 return;
             }
 
