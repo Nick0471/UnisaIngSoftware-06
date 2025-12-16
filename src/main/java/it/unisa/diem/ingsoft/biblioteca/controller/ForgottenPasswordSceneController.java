@@ -1,3 +1,8 @@
+/**
+ * @brief Package dei controller
+ * @package it.unisa.diem.ingsoft.biblioteca.controller
+ */
+
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 
@@ -14,6 +19,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 
+/**
+ * @brief Controller per gestire il recupero della password.
+ *
+ * Permette all'utente di rispondere alle domande di sicurezza per verificare
+ * la propria identità e procedere al reset della password.
+ *
+ * Estende {@link GuiController} per ereditare funzionalità comuni.
+ */
 public class ForgottenPasswordSceneController extends GuiController {
 
     private  AuthService authService;
@@ -46,14 +59,30 @@ public class ForgottenPasswordSceneController extends GuiController {
     private TextField answer3Field;
 
 
+
+    /**
+     * @brief Gestisce la verifica delle risposte di sicurezza.
+     *
+     * Se la verifica ha successo, passa alla scena di creazione nuova password.
+     *
+     * @param event L'evento generato dal click sul pulsante di verifica.
+     */
     @FXML
     public void handleVerify(ActionEvent event){
 
         try {
-            boolean a1 = this.authService.checkAnswer(this.answer1Field.getText().trim(), 1);
-            boolean a2 = this.authService.checkAnswer(this.answer2Field.getText().trim(), 2);
-            boolean a3 = this.authService.checkAnswer(this.answer3Field.getText().trim(), 3);
+            String tf1 = this.answer1Field.getText().trim();
+            String tf2 = this.answer2Field.getText().trim();
+            String tf3 = this.answer3Field.getText().trim();
 
+            if(tf1.isEmpty() && tf2.isEmpty() && tf3.isEmpty()) {
+                this.popUp(Alert.AlertType.WARNING, "Valutazione password", "I campi non vuoti");
+                return;
+            }
+
+            boolean a1 = this.authService.checkAnswer(tf1, 1);
+            boolean a2 = this.authService.checkAnswer(tf2, 2);
+            boolean a3 = this.authService.checkAnswer(tf3, 3);
 
 
             if (a1 && a2 && a3)
@@ -68,6 +97,13 @@ public class ForgottenPasswordSceneController extends GuiController {
 
     }
 
+    /**
+     * @brief Annulla l'operazione di recupero.
+     *
+     * Riporta l'utente alla schermata di login.
+     *
+     * @param event L'evento generato dal click sul pulsante di annullamento.
+     */
     @FXML
     public void handleCancel(ActionEvent event){this.changeScene(event,LOGIN_PATH);
     }
