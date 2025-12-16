@@ -58,7 +58,7 @@ public class NewPasswordSceneController extends GuiController {
 
     /**
      * @brief Gestisce il tentativo di cambio password.
-     * @param event L'evento ActionEvent generato dal click sul pulsante "Aggiorna".
+     *
      */
     @FXML
     private void handleGoToViewHomepage(ActionEvent event) {

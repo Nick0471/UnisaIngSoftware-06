@@ -56,7 +56,7 @@ public class LogInSceneController extends GuiController {
 
     /**
      * @brief Gestisce il tentativo di accesso al sistema.
-     * @param event L'evento ActionEvent generato dal click sul pulsante.
+     *
      */
     @FXML
     private void handleLogin(ActionEvent event){
@@ -77,6 +77,10 @@ public class LogInSceneController extends GuiController {
     }
 
 
+    /**
+     * @brief Mostra la schermata per la Password Dimenticata
+     *
+     */
     @FXML
     private void handleforgot(ActionEvent event){this.changeScene(event, FORGOTTEN_PASSWORD_PATH);}
 

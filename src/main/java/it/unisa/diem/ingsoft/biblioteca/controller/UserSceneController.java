@@ -193,8 +193,6 @@ public class UserSceneController extends GuiController implements Initializable{
     /**
      * @brief Gestisce l'eliminazione dell'utente selezionato.
      *
-     * Verifica che un utente sia selezionato e che non abbia prestiti attivi,
-     * in quel caso lo elimina.
      */
     @FXML
     private void handleDeleteUser(){
@@ -222,10 +220,8 @@ public class UserSceneController extends GuiController implements Initializable{
 
 
     /**
-     * @brief Apre la scena per la modifica dell'utente selezionato.
+     * @brief Mostra la scena per la modifica dell'utente selezionato.
      *
-     * Verifica che un utente sia selezionato, chiama il metodo di modifica
-     * e aggiorna la lista.
      */
     @FXML
     private void handleModifyUser() {
@@ -244,7 +240,7 @@ public class UserSceneController extends GuiController implements Initializable{
     }
 
     /**
-     * @brief Apre la scena per l'inserimento di un utente.
+     * @brief Mostra la scena per l'inserimento di un utente.
      *
      */
     @FXML
@@ -258,8 +254,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
 
     /**
-     * @brief Torna alla schermata principale (Homepage).
-     * @param event L'evento che ha scatenato l'azione.
+     * @brief Torna alla scena Homepage.
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {this.changeScene(event, HOMEPAGE_PATH);}
@@ -267,7 +262,7 @@ public class UserSceneController extends GuiController implements Initializable{
 
 
     /**
-     * @brief Apre la scena per la visualizzazione dell'utente selezionato.
+     * @brief Mostra la scena per la visualizzazione dell'utente selezionato.
      *
      */
    @FXML

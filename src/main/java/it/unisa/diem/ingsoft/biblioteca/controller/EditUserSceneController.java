@@ -119,10 +119,6 @@ public class EditUserSceneController extends GuiController{
     /**
      * @brief Gestisce la conferma per l'aggiunta o la modifica di un utente
      *
-     * Recupera i dati dai campi di testo e verifica che i campi obbligatori non siano vuoti.
-     * Verifica se si vuole inserire un utente (in questo caso lo crea) o modificarne uno già esistente.
-     *
-     * @param event L'evento generato dal click sul pulsante "Conferma"/"Aggiorna".
      */
     @FXML
     private void handleConfirmAdd(ActionEvent event){
@@ -181,9 +177,6 @@ public class EditUserSceneController extends GuiController{
     /**
      * @brief Gestisce l'annullamento dell'operazione.
      *
-     * Chiude la finestra corrente senza effettuare alcuna modifica o inserimento.
-     *
-     * @param event L'evento generato dal click sul pulsante "Rimuovi".
      */
     @FXML
     private void handleCancel(ActionEvent event){

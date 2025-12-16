@@ -111,9 +111,6 @@ public class AccountUserSceneController extends GuiController implements Initial
     /**
      * @brief Configura il profilo dell'utente corrente e popola la tabella dei prestiti.
      *
-     * @param user L'oggetto {@link User} rappresentante l'utente di cui visualizzare il profilo.
-     * @param loanService Il servizio di gestione dei prestiti, utilizzato per recuperare i prestiti dell'utente
-     *
      */
     public void setUserProfile(User user, LoanService loanService) {
         this.user = user;
@@ -163,7 +160,6 @@ public class AccountUserSceneController extends GuiController implements Initial
     /**
      * @brief Gestisce l'azione di chiusura della finestra.
      *
-     * @param event L'evento generato dal click sul bottone.
      */
     @FXML
     private void handleClose(ActionEvent event) {this.closeScene(event);}

@@ -100,9 +100,6 @@ public class ForgottenPasswordSceneController extends GuiController {
     /**
      * @brief Annulla l'operazione di recupero.
      *
-     * Riporta l'utente alla schermata di login.
-     *
-     * @param event L'evento generato dal click sul pulsante di annullamento.
      */
     @FXML
     public void handleCancel(ActionEvent event){this.changeScene(event,LOGIN_PATH);
