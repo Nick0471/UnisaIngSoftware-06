@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
-import java.awt.*;
+import javafx.scene.control.TextField;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_PASSWORD_PATH;
 import static it.unisa.diem.ingsoft.biblioteca.Views.LOGIN_PATH;
@@ -48,7 +48,11 @@ public class ForgottenPasswordSceneController extends GuiController {
 
     public void handleVerify(ActionEvent event){
 
-       if(this.passwordService.checkAnswer(answer1Field.getText(), 1) && this.passwordService.checkAnswer(answer2Field.getText(), 2) && this.passwordService.checkAnswer(answer3Field.getText(), 3))
+        boolean a1 = this.passwordService.checkAnswer(answer1Field.getText(), 1);
+        boolean a2 =  this.passwordService.checkAnswer(answer2Field.getText(), 2);
+        boolean a3 = this.passwordService.checkAnswer(answer3Field.getText(), 3);
+
+        if( a1 && a2 && a3 )
            changeScene(event,EDIT_PASSWORD_PATH);
        else {
            this.popUp(Alert.AlertType.WARNING, "Valutazione password", "I campi non sono corretti");
