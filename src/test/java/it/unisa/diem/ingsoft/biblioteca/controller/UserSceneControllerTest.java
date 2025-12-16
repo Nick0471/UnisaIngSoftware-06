@@ -152,28 +152,15 @@ public class UserSceneControllerTest extends ApplicationTest {
 
         FxAssert.verifyThat("#searchFieldSecondary", NodeMatchers.isVisible());
 
-        this.clickOn("#searchField");
-        this.push(KeyCode.CONTROL, KeyCode.A); // Seleziona tutto il testo vecchio
-        this.push(KeyCode.BACK_SPACE);         // Lo cancella
-        this.sleep(1000);
-        write("Rossi");
+        this.clickOn("#searchField").write("Rossi");
         this.sleep(1000);
 
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 2);
 
-        // 2. Aspetta un attimo che il focus venga preso
-        this.sleep(1000);
-
-        // 3. (Opzionale ma consigliato) Assicurati che il campo sia pulito e attivo
-        this.push(KeyCode.CONTROL, KeyCode.A);
-        this.push(KeyCode.BACK_SPACE);
-
         this.clickOn("#searchFieldSecondary").write("Mario");
         this.sleep(1000);
 
-
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
-
 
         this.clickOn("#searchType").clickOn("Matricola ");
         this.resetSearchField();
