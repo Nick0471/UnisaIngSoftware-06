@@ -34,7 +34,7 @@ public class DatabaseAuthServiceTest {
     public void setDefault() {
         assertFalse(this.authService.isPresent());
 
-        this.authService.setDefault("Password123", "Risposta1", "Risposta2", "Risposta3");
+        this.authService.setup("Password123", "Risposta1", "Risposta2", "Risposta3");
 
         assertTrue(this.authService.isPresent());
 
@@ -47,13 +47,13 @@ public class DatabaseAuthServiceTest {
     @Test
     public void isPresent_ReturnsTrueOnlyIfDataExists() {
         assertFalse(this.authService.isPresent());
-        this.authService.setDefault("P", "1", "2", "3");
+        this.authService.setup("P", "1", "2", "3");
         assertTrue(this.authService.isPresent());
     }
 
     @Test
     public void changePassword_UpdatesPassword() {
-        this.authService.setDefault("OldPass", "A1", "A2", "A3");
+        this.authService.setup("OldPass", "A1", "A2", "A3");
 
         String newPass = "NewPass123";
         assertDoesNotThrow(() -> this.authService.changePassword(newPass));
@@ -63,7 +63,7 @@ public class DatabaseAuthServiceTest {
 
     @Test
     public void changeAnswer_UpdatesSpecificAnswer() {
-        this.authService.setDefault("Pass", "OldAns1", "Ans2", "Ans3");
+        this.authService.setup("Pass", "OldAns1", "Ans2", "Ans3");
 
         String newAns = "NewAns1";
         assertDoesNotThrow(() -> this.authService.changeAnswer(newAns, 1));
@@ -74,7 +74,7 @@ public class DatabaseAuthServiceTest {
 
     @Test
     public void checkPassword_CorrectAndIncorrect() {
-        this.authService.setDefault("MyPass", "A1", "A2", "A3");
+        this.authService.setup("MyPass", "A1", "A2", "A3");
 
         assertTrue(this.authService.checkPassword("MyPass"));
         assertFalse(this.authService.checkPassword("WrongPass"));
@@ -82,7 +82,7 @@ public class DatabaseAuthServiceTest {
 
     @Test
     public void checkAnswer_CorrectAndIncorrect() {
-        this.authService.setDefault("Pass", "Roma", "Blu", "Pizza");
+        this.authService.setup("Pass", "Roma", "Blu", "Pizza");
 
         assertTrue(this.authService.checkAnswer("Roma", 1));
         assertFalse(this.authService.checkAnswer("Parigi", 1));
