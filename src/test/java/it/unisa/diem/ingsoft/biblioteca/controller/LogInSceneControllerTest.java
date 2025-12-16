@@ -47,7 +47,7 @@ public class LogInSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 1: LOGIN SUCCESSO---");
 
         //inserisco una password nel database
-        this.authService.setDefault("OldPassword", "","","");
+        this.authService.setup("OldPassword", "","","");
 
         this.clickOn("#insertedPassword").write("OldPassword");
         this.sleep(1000);
@@ -82,7 +82,7 @@ public class LogInSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 3: LA PASSWORD INSERITA E' ERRATA ---");
 
         //inserisco una password nel database
-        this.authService.setDefault("OldPassword", "","","");
+        this.authService.setup("OldPassword", "","","");
 
         this.clickOn("#insertedPassword").write("Old");
         this.sleep(1000);
