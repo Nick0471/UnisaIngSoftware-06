@@ -69,17 +69,17 @@ public class EditUserSceneController extends GuiController{
         this.nameField.textProperty().addListener((observable, oldValue, newValue) -> {
             // Verifica se il testo contiene qualcosa che NON è una lettera o uno spazio
             // "[a-zA-Z ]*" significa: accetta lettere minuscole, maiuscole e spazi
-            if (!newValue.matches("[a-zA-Z ]*")) {
+            if (!newValue.matches("[a-zA-ZàèéìòùÀÈÉÌÒÙ ]*")) {
                 // Rimuove tutto ciò che non è lettera o spazio
-                this.nameField.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+                this.nameField.setText(newValue.replaceAll("[^a-zA-ZàèéìòùÀÈÉÌÒÙ ]", ""));
             }
 
         });
 
 
         this.surnameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[a-zA-Z ]*")) {
-                this.surnameField.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+            if (!newValue.matches("[a-zA-ZàèéìòùÀÈÉÌÒÙ ]*")) {
+                this.surnameField.setText(newValue.replaceAll("[^a-zA-ZàèéìòùÀÈÉÌÒÙ ]", ""));
             }
         });
 
