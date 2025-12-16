@@ -87,6 +87,8 @@ public class NewPasswordSceneController extends GuiController {
         //cambio effettivamente la password
         this.authService.changePassword(newPass);
 
+        this.popUp(Alert.AlertType.CONFIRMATION, "Password aggiornata", "La password è stata inserita con successo.");
+
         this.changeScene(event, HOMEPAGE_PATH);
     }
 

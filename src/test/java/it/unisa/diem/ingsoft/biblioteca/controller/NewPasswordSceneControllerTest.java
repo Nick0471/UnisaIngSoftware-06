@@ -2,6 +2,7 @@ package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.NEW_PASSWORD_PATH;
 
+import javafx.scene.control.Alert;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -53,7 +54,12 @@ public class NewPasswordSceneControllerTest extends ApplicationTest {
         this.clickOn("#btnUpdate");
         this.sleep(1000);
 
+        FxAssert.verifyThat("La password è stata inserita con successo.", NodeMatchers.isVisible());
 
+        this.clickOn("OK");
+        this.sleep(1000);
+
+        FxAssert.verifyThat("Biblioteca Universitaria", NodeMatchers.isVisible());
     }
 
     @Test

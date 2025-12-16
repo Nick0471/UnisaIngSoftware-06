@@ -85,9 +85,9 @@ public class ForgottenPasswordSceneController extends GuiController {
             boolean a3 = this.authService.checkAnswer(tf3, 3);
 
 
-            if (a1 && a2 && a3)
+            if (a1 && a2 && a3) {
                 this.changeScene(event, NEW_PASSWORD_PATH);
-            else {
+            }else {
                 this.popUp(Alert.AlertType.WARNING, "Valutazione password", "I campi non sono corretti");
                 return;
             }
