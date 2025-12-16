@@ -88,7 +88,7 @@ public class ForgottenPasswordSceneControllerTest extends ApplicationTest {
         this.clickOn("#btnVerify");
         this.sleep(1000);
 
-        FxAssert.verifyThat("I campi non vuoti", NodeMatchers.isVisible());
+        FxAssert.verifyThat("Completa tutti i campi obligatori", NodeMatchers.isVisible());
 
         this.clickOn("OK");
         this.sleep(1000);
