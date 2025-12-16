@@ -187,7 +187,10 @@ public class UserSceneControllerTest extends ApplicationTest {
         this.sleep(1000);
 
         this.clickOn("#btnRemove");
-          this.sleep(1000);
+        this.sleep(1000);
+
+        this.clickOn("OK");
+        this.sleep(1000);
 
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize - 1);
         this.sleep(1000);
@@ -267,6 +270,8 @@ public class UserSceneControllerTest extends ApplicationTest {
         this.clickOn("#btnRemove");
         this.sleep(500); // Aspetto che appaia l'Alert
 
+        this.clickOn("OK");
+        this.sleep(500);
 
         FxAssert.verifyThat("Non puoi rimuovere un utente che ha ancora prestiti attivi", NodeMatchers.isVisible());
 

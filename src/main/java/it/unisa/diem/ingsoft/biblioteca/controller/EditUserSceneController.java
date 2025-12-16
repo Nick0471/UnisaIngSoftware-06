@@ -162,12 +162,14 @@ public class EditUserSceneController extends GuiController{
         if (this.isEditMode) {
             try {
                 this.userService.updateById(user);
+                this.closeScene(event);
             }catch(UnknownUserByIdException |  InvalidIdException  e){
                 this.popUp(Alert.AlertType.ERROR, "Errore salvataggio", e.getMessage());
             }
         } else {
             try {
                 this.userService.register(user);
+                this.closeScene(event);
             } catch (DuplicateUserByEmailException | DuplicateUserByIdException | InvalidEmailException | InvalidIdException e) {
                 this.popUp(Alert.AlertType.ERROR, "Errore salvataggio", e.getMessage());
             }

@@ -87,13 +87,14 @@ public class EditUserSceneControllerTest extends ApplicationTest{
         this.sleep(1000);
 
         this.clickOn("#idField").write("E123456789");
-        this.clickOn("#surnameField.").write("Altieri");
+
+        this.clickOn("#surnameField").write("Altieri");
+
         this.clickOn("#nameField").write("Bianca");
         this.clickOn("#emailField").write("b.altieri@studenti.unisa.it");
 
         this.clickOn("#btnConfirm");
         this.sleep(1000);
-
 
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == initialSize + 1);
         this.sleep(1000);
