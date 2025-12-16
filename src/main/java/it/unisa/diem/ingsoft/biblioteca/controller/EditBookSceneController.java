@@ -111,16 +111,11 @@ public class EditBookSceneController extends GuiController{
     }
 
     /**
-     * Gestisce la conferma la conferma dell'operazione di aggiunta o modifica.
-
-     * Recupera i dati dai campi di testo, verifica che i campi obbligatori non siano vuoti
-     * e converte i valori numerici. Crea un nuovo oggetto Book e salva i dati sul database.
-     * In caso di errore (campi vuoti o formato errato), mostra un popup di errore.
-     *
-     * event L'evento generato dal click sul pulsante "Conferma".
+     * @brief Gestisce la conferma dell'operazione di aggiunta o modifica.
      */
     @FXML
     private void handleConfirm(ActionEvent event) {
+        //Recupera i dati dai campi di testo, verifica che i campi obbligatori non siano vuoti e converte i valori numerici.
         String title = this.titleField.getText();
         String author = this.authorField.getText();
         String genre = this.genreField.getText();
@@ -138,6 +133,7 @@ public class EditBookSceneController extends GuiController{
             int year = Integer.parseInt(yearText);
             int copies = Integer.parseInt(copiesText);
 
+            // Salva i dati sul database
             try {
                 if (isEditMode) {
                     int totalCopies = this.bookService.getByIsbn(isbn).get().getTotalCopies();
@@ -159,9 +155,7 @@ public class EditBookSceneController extends GuiController{
     }
 
     /**
-     * Chiude la finestra di aggiunta senza salvare le modifiche.
-     *
-     * event L'evento che ha scatenato il cambio scena (es. click su un pulsante).
+     * @brief Chiude la finestra di aggiunta senza salvare le modifiche.
      */
     @FXML
     private void handleCancel(ActionEvent event) {

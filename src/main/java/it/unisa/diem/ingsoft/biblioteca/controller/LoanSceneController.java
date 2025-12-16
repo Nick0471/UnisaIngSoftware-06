@@ -33,31 +33,21 @@ import javafx.scene.control.cell.PropertyValueFactory;
  * Gestisce la visualizzazione dei prestiti e implementa un filtro di ricerca,
  * inoltre rende possibile aggiungere o rimuovere prestiti attivi.
  *
- *Estende {@link GuiController} e implementa {@link Initializable}.
+ * Estende {@link GuiController} e implementa {@link Initializable}.
  */
 public class LoanSceneController extends GuiController implements Initializable {
-    @FXML
-    private ComboBox<String> searchType;
-    @FXML
-    private TextField searchField;
+    @FXML private ComboBox<String> searchType;
+    @FXML private TextField searchField;
 
-    @FXML
-    private TableView<Loan> loanTable;
-    @FXML
-    private TableColumn<Loan, String> columnUserId;
-    @FXML
-    private TableColumn<Loan, String> columnIsbn;
-    @FXML
-    private TableColumn<Loan, LocalDate> columnStartDate;
-    @FXML
-    private TableColumn<Loan, LocalDate> columnDeadline;
+    @FXML private TableView<Loan> loanTable;
+    @FXML private TableColumn<Loan, String> columnUserId;
+    @FXML private TableColumn<Loan, String> columnIsbn;
+    @FXML private TableColumn<Loan, LocalDate> columnStartDate;
+    @FXML private TableColumn<Loan, LocalDate> columnDeadline;
 
-    @FXML
-    private Button btnHome;
-    @FXML
-    private Button btnAdd;
-    @FXML
-    private Button btnReturn;
+    @FXML private Button btnHome;
+    @FXML private Button btnAdd;
+    @FXML private Button btnReturn;
 
     private LoanService loanService;
     private ObservableList<Loan> loans;
@@ -169,7 +159,7 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Aggiorna la TableView recuperando tutti i prestiti attivi.
+     * @brief Aggiorna la TableView recuperando tutti i prestiti attivi.
      */
     private void updateTable() {
         if (this.loanService == null) {
@@ -182,9 +172,7 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Filtra i prestiti nella tabella in base alla query e al tipo di ricerca selezionato.
-     *
-     * query La stringa di ricerca inserita dall'utente.
+     * @brief Filtra i prestiti nella tabella in base alla query e al tipo di ricerca selezionato.
      */
     @FXML
     private void filterLoans(String query) {
@@ -210,8 +198,7 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Torna alla scena Homepage.
-     * event L'evento generato dal click del pulsante.
+     * @brief Torna alla scena Homepage.
      */
     @FXML
     private void handleBackToHome(ActionEvent event) {
@@ -219,8 +206,7 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Mostra la scena per l'aggiunta di un nuovo prestito.
-     * event L'evento generato dal click del pulsante.
+     * @brief Mostra la scena per l'aggiunta di un nuovo prestito.
      */
     @FXML
     private void handleAddLoan(ActionEvent event) {
@@ -230,13 +216,11 @@ public class LoanSceneController extends GuiController implements Initializable 
     }
 
     /**
-     * Salva la restituzione di un prestito.
-     *
-     * Verifica che un prestito sia selezionato
-     * chiama il metodo di restituzione e aggiorna la lista dei prestiti.
+     * @brief Salva la restituzione di un prestito.
      */
     @FXML
     private void handleReturnLoan(ActionEvent event) {
+        //Verifica che un prestito sia selezionato e chiama il metodo di restituzione e aggiorna la lista dei prestiti.
         Loan selectedLoan = this.loanTable.getSelectionModel().getSelectedItem();
 
         if (selectedLoan == null) {

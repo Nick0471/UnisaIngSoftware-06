@@ -76,7 +76,6 @@ public class EditPasswordSceneController extends GuiController {
 
     /**
      * @brief Gestisce l'annullamento dell'operazione
-     * @param event
      */
     @FXML
     private void handleReturn(ActionEvent event) {
@@ -85,7 +84,6 @@ public class EditPasswordSceneController extends GuiController {
 
     /**
      * @brief Cambia scena per poter modificare le risposte delle domande di sicurezza
-     * @param event
      */
     @FXML
     private void handleGoToUpdateSecurityQuestions(ActionEvent event) {
