@@ -92,10 +92,11 @@ public class UserSceneControllerTest extends ApplicationTest {
 
     private void resetSearchField() {
         this.doubleClickOn("#searchField");
-        this.push(KeyCode.CONTROL, KeyCode.A);
-        this.push(KeyCode.DELETE);
-        this.sleep(1000);
+        this.interact(() -> {
+            this.lookup("#searchField").queryTextInputControl().clear();
+        });
 
+        this.sleep(1000);
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 7);
 
     }
@@ -126,7 +127,6 @@ public class UserSceneControllerTest extends ApplicationTest {
         System.out.println("--- TEST 3: FILTRI DI RICERCA ---");
 
         //RICERCA PER MATRICOLA
-        System.out.println("Cerco Matricola: 1234567890");
         this.clickOn("#searchType").clickOn("Matricola ");
         this.clickOn("#searchField").write("1234567890");
         this.sleep(1000);
@@ -136,7 +136,6 @@ public class UserSceneControllerTest extends ApplicationTest {
 
 
         //RICERCA PER EMAIL
-        System.out.println("Cerco Email parziale: rossi");
         this.clickOn("#searchType").clickOn("Email ");
         this.clickOn("#searchField").write("rossi");
         this.sleep(1000);
@@ -148,27 +147,34 @@ public class UserSceneControllerTest extends ApplicationTest {
 
 
         //RICERCA PER NOME E COGNOME
-        System.out.println("Cerco Cognome: Rossi e Nome: Mario");
         this.clickOn("#searchType").clickOn("Cognome ");
-
         this.sleep(1000);
 
-        // Aspetta che il secondo campo sia visibile prima di interagire
         FxAssert.verifyThat("#searchFieldSecondary", NodeMatchers.isVisible());
 
-        // Scrivo nel campo Cognome
-        this.clickOn("#searchField").write("Rossi");
-        this.sleep(1000); // Do tempo al filtro di agire
+        this.clickOn("#searchField");
+        this.push(KeyCode.CONTROL, KeyCode.A); // Seleziona tutto il testo vecchio
+        this.push(KeyCode.BACK_SPACE);         // Lo cancella
+        this.sleep(1000);
+        write("Rossi");
+        this.sleep(1000);
 
+        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 2);
 
-        // Scrivo nel campo Nome
+        // 2. Aspetta un attimo che il focus venga preso
+        this.sleep(1000);
+
+        // 3. (Opzionale ma consigliato) Assicurati che il campo sia pulito e attivo
+        this.push(KeyCode.CONTROL, KeyCode.A);
+        this.push(KeyCode.BACK_SPACE);
+
         this.clickOn("#searchFieldSecondary").write("Mario");
-        this.sleep(1000); // Do tempo al filtro di agire
+        this.sleep(1000);
 
 
         FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
 
-        // Rimetto il filtro su Matricola per nascondere il secondo campo e resettare
+
         this.clickOn("#searchType").clickOn("Matricola ");
         this.resetSearchField();
         this.sleep(1000);
