@@ -48,9 +48,6 @@ public class PasswordChangeSceneController extends GuiController {
     private Button btnReturn;
 
     @FXML
-    private PasswordField currentPassword;
-
-    @FXML
     private PasswordField newPassword;
 
     @FXML
@@ -66,13 +63,13 @@ public class PasswordChangeSceneController extends GuiController {
     @FXML
     private void handleGoToViewHomepage(ActionEvent event) {
 
-        String oldPass = this.currentPassword.getText();
+
         String newPass = this.newPassword.getText();
         String confirmPass = this.newPasswordConfirm.getText();
 
 
-        if (!this.passwordService.checkPassword(oldPass)) {
-            this.popUp(Alert.AlertType.ERROR, "Errore password", "La password vecchia inserita non è corretta.");
+        if(newPass.isEmpty()){
+            this.popUp(Alert.AlertType.WARNING, "Valutazione password","Compila tutti i campi obligatori");
             return;
         }
 
@@ -94,11 +91,5 @@ public class PasswordChangeSceneController extends GuiController {
     }
 
 
-    /**
-     * @brief Gestisce l'annullamento dell'operazione
-     * @param event
-     */
-    @FXML
-    private void handleReturn(ActionEvent event){ this.changeScene(event, HOMEPAGE_PATH);}
 
 }

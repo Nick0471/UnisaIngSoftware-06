@@ -16,8 +16,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_PASSWORD_PATH;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class PasswordChangeControllerTest extends ApplicationTest {
 
@@ -48,8 +47,6 @@ public class PasswordChangeControllerTest extends ApplicationTest {
     public void test1_ChangePasswordSuccess() {
         System.out.println("--- TEST 1: CAMBIO PASSWORD CON SUCCESSO---");
 
-        this.clickOn("#currentPassword").write("OldPassword");
-
         this.clickOn("#newPassword").write("NewPass123");
         this.clickOn("#newPasswordConfirm").write("NewPass123");
         this.sleep(1000);
@@ -60,32 +57,11 @@ public class PasswordChangeControllerTest extends ApplicationTest {
     }
 
 
-    @Test
-    public void test2_OldWrongPassword() {
-        System.out.println("--- TEST 2: VECCHIA PASSWORD ERRATA ---");
-
-        this.clickOn("#currentPassword").write("OldDDD");
-
-        this.clickOn("#newPassword").write("NewPass123");
-        this.clickOn("#newPasswordConfirm").write("NewPass123");
-        this.sleep(1000);
-
-        this.clickOn("#btnUpdate");
-        this.sleep(1000);
-
-        FxAssert.verifyThat("La password vecchia inserita non è corretta.", NodeMatchers.isVisible());
-
-        this.clickOn("OK");
-        this.sleep(1000);
-
-    }
 
 
     @Test
-    public void test3_NewPasswordsMismatch() {
-        System.out.println("--- TEST 3: LE DUE PASSWORD NON COINCIDONO ---");
-
-        this.clickOn("#currentPassword").write("OldPassword");
+    public void test2_NewPasswordsMismatch() {
+        System.out.println("--- TEST 2: LE DUE PASSWORD NON COINCIDONO ---");
 
         this.clickOn("#newPassword").write("New");
         this.clickOn("#newPasswordConfirm").write("NewPass");
@@ -102,8 +78,8 @@ public class PasswordChangeControllerTest extends ApplicationTest {
 
 
     @Test
-    public void test4_NewPasswordLengthError() {
-        System.out.println("--- TEST 4: LUNGHEZZA PASSWORD ERRATA (TROPPO CORTA) ---");
+    public void test3_NewPasswordLengthError() {
+        System.out.println("--- TEST 3: LUNGHEZZA PASSWORD ERRATA (TROPPO CORTA) ---");
 
         this.clickOn("#currentPassword").write("OldPassword");
 
