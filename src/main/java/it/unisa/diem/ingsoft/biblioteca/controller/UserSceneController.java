@@ -101,8 +101,6 @@ public class UserSceneController extends GuiController implements Initializable{
         this.columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-
-        // Listener per cambiare la visibilità del secondo campo di ricerca
         this.searchType.valueProperty().addListener((obs, oldVal, newVal) -> {
 
             if ("Cognome ".equals(newVal)) {
@@ -153,41 +151,52 @@ public class UserSceneController extends GuiController implements Initializable{
      *
      */
     private void filterUsers() {
-
         String type = this.searchType.getValue();
-        String val1 = this.searchField.getText();
-        String val2 = this.searchFieldSecondary.getText();
+
+        // Recupero i testi gestendo il null per evitare errori
+        String val1 = this.searchField.getText() == null ? "" : this.searchField.getText().trim();
+        String val2 = this.searchFieldSecondary.getText() == null ? "" : this.searchFieldSecondary.getText().trim();
 
         if (this.userService == null) return;
 
-        if (val1 == null || val1.isEmpty()) {
-            this.updateTable();
-            return;
-        }
         List<User> result = new ArrayList<>();
 
-        switch (type) {
-            case "Matricola ":
-                result = this.userService.getAllByIdContaining(val1);
-                break;
-            case "Cognome ":
-                result = this.userService.getAllByFullNameContaining(val2, val1);
-                break;
-            case "Email ":
-                result = this.userService.getAllByEmailContaining(val1);
-                break;
-            default:
-                result = this.userService.getAll();
-                break;
+
+
+        if ("Cognome ".equals(type)) {
+
+            // Resetta la tabella SOLO se entrambi i campi sono vuoti
+            if (val1.isEmpty() && val2.isEmpty()) {
+                this.updateTable();
+                return;
+            }
+
+            // val2 = Nome, val1 = Cognome
+            result = this.userService.getAllByFullNameContaining(val2, val1);
+
+        } else {
+            if (val1.isEmpty()) {
+                this.updateTable();
+                return;
+            }
+
+            switch (type) {
+                case "Matricola ":
+                    result = this.userService.getAllByIdContaining(val1);
+                    break;
+                case "Email ":
+                    result = this.userService.getAllByEmailContaining(val1);
+                    break;
+                default:
+                    result = this.userService.getAll();
+                    break;
+            }
         }
 
-        //prima di caricare gli elementi in tabella è necessario inserirli in una observableArrayList
-        this.users = FXCollections.observableArrayList(result);
 
-        //popola la tabella
+        this.users = FXCollections.observableArrayList(result);
         this.userTable.setItems(this.users);
     }
-
 
 
     /**

@@ -146,7 +146,7 @@ public class UserSceneControllerTest extends ApplicationTest {
 
 
 
-        //RICERCA PER NOME E COGNOME
+        //RICERCA COGNOME
         this.clickOn("#searchType").clickOn("Cognome ");
         this.sleep(1000);
 
@@ -164,11 +164,8 @@ public class UserSceneControllerTest extends ApplicationTest {
 
         this.clickOn("#searchType").clickOn("Matricola ");
         this.resetSearchField();
-        this.sleep(1000);
 
     }
-
-
 
     @Test
     public void test4_RemoveUser() {
@@ -325,6 +322,30 @@ public class UserSceneControllerTest extends ApplicationTest {
 
         FxAssert.verifyThat("Biblioteca Universitaria", NodeMatchers.isVisible());
     }
+
+
+
+    @Test
+    public void test10_SearchFunctionality_InverseOrder() {
+        System.out.println("--- TEST 10: RICERCA INVERSA (PRIMA NOME POI COGNOME) ---");
+
+        this.clickOn("#searchType").clickOn("Cognome ");
+        this.sleep(1000);
+
+        FxAssert.verifyThat("#searchFieldSecondary", NodeMatchers.isVisible());
+
+        this.clickOn("#searchFieldSecondary").write("Mario");
+        this.sleep(1000);
+
+        this.clickOn("#searchField").write("Rossi");
+        this.sleep(1000);
+
+        FxAssert.verifyThat("#userTable", (TableView<User> t) -> t.getItems().size() == 1);
+
+        this.clickOn("#searchType").clickOn("Matricola ");
+        this.resetSearchField();
+    }
+
 }
 
 
