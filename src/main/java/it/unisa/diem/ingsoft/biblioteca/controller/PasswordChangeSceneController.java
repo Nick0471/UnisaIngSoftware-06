@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.HOMEPAGE_PATH;
+import static it.unisa.diem.ingsoft.biblioteca.Views.UPDATE_QUESTIONS_PATH;
 
 
 /**
@@ -91,5 +92,10 @@ public class PasswordChangeSceneController extends GuiController {
     }
 
 
+
+    @FXML
+    private void handleGoToUpdateQuestions(ActionEvent event) {
+        super.changeScene(event, UPDATE_QUESTIONS_PATH);
+    }
 
 }
