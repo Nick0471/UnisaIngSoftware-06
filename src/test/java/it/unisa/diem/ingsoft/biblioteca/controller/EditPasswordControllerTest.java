@@ -1,6 +1,7 @@
 package it.unisa.diem.ingsoft.biblioteca.controller;
 
 import static it.unisa.diem.ingsoft.biblioteca.Views.EDIT_PASSWORD_PATH;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
@@ -17,8 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
-public class PasswordChangeControllerTest extends ApplicationTest {
+public class EditPasswordControllerTest extends ApplicationTest {
 
     private AuthService authService;
 
@@ -35,47 +35,48 @@ public class PasswordChangeControllerTest extends ApplicationTest {
 
         Scene scene = new Scene(root);
 
-        stage.setTitle("Cambia PAssword");
+        stage.setTitle("Cambio Password");
         stage.setScene(scene);
         stage.show();
 
         this.authService.changePassword("OldPassword");
     }
 
-
     @Test
     public void test1_ChangePasswordSuccess() {
-        System.out.println("--- TEST 1: CAMBIO PASSWORD CON SUCCESSO---");
+        System.out.println("--- TEST 1: CAMBIO PASSWORD CON SUCCESSO ---");
 
-        this.clickOn("#newPassword").write("NewPass123");
-        this.clickOn("#newPasswordConfirm").write("NewPass123");
-        this.sleep(1000);
+        this.clickOn("#currentPassword").write("OldPassword");
+
+        this.clickOn("#newPassword").write("NewPass1");
+        this.clickOn("#newPasswordConfirm").write("NewPass1");
+        this.sleep(500);
 
         this.clickOn("#btnUpdate");
         this.sleep(1000);
 
+        boolean passwordChanged = this.authService.checkPassword("NewPass123");
+        assertTrue(passwordChanged, "La password nel DB dovrebbe essere aggiornata a 'NewPass123'");
     }
-
-
-
 
     @Test
     public void test2_NewPasswordsMismatch() {
         System.out.println("--- TEST 2: LE DUE PASSWORD NON COINCIDONO ---");
 
-        this.clickOn("#newPassword").write("New");
-        this.clickOn("#newPasswordConfirm").write("NewPass");
-        this.sleep(1000);
+        this.clickOn("#currentPassword").write("OldPassword");
+
+        this.clickOn("#newPassword").write("NewPass1");
+        this.clickOn("#newPasswordConfirm").write("NewPass2");
+        this.sleep(500);
 
         this.clickOn("#btnUpdate");
-        this.sleep(1000);
+        this.sleep(500);
 
         FxAssert.verifyThat("Le due password non coincidono.", NodeMatchers.isVisible());
 
         this.clickOn("OK");
-        this.sleep(1000);
+        this.sleep(500);
     }
-
 
     @Test
     public void test3_NewPasswordLengthError() {
@@ -83,26 +84,53 @@ public class PasswordChangeControllerTest extends ApplicationTest {
 
         this.clickOn("#currentPassword").write("OldPassword");
 
-        this.clickOn("#newPassword").write("12345");
-        this.clickOn("#newPasswordConfirm").write("12345");
-        this.sleep(1000);
+        this.clickOn("#newPassword").write("123");
+        this.clickOn("#newPasswordConfirm").write("123");
+        this.sleep(500);
 
         this.clickOn("#btnUpdate");
-        this.sleep(1000);
+        this.sleep(500);
 
         FxAssert.verifyThat("La nuova password deve essere da 6 a 10 caratteri.", NodeMatchers.isVisible());
 
         this.clickOn("OK");
-        this.sleep(1000);
+        this.sleep(500);
     }
 
+    @Test
+    public void test4_OldPasswordWrong() {
+        System.out.println("--- TEST 4: VECCHIA PASSWORD ERRATA ---");
+
+        this.clickOn("#currentPassword").write("WrongPass");
+
+        this.clickOn("#newPassword").write("NewPass1");
+        this.clickOn("#newPasswordConfirm").write("NewPass1");
+        this.sleep(500);
+
+        this.clickOn("#btnUpdate");
+        this.sleep(500);
+
+        FxAssert.verifyThat("La password vecchia inserita non è corretta.", NodeMatchers.isVisible());
+
+        this.clickOn("OK");
+        this.sleep(500);
+    }
 
     @Test
     public void test5_AbortOperation() {
         System.out.println("--- TEST 5: ANNULLA OPERAZIONE ---");
 
         this.clickOn("#btnReturn");
+        this.sleep(500);
+    }
+
+    @Test
+    public void test6_GoToSecurityQuestions() {
+        System.out.println("--- TEST 6: VAI A RISPOSTE SICUREZZA ---");
+
+        this.clickOn("#btnUpdateQuestions");
         this.sleep(1000);
+
+
     }
 }
-

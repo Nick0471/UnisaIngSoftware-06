@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.UpdateSecurityQuestionsSceneController"
+<BorderPane fx:controller="it.unisa.diem.ingsoft.biblioteca.controller.UpdateSecurityAnswersSceneController"
             maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="650.0" prefWidth="800.0" style="-fx-background-color: #f4f4f4;"
             xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
@@ -60,12 +60,12 @@
                     </effect>
 
                     <children>
-                        <Label alignment="CENTER" maxWidth="Infinity" text="Aggiorna Domande di Sicurezza" textFill="#2d3447">
+                        <Label alignment="CENTER" maxWidth="Infinity" text="Inserisci le nuove risposte per le domande di sicurezza del progetto." textFill="#7c8184" wrapText="true">
                             <font>
-                                <Font name="Segoe UI Bold" size="22.0" />
+                                <Font name="Segoe UI" size="14.0" />
                             </font>
                             <VBox.margin>
-                                <Insets bottom="5.0" />
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
 
@@ -80,7 +80,7 @@
 
                         <VBox spacing="8.0">
                             <children>
-                                <Label text="1. Qual è il cognome da nubile di tua madre?" textFill="#2d3447">
+                                <Label text="1. Qual è il numero di questo gruppo?" textFill="#2d3447">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
@@ -96,7 +96,7 @@
 
                         <VBox spacing="8.0">
                             <children>
-                                <Label text="2. Qual è il nome del tuo primo animale domestico?" textFill="#2d3447">
+                                <Label text="2. Qual è il nome di questo esame?" textFill="#2d3447">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
@@ -112,7 +112,7 @@
 
                         <VBox spacing="8.0">
                             <children>
-                                <Label text="3. In che città ti sei diplomato?" textFill="#2d3447">
+                                <Label text="3. Qual è il nome del professore?" textFill="#2d3447">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
